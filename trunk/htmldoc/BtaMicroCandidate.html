@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:05 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>BtaMicroCandidate</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>BtaMicroCandidate</h1>
+<hr width=300>
+<!--SDL--><em><a href="#BtaMicroCandidate:description">class description</a> - <a href="src/BtaMicroCandidate.cxx.html">source file</a> - <a href="BtaMicroCandidate_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="BtaMicroCandidate" href="BtaMicroCandidate.h">BtaMicroCandidate</a> : public VAbsMicroCandidate</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                  <a href="./BtaMicroCandidate.html">BtaMicroCandidate</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:BtaMicroCandidate">BtaMicroCandidate</a><!--PLAIN-->()
+<!--TAB6-->                  <a href="./BtaMicroCandidate.html">BtaMicroCandidate</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:BtaMicroCandidate">BtaMicroCandidate</a><!--PLAIN-->(<a href="./TBtaMicroCandR.html">TBtaMicroCandR</a>* bmc)
+<!--TAB6-->                  <a href="./BtaMicroCandidate.html">BtaMicroCandidate</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:BtaMicroCandidate">BtaMicroCandidate</a><!--PLAIN-->(const <a href="./BtaMicroCandidate.html">BtaMicroCandidate</a>&amp;)
+<!--TAB6-->                       virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:~BtaMicroCandidate">~BtaMicroCandidate</a><!--PLAIN-->()
+<!--TAB6-->                     static TClass* <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:DchOk">DchOk</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:DrcOk">DrcOk</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:EmcOk">EmcOk</a><!--PLAIN-->() const
+<!--TAB6-->                       VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetAbsPidInfo">GetAbsPidInfo</a><!--PLAIN-->(<a href="./PidSystem.html#PidSystem:System">PidSystem::System</a> sys) const
+<!--TAB6-->      virtual const <a href="./TBtaMicroCandR.html">TBtaMicroCandR</a>&amp; <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetBtaMicroCandR">GetBtaMicroCandR</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetCharge">GetCharge</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetChargedPidHypo">GetChargedPidHypo</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetChiSquared">GetChiSquared</a><!--PLAIN-->() const
+<!--TAB6-->             virtual const <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetCov">GetCov</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDchDeltaMomentum">GetDchDeltaMomentum</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDchHits">GetDchHits</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDchInnerLayer">GetDchInnerLayer</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDchMeanDEdx">GetDchMeanDEdx</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDchOuterLayer">GetDchOuterLayer</a><!--PLAIN-->() const
+<!--TAB6-->               virtual VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDchPidInfo">GetDchPidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDchSamples">GetDchSamples</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDegreesOfFreedom">GetDegreesOfFreedom</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcDeltaMomentum">GetDrcDeltaMomentum</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcExitBar">GetDrcExitBar</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcInBar">GetDrcInBar</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcNumberOfBackgroundPhotons">GetDrcNumberOfBackgroundPhotons</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcNumberOfExpectedPhotons">GetDrcNumberOfExpectedPhotons</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> hypo) const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcNumberOfPhotons">GetDrcNumberOfPhotons</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcPhiAtEmc">GetDrcPhiAtEmc</a><!--PLAIN-->() const
+<!--TAB6-->               virtual VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcPidInfo">GetDrcPidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcThetaAtEmc">GetDrcThetaAtEmc</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcThetaC">GetDrcThetaC</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcThetaCError">GetDrcThetaCError</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetDrcXPos">GetDrcXPos</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcCalEnergy">GetEmcCalEnergy</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual TVector3 <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcCentroid">GetEmcCentroid</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcConsistencyBits">GetEmcConsistencyBits</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcConsistencyLikelihood">GetEmcConsistencyLikelihood</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcConsistencyValue">GetEmcConsistencyValue</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcCovarianceEnergy">GetEmcCovarianceEnergy</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcCovariancePhi">GetEmcCovariancePhi</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcCovarianceRho">GetEmcCovarianceRho</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcCovarianceTheta">GetEmcCovarianceTheta</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcLateralShape">GetEmcLateralShape</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcNumberOfBumps">GetEmcNumberOfBumps</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcNumberOfCrystals">GetEmcNumberOfCrystals</a><!--PLAIN-->() const
+<!--TAB6-->               virtual VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcPidInfo">GetEmcPidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcRawEnergy">GetEmcRawEnergy</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcS1S9">GetEmcS1S9</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcS9S25">GetEmcS9S25</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcSecondMoment">GetEmcSecondMoment</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcStatus">GetEmcStatus</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcZernikeMoment20">GetEmcZernikeMoment20</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcZernikeMoment31">GetEmcZernikeMoment31</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEmcZernikeMoment42">GetEmcZernikeMoment42</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetEnergy">GetEnergy</a><!--PLAIN-->() const
+<!--TAB6-->             virtual const <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetErrorP7">GetErrorP7</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetFitStatus">GetFitStatus</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrClusterFit">GetIfrClusterFit</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrEmcMatch">GetIfrEmcMatch</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrExpectedInteractionLengths">GetIfrExpectedInteractionLengths</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrFirstHit">GetIfrFirstHit</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrHitLayers">GetIfrHitLayers</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrInteractionLengthsBeforeIron">GetIfrInteractionLengthsBeforeIron</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrLastBarrel">GetIfrLastBarrel</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrLastHit">GetIfrLastHit</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrMeasuredInteractionLengths">GetIfrMeasuredInteractionLengths</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrNumberOfStrips">GetIfrNumberOfStrips</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrNumberOfStrips">GetIfrNumberOfStrips</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> layer) const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrPattern">GetIfrPattern</a><!--PLAIN-->() const
+<!--TAB6-->               virtual VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrPidInfo">GetIfrPidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrRpcMuonProbability">GetIfrRpcMuonProbability</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetIfrTrackMatch">GetIfrTrackMatch</a><!--PLAIN-->() const
+<!--TAB6-->             virtual TLorentzVector <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetLorentzVector">GetLorentzVector</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetMcConsistency">GetMcConsistency</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetMcIndex">GetMcIndex</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetMcPid">GetMcPid</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual TVector3 <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetMomentum">GetMomentum</a><!--PLAIN-->() const
+<!--TAB6-->             virtual const <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetMomentumError">GetMomentumError</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetNeutralPidHypo">GetNeutralPidHypo</a><!--PLAIN-->() const
+<!--TAB6-->             virtual const <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetParams">GetParams</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual TVector3 <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetPosition">GetPosition</a><!--PLAIN-->() const
+<!--TAB6-->             virtual const <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetPositionError">GetPositionError</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetProbability">GetProbability</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetSvtHitPattern">GetSvtHitPattern</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetSvtHits">GetSvtHits</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetSvtMeanDEdx">GetSvtMeanDEdx</a><!--PLAIN-->() const
+<!--TAB6-->               virtual VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetSvtPidInfo">GetSvtPidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetSvtSamples">GetSvtSamples</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetTrackLength">GetTrackLength</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:GetTrackStartFoundRange">GetTrackStartFoundRange</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:IfrOk">IfrOk</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual TClass* <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                       virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:SetBtaMicroCandR">SetBtaMicroCandR</a><!--PLAIN-->(<a href="./TBtaMicroCandR.html">TBtaMicroCandR</a>&amp; bmc)
+<!--TAB6-->                       virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:SetMcConsistency">SetMcConsistency</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a> cons)
+<!--TAB6-->                       virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:SetMcIndex">SetMcIndex</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> index)
+<!--TAB6-->                       virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:SetMcPid">SetMcPid</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> pid)
+<!--TAB6-->                       virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:SetPosition">SetPosition</a><!--PLAIN-->(TVector3 x)
+<!--TAB6-->                       virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->                       virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                               <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#BtaMicroCandidate:SvtOk">SvtOk</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="BtaMicroCandidate:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="./TBtaMicroCandR.html">TBtaMicroCandR</a>* <!--TAB--><!--BOLD--><a name="BtaMicroCandidate:fBtaMicroCandR">fBtaMicroCandR</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fBtaMicroCandR">! Do not stream </a></i>
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="BtaMicroCandidate:fMcHypo">fMcHypo</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fMcHypo"></a></i>
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="BtaMicroCandidate:fMcIndex">fMcIndex</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fMcIndex"></a></i>
+<!--TAB6-->              <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="BtaMicroCandidate:fMcConsistency">fMcConsistency</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fMcConsistency"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="BtaMicroCandidate:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./BtaMicroCandidate.html">BtaMicroCandidate</a>	                                                
+                                                                      
+ Implementation of the abstract interface AbsMicroCanidate		
+ for an underlying Kanga BtaMicroCanidateR object.			
+									
+ Author List:								
+ Marcel Kunze,  RUB, Nov. 99						
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetIfrFirstHit" href="src/BtaMicroCandidate.cxx.html#BtaMicroCandidate:GetIfrFirstHit">GetIfrFirstHit</a>() const  
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetIfrLastHit" href="src/BtaMicroCandidate.cxx.html#BtaMicroCandidate:GetIfrLastHit">GetIfrLastHit</a>() const  
+<br>
+<hr>
+<!--FUNCTION-->VAbsPidInfo <a name="BtaMicroCandidate:GetAbsPidInfo" href="src/BtaMicroCandidate.cxx.html#BtaMicroCandidate:GetAbsPidInfo">GetAbsPidInfo</a>(<a href="./PidSystem.html#PidSystem:System">PidSystem::System</a> sys) const
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./BtaMicroCandidate.html">BtaMicroCandidate</a> <a name="BtaMicroCandidate:BtaMicroCandidate" href="BtaMicroCandidate.h">BtaMicroCandidate</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./BtaMicroCandidate.html">BtaMicroCandidate</a> <a name="BtaMicroCandidate:BtaMicroCandidate" href="BtaMicroCandidate.h">BtaMicroCandidate</a>(<a href="./TBtaMicroCandR.html">TBtaMicroCandR</a>* bmc)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="BtaMicroCandidate:SetBtaMicroCandR" href="BtaMicroCandidate.h">SetBtaMicroCandR</a>(<a href="./TBtaMicroCandR.html">TBtaMicroCandR</a>&amp; bmc)
+<!--INLINE FUNCTION--><!--TAB6-->        const <a href="./TBtaMicroCandR.html">TBtaMicroCandR</a>&amp; <a name="BtaMicroCandidate:GetBtaMicroCandR" href="BtaMicroCandidate.h">GetBtaMicroCandR</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetCharge" href="BtaMicroCandidate.h">GetCharge</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     TVector3 <a name="BtaMicroCandidate:GetPosition" href="BtaMicroCandidate.h">GetPosition</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     TVector3 <a name="BtaMicroCandidate:GetMomentum" href="BtaMicroCandidate.h">GetMomentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               TLorentzVector <a name="BtaMicroCandidate:GetLorentzVector" href="BtaMicroCandidate.h">GetLorentzVector</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEnergy" href="BtaMicroCandidate.h">GetEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               const <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="BtaMicroCandidate:GetParams" href="BtaMicroCandidate.h">GetParams</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               const <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="BtaMicroCandidate:GetPositionError" href="BtaMicroCandidate.h">GetPositionError</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               const <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="BtaMicroCandidate:GetMomentumError" href="BtaMicroCandidate.h">GetMomentumError</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               const <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="BtaMicroCandidate:GetErrorP7" href="BtaMicroCandidate.h">GetErrorP7</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               const <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="BtaMicroCandidate:GetCov" href="BtaMicroCandidate.h">GetCov</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetMcPid" href="BtaMicroCandidate.h">GetMcPid</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetMcIndex" href="BtaMicroCandidate.h">GetMcIndex</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetMcConsistency" href="BtaMicroCandidate.h">GetMcConsistency</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="BtaMicroCandidate:EmcOk" href="BtaMicroCandidate.h">EmcOk</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="BtaMicroCandidate:IfrOk" href="BtaMicroCandidate.h">IfrOk</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetEmcStatus" href="BtaMicroCandidate.h">GetEmcStatus</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetEmcNumberOfCrystals" href="BtaMicroCandidate.h">GetEmcNumberOfCrystals</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetEmcNumberOfBumps" href="BtaMicroCandidate.h">GetEmcNumberOfBumps</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcRawEnergy" href="BtaMicroCandidate.h">GetEmcRawEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcCalEnergy" href="BtaMicroCandidate.h">GetEmcCalEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcCovarianceEnergy" href="BtaMicroCandidate.h">GetEmcCovarianceEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcCovarianceTheta" href="BtaMicroCandidate.h">GetEmcCovarianceTheta</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcCovariancePhi" href="BtaMicroCandidate.h">GetEmcCovariancePhi</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcCovarianceRho" href="BtaMicroCandidate.h">GetEmcCovarianceRho</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcS9S25" href="BtaMicroCandidate.h">GetEmcS9S25</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcS1S9" href="BtaMicroCandidate.h">GetEmcS1S9</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcLateralShape" href="BtaMicroCandidate.h">GetEmcLateralShape</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcSecondMoment" href="BtaMicroCandidate.h">GetEmcSecondMoment</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcZernikeMoment20" href="BtaMicroCandidate.h">GetEmcZernikeMoment20</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcZernikeMoment31" href="BtaMicroCandidate.h">GetEmcZernikeMoment31</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcZernikeMoment42" href="BtaMicroCandidate.h">GetEmcZernikeMoment42</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     TVector3 <a name="BtaMicroCandidate:GetEmcCentroid" href="BtaMicroCandidate.h">GetEmcCentroid</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcConsistencyValue" href="BtaMicroCandidate.h">GetEmcConsistencyValue</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetEmcConsistencyLikelihood" href="BtaMicroCandidate.h">GetEmcConsistencyLikelihood</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetEmcConsistencyBits" href="BtaMicroCandidate.h">GetEmcConsistencyBits</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetNeutralPidHypo" href="BtaMicroCandidate.h">GetNeutralPidHypo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetIfrPattern" href="BtaMicroCandidate.h">GetIfrPattern</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetIfrNumberOfStrips" href="BtaMicroCandidate.h">GetIfrNumberOfStrips</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetIfrNumberOfStrips" href="BtaMicroCandidate.h">GetIfrNumberOfStrips</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> layer) const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetIfrHitLayers" href="BtaMicroCandidate.h">GetIfrHitLayers</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetIfrMeasuredInteractionLengths" href="BtaMicroCandidate.h">GetIfrMeasuredInteractionLengths</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetIfrExpectedInteractionLengths" href="BtaMicroCandidate.h">GetIfrExpectedInteractionLengths</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetIfrInteractionLengthsBeforeIron" href="BtaMicroCandidate.h">GetIfrInteractionLengthsBeforeIron</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetIfrTrackMatch" href="BtaMicroCandidate.h">GetIfrTrackMatch</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetIfrEmcMatch" href="BtaMicroCandidate.h">GetIfrEmcMatch</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetIfrClusterFit" href="BtaMicroCandidate.h">GetIfrClusterFit</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetIfrRpcMuonProbability" href="BtaMicroCandidate.h">GetIfrRpcMuonProbability</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetIfrLastBarrel" href="BtaMicroCandidate.h">GetIfrLastBarrel</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="BtaMicroCandidate:SvtOk" href="BtaMicroCandidate.h">SvtOk</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="BtaMicroCandidate:DchOk" href="BtaMicroCandidate.h">DchOk</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="BtaMicroCandidate:DrcOk" href="BtaMicroCandidate.h">DrcOk</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetTrackLength" href="BtaMicroCandidate.h">GetTrackLength</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetTrackStartFoundRange" href="BtaMicroCandidate.h">GetTrackStartFoundRange</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetSvtHitPattern" href="BtaMicroCandidate.h">GetSvtHitPattern</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetSvtHits" href="BtaMicroCandidate.h">GetSvtHits</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetDchInnerLayer" href="BtaMicroCandidate.h">GetDchInnerLayer</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetDchOuterLayer" href="BtaMicroCandidate.h">GetDchOuterLayer</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetDchHits" href="BtaMicroCandidate.h">GetDchHits</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetChargedPidHypo" href="BtaMicroCandidate.h">GetChargedPidHypo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetDegreesOfFreedom" href="BtaMicroCandidate.h">GetDegreesOfFreedom</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetFitStatus" href="BtaMicroCandidate.h">GetFitStatus</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetChiSquared" href="BtaMicroCandidate.h">GetChiSquared</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetProbability" href="BtaMicroCandidate.h">GetProbability</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetDrcThetaC" href="BtaMicroCandidate.h">GetDrcThetaC</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetDrcThetaCError" href="BtaMicroCandidate.h">GetDrcThetaCError</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetDrcNumberOfPhotons" href="BtaMicroCandidate.h">GetDrcNumberOfPhotons</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetDrcNumberOfBackgroundPhotons" href="BtaMicroCandidate.h">GetDrcNumberOfBackgroundPhotons</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetDrcNumberOfExpectedPhotons" href="BtaMicroCandidate.h">GetDrcNumberOfExpectedPhotons</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> hypo) const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetDchDeltaMomentum" href="BtaMicroCandidate.h">GetDchDeltaMomentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetDrcInBar" href="BtaMicroCandidate.h">GetDrcInBar</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetDrcExitBar" href="BtaMicroCandidate.h">GetDrcExitBar</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetDrcXPos" href="BtaMicroCandidate.h">GetDrcXPos</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetDrcPhiAtEmc" href="BtaMicroCandidate.h">GetDrcPhiAtEmc</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetDrcThetaAtEmc" href="BtaMicroCandidate.h">GetDrcThetaAtEmc</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetDrcDeltaMomentum" href="BtaMicroCandidate.h">GetDrcDeltaMomentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetDchMeanDEdx" href="BtaMicroCandidate.h">GetDchMeanDEdx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="BtaMicroCandidate:GetSvtMeanDEdx" href="BtaMicroCandidate.h">GetSvtMeanDEdx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetDchSamples" href="BtaMicroCandidate.h">GetDchSamples</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="BtaMicroCandidate:GetSvtSamples" href="BtaMicroCandidate.h">GetSvtSamples</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 VAbsPidInfo&amp; <a name="BtaMicroCandidate:GetDrcPidInfo" href="BtaMicroCandidate.h">GetDrcPidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 VAbsPidInfo&amp; <a name="BtaMicroCandidate:GetDchPidInfo" href="BtaMicroCandidate.h">GetDchPidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 VAbsPidInfo&amp; <a name="BtaMicroCandidate:GetSvtPidInfo" href="BtaMicroCandidate.h">GetSvtPidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 VAbsPidInfo&amp; <a name="BtaMicroCandidate:GetEmcPidInfo" href="BtaMicroCandidate.h">GetEmcPidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 VAbsPidInfo&amp; <a name="BtaMicroCandidate:GetIfrPidInfo" href="BtaMicroCandidate.h">GetIfrPidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="BtaMicroCandidate:SetPosition" href="BtaMicroCandidate.h">SetPosition</a>(TVector3 x)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="BtaMicroCandidate:SetMcPid" href="BtaMicroCandidate.h">SetMcPid</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> pid)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="BtaMicroCandidate:SetMcIndex" href="BtaMicroCandidate.h">SetMcIndex</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> index)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="BtaMicroCandidate:SetMcConsistency" href="BtaMicroCandidate.h">SetMcConsistency</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> cons)
+<!--INLINE FUNCTION--><!--TAB6-->                      TClass* <a name="BtaMicroCandidate:Class" href="BtaMicroCandidate.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                      TClass* <a name="BtaMicroCandidate:IsA" href="BtaMicroCandidate.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="BtaMicroCandidate:ShowMembers" href="BtaMicroCandidate.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="BtaMicroCandidate:Streamer" href="BtaMicroCandidate.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="BtaMicroCandidate:StreamerNVirtual" href="BtaMicroCandidate.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./BtaMicroCandidate.html">BtaMicroCandidate</a> <a name="BtaMicroCandidate:BtaMicroCandidate" href="BtaMicroCandidate.h">BtaMicroCandidate</a>(const <a href="./BtaMicroCandidate.html">BtaMicroCandidate</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="BtaMicroCandidate:~BtaMicroCandidate" href="BtaMicroCandidate.h">~BtaMicroCandidate</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:05 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

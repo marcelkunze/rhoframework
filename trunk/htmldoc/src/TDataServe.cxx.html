@@ -1,0 +1,636 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:45 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TDataServe - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//									//</b>
+<b>// <a href=".././TDataServe.html">TDataServe</a>								//</b>
+<b>//									//</b>
+<b>// A simple datastack for use with the Neural Network Objects (NNO)	//</b>
+<b>// It supports: - separate storing of train and testvectors		//</b>
+<b>//		- mixing of the trainvectors				//</b>
+<b>//		- deleting of bad vectors				//</b>
+<b>//		- reading data from TNtuple				//</b>
+<b>//									//</b>
+<b>// Usage: - Call the normal constructors				//</b>
+<b>//	  - Fill the <a href=".././TDataServe.html">TDataServe</a> objects via				//</b>
+<b>//		- Putvec function					//</b>
+<b>//		- TNtuple_DataRead function				//</b>
+<b>//		- TNtuple_XDataRead function				//</b>
+<b>//	  - Call Init function						//</b>
+<b>//									//</b>
+<b>// Author List:								//</b>
+<b>// H.Schmücker, Bochum University					//</b>
+<b>// M.Kunze, Bochum University, Feb. 01					//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include &lt;float.h&gt;
+#include &lt;math.h&gt;
+
+#include "TFile.h"
+#include "TNtuple.h"
+#include "TTreeFormula.h"
+#include "TRandom.h"
+#include "TCanvas.h"
+#include "TH1.h"
+#include "TF1.h"
+
+#include "RhoNNO/TDataServe.h"
+
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;strstream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+#ifdef WIN32
+DllImport TRandom *gRandom;
+#endif
+
+ClassImp(TDataServe)
+
+<b>// This is using the old streams</b>
+
+<a name="TDataServe:Streamer"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:Streamer">TDataServe::Streamer</a>(TBuffer &amp;b)
+{
+<b>    // Streamer</b>
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i;
+    
+    if (b.IsReading()){
+	<a href="../ListOfTypes.html#Version_t">Version_t</a> v=b.ReadVersion();
+	TNamed::<a href="#TDataServe:Streamer">Streamer</a>(b);
+	b &gt;&gt; <a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>;
+	b &gt;&gt; <a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>;
+	b &gt;&gt; <a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>;
+	b &gt;&gt; <a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>;
+	b &gt;&gt; <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>;
+	b &gt;&gt; <a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>;
+	<a href=".././TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>=<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>;
+	if (<a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>) { <a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>=new <a href="../ListOfTypes.html#UInt_t">UInt_t</a> [<a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>]; assert(<a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>!=0); }
+	if (<a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>) { <a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>=new <a href="../ListOfTypes.html#UInt_t">UInt_t</a> [<a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>]; assert(<a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>!=0); }
+	if (<a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>) b.ReadFastArray(<a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>, <a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>);
+	if (<a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>) b.ReadFastArray(<a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>, <a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>);    
+	<a href="#TDataServe:BlastAr2DD">BlastAr2DD</a>(<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>, 0, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>, <a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>);
+	<a href="#TDataServe:BlastAr2DD">BlastAr2DD</a>(<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>, 0, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>, <a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>);
+	for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++){
+	    b.ReadFastArray(<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i], <a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>);
+	    b.ReadFastArray(<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[i], <a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>);
+	}
+    }
+    else{
+	b.WriteVersion(<a href=".././TDataServe.html#TDataServe:IsA">TDataServe::IsA</a>());
+	TNamed::<a href="#TDataServe:Streamer">Streamer</a>(b);
+	b &lt;&lt; <a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>;
+	b &lt;&lt; <a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>;
+	b &lt;&lt; <a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>;
+	b &lt;&lt; <a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>;
+	b &lt;&lt; <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>;
+	b &lt;&lt; <a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>;
+	b.WriteFastArray(<a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>, <a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>);
+	b.WriteFastArray(<a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>, <a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>);
+	for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++){
+	    b.WriteFastArray(<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i], <a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>);
+	    b.WriteFastArray(<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[i], <a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>);
+	}
+    }
+}
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, <a href=".././TDataServe.html">TDataServe</a> *&amp;obj)
+{
+   obj = (<a href=".././TDataServe.html">TDataServe</a> *) buf.ReadObject(<a href=".././TDataServe.html#TDataServe:Class">TDataServe::Class</a>());
+   return buf;
+}
+
+<a name="TDataServe:TDataServe"> </a><a href=".././TDataServe.html#TDataServe:TDataServe">TDataServe::TDataServe</a>() :
+TNamed(),
+<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>(0),
+<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>(0),
+<a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>(0),
+<a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>(0),
+<a href=".././TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>(0),
+<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>(0),
+<a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>(0),
+<a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>(0),
+<a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>(kFALSE),
+<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>(0),
+<a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>(0),
+<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>(0),
+<a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>(0),
+<a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>(0),
+<a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>(0)
+{}
+
+<a name="TDataServe:TDataServe"> </a><a href=".././TDataServe.html#TDataServe:TDataServe">TDataServe::TDataServe</a>(<a href="../ListOfTypes.html#Text_t">Text_t</a>* name,<a href="../ListOfTypes.html#Text_t">Text_t</a>* title,const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> in,const  <a href="../ListOfTypes.html#UInt_t">UInt_t</a> out):
+<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>(in),
+<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>(out),
+<a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>(0),
+<a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>(0),
+TNamed(name,title),
+<a href=".././TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>(0),
+<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>(0),
+<a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>(0),
+<a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>(0),
+<a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>(kFALSE),
+<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>(0),
+<a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>(0),
+<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>(0),
+<a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>(0),
+<a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>(0),
+<a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>(0)
+{
+<b>    // normal constructor</b>
+<b>    // Parameters: name, title, inputvectorlength, outputvectorlength</b>
+    
+}
+
+<a name="TDataServe:FillTNtuple"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:FillTNtuple">TDataServe::FillTNtuple</a>(TNtuple&amp; tup) const
+{
+<b>    // fill tup with input and outputvectors</b>
+<b>    // e.g. TNtuple tup("tup","in out","i1:i2:i3:i4... :o1:o2:o3");  </b>
+    <a href="../ListOfTypes.html#Float_t">Float_t</a>* helpar=new <a href="../ListOfTypes.html#Float_t">Float_t</a> [<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>+<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>];
+    assert(helpar!=0);
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i,j;
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++){
+	for (j=0; j&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>; j++) helpar[j]=<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i][j];
+	for (j=0; j&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>; j++) helpar[j+<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>]=<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[i][j]; 
+	tup.Fill(helpar);
+    }
+    delete [] helpar;
+}
+
+<a name="TDataServe:~TDataServe"> </a><a href=".././TDataServe.html">TDataServe</a>::~<a href=".././TDataServe.html">TDataServe</a>()
+{
+<b>    // destructor</b>
+    if (<a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>; <a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>; <a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>; <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>; <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>; <a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>; <a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>=0; }
+    <a href="#TDataServe:DelAr2DD">DelAr2DD</a>(<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>);
+    <a href="#TDataServe:DelAr2DD">DelAr2DD</a>(<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>);
+}
+
+<a name="TDataServe:Reset"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:Reset">TDataServe::Reset</a>()
+{
+<b>    // clears <a href=".././TDataServe.html">TDataServe</a> object and sets allocated memory free </b>
+    if (<a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>; <a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>; <a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>; <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>; <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>=0; }
+    <a href="#TDataServe:DelAr2DD">DelAr2DD</a>(<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>);
+    <a href="#TDataServe:DelAr2DD">DelAr2DD</a>(<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>);
+    <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>=0;
+    <a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>=kFALSE;
+    <a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>=0;
+    <a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>=0;
+    <a href=".././TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>=0;
+}
+
+<a name="TDataServe:DelAr2DD"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:DelAr2DD">TDataServe::DelAr2DD</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a>**&amp; ar,const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> len)
+{
+    if (ar==0) return;
+    for (<a href="../ListOfTypes.html#UInt_t">UInt_t</a> i=0; i&lt;len; i++) delete [] ar[i];
+    delete [] ar;
+}
+
+<a name="TDataServe:BlastAr2DD"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:BlastAr2DD">TDataServe::BlastAr2DD</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a>**&amp; ar,
+			    const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> oldlen1,
+			    const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> newlen1,
+			    const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> len2)
+{
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i;
+    <a href="../ListOfTypes.html#Float_t">Float_t</a>** temp = ar;
+    assert(newlen1&gt;=oldlen1);
+    ar = new <a href="../ListOfTypes.html#Float_t">Float_t</a>* [newlen1];
+    assert(ar!=0);
+    for (i=0; i&lt;oldlen1; i++) ar[i] = temp[i];
+    delete [] temp;
+    for (i=oldlen1; i&lt;newlen1; i++){
+	ar[i] = new <a href="../ListOfTypes.html#Float_t">Float_t</a> [len2];
+	assert(ar[i]!=0);
+    }
+}
+
+<a name="TDataServe:Mix"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:Mix">TDataServe::Mix</a>(<a href="../ListOfTypes.html#UInt_t">UInt_t</a>* vec, const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> len)
+{
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i;
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> temp;
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> x1=0,x2=0;
+    
+    for (i=0; i&lt;len; i++){
+	x1 = (<a href="../ListOfTypes.html#UInt_t">UInt_t</a>) (gRandom-&gt;Rndm(x2)*len);
+	x2 = (<a href="../ListOfTypes.html#UInt_t">UInt_t</a>) (gRandom-&gt;Rndm(x1)*len);
+	temp = vec[x1];
+	vec[x1] = vec[x2];
+	vec[x2] = temp;
+    }
+}
+
+<a name="TDataServe:MixTrn"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:MixTrn">TDataServe::MixTrn</a>()
+{
+<b>    //mixes trainvectors of <a href=".././TDataServe.html">TDataServe</a> object.</b>
+    assert(<a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>);
+    <a href="#TDataServe:Mix">Mix</a>(<a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>, <a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>);
+}
+
+<a name="TDataServe:Init"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:Init">TDataServe::Init</a>(const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> tst)
+{
+<b>    // <a href="#TDataServe:Init">Init</a>(number of testvectors)</b>
+<b>    // Call Init after every change of data.</b>
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i;
+    assert(tst&lt;=<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>);
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a>* helpvec = new <a href="../ListOfTypes.html#UInt_t">UInt_t</a> [<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>];
+    assert(helpvec!=0);
+    if (<a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>; <a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>; <a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>; <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>!=0) { delete [] <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>; <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>=0; }
+    if (<a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>) { <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>=new <a href="../ListOfTypes.html#Float_t">Float_t</a> [<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>]; assert(<a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>!=0); }
+    if (<a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>) { <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>=new <a href="../ListOfTypes.html#Float_t">Float_t</a> [<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>]; assert(<a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>!=0); }
+    <a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>=tst;
+    <a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>=<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>-tst;
+    if (<a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>) { <a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>=new <a href="../ListOfTypes.html#UInt_t">UInt_t</a> [<a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>]; assert(<a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>!=0); }
+    if (<a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>) { <a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>=new <a href="../ListOfTypes.html#UInt_t">UInt_t</a> [<a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>]; assert(<a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>!=0); }
+    gRandom-&gt;SetSeed(); // Randomize the numbers
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++) helpvec[i]=i;
+    <a href="#TDataServe:Mix">Mix</a>(helpvec, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>);
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>; i++) <a href=".././TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>[i]=helpvec[<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>-i-1];
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>; i++) <a href=".././TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>[i]=helpvec[i];
+    <a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>=kTRUE;
+    delete helpvec;
+}
+
+<a name="TDataServe:DataRead"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:DataRead">TDataServe::DataRead</a>(const <a href="../ListOfTypes.html#char">char</a>* name,
+			     const <a href="../ListOfTypes.html#Float_t">Float_t</a>* out,
+			     const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> start,
+			     const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> laenge)
+{
+<b>    // forget it</b>
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> len,i,j;
+    ifstream f(name, ios::in);
+    if (!f){
+	cerr &lt;&lt; "CAN'T OPEN FILE: " &lt;&lt; name;
+	return;
+    }
+    cerr &lt;&lt; "reading file: " &lt;&lt; name &lt;&lt; endl;
+    f.seekg(0L, ios::end);
+    len=f.tellg();				 
+    f.seekg((<a href="../ListOfTypes.html#long">long</a>)(start*4*<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>), ios::beg);
+    len-=f.tellg();
+    len = (<a href="../ListOfTypes.html#UInt_t">UInt_t</a>) 0.25 * len;
+    if (laenge&gt;0){
+	assert(laenge*<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>&lt;=len); 
+	len=laenge*<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>;
+    }
+    <a href="../ListOfTypes.html#Float_t">Float_t</a>* fvec=new <a href="../ListOfTypes.html#Float_t">Float_t</a> [len];
+    assert(fvec!=0);
+    f.read((<a href="../ListOfTypes.html#char">char</a>*)(fvec), len*4);
+    if (f.fail()){
+	delete [] fvec;
+	cerr &lt;&lt; "READ ERROR IN FILE: " &lt;&lt; name;
+	exit(5);
+    }
+    len/=<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>;
+    <a href="#TDataServe:BlastAr2DD">BlastAr2DD</a>(<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>+len, <a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>);
+    <a href="#TDataServe:BlastAr2DD">BlastAr2DD</a>(<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>+len, <a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>);
+    for (i=0; i&lt;len; i++){
+	for (j=0; j&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>; j++) <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i+<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>][j]=fvec[i*<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>+j];
+	for (j=0; j&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>; j++) <a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[i+<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>][j]=out[j];
+    }
+    <a href=".././TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>=<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>+=len;
+    delete [] fvec;
+    <a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>=kFALSE;
+}
+
+<a name="TDataServe:TNtupleXDataRead"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:TNtupleXDataRead">TDataServe::TNtupleXDataRead</a>(TNtuple&amp; tup,
+				   const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> inlen,
+				   const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> outlen,			
+				   const <a href="../ListOfTypes.html#UInt_t">UInt_t</a>* inselect,
+				   const <a href="../ListOfTypes.html#UInt_t">UInt_t</a>* outselect,
+				   const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> start,
+				   <a href="../ListOfTypes.html#UInt_t">UInt_t</a> len)
+{
+<b>    // fill <a href=".././TDataServe.html">TDataServe</a> from TNtuple</b>
+<b>    //</b>
+<b>    // inlen: length of inselect, i.e. number of selected Ntuple columns </b>
+<b>    // inselect: array containing the indexnumbers of selected TNtuple columns</b>
+<b>    //	       (first column: 0), if the number of selected columns is smaller than </b>
+<b>    //	       the length of inputvectors, the skipped elements of inputvectors </b>
+<b>    //	       are filled with zero.	</b>
+<b>    // start=0: startevent of TNtuple</b>
+<b>    // len=0: Number of events   if len=0, tup is read from </b>
+<b>    //	    start position to last row of Ntuple.    </b>
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i,j;
+    <a href="../ListOfTypes.html#Float_t">Float_t</a>* val;
+    if (len==0) len=(<a href="../ListOfTypes.html#UInt_t">UInt_t</a>)tup.GetEntries()-start;
+    assert(start+len&lt;=tup.GetEntries() &amp;&amp; inlen&lt;=<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a> &amp;&amp; outlen&lt;=<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>);
+    <a href="#TDataServe:BlastAr2DD">BlastAr2DD</a>(<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>+len, <a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>);
+    <a href="#TDataServe:BlastAr2DD">BlastAr2DD</a>(<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>, <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>+len, <a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>);
+    j=tup.GetNvar();
+    for (i=0; i&lt;inlen; i++) assert(inselect[i]&lt;j &amp;&amp; inselect[i]&gt;0);
+    for (i=0; i&lt;outlen; i++) assert(outselect[i]&lt;j &amp;&amp; outselect[i]&gt;0);
+    for (i=0; i&lt;len; i++){
+	tup.GetEvent(start+i,1);
+	val=tup.GetArgs();
+	for (j=0; j&lt;inlen; j++) <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i+<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>][j]=val[inselect[j]];
+	for (j=inlen; j&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>; j++) <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i+<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>][j]=0.0;
+	for (j=0; j&lt;outlen; j++) <a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[i+<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>][j]=val[outselect[j]];
+	for (j=outlen; j&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>; j++) <a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[i+<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>][j]=0.0;
+    }
+    <a href=".././TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>=<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>+=len;
+    <a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>=kFALSE;
+}
+
+<a name="TDataServe:TNtupleDataRead"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:TNtupleDataRead">TDataServe::TNtupleDataRead</a>(TNtuple&amp; tup,
+				  const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> start,
+				  <a href="../ListOfTypes.html#UInt_t">UInt_t</a> len)
+{
+<b>    // fill <a href=".././TDataServe.html">TDataServe</a> from TNtuple</b>
+<b>    // tup("tup","in out","i1:i2:i3:i4... :o1:o2:o3");</b>
+<b>    // start=0: startevent of TNtuple</b>
+<b>    // len=0: Number of events   if len=0, TNuple is read, from</b>
+<b>    //	    startposition to the last row of Ntuple.   </b>
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i;
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a>* iv=new <a href="../ListOfTypes.html#UInt_t">UInt_t</a> [<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>];
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a>* ov=new <a href="../ListOfTypes.html#UInt_t">UInt_t</a> [<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>];
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>; i++) iv[i]=i;
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>; i++) ov[i]=<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>+i;
+    <a href="#TDataServe:TNtupleXDataRead">TNtupleXDataRead</a>(tup, <a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>, <a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>, iv, ov, start, len);
+    delete [] iv;
+    delete [] ov;
+}
+
+<a name="TDataServe:SetInvecElem"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:SetInvecElem">TDataServe::SetInvecElem</a>(const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> ind1,
+			      const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> ind2,
+			      const <a href="../ListOfTypes.html#Float_t">Float_t</a> val)
+{
+<b>    // set single inputvector element </b>
+<b>    // ind1: number of vector</b>
+<b>    // ind2: number of element</b>
+    assert(ind1&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a> &amp;&amp; ind2&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>);
+    <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[ind1][ind2]=val;
+}
+
+<a name="TDataServe:SetOutvecElem"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:SetOutvecElem">TDataServe::SetOutvecElem</a>(const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> ind1,
+			       const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> ind2,
+			       const <a href="../ListOfTypes.html#Float_t">Float_t</a> val)
+{
+<b>    // set single inputvector element </b>
+<b>    // ind1: number of vector</b>
+<b>    // ind2; number of element</b>
+    assert(ind1&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a> &amp;&amp; ind2&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>);
+    <a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[ind1][ind2]=val;
+}
+
+<a name="TDataServe:Putvec"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:Putvec">TDataServe::Putvec</a>(const <a href="../ListOfTypes.html#Float_t">Float_t</a>* invec, const <a href="../ListOfTypes.html#Float_t">Float_t</a>* outvec)
+{
+<b>    //Add new input and outputvector</b>
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i;
+    if (<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>+1&gt;<a href=".././TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>)
+    {
+	<a href=".././TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>+=100;
+	<a href="../ListOfTypes.html#Float_t">Float_t</a>** temp = <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>;
+	<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a> = new <a href="../ListOfTypes.html#Float_t">Float_t</a>* [<a href=".././TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>];
+	assert(<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>!=0);
+	for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++) <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i] = temp[i];
+	delete [] temp;
+	temp=<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>;
+	<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a> = new <a href="../ListOfTypes.html#Float_t">Float_t</a>* [<a href=".././TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>];
+	assert(<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>!=0);
+	for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++) <a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[i] = temp[i];
+	delete [] temp;
+    }
+    <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>]=new <a href="../ListOfTypes.html#Float_t">Float_t</a> [<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>];
+    assert(<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>]!=0);
+    <a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>]=new <a href="../ListOfTypes.html#Float_t">Float_t</a> [<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>];
+    assert(<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>]!=0);
+    <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>=new <a href="../ListOfTypes.html#Float_t">Float_t</a> [<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>];
+    assert(<a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>!=0);
+    <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>=new <a href="../ListOfTypes.html#Float_t">Float_t</a> [<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>];
+    assert(<a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>!=0);
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>; i++) <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>][i]=invec[i];
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>; i++) <a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>][i]=outvec[i];
+    <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>++;
+    <a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>=kFALSE;    
+}
+
+<a name="TDataServe:Deletevec"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TDataServe.html#TDataServe:Deletevec">TDataServe::Deletevec</a>(const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> ind)
+{
+<b>    // Deletes input and outputvector </b>
+    assert(ind&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>);
+    delete [] <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[ind];
+    delete [] <a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[ind];
+    <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[ind]=<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>];
+    <a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[ind]=<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>];
+    <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>--;
+    <a href=".././TDataServe.html#TDataServe:fData_OK">fData_OK</a>=kFALSE;
+}
+
+
+<a name="TDataServe:TTreeDataRead"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TDataServe.html#TDataServe:TTreeDataRead">TDataServe::TTreeDataRead</a>(const <a href="../ListOfTypes.html#char">char</a>* file,const <a href="../ListOfTypes.html#char">char</a> *tree,const <a href="../ListOfTypes.html#char">char</a>* in, const <a href="../ListOfTypes.html#char">char</a>* out, const <a href="../ListOfTypes.html#char">char</a> *c)
+{
+    TFile f(file);
+    TTree *t = (TTree*) f.Get(tree);
+    if (t==0) {
+	cerr &lt;&lt; "<a href=".././TDataServe.html#TDataServe:TTreeDataRead">TDataServe::TTreeDataRead</a>: Tree "&lt;&lt; tree &lt;&lt; " not found in " &lt;&lt; file &lt;&lt; endl;
+	return kFALSE;
+    }
+
+<b>    // Set up the cut</b>
+    TString cut(c);
+    TTreeFormula *cutForm = 0;
+    if (cut!="") cutForm = new TTreeFormula("Cut",cut,t);
+
+<b>    // Determine input branches</b>
+    TString input(in);
+    input.ReplaceAll(":"," ");
+    input += " ";
+    TTreeFormula *inForm[100];
+    istrstream inStream((<a href="../ListOfTypes.html#char">char</a> *) input.Data());
+    string inName;
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> nInputs = 0;
+    while (inStream &gt;&gt; inName &amp;&amp; nInputs&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>){
+	inForm[nInputs++] = new TTreeFormula("Input",inName.c_str(),t);
+    }
+
+<b>    // Determine output branches</b>
+    TString output(out);
+    output.ReplaceAll(":"," ");
+    output += " ";
+
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> tag = (output=="-1" || output=="0" || output=="1");
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> value = 0;
+    if (output=="-1") value = -1;
+    if (output=="1")  value =  1;
+
+    TTreeFormula *outForm[100];
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> nOutputs = 0;
+    if (!tag) {
+	istrstream outStream((<a href="../ListOfTypes.html#char">char</a> *) output.Data());
+	string outName;
+	while (outStream &gt;&gt; outName &amp;&amp; nOutputs&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>){
+	    outForm[nOutputs++] = new TTreeFormula("Output",outName.c_str(),t);
+	}
+    }
+    else
+	nOutputs = 1;
+
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> *inValues = new <a href="../ListOfTypes.html#Float_t">Float_t</a>[<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>];
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> *outValues = new <a href="../ListOfTypes.html#Float_t">Float_t</a>[<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>];
+
+    <a href="../ListOfTypes.html#Stat_t">Stat_t</a> nEntries = t-&gt;GetEntries();
+    for (<a href="../ListOfTypes.html#int">int</a> n=0;n&lt;nEntries;n++) {
+
+	t-&gt;LoadTree(n);
+
+	if (cutForm!=0 &amp;&amp; cutForm-&gt;EvalInstance(0)!=0.0) continue; // No good sample
+
+	for (<a href="../ListOfTypes.html#UInt_t">UInt_t</a> i=0;i&lt;nInputs;i++) 
+	    inValues[i] = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) inForm[i]-&gt;EvalInstance(0);
+
+	for (<a href="../ListOfTypes.html#UInt_t">UInt_t</a> o=0;o&lt;nOutputs;o++)
+	    if (!tag)
+		outValues[o] = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) outForm[o]-&gt;EvalInstance(0);
+	    else
+		outValues[o] = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) value;
+
+	<a href="#TDataServe:Putvec">Putvec</a>(inValues,outValues);
+    }
+
+    delete [] inValues;
+    delete [] outValues;
+
+<b>    //cout &lt;&lt; "<a href=".././TDataServe.html#TDataServe:TTreeDataRead">TDataServe::TTreeDataRead</a>: Accumulated " &lt;&lt; <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a> &lt;&lt; " vectors " &lt;&lt; endl;</b>
+
+    return kTRUE;
+}
+
+<a name="TDataServe:GetInputMean"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>* <a href=".././TDataServe.html#TDataServe:GetInputMean">TDataServe::GetInputMean</a>()
+{
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i,j;
+    if (<a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>==0) <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a> = new <a href="../ListOfTypes.html#Float_t">Float_t</a>[<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>];
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>; i++) <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>[i] = 0.0;
+    if (<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>&lt;=0) return <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>;
+
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++){
+	for (j=0; j&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>; j++) <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>[j]+=<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i][j];
+    }
+
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>; i++) <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>[i] /= <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>;
+
+    return <a href=".././TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>;
+}
+
+<a name="TDataServe:GetOutputMean"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>* <a href=".././TDataServe.html#TDataServe:GetOutputMean">TDataServe::GetOutputMean</a>()
+{
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i,j;
+    if (<a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>==0) <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a> = new <a href="../ListOfTypes.html#Float_t">Float_t</a>[<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>];
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>; i++) <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>[i] = 0.0;
+    if (<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>&lt;=0) return <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>;
+
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++){
+	for (j=0; j&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>; j++) <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>[j]+=<a href=".././TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>[i][j];
+    }
+
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>; i++) <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>[i] /= <a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>;
+
+    return <a href=".././TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>;
+}
+
+<a name="TDataServe:GetInputScale"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>* <a href=".././TDataServe.html#TDataServe:GetInputScale">TDataServe::GetInputScale</a>()
+{
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i,j;
+    if (<a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>==0) <a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a> = new <a href="../ListOfTypes.html#Float_t">Float_t</a>[<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>];
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>; i++) <a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>[i] = 1.0;
+    if (<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>&lt;=0) return <a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>;
+
+    TCanvas *c1 = new TCanvas("c1","Input parameter space",200,100,700,900);
+    TPad *pmain = new TPad("pmain","pmain",0,0,1,.8);
+    pmain-&gt;SetFillColor(20);
+    pmain-&gt;Draw();
+    pmain-&gt;Divide(3,3);
+    for (j=0; j&lt;<a href=".././TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>; j++) {
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> max=FLT_MIN,min=FLT_MAX;
+	for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++){
+	    <a href="../ListOfTypes.html#Float_t">Float_t</a> vec = <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i][j];
+	    if (vec&gt;max) max = vec;
+	    else if (vec&lt;min) min = vec;
+	}
+<b>	//if (min==0) min = -1.;</b>
+<b>	//if (max==0) max = 1.;</b>
+	pmain-&gt;cd(j%9+1);
+	TF1 fit("g","gaus");
+	fit.SetLineColor(kRed);
+	TString name("Input ");
+	name += j;
+	TH1F *hist = new TH1F(name,name,400,2*min,2*max);
+	hist-&gt;SetFillColor(45);
+	for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++) hist-&gt;Fill(<a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i][j]);
+	hist-&gt;Fit("g");
+	hist-&gt;Draw();
+	c1-&gt;Update();
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> par[3];
+	fit.GetParameters(par);
+	<a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>[j] = 1. / fabs(par[1]); // Position of peak
+	
+    }
+
+    return <a href=".././TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>;
+}
+
+<a name="TDataServe:GetOutputScale"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>* <a href=".././TDataServe.html#TDataServe:GetOutputScale">TDataServe::GetOutputScale</a>()
+{
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> i,j;
+    if (<a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>==0) <a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a> = new <a href="../ListOfTypes.html#Float_t">Float_t</a>[<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>];
+    for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>; i++) <a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>[i] = 1.0;
+    if (<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>&lt;=0) return <a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>;
+
+    for (j=0; j&lt;<a href=".././TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>; j++) {
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> max=FLT_MIN,min=FLT_MAX;
+	for (i=0; i&lt;<a href=".././TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>; i++){
+	    <a href="../ListOfTypes.html#Float_t">Float_t</a> vec = <a href=".././TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>[i][j];
+	    if (vec&gt;100 || vec&lt;-100) continue;
+	    if (vec&gt;max) max = vec;
+	    else if (vec&lt;min) min = vec;
+	}
+	<a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>[j] = 2.0 / (max - min);
+    }
+
+    return <a href=".././TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>;
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

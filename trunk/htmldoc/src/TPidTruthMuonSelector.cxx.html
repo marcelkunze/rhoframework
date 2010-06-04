@@ -1,0 +1,368 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:20 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TPidTruthMuonSelector - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TPidTruthElectronSelector.html">TPidTruthElectronSelector</a>                                            //</b>
+<b>// <a href=".././TPidTruthMuonSelector.html">TPidTruthMuonSelector</a>                                                //</b>
+<b>// <a href=".././TPidTruthPionSelector.html">TPidTruthPionSelector</a>                                                //</b>
+<b>// <a href=".././TPidTruthKaonSelector.html">TPidTruthKaonSelector</a>                                                //</b>
+<b>// <a href=".././TPidTruthProtonSelector.html">TPidTruthProtonSelector</a>                                              //</b>
+<b>//                                                                      //</b>
+<b>// Selector classes for particle selection                              //</b>
+<b>//                                                                      //</b>
+<b>// Author List:                                                         //</b>
+<b>// Marcel Kunze,  RUB, Feb. 99                                          //</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.                     //</b>
+<b>//                                                                      //</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "TParticlePDG.h"
+#include "RhoSelector/TPidTruthSelector.h"
+#include "RhoSelector/TPidQuality.h"
+
+#include "RhoBase/TRho.h"
+#include "RhoBase/TCandidate.h"
+#include "RhoBase/VAbsMicroCandidate.h"
+#include "RhoManager/TAssociator.h"
+
+<b>//----------------------------------------------------------------</b>
+
+ClassImp(<a href=".././TPidTruthElectronSelector.html">TPidTruthElectronSelector</a>)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, <a href=".././TPidTruthElectronSelector.html">TPidTruthElectronSelector</a> *&amp;obj)
+{
+   obj = (<a href=".././TPidTruthElectronSelector.html">TPidTruthElectronSelector</a> *) buf.ReadObject(<a href=".././TPidTruthElectronSelector.html#TPidTruthElectronSelector:Class">TPidTruthElectronSelector::Class</a>());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+TPidTruthElectronSelector::TPidTruthElectronSelector(const char *name, Bool_t qc) :
+VAbsPidSelector(name,"e-")  
+{
+    if (qc) fQC = new TPidQuality(name);
+}
+
+TPidTruthElectronSelector::~TPidTruthElectronSelector() { delete fQC; }    
+
+Bool_t TPidTruthElectronSelector::Accept(TCandidate&amp; b) 
+{
+    Bool_t decision = kFALSE;
+    if (&amp;b == 0) return kFALSE;
+
+<b>    // Get the associated MC-Candidate</b>
+
+    if (GetAssociator() == 0) {
+
+	<a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;GetEventManager();
+	if (evtmgr == 0) {
+	    cerr &lt;&lt; "<a href=".././TPidTruthElectronSelector.html">TPidTruthElectronSelector</a>: No handle to event manager." &lt;&lt; endl;
+	    return kFALSE;
+	}
+	else
+	    SetAssociator(new <a href=".././TMapAssociator.html">TMapAssociator</a>(*evtmgr));
+    }
+
+    TCandidate *mc = GetAssociator()-&gt;McFromReco(&amp;b);
+    if (mc == 0) return kFALSE; // No info available
+    if (mc-&gt;PdtEntry() == 0) return kFALSE; // No info available
+
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> pdgCode = mc-&gt;PdtEntry()-&gt;PdgCode();
+
+    if (pdgCode==11 || pdgCode==-11) { // e- or e+
+	SetTypeAndMass(b);
+	decision = kTRUE;
+    }
+
+    if (fQC) fQC-&gt;<a href=".././TPidQuality.html#TPidQuality:Control">Control</a>(b.GetMicroCandidate(),decision);	    // Delegate quality control
+    
+    return decision;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPidTruthElectronSelector.html#TPidTruthElectronSelector:Accept">TPidTruthElectronSelector::Accept</a>(VAbsMicroCandidate&amp; b) 
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision = kFALSE;
+    if (&amp;b == 0) return kFALSE;
+    if (b.GetMcPid()==0) decision = kTRUE;
+    if (fQC) fQC-&gt;<a href=".././TPidQuality.html#TPidQuality:Control">Control</a>(b,decision);	    // Delegate quality control
+    return decision;
+}
+
+<b>//----------------------------------------------------------------</b>
+
+ClassImp(<a href=".././TPidTruthMuonSelector.html">TPidTruthMuonSelector</a>)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, <a href=".././TPidTruthMuonSelector.html">TPidTruthMuonSelector</a> *&amp;obj)
+{
+   obj = (<a href=".././TPidTruthMuonSelector.html">TPidTruthMuonSelector</a> *) buf.ReadObject(<a href=".././TPidTruthMuonSelector.html#TPidTruthMuonSelector:Class">TPidTruthMuonSelector::Class</a>());
+   return buf;
+}
+
+<a name="TPidTruthMuonSelector:TPidTruthMuonSelector"> </a><a href=".././TPidTruthMuonSelector.html#TPidTruthMuonSelector:TPidTruthMuonSelector">TPidTruthMuonSelector::TPidTruthMuonSelector</a>(const <a href="../ListOfTypes.html#char">char</a> *name, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> qc) :
+VAbsPidSelector(name,"mu-")
+{
+    if (qc) fQC = new <a href=".././TPidQuality.html">TPidQuality</a>(name);
+}
+
+<a name="TPidTruthMuonSelector:~TPidTruthMuonSelector"> </a><a href=".././TPidTruthMuonSelector.html">TPidTruthMuonSelector</a>::~<a href=".././TPidTruthMuonSelector.html">TPidTruthMuonSelector</a>() { delete fQC; }    
+
+<a name="TPidTruthMuonSelector:Accept"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPidTruthMuonSelector.html#TPidTruthMuonSelector:Accept">TPidTruthMuonSelector::Accept</a>(TCandidate&amp; b)
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision = kFALSE;
+    if (&amp;b == 0) return kFALSE;
+
+<b>    // Get the associated MC-Candidate</b>
+
+    if (GetAssociator() == 0) {
+
+	<a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;GetEventManager();
+	if (evtmgr == 0) {
+	    cerr &lt;&lt; "<a href=".././TPidTruthMuonSelector.html">TPidTruthMuonSelector</a>: No handle to event manager." &lt;&lt; endl;
+	    return kFALSE;
+	}
+	else
+	    SetAssociator(new <a href=".././TMapAssociator.html">TMapAssociator</a>(*evtmgr));
+    }
+
+    TCandidate *mc = GetAssociator()-&gt;McFromReco(&amp;b);
+    if (mc == 0) return kFALSE; // No info available
+    if (mc-&gt;PdtEntry() == 0) return kFALSE; // No info available
+
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> pdgCode = mc-&gt;PdtEntry()-&gt;PdgCode();
+
+    if (pdgCode==13 || pdgCode==-13) { // mu- or mu+
+	SetTypeAndMass(b);
+	decision = kTRUE;
+    }
+
+    if (fQC) fQC-&gt;<a href=".././TPidQuality.html#TPidQuality:Control">Control</a>(b.GetMicroCandidate(),decision);	    // Delegate quality control
+    
+    return decision;
+}
+
+<a name="TPidTruthMuonSelector:Accept"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPidTruthMuonSelector.html#TPidTruthMuonSelector:Accept">TPidTruthMuonSelector::Accept</a>(VAbsMicroCandidate&amp; b) 
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision = kFALSE;
+    if (&amp;b == 0) return kFALSE;
+    if (b.GetMcPid()==1) decision = kTRUE;
+    if (fQC) fQC-&gt;<a href=".././TPidQuality.html#TPidQuality:Control">Control</a>(b,decision);	    // Delegate quality control
+    return decision;
+}
+
+<b>//----------------------------------------------------------------</b>
+
+ClassImp(<a href=".././TPidTruthPionSelector.html">TPidTruthPionSelector</a>)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, <a href=".././TPidTruthPionSelector.html">TPidTruthPionSelector</a> *&amp;obj)
+{
+   obj = (<a href=".././TPidTruthPionSelector.html">TPidTruthPionSelector</a> *) buf.ReadObject(<a href=".././TPidTruthPionSelector.html#TPidTruthPionSelector:Class">TPidTruthPionSelector::Class</a>());
+   return buf;
+}
+
+<a href=".././TPidTruthPionSelector.html#TPidTruthPionSelector:TPidTruthPionSelector">TPidTruthPionSelector::TPidTruthPionSelector</a>(const <a href="../ListOfTypes.html#char">char</a> *name, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> qc) :
+VAbsPidSelector(name,"pi+")
+{
+    if (qc) fQC = new <a href=".././TPidQuality.html">TPidQuality</a>(name);
+}
+
+<a href=".././TPidTruthPionSelector.html">TPidTruthPionSelector</a>::~<a href=".././TPidTruthPionSelector.html">TPidTruthPionSelector</a>() { delete fQC; }    
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPidTruthPionSelector.html#TPidTruthPionSelector:Accept">TPidTruthPionSelector::Accept</a>(TCandidate&amp; b)
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision = kFALSE;
+    if (&amp;b == 0) return kFALSE;
+
+<b>    // Get the associated MC-Candidate</b>
+
+    if (GetAssociator() == 0) {
+
+	<a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;GetEventManager();
+	if (evtmgr == 0) {
+	    cerr &lt;&lt; "<a href=".././TPidTruthPionSelector.html">TPidTruthPionSelector</a>: No handle to event manager." &lt;&lt; endl;
+	    return kFALSE;
+	}
+	else
+	    SetAssociator(new <a href=".././TMapAssociator.html">TMapAssociator</a>(*evtmgr));
+    }
+
+    TCandidate *mc = GetAssociator()-&gt;McFromReco(&amp;b);
+    if (mc == 0) return kFALSE; // No info available
+    if (mc-&gt;PdtEntry() == 0) return kFALSE; // No info available
+
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> pdgCode = mc-&gt;PdtEntry()-&gt;PdgCode();
+
+    if (pdgCode==211 || pdgCode==-211) { // pi- or pi+
+	SetTypeAndMass(b);
+	decision = kTRUE;
+    }
+
+    if (fQC) fQC-&gt;<a href=".././TPidQuality.html#TPidQuality:Control">Control</a>(b.GetMicroCandidate(),decision);	    // Delegate quality control
+    
+    return decision;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPidTruthPionSelector.html#TPidTruthPionSelector:Accept">TPidTruthPionSelector::Accept</a>(VAbsMicroCandidate&amp; b)
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision = kFALSE;
+    if (&amp;b == 0) return kFALSE;
+    if (b.GetMcPid()==2) decision = kTRUE;
+    if (fQC) fQC-&gt;<a href=".././TPidQuality.html#TPidQuality:Control">Control</a>(b,decision);	    // Delegate quality control
+    return decision;
+}
+
+<b>//----------------------------------------------------------------</b>
+
+ClassImp(<a href=".././TPidTruthKaonSelector.html">TPidTruthKaonSelector</a>)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, <a href=".././TPidTruthKaonSelector.html">TPidTruthKaonSelector</a> *&amp;obj)
+{
+   obj = (<a href=".././TPidTruthKaonSelector.html">TPidTruthKaonSelector</a> *) buf.ReadObject(<a href=".././TPidTruthKaonSelector.html#TPidTruthKaonSelector:Class">TPidTruthKaonSelector::Class</a>());
+   return buf;
+}
+
+<a href=".././TPidTruthKaonSelector.html#TPidTruthKaonSelector:TPidTruthKaonSelector">TPidTruthKaonSelector::TPidTruthKaonSelector</a>(const <a href="../ListOfTypes.html#char">char</a> *name, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> qc) :
+VAbsPidSelector(name,"K+")
+{
+    if (qc) fQC = new <a href=".././TPidQuality.html">TPidQuality</a>(name);
+}
+
+<a href=".././TPidTruthKaonSelector.html">TPidTruthKaonSelector</a>::~<a href=".././TPidTruthKaonSelector.html">TPidTruthKaonSelector</a>() { delete fQC; }    
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPidTruthKaonSelector.html#TPidTruthKaonSelector:Accept">TPidTruthKaonSelector::Accept</a>(TCandidate&amp; b)
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision = kFALSE;
+    if (&amp;b == 0) return kFALSE;
+
+<b>    // Get the associated MC-Candidate</b>
+
+    if (GetAssociator() == 0) {
+
+	<a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;GetEventManager();
+	if (evtmgr == 0) {
+	    cerr &lt;&lt; "<a href=".././TPidTruthKaonSelector.html">TPidTruthKaonSelector</a>: No handle to event manager." &lt;&lt; endl;
+	    return kFALSE;
+	}
+	else
+	    SetAssociator(new <a href=".././TMapAssociator.html">TMapAssociator</a>(*evtmgr));
+    }
+
+    TCandidate *mc = GetAssociator()-&gt;McFromReco(&amp;b);
+    if (mc == 0) return kFALSE; // No info available
+    if (mc-&gt;PdtEntry() == 0) return kFALSE; // No info available
+
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> pdgCode = mc-&gt;PdtEntry()-&gt;PdgCode();
+
+    if (pdgCode==321 || pdgCode==-321) { // K- or K+
+	SetTypeAndMass(b);
+	decision = kTRUE;
+    }
+
+    if (fQC) fQC-&gt;<a href=".././TPidQuality.html#TPidQuality:Control">Control</a>(b.GetMicroCandidate(),decision);	    // Delegate quality control
+    
+    return decision;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPidTruthKaonSelector.html#TPidTruthKaonSelector:Accept">TPidTruthKaonSelector::Accept</a>(VAbsMicroCandidate&amp; b)
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision = kFALSE;
+    if (&amp;b == 0) return kFALSE;
+    if (b.GetMcPid()==3) decision = kTRUE;
+    if (fQC) fQC-&gt;<a href=".././TPidQuality.html#TPidQuality:Control">Control</a>(b,decision);	    // Delegate quality control
+    return decision;
+}
+
+<b>//----------------------------------------------------------------</b>
+
+ClassImp(<a href=".././TPidTruthProtonSelector.html">TPidTruthProtonSelector</a>)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, <a href=".././TPidTruthProtonSelector.html">TPidTruthProtonSelector</a> *&amp;obj)
+{
+   obj = (<a href=".././TPidTruthProtonSelector.html">TPidTruthProtonSelector</a> *) buf.ReadObject(<a href=".././TPidTruthProtonSelector.html#TPidTruthProtonSelector:Class">TPidTruthProtonSelector::Class</a>());
+   return buf;
+}
+
+<a href=".././TPidTruthProtonSelector.html#TPidTruthProtonSelector:TPidTruthProtonSelector">TPidTruthProtonSelector::TPidTruthProtonSelector</a>(const <a href="../ListOfTypes.html#char">char</a> *name, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> qc) :
+VAbsPidSelector(name,"p+")
+{
+    if (qc) fQC = new <a href=".././TPidQuality.html">TPidQuality</a>(name);
+}
+
+<a href=".././TPidTruthProtonSelector.html">TPidTruthProtonSelector</a>::~<a href=".././TPidTruthProtonSelector.html">TPidTruthProtonSelector</a>() { delete fQC; }    
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPidTruthProtonSelector.html#TPidTruthProtonSelector:Accept">TPidTruthProtonSelector::Accept</a>(TCandidate&amp; b)
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision = kFALSE;
+    if (&amp;b == 0) return kFALSE;
+
+<b>    // Get the associated MC-Candidate</b>
+
+    if (GetAssociator() == 0) {
+
+	<a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;GetEventManager();
+	if (evtmgr == 0) {
+	    cerr &lt;&lt; "<a href=".././TPidTruthProtonSelector.html">TPidTruthProtonSelector</a>: No handle to event manager." &lt;&lt; endl;
+	    return kFALSE;
+	}
+	else
+	    SetAssociator(new <a href=".././TMapAssociator.html">TMapAssociator</a>(*evtmgr));
+    }
+
+    TCandidate *mc = GetAssociator()-&gt;McFromReco(&amp;b);
+    if (mc == 0) return kFALSE; // No info available
+    if (mc-&gt;PdtEntry() == 0) return kFALSE; // No info available
+
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> pdgCode = mc-&gt;PdtEntry()-&gt;PdgCode();
+
+    if (pdgCode==2212 || pdgCode==-2212) { // p- or p+
+	SetTypeAndMass(b);
+	decision = kTRUE;
+    }
+
+    if (fQC) fQC-&gt;<a href=".././TPidQuality.html#TPidQuality:Control">Control</a>(b.GetMicroCandidate(),decision);	    // Delegate quality control
+    
+    return decision;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPidTruthProtonSelector.html#TPidTruthProtonSelector:Accept">TPidTruthProtonSelector::Accept</a>(VAbsMicroCandidate&amp; b)
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision = kFALSE;
+    if (&amp;b == 0) return kFALSE;
+    if (b.GetMcPid()==4) decision = kTRUE;
+    if (fQC) fQC-&gt;<a href=".././TPidQuality.html#TPidQuality:Control">Control</a>(b,decision);	    // Delegate quality control
+    return decision;
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

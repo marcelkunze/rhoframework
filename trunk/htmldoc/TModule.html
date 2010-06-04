@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:04 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TModule</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TModule</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TModule:description">class description</a> - <a href="src/TModule.cxx.html">source file</a> - <a href="TModule_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TModule" href="TModule.h">TModule</a> : public TNamed</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->              <a href="./TModule.html">TModule</a> <!--TAB--><!--BOLD--><a href="#TModule:TModule">TModule</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a> *const theName, const <a href="ListOfTypes.html#char">char</a> *const theDescription)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:~TModule">~TModule</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:AddNewParm">AddNewParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b, <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:AddNewParm">AddNewParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Int_t">Int_t</a> i, <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:AddNewParm">AddNewParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Double_t">Double_t</a> d, <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:AddNewParm">AddNewParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, const <a href="ListOfTypes.html#char">char</a>* s, <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TModule:BeginJob">BeginJob</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>* evnt = 0)
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TModule:BeginRun">BeginRun</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>* evnt = 0)
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TModule:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:Disable">Disable</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:Enable">Enable</a><!--PLAIN-->()
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TModule:EndJob">EndJob</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>* evnt = 0)
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TModule:EndRun">EndRun</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>* evnt = 0)
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TModule:Event">Event</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>* evnt)
+<!--TAB6-->             TObject* <!--TAB--><!--BOLD--><a href="#TModule:Get">Get</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TModule:GetBoolParm">GetBoolParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key)
+<!--TAB6-->           TCandList* <!--TAB--><!--BOLD--><a href="#TModule:GetCandList">GetCandList</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TModule:GetDoubleParm">GetDoubleParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key)
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TModule:GetIntParm">GetIntParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key)
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TModule:GetParm">GetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key)
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TModule:GetParmValue">GetParmValue</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->              TString <!--TAB--><!--BOLD--><a href="#TModule:GetStringParm">GetStringParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key)
+<!--TAB6-->             VAbsTag* <!--TAB--><!--BOLD--><a href="#TModule:GetTag">GetTag</a><!--PLAIN-->()
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TModule:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TModule:IsActive">IsActive</a><!--PLAIN-->()
+<!--TAB6-->          const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TModule:Name">Name</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TModule:Passed">Passed</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:PrintInfo">PrintInfo</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:PrintParm">PrintParm</a><!--PLAIN-->()
+<!--TAB6-->             TObject* <!--TAB--><!--BOLD--><a href="#TModule:Put">Put</a><!--PLAIN-->(TObject* obj)
+<!--TAB6-->           TCandList* <!--TAB--><!--BOLD--><a href="#TModule:PutCandList">PutCandList</a><!--PLAIN-->(TCandList* list)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:SetActive">SetActive</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesno)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Bool_t">Bool_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc = "0")
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Int_t">Int_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc = "0")
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Double_t">Double_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc = "0")
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, const <a href="ListOfTypes.html#char">char</a>* val, const <a href="ListOfTypes.html#char">char</a>* desc = "0")
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:SetPassed">SetPassed</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> flag)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:SetVerbose">SetVerbose</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesno)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TModule:Verbose">Verbose</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TModule:WriteCandidate">WriteCandidate</a><!--PLAIN-->(TCandidate* theCand, const <a href="ListOfTypes.html#char">char</a>* theMapName, <a href="ListOfTypes.html#Bool_t">Bool_t</a> useForFilter = kFALSE)
+</pre>
+
+<h3><!--TAB2-->  <a name="TModule:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      THashList* <!--TAB--><!--BOLD--><a name="TModule:fWriter">fWriter</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fWriter">! Do not stream</a></i>
+<!--TAB6-->      THashList* <!--TAB--><!--BOLD--><a name="TModule:fLists">fLists</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fLists">! Do not stream</a></i>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      TParmBool <!--TAB--><!--BOLD--><a name="TModule:_verbose">_verbose</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_verbose">! Do not stream</a></i>
+<!--TAB6-->      TParmBool <!--TAB--><!--BOLD--><a name="TModule:_active">_active</a><!--PLAIN-->   <!--TAB--><i><a name="Title:_active">! Do not stream</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TModule:_passed">_passed</a><!--PLAIN-->   <!--TAB--><i><a name="Title:_passed">! Do not stream </a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TModule:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TModule.html">TModule</a>								
+                                                                      
+ Base class for modules in Rho					
+                                                                      
+ Author: Marcel Kunze, Bochum University, Jan. 2k			
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TModule:TModule" href="src/TModule.cxx.html#TModule:TModule">TModule</a>(const <a href="ListOfTypes.html#char">char</a>* const theName, const <a href="ListOfTypes.html#char">char</a>* const theDescription) : 
+TNamed(theName,theDescription),<a href="./TModule.html#TModule:_passed">_passed</a>(kTRUE),<a href="./TModule.html#TModule:fWriter">fWriter</a>(0),
+<a href="./TModule.html#TModule:_verbose">_verbose</a>("verbose",this),<a href="./TModule.html#TModule:_active">_active</a>("active",this)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TModule:~TModule" href="src/TModule.cxx.html#TModule:~TModule">~TModule</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TModule:PrintInfo" href="src/TModule.cxx.html#TModule:PrintInfo">PrintInfo</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TModule:SetParm" href="src/TModule.cxx.html#TModule:SetParm">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* k, <a href="ListOfTypes.html#Bool_t">Bool_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TModule:SetParm" href="src/TModule.cxx.html#TModule:SetParm">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Int_t">Int_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TModule:SetParm" href="src/TModule.cxx.html#TModule:SetParm">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Double_t">Double_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TModule:SetParm" href="src/TModule.cxx.html#TModule:SetParm">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, const <a href="ListOfTypes.html#char">char</a>* val, const <a href="ListOfTypes.html#char">char</a>* desc) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TModule:GetParm" href="src/TModule.cxx.html#TModule:GetParm">GetParm</a>(const <a href="ListOfTypes.html#char">char</a>* key) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TModule:GetBoolParm" href="src/TModule.cxx.html#TModule:GetBoolParm">GetBoolParm</a>(const <a href="ListOfTypes.html#char">char</a>* key) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TModule:GetIntParm" href="src/TModule.cxx.html#TModule:GetIntParm">GetIntParm</a>(const <a href="ListOfTypes.html#char">char</a>* key) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TModule:GetDoubleParm" href="src/TModule.cxx.html#TModule:GetDoubleParm">GetDoubleParm</a>(const <a href="ListOfTypes.html#char">char</a>* key) 
+<br>
+<hr>
+<!--FUNCTION-->TString <a name="TModule:GetStringParm" href="src/TModule.cxx.html#TModule:GetStringParm">GetStringParm</a>(const <a href="ListOfTypes.html#char">char</a>* key) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TModule:PrintParm" href="src/TModule.cxx.html#TModule:PrintParm">PrintParm</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TModule:AddNewParm" href="src/TModule.cxx.html#TModule:AddNewParm">AddNewParm</a>(const <a href="ListOfTypes.html#char">char</a>* p,<a href="ListOfTypes.html#Bool_t">Bool_t</a> b,<a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TModule:AddNewParm" href="src/TModule.cxx.html#TModule:AddNewParm">AddNewParm</a>(const <a href="ListOfTypes.html#char">char</a>* p,<a href="ListOfTypes.html#Int_t">Int_t</a> i,<a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TModule:AddNewParm" href="src/TModule.cxx.html#TModule:AddNewParm">AddNewParm</a>(const <a href="ListOfTypes.html#char">char</a>* p,<a href="ListOfTypes.html#Double_t">Double_t</a> d,<a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TModule:AddNewParm" href="src/TModule.cxx.html#TModule:AddNewParm">AddNewParm</a>(const <a href="ListOfTypes.html#char">char</a>* p,const <a href="ListOfTypes.html#char">char</a>* s,<a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TModule:GetParmValue" href="src/TModule.cxx.html#TModule:GetParmValue">GetParmValue</a>(const <a href="ListOfTypes.html#char">char</a>* p,<a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TModule:PutCandList" href="src/TModule.cxx.html#TModule:PutCandList">PutCandList</a>(TCandList* list)
+<br>
+<pre> Make sure, list manager exists
+</pre><hr>
+<!--FUNCTION--> <a name="TModule:GetCandList" href="src/TModule.cxx.html#TModule:GetCandList">GetCandList</a>(const <a href="ListOfTypes.html#char">char</a> *name)
+<br>
+<pre> Make sure, list manager exists
+</pre><hr>
+<!--FUNCTION--> <a name="TModule:Put" href="src/TModule.cxx.html#TModule:Put">Put</a>(TObject* obj)
+<br>
+<pre> Make sure, list manager exists
+</pre><hr>
+<!--FUNCTION--> <a name="TModule:Get" href="src/TModule.cxx.html#TModule:Get">Get</a>(const <a href="ListOfTypes.html#char">char</a> *name)
+<br>
+<pre> Make sure, list manager exists
+</pre><hr>
+<!--FUNCTION--> <a name="TModule:WriteCandidate" href="src/TModule.cxx.html#TModule:WriteCandidate">WriteCandidate</a>(TCandidate *theCand, const <a href="ListOfTypes.html#char">char</a> *theMapName,
+			       <a href="ListOfTypes.html#Bool_t">Bool_t</a> useForFilter)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TModule:BeginJob" href="TModule.h">BeginJob</a>(<a href="./TEventManager.html">TEventManager</a>* evnt = 0)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TModule:Event" href="TModule.h">Event</a>(<a href="./TEventManager.html">TEventManager</a>* evnt)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TModule:EndJob" href="TModule.h">EndJob</a>(<a href="./TEventManager.html">TEventManager</a>* evnt = 0)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TModule:BeginRun" href="TModule.h">BeginRun</a>(<a href="./TEventManager.html">TEventManager</a>* evnt = 0)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TModule:EndRun" href="TModule.h">EndRun</a>(<a href="./TEventManager.html">TEventManager</a>* evnt = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TModule:SetVerbose" href="TModule.h">SetVerbose</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesno)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TModule:Verbose" href="TModule.h">Verbose</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TModule:SetActive" href="TModule.h">SetActive</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesno)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TModule:IsActive" href="TModule.h">IsActive</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TModule:Enable" href="TModule.h">Enable</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TModule:Disable" href="TModule.h">Disable</a>()
+<!--INLINE FUNCTION--><!--TAB6-->        const <a href="ListOfTypes.html#char">char</a>* <a name="TModule:Name" href="TModule.h">Name</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TModule:Passed" href="TModule.h">Passed</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TModule:SetPassed" href="TModule.h">SetPassed</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> flag)
+<!--INLINE FUNCTION--><!--TAB6-->           VAbsTag* <a name="TModule:GetTag" href="TModule.h">GetTag</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TModule:Class" href="TModule.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TModule:IsA" href="TModule.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TModule:ShowMembers" href="TModule.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TModule:Streamer" href="TModule.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TModule:StreamerNVirtual" href="TModule.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?Bochum+University">Bochum University</a>, <a href="http://consult.cern.ch/xwho/people?Jan.">Jan.</a> 2k			//</em><br>
+<em>Last update: Fri Dec 20 16:03:04 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

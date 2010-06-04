@@ -1,0 +1,587 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:24 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TRunDB - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TRunDB.html">TRunDB</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Run Database class							//</b>
+<b>//                                                                      //</b>
+<b>// Author: Thorsten Brandt, Dresden University, Aug. 99			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include &lt;stdio.h&gt;
+
+#include "TBranch.h"
+#include "TNetFile.h"
+#include "TKey.h"
+#include "TObjArray.h"
+#include "TObjString.h"
+#include "TSystem.h"
+#include "TTree.h"
+#include "TSystem.h"
+
+#ifdef RUNDBUPDATE
+#include "PAFSchema/PAFEventBase.h"
+#include "KangaSchema/EidInfoR.h"
+#endif
+
+#include "RhoBase/TRho.h"
+
+#include "RhoManager/TRunCollection.h"
+#include "RhoManager/TRunInfo.h"
+#include "RhoManager/TFileInfo.h"
+#include "RhoManager/TLogInfo.h"
+#include "RhoManager/TRunDB.h"
+
+ClassImp(TRunDB)
+
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+<a name="TRunDB:TRunDB"> </a>TRunDB::TRunDB(const char* directory, const char* cluster, UInt_t maxFiles)
+{
+    fFileList = new TObjArray(maxFiles);
+    fRunList = new TObjArray(maxFiles);
+    fCurrentCluster = cluster;
+    fLogbookFile=0;
+    fKanga = kFALSE;
+}
+
+<a name="TRunDB:~TRunDB"> </a>TRunDB::~TRunDB()
+{
+    fFileList-&gt;Delete();
+    fRunList-&gt;Delete();
+    delete fFileList;
+    delete fRunList;
+}
+
+void
+<a name="TRunDB:PrintAllRuns"> </a>TRunDB::PrintAllRuns(std::ostream &amp;o)
+{
+    o &lt;&lt; "Contents of Cluster \'" &lt;&lt; fCurrentCluster.Data() &lt;&lt; "\'" &lt;&lt; endl;
+    o &lt;&lt; "-----------------------------------------------------------------" &lt;&lt; endl;
+    o &lt;&lt; "RUN     NEVENTS    LUM    FILE " &lt;&lt; endl;
+    Int_t n = fRunList-&gt;GetEntries();
+    Int_t allevts=0;
+    Float_t allLumi=0;
+    for (Int_t i=0; i&lt;n; i++) {
+	TRunInfo *r = (TRunInfo*) (*fRunList)[i];
+	o &lt;&lt; r-&gt;GetNumber() &lt;&lt; "   " &lt;&lt; setw(6) &lt;&lt; (1+r-&gt;GetLast()-r-&gt;GetFirst() );
+	allevts+=1+r-&gt;GetLast()-r-&gt;GetFirst();
+	TLogInfo *l = GetLogInfo(r-&gt;GetNumber());
+	Float_t lum=0;
+	if (l!=0) { lum = l-&gt;GetIntLumi(); }; 
+	if (lum&lt;0) { lum=0; }
+	if (l!=0) { allLumi+=lum; o &lt;&lt; "   " &lt;&lt;  setw(6) &lt;&lt; setiosflags(ios::fixed) &lt;&lt; setprecision(1) &lt;&lt; lum; } else { o &lt;&lt; "   ????  "; }
+	o &lt;&lt; "    " &lt;&lt; r-&gt;GetFile() &lt;&lt; endl;
+    } 
+    o &lt;&lt; "-----------------------------------------------------------------" &lt;&lt; endl;
+    o &lt;&lt; " Total Number of Events : " &lt;&lt; allevts &lt;&lt; endl;
+    o &lt;&lt; " Total Luminosity (1/pb) : " &lt;&lt; allLumi/1000.0 &lt;&lt; endl;
+    o &lt;&lt; "-----------------------------------------------------------------" &lt;&lt; endl;
+    
+}
+
+
+void 
+<a name="TRunDB:PrintMissingRuns"> </a>TRunDB::PrintMissingRuns(std::ostream &amp;o,Int_t rmin, Int_t rmax)
+{
+  TLogInfo logBookEntry;
+  if (fLogbookFile==0) { LoadLogbook(); }
+  TList *dirkeyList = fLogbookFile-&gt;GetListOfKeys();
+  TListIter dirIter(dirkeyList);
+  TKey *dirKey;
+  o &lt;&lt; "     RUN CONS VER DATE    SHIFT  STARTT  NEVENTS STATUS     PROCSPEC " &lt;&lt; endl;
+  while ( dirKey=(TKey*) dirIter.Next()  ) {
+    TDirectory  *theDir  = (TDirectory*)  dirKey-&gt;ReadObj();
+    TKey *k;
+    TList *keyList = theDir-&gt;GetListOfKeys();
+    TListIter iter(keyList);
+    while ( k=(TKey*) iter.Next()  ) {
+      Int_t n;
+      sscanf((char*) k-&gt;GetName(),"r%i",&amp;n);
+      if ((n&gt;=rmin) &amp;&amp; (n&lt;=rmax)) {
+	TRunInfo *r = GetRunInfo(n);
+	if (r==NULL) {  
+<b>	  // run is missing</b>
+	  k-&gt;Read(&amp;logBookEntry);
+	  if ( (TString(logBookEntry.GetObjyCollection()).Length()&gt;0) &amp;&amp; 
+	       (TString(logBookEntry.GetRunType())==<a href=".././TLogInfo.html#TLogInfo:colliding">TLogInfo::colliding</a>) ) {
+	    <a href="../ListOfTypes.html#Int_t">Int_t</a> day = logBookEntry.GetDay();
+	    <a href="../ListOfTypes.html#Int_t">Int_t</a> month = logBookEntry.GetMonth();
+	    <a href="../ListOfTypes.html#Int_t">Int_t</a> year = logBookEntry.GetYear();
+	    <a href="../ListOfTypes.html#Int_t">Int_t</a> hr =  logBookEntry.GetStartHour();
+	    <a href="../ListOfTypes.html#Int_t">Int_t</a> min = logBookEntry.GetStartMin();
+	    o &lt;&lt; "    " &lt;&lt; n &lt;&lt; setw(6) &lt;&lt; "    ?   ? ";
+	    if (year&lt;10) o &lt;&lt; "0"; o &lt;&lt; year;
+	    if (month&lt;10) o &lt;&lt; "0"; o &lt;&lt; month;
+	    if (day&lt;10) o &lt;&lt; "0"; o &lt;&lt; day;
+	    o &lt;&lt; "  ?????  ";
+	    if (hr&lt;10) o &lt;&lt; "0"; o &lt;&lt; hr &lt;&lt; ":";
+	    if (min&lt;10) o &lt;&lt; "0"; o &lt;&lt; min &lt;&lt; "   ";
+	    o &lt;&lt; setw(6) &lt;&lt; "  ????? done       " &lt;&lt; logBookEntry.GetOprProcspec();
+	    o &lt;&lt; endl &lt;&lt; "        /groups/isPhysicsEvents" &lt;&lt; logBookEntry.GetObjyCollection() &lt;&lt; endl;
+	  }
+	}
+      }
+    }
+  }
+}   
+
+
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="TRunDB:LoadLogbook"> </a><a href=".././TRunDB.html#TRunDB:LoadLogbook">TRunDB::LoadLogbook</a>(const <a href="../ListOfTypes.html#char">char</a>* filename)
+{
+    if (<a href=".././TRunDB.html#TRunDB:fLogbookFile">fLogbookFile</a>!=0) { delete <a href=".././TRunDB.html#TRunDB:fLogbookFile">fLogbookFile</a>; <a href=".././TRunDB.html#TRunDB:fLogbookFile">fLogbookFile</a>=NULL; }
+    TString t = TString(TRho::Instance()-&gt;GetEventStore()) + "/" + filename;
+    if (t.Index("root:")&gt;=0) TRho::Instance()-&gt;Authorize();
+    <a href=".././TRunDB.html#TRunDB:fLogbookFile">fLogbookFile</a> = TFile::Open(t); 
+    if (!<a href=".././TRunDB.html#TRunDB:fLogbookFile">fLogbookFile</a>-&gt;IsOpen()) {
+	cout &lt;&lt; " *** ERROR in Run-DB : Could not find File '" &lt;&lt; filename;
+	cout &lt;&lt; "' for electronic Logbook" &lt;&lt; endl;
+	delete <a href=".././TRunDB.html#TRunDB:fLogbookFile">fLogbookFile</a>;  <a href=".././TRunDB.html#TRunDB:fLogbookFile">fLogbookFile</a>=NULL; 
+	return kFALSE;
+    } 
+    return kTRUE;
+}
+
+<a href=".././TLogInfo.html">TLogInfo</a>*
+<a name="TRunDB:GetLogInfo"> </a><a href=".././TRunDB.html#TRunDB:GetLogInfo">TRunDB::GetLogInfo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> runnumber)
+{
+    <a href=".././TLogInfo.html">TLogInfo</a> *l = 0;
+    if (<a href=".././TRunDB.html#TRunDB:fLogbookFile">fLogbookFile</a>==0) { <a href="#TRunDB:LoadLogbook">LoadLogbook</a>(); }
+    if (<a href=".././TRunDB.html#TRunDB:fLogbookFile">fLogbookFile</a>!=0) {
+	<a href="../ListOfTypes.html#char">char</a> str[60];
+	sprintf(str,"d%i00/r%i",runnumber/100,runnumber);
+	l = (<a href=".././TLogInfo.html">TLogInfo</a>*) <a href=".././TRunDB.html#TRunDB:fLogbookFile">fLogbookFile</a>-&gt;Get(str);
+    }
+    return l;
+}
+
+<a href=".././TRunInfo.html">TRunInfo</a>* 
+<a name="TRunDB:GetRunInfo"> </a><a href=".././TRunDB.html#TRunDB:GetRunInfo">TRunDB::GetRunInfo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> n)
+{
+    if (<a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a>==0) { return NULL; }
+    <a href=".././TRunInfo.html">TRunInfo</a> tmp(n);
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> pos = <a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a>-&gt;BinarySearch(&amp;tmp);
+    if (pos&lt;0) { return NULL; }
+    return (<a href=".././TRunInfo.html">TRunInfo</a>*) ((*<a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a>)[pos]);
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TRunDB:SetCluster"> </a><a href=".././TRunDB.html#TRunDB:SetCluster">TRunDB::SetCluster</a>(const <a href="../ListOfTypes.html#char">char</a>* name)
+{
+    TString indexPath;
+    indexPath.Append(TRho::Instance()-&gt;GetEventStore());
+    indexPath.Append("/");
+    indexPath.Append(name);
+    <a href=".././TRunDB.html#TRunDB:fCurrentCluster">fCurrentCluster</a> = name;
+    <a href="#TRunDB:AddCluster">AddCluster</a>(indexPath);
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TRunDB:AddCluster"> </a><a href=".././TRunDB.html#TRunDB:AddCluster">TRunDB::AddCluster</a>(const <a href="../ListOfTypes.html#char">char</a>* indexFilePath)
+{
+    TString indexFileName;
+    indexFileName.Append(indexFilePath);
+    indexFileName.Append("/Index.root");
+<b>    //static TFile::Open returns either TFile or TNetFile depending on fcurrentFilename</b>
+    if (indexFileName.Index("root:")&gt;=0) TRho::Instance()-&gt;Authorize();
+    TFile* indexFile=TFile::Open(indexFileName.Data());
+    if (!indexFile-&gt;IsOpen()) {
+      cerr &lt;&lt; "<a href=".././TRunDB.html">TRunDB</a>: Index file " &lt;&lt; indexFileName &lt;&lt; " not found !  " &lt;&lt; endl;
+      return;
+<b>      //cerr &lt;&lt; "<a href=".././TRunDB.html">TRunDB</a>: Trying to update the index..." &lt;&lt; endl;</b>
+<b>      //<a href="#TRunDB:Update">Update</a>(indexFilePath);</b>
+<b>      //indexFile=TFile::Open(indexFileName.Data());</b>
+<b>      //if (!indexFile-&gt;IsOpen()) {</b>
+<b>      //  cerr &lt;&lt; "<a href=".././TRunDB.html">TRunDB</a>: Update of Index failed !" &lt;&lt; endl;</b>
+<b>      //  abort();</b>
+<b>      //}</b>
+    }
+
+    cout &lt;&lt; "<a href=".././TRunDB.html">TRunDB</a>: Reading " &lt;&lt; indexFileName.Data() &lt;&lt; "; ";
+    
+<b>    // Read in the run and file list from the index file</b>
+<b>    // Merge into <a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a> and <a href=".././TRunDB.html#TRunDB:fFileList">fFileList</a></b>
+    
+    TKey *k1 = indexFile-&gt;GetKey("runIndex");
+    TKey *k2 = indexFile-&gt;GetKey("fileIndex");
+    TObjArray *rList = new TObjArray(1000); // This is just a guess...
+    TObjArray *fList = new TObjArray(1000);
+    k1-&gt;Read(rList);
+    k2-&gt;Read(fList);
+    <a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a>-&gt;AddAll(rList);
+    <a href=".././TRunDB.html#TRunDB:fFileList">fFileList</a>-&gt;AddAll(fList);
+    cout &lt;&lt; rList-&gt;GetEntries() &lt;&lt; " runs in " &lt;&lt; <a href=".././TRunDB.html#TRunDB:fFileList">fFileList</a>-&gt;GetEntries() &lt;&lt; " files" &lt;&lt; endl; 
+    delete rList, fList;
+    
+    indexFile-&gt;Close();
+    
+<b>    // Sort the lists</b>
+    
+    <a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a>-&gt;Sort(0);
+    <a href=".././TRunDB.html#TRunDB:fFileList">fFileList</a>-&gt;Sort(0);
+    
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TRunDB:Update"> </a><a href=".././TRunDB.html#TRunDB:Update">TRunDB::Update</a>(const <a href="../ListOfTypes.html#char">char</a>* clustername)
+{
+    TObjArray *theCurrentFiles = new TObjArray();
+    TObjArray *newList = new TObjArray();
+    TString pafroot(TRho::Instance()-&gt;GetEventStore());
+    TString path(clustername);
+    if (path.Index(pafroot)&lt;0) path = pafroot +  "/"  + path;
+    <a href="#TRunDB:getDirContent">getDirContent</a>(path,theCurrentFiles);
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;theCurrentFiles-&gt;GetEntries(); i++) {
+	TObjString *fname = (TObjString*) (*theCurrentFiles)[i];
+	<a href=".././TFileInfo.html">TFileInfo</a> tmp(fname-&gt;String().Data());
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> pos=-1;
+	if (<a href=".././TRunDB.html#TRunDB:fFileList">fFileList</a>-&gt;GetEntries()&gt;0) { pos = <a href=".././TRunDB.html#TRunDB:fFileList">fFileList</a>-&gt;BinarySearch(&amp;tmp); }
+	if (pos&lt;0) {
+	    <a href="../ListOfTypes.html#Int_t">Int_t</a> nevts;
+	    <a href="../ListOfTypes.html#Int_t">Int_t</a> firstRun;
+	    
+<b>	    // Change to relative name, Oct.99, MK</b>
+<b>	    // A single Kanga file already carries the full name</b>
+	    TString s(fname-&gt;String());
+	    if (s.Index(".root")&gt;=0) {
+		<a href=".././TRunDB.html#TRunDB:fKanga">fKanga</a> = kTRUE;
+		<a href="#TRunDB:ScanFile">ScanFile</a>(s.Data(),<a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a>,nevts,firstRun);
+		<a href=".././TFileInfo.html">TFileInfo</a> *f = new <a href=".././TFileInfo.html">TFileInfo</a>(s.Data(),nevts,firstRun);
+		newList-&gt;Add(f);
+	    } else {
+		<a href=".././TRunDB.html#TRunDB:fKanga">fKanga</a> = kFALSE;
+		TString s2 = s + "Tag.root";
+		<a href="#TRunDB:ScanFile">ScanFile</a>(s2.Data(),<a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a>,nevts,firstRun);
+		<a href=".././TFileInfo.html">TFileInfo</a> *f = new <a href=".././TFileInfo.html">TFileInfo</a>(s.Data(),nevts,firstRun);
+		newList-&gt;Add(f);
+	    }
+	}
+    }
+    
+    if (newList-&gt;GetEntries()&gt;0) {
+	cout &lt;&lt; " Updating Index.root" &lt;&lt; endl;
+	for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;newList-&gt;GetEntries(); i++) {
+	    TObject *o = (*newList)[i];
+	    <a href=".././TRunDB.html#TRunDB:fFileList">fFileList</a>-&gt;Add(o);
+	}
+	TString indexFileName(path+"/Index.root");
+        if (indexFileName.Index("root:")&gt;=0) TRho::Instance()-&gt;Authorize();
+	TFile* indexFile=TFile::Open(indexFileName.Data(),"RECREATE");
+	<a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a>-&gt;Sort();
+	<a href=".././TRunDB.html#TRunDB:fFileList">fFileList</a>-&gt;Sort();
+	<a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a>-&gt;Write("runIndex",1,1024*<a href=".././TRunDB.html#TRunDB:fRunList">fRunList</a>-&gt;GetEntries());
+	<a href=".././TRunDB.html#TRunDB:fFileList">fFileList</a>-&gt;Write("fileIndex",1,100*<a href=".././TRunDB.html#TRunDB:fFileList">fFileList</a>-&gt;GetEntries());
+	indexFile-&gt;Close();
+    }
+    theCurrentFiles-&gt;Delete(); delete theCurrentFiles;
+    newList-&gt;Delete(); delete newList;
+}
+
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TRunDB:ScanFile"> </a><a href=".././TRunDB.html#TRunDB:ScanFile">TRunDB::ScanFile</a>(const <a href="../ListOfTypes.html#char">char</a> *fname, TObjArray *list, <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;nevts, <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;firstRun)
+{
+#ifdef RUNDBUPDATE
+    cout &lt;&lt; " Creating Index for " &lt;&lt; fCurrentCluster &lt;&lt; " : " &lt;&lt; fname &lt;&lt; endl;
+    
+    PAFEventBase *evb = new PAFEventBase();
+    EidInfoR *eid = new EidInfoR();
+    
+    TString fn = TString(TRho::Instance()-&gt;GetEventStore()) + "/" + fCurrentCluster +  "/" + TString(fname);
+    TFile f1(fn);
+    TBranch *theBranch = 0;
+    TTree *theTree = 0;
+    TBranch *br_maj=NULL;
+    TBranch *br_min=NULL;
+    TBranch *br_run=NULL;
+    if (!fKanga) {
+	theTree = (TTree*) f1.Get("TagTree"); // Regular PAF file
+	if (theTree != 0) {
+	    theBranch = theTree-&gt;GetBranch("TagList");
+	    theBranch-&gt;SetAddress(&amp;evb);
+	    theTree-&gt;SetBranchStatus("*",1);
+	    br_run = theTree-&gt;GetBranch("_runno");
+	    br_maj = theTree-&gt;GetBranch("_majorID");
+	    br_min = theTree-&gt;GetBranch("_minorID");
+	    evb-&gt;SetTree(theTree);
+	}
+    }
+    else { // Kanga files
+	theTree = (TTree*) f1.Get("Eid"); // 8.2.x format
+	if (theTree == 0) theTree = (TTree*) f1.Get("microDST"); // 8.3.x format
+	if (theTree!=0) {
+	  theTree-&gt;SetBranchStatus("*",0);
+	  theBranch = theTree-&gt;GetBranch("Eid"); // 8.2.x format
+	  if (theBranch == 0) theBranch = theTree-&gt;GetBranch("BtaEid"); // 8.3.x format
+	  if (theBranch != 0) theBranch-&gt;SetAddress(&amp;eid); // Success !
+	  theBranch-&gt;ResetBit(kDoNotProcess);
+	}
+    }
+    
+    if (theTree == 0) // Not a PAF readable file
+    {
+	delete evb, eid;
+	cerr &lt;&lt; fname &lt;&lt; ": Could not read header." &lt;&lt; endl; 
+	return;
+    }
+    
+    if (!fKanga) {
+      if ((br_run==NULL) || (br_min==NULL) || (br_maj==NULL)) {
+	cout &lt;&lt; "Error while updating RunDB : Tree " &lt;&lt; theTree-&gt;GetName() 
+	     &lt;&lt; " in File " &lt;&lt; fname &lt;&lt; " does not contain correct header " &lt;&lt; endl;
+	return;
+      }
+    }
+
+    if ((fKanga) &amp;&amp; (theBranch==NULL)) {
+      delete evb, eid;
+      cerr &lt;&lt; fname &lt;&lt; ": Could not read header." &lt;&lt; endl; 
+      return;
+    }
+
+    Int_t n = (Int_t) theTree-&gt;GetEntries();
+    nevts=n;
+    
+    
+<b>    //cout &lt;&lt; "Start " &lt;&lt; endl;</b>
+<b>    // ======= main part =================</b>
+    firstRun=999999999;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> nFirst=0, nLast=0, nRuns=0;
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> firstId_maj,firstId_min;
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> lastId_maj,lastId_min;
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> maj,min;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> current=0;
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> k=0; k&lt;n; k++) {
+	
+	if (!<a href=".././TRunDB.html#TRunDB:fKanga">fKanga</a>) { 
+	  evb-&gt;SetOtherEventNumber(k);
+	} else {
+	  theBranch-&gt;GetEvent(k);
+	}
+	
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> r;
+	if (!<a href=".././TRunDB.html#TRunDB:fKanga">fKanga</a>) {
+	    r = evb-&gt;GetRunNumber();
+	} else
+	    r = eid-&gt;GetRunNumber();
+	
+	if (r!=current) {
+	    if (k==0) {
+		
+		nFirst=0;
+		if (!<a href=".././TRunDB.html#TRunDB:fKanga">fKanga</a>) {
+		    firstId_maj = evb-&gt;GetMajorID();
+		    firstId_min = evb-&gt;GetMinorID();
+		    lastId_min =  evb-&gt;GetMinorID();
+		    lastId_maj =  evb-&gt;GetMajorID();
+		}
+		else {
+		    firstId_maj = eid-&gt;GetMajorID();
+		    firstId_min = eid-&gt;GetMinorID();
+		    lastId_min =  eid-&gt;GetMinorID();
+		    lastId_maj =  eid-&gt;GetMajorID();
+		}
+		
+	    } else {
+		nLast=k-1;
+		<a href=".././TRunInfo.html">TRunInfo</a> *info = new <a href=".././TRunInfo.html">TRunInfo</a>(current);
+		info-&gt;SetBegin(nFirst,firstId_min,firstId_maj);
+		info-&gt;SetEnd(nLast,lastId_min,lastId_maj);
+		TString t(fname);
+		if (!<a href=".././TRunDB.html#TRunDB:fKanga">fKanga</a>) {
+		    TString t2(t(0,t.Length()-8));
+		    info-&gt;SetFilename(t2);
+		}
+		else {
+		    TString t2(t(0,t.Length()-5));
+		    info-&gt;SetFilename(t2); // Note the full name
+		}	  
+		info-&gt;<a href="#TRunDB:SetCluster">SetCluster</a>(<a href=".././TRunDB.html#TRunDB:fCurrentCluster">fCurrentCluster</a>);
+		list-&gt;Add(info);
+		
+		nFirst=k;
+		if (!<a href=".././TRunDB.html#TRunDB:fKanga">fKanga</a>) {
+		    firstId_maj = evb-&gt;GetMajorID();
+		    firstId_min = evb-&gt;GetMinorID();
+		    lastId_min =  evb-&gt;GetMinorID();
+		    lastId_maj =  evb-&gt;GetMinorID();
+		}
+		else {
+		    firstId_maj = eid-&gt;GetMajorID();
+		    firstId_min = eid-&gt;GetMinorID();
+		    lastId_min =  eid-&gt;GetMinorID();
+		    lastId_maj =  eid-&gt;GetMinorID();
+		}
+		
+	    }
+	    
+	    current=r;
+	    nRuns++;
+	    if (current&lt;firstRun) { firstRun = current; }
+	}
+	
+	if (!<a href=".././TRunDB.html#TRunDB:fKanga">fKanga</a>) {
+	    maj =  evb-&gt;GetMajorID();
+	    min =  evb-&gt;GetMinorID();
+	}
+	else {
+	    maj =  eid-&gt;GetMajorID();
+	    min =  eid-&gt;GetMinorID();
+	}
+	
+	if (maj&gt;lastId_maj) {
+	    lastId_maj = maj; lastId_min = min;
+	} else if ((maj==lastId_maj) &amp;&amp; (min&gt;lastId_min)) {
+	    lastId_maj = maj; lastId_min = min;
+	} else if ((maj==firstId_maj) &amp;&amp; (min&lt;firstId_min)) {
+	    firstId_maj = maj; firstId_min = min;
+	} else if (maj&lt;firstId_maj) {
+	    lastId_maj = maj; lastId_min = min;
+	}
+    }
+    
+    <a href=".././TRunInfo.html">TRunInfo</a> *info = new <a href=".././TRunInfo.html">TRunInfo</a>(current);
+    info-&gt;SetBegin(nFirst,firstId_min,firstId_maj);
+    info-&gt;SetEnd(n-1,lastId_min,lastId_maj);
+    TString t(fname);
+    if (!<a href=".././TRunDB.html#TRunDB:fKanga">fKanga</a>) {
+	TString t2(t(0,t.Length()-8));
+	info-&gt;SetFilename(t2);
+    }
+    else {
+	TString t2(t(0,t.Length()-5));
+	info-&gt;SetFilename(t2); // Note the full name
+    }	  
+    info-&gt;<a href="#TRunDB:SetCluster">SetCluster</a>(<a href=".././TRunDB.html#TRunDB:fCurrentCluster">fCurrentCluster</a>);
+    list-&gt;Add(info);
+    delete evb, eid;
+    cout &lt;&lt; "OK" &lt;&lt; endl;
+#else
+    cout &lt;&lt; "RunDB has not been compiled in update mode !" &lt;&lt; endl;
+#endif
+}
+
+
+void 
+<a name="TRunDB:getDirContent"> </a>TRunDB::getDirContent(const char* pathName,TObjArray *filenameList)
+{
+  void* datadir = gSystem-&gt;OpenDirectory(pathName);
+  if (datadir!=NULL) {
+    cout &lt;&lt; "TRunDB::getDirContent: Opening " &lt;&lt; pathName &lt;&lt; endl;
+    Int_t ok=-1;
+    while (ok) {
+      TString t(gSystem-&gt;GetDirEntry(datadir));
+      if (t.Length()&gt;0) {
+	if (t.Length()&gt;9) {
+	  TString tlast = TString(t(t.Length()-8,t.Length()));
+	  if (tlast == "Tag.root" ) {
+	    TString tname(t(0,t.Length()-8));
+	    TObjString *newEntry = new TObjString(tname.Data());
+	    filenameList-&gt;Add(newEntry);
+	  }
+	  else if (tlast == "cro.root" || tlast == "all.root") { //*****
+	    TObjString *newEntry = new TObjString(t.Data());
+	    filenameList-&gt;Add(newEntry); // This is a single Kanga "micro" file
+	  }
+	}
+	if ((t.Index(".root")&lt;0) &amp;&amp; (t!=TString(".")) &amp;&amp; (t!=TString(".."))) {
+	  TString newPath(TString(pathName)+"/"+t);
+	  TObjArray *subList = new TObjArray();
+	  getDirContent(newPath,subList);
+	  if (subList-&gt;GetEntries()&gt;0) {
+	    for (Int_t i=0; i&lt;subList-&gt;GetEntries(); i++) {
+	      TObjString *str = (TObjString*) (*subList)[i];
+	      TString newname = TString(t+"/"+str-&gt;String().Data());
+	      TObjString *newEntry = new TObjString(newname.Data());
+	      filenameList-&gt;Add(newEntry);
+	    }
+	  }
+	  subList-&gt;Delete();
+	  delete subList;
+	}
+      } else {
+	ok=0;
+      }
+    }
+    filenameList-&gt;Sort();
+    gSystem-&gt;FreeDirectory(datadir);
+  }
+  else
+      cerr &lt;&lt; "TRunDB::getDirContent: Could not open " &lt;&lt; pathName &lt;&lt; endl;
+}  
+
+
+<a name="TRunDB:AddRunsToCollection"> </a>void TRunDB::AddRunsToCollection(TRunCollection *theCol,Int_t runFrom, Int_t runTo)
+{
+    Int_t nmax = fRunList-&gt;GetEntries()-1;
+    
+    TRunInfo tmp(runFrom);
+    Int_t pos = fRunList-&gt;BinarySearch(&amp;tmp);
+    if (pos&lt;0) {
+	cout &lt;&lt; "Run #" &lt;&lt; runFrom &lt;&lt; " not Found, searching for next higher ... " &lt;&lt; endl;
+	TRunInfo *last = (TRunInfo*) (*fRunList)[nmax];
+	if (runFrom&gt;last-&gt;GetNumber()) {
+	    return;
+	}
+	Int_t n=0;
+	TRunInfo *current = (TRunInfo*) (*fRunList)[0];
+	while ((n&lt;nmax) &amp;&amp; (runFrom&gt;current-&gt;GetNumber())) {
+	    n++;
+	    current = (TRunInfo*) (*fRunList)[n];
+	}
+	if (runFrom&lt;current-&gt;GetNumber()) { pos = n; cout &lt;&lt; " found " &lt;&lt; current-&gt;GetNumber() &lt;&lt; endl; }
+    }
+    
+    TRunInfo *runToAdd = (TRunInfo*) (*fRunList)[pos];
+    theCol-&gt;AddRun(runToAdd);
+    
+    Int_t n=pos;
+    while ((n&lt;nmax) &amp;&amp; (runToAdd-&gt;GetNumber()&lt;runTo)) { 
+	n++;
+	runToAdd = (TRunInfo*) (*fRunList)[n];
+	if (runToAdd-&gt;GetNumber()&lt;=runTo) {
+	    theCol-&gt;AddRun(runToAdd);
+	}
+    }
+} 
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

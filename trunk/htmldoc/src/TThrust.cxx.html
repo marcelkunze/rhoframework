@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:30 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TThrust - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: <a href=".././TThrust.html">TThrust</a>.cc,v 1.2 1997/1/20 10:05:13 </b>
+<b>//</b>
+<b>// Description:</b>
+<b>//      Class <a href=".././TThrust.html">TThrust</a> - a simple object to calculate thrust</b>
+<b>//      There are three modes:</b>
+<b>//              <a href=".././TThrust.html#TThrust:BTAllParticles">BTAllParticles</a> (0) (default) - use both charged and neutrals</b>
+<b>//              <a href=".././TThrust.html#TThrust:BTChargedOnly">BTChargedOnly</a> (1) - use only charged particles</b>
+<b>//              <a href=".././TThrust.html#TThrust:BTNeutralOnly">BTNeutralOnly</a> (2) - use only neutral particles</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//      Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Scott Metzler           original author</b>
+<b>//      G. Hamel de Monchenault Implement in terms of <a href=".././TThrustVector.html">TThrustVector</a></b>
+<b>//      John Back               Re-written to be used without TSelectors.</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include &lt;math.h&gt;
+#include "RhoTools/TThrust.h"
+#include "RhoBase/TRho.h"
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandidate.h"
+#include "RhoTools/TBooster.h"
+#include "RhoBase/TEventInfo.h"
+
+ClassImp(TThrust)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TThrust *&amp;obj)
+{
+   obj = (TThrust *) buf.ReadObject(TThrust::Class());
+   return buf;
+}
+
+<a name="TThrust:TThrust"> </a>TThrust::TThrust(TCandList&amp; list,
+		     const TEventInfo&amp; evtinfo,
+		     TParticles mode, Bool_t cutInCms) 
+		    : _charged( kFALSE ) {
+
+  _cutInCms = cutInCms;
+  _checkCharge = kFALSE;
+<b>  // create first the TCandidate selector</b>
+  if( mode != <a href=".././TThrust.html#TThrust:BTAllParticles">TThrust::BTAllParticles</a> ) {
+    if( mode == <a href=".././TThrust.html#TThrust:BTChargedOnly">TThrust::BTChargedOnly</a>) {
+      <a href=".././TThrust.html#TThrust:_checkCharge">_checkCharge</a> = kTRUE;
+      <a href=".././TThrust.html#TThrust:_charged">_charged</a> = kTRUE;
+    } else if( mode == <a href=".././TThrust.html#TThrust:BTNeutralOnly">TThrust::BTNeutralOnly</a> ) {
+      <a href=".././TThrust.html#TThrust:_checkCharge">_checkCharge</a> = kTRUE;
+      <a href=".././TThrust.html#TThrust:_charged">_charged</a> = kFALSE;
+    }
+  }
+  <a href="#TThrust:init">init</a>( list, evtinfo);
+}
+
+<a name="TThrust:~TThrust"> </a><a href=".././TThrust.html">TThrust</a>::~<a href=".././TThrust.html">TThrust</a>() 
+{
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TThrust:init"> </a><a href=".././TThrust.html#TThrust:init">TThrust::init</a>( TCandList&amp; list , 
+		 const TEventInfo&amp; eventInfo) {
+
+<b>  // create the Y(4S) candidate, and the corresponding <a href=".././TBooster.html">TBooster</a></b>
+  TCandidate theUps( eventInfo.CmFrame(), 0.0 );
+  <a href=".././TBooster.html">TBooster</a> theBooster( &amp;theUps );
+
+<b>  // compute the thrust vector</b>
+  <a href=".././TThrust.html#TThrust:_theThrustVector">_theThrustVector</a>.<a href=".././TThrustVector.html#TThrustVector:BoostAndCompute">BoostAndCompute</a>(list, &amp;theBooster, <a href=".././TThrust.html#TThrust:_cutInCms">_cutInCms</a>, 
+				   <a href=".././TThrust.html#TThrust:_checkCharge">_checkCharge</a>, <a href=".././TThrust.html#TThrust:_charged">_charged</a>);
+
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,144 @@
+Kanga Support in ROOT (and RHO)
+===============================
+
+1) Summary
+----------
+
+It is possible to open and read Kanga files within ROOT without using
+the RooScribes framework (see paragraph 2). The Kanga files can be accessed 
+in an efficient "n-tuple" like fashion.
+
+Furthermore it is possible to write PAF analysis code that runs on both Kanga 
+files and PAF native files (see paragraph 3). Writing of Kanga files is not 
+supported.
+
+
+2) Reading Kanga files with ROOT
+--------------------------------
+
+This paragraph aims at users who want to access the root Kanga files
+directly, i.e. without the RHO framework.
+
+The definition of the persistent root classes is contained in the Kanga 
+directory. Also there are some utility classes that can deal with changing 
+class names and new or disappearing variables. This may happen when a Kanga 
+schema evolution took place. The classes are written in such a manner that
+only data that is actually requested (by a call to a getter function) is 
+actually read from the ROOT file. No overhead due to a RooScribes
+like framework or transient to persistent copying is introduced.
+The access speed should be comparable to the ROOT/PAF native format.
+
+
+2.1 Opening a Kanga file
+------------------------
+
+This can be done as follows:
+
+  // do the ROOT standard stuff when opening a file:
+  gSystem->Load("Kanga/libTKANGA.so");                         // 1
+  TFile* f= new TFile("testfile-micro.root");                  // 2
+  TTree* t= (TTree*)f->Get("microDST");                        // 3
+  TClonesArray* cands= new TClonesArray("TBtaMicroCandR",10);  // 4
+
+  // this is kanga specific:
+  TBtaMicroCandRDir::Instance()->Init(t,&cands);               // 5
+
+  // now access some properties (example):
+  t->GetEvent(0); // get first event
+  cout << "There are " << cands->GetEntriesFast() << 
+          "micro candidates in this event." << endl;
+  TBtaMicroCandR* c= (TBtaMicroCandR*)cands->At(0);
+  cout << "The EMC energy of the 1st candidate is " <<
+          c->GetCalQual()->GetEnergy() << " GeV" << endl;
+  
+Comments:
+
+  1) Load the shared lib that contains the schema definition.
+     Or put it in your make file (include the library libTKANGA.so).
+  2) Open the Kanga file with ROOT.
+  3) and find the microDST tree.
+  4) Setup an array to hold the micro candidates.
+  5) Prepare to read Kanga micro candidates from the file.
+
+
+2.2 Implementation details
+--------------------------
+
+In order to keep the number of persistent classes small after each
+schema evolution it was decided NOT to introduce a new ROOT class
+for each evolved object. Instead the existing class will be modified
+to handle the new schema. The class name as stored in the ROOT
+file however will change. This is a consequence of the Objectivity
+like schema evolution procedure which has (unfortunately?) been adopted 
+by BaBar for ROOT files as well. 
+
+For each micro candidate class (i.e. class name) there is a schema 
+definition file (e.g. BtaMicroCandR.sdf). If a class is found in a Kanga
+file without a corresponding .sdf file the program will stop.
+Use the latest RHO release which should contain the necessary sdf file
+and the necessary code modifications to cope with the new schema.
+
+The .sdf file contains a map of the old branch names (as found in the
+one single persistent TBtaMicroCandR class) to the new branch names.
+There are at least two possible cases:
+
+a) a variable (i.e. branch) has been removed in the new schema
+   ->The getter method in TBtaMicroCandR will be modified in such a 
+     way that the program stops if this variable is accessed.
+b) a new variable appears
+   ->An additional getter method will be added in TBtaMicroCandR.
+     If the user opens an OLD file (that does not contain the new
+     variable) this will result in a WARNING message when opening
+     the file and the program will STOP if the user actually tries
+     to access this variable.
+
+
+3. Reading Kanga files with RHO
+-------------------------------
+
+This can be accomplished as follows:
+
+  1) Open a kanga file:
+     eventmanager->InitRead("testfile-micro");
+  2) That was easy!
+
+Warning: There are some restrictions.
+
+  1) Obviously one cannot access PAF persistent classes.
+     (PAFChargedAodBase/PAFNeutralAodBase etc.)
+     Rather use the format independent AbsMicroCandidate!
+     An Example:
+
+       AbsMicroCanidate &c= eventmanager->GetMicroCandidate(0);
+       cout << c.GetEnergy() << endl;
+
+  2) Beta stores all objects in one single persistent list.
+     PAF has at least two lists (charged objects, neutrals).
+     In this 1st version only one list of AbsMicroCandidate
+     objects is accessible. Use the member function 
+     GetCharge() to decide what kind of object you get.
+     When using neutral objects in the latest releases you
+     may also find cluster candidates that contain >1 bumps
+     in addition to the bump objects (be careful, use GetNBumps()
+     to decide what you get). Example:
+
+       // get a list of all beta micro candidates:
+       TPAFList* fParticles= new TPAFList();
+       fParticles->Fill(*eventmanager);
+      
+     In a later version a proper support of candidate lists
+     is planned.
+
+
+4. Restrictions and work to do
+------------------------------
+
+  * Access to monte carlo truth
+  * Improve support for candidate lists
+  * Writing PAF files while reading Kanga files
+
+
+Leif Wilden,
+last updated Feb. 7. 2000
+
+Your comments are welcome!

@@ -1,0 +1,1061 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:53 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TEventWriter - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TEventWriter.html">TEventWriter</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Write data class to dump TAG and AOD					//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, RUB, Oct. 99					//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+#define DEBUG
+
+#define KTAG      "TagTree"
+#define SUFFTAG	  "Tag"
+#define KAOD      "AodTree"
+#define SUFFAOD	  "Aod"
+#define KMAP      "CompTree"
+#define SUFFMAP	  "Aod"
+#define KMCT      "MctTree"
+#define SUFFMCT	  "Mct"
+
+#define TAGBRANCH  "TagList"
+#define AODCBRANCH "AodListC"
+#define AODNBRANCH "AodListN"
+#define MCTBRANCH  "MctList"
+#define ASSBRANCH  "AssList"
+#define MAPBRANCH  "BtaCandMaps"
+
+<b>// Root includes</b>
+
+#include &lt;stdlib.h&gt;
+#include "THashList.h"
+#include "TClonesArray.h"
+
+#include "RhoManager/TEventWriter.h"
+#include "RhoManager/TEventCollection.h"
+#include "RhoManager/TEventManager.h"
+#include "RhoManager/TParameterManager.h"
+
+#include "RhoBase/TRho.h"
+#include "RhoBase/TCandidate.h"
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandListIterator.h"
+#include "RhoBase/VAbsTag.h"
+#include "RhoBase/VAbsMicroCandidate.h"
+
+#include "PAFSchema/PAFMcBase.h"
+#include "PAFSchema/PAFStream.h"
+#include "PAFSchema/PAFReader.h"
+#include "PAFSchema/PAFMcAssocBase.h"
+#include "PAFSchema/PAFChargedAodBase.h"
+#include "PAFSchema/PAFNeutralAodBase.h"
+#include "PAFSchema/PAFListBase.h"
+#include "PAFSchema/PAFCompAodBase.h"
+#include "PAFSchema/PAFEventBase.h"
+#include "PAFSchema/PAFBitBase.h"
+
+<b>//#include "KangaSchema/<a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a>.h"</b>
+
+ClassImp(<a href=".././TEventWriter.html">TEventWriter</a>)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TEventWriter:TEventWriter"> </a>TEventWriter::TEventWriter() : VAbsWriter("TEventWriter"),
+fTagStream( 0 ),
+fAodStream( 0 ),
+fMctStream( 0 ),
+fStreams( new THashList() ),
+fEventNumber( 0 ),
+fNumMcTracks( 0 ),
+fTag(kTRUE),
+fAod(kTRUE),
+fMap(kFALSE),
+fMct(kFALSE)
+{
+    fWriter = kFALSE;
+    fWriteCollection = kFALSE;
+    fWriteEvents = 0;
+    fFirstEventWritten = kFALSE;
+    fChargedAod  = new PAFChargedAodBase();
+    fNeutralAod  = new PAFNeutralAodBase();
+    fMcTruth     = new PAFMcBase();
+    fMcAssoc     = new PAFMcAssocBase();
+    fBtaAssoc    = 0; //new BtaCandAssocMapR();
+    fGarbageBin  = new THashList();
+    fTrackList   = new TCandList();
+    fBits        = new PAFBitBase();
+    fContent     = new PAFEventBase();
+}
+
+<a name="TEventWriter:TEventWriter"> </a>TEventWriter::TEventWriter(const char *file)
+: VAbsWriter(file),
+fTagStream( 0 ),
+fAodStream( 0 ),
+fMctStream( 0 ),
+fStreams( new THashList() ),
+fEventNumber( 0 ),
+fNumMcTracks( 0 ),
+fTag(kTRUE),
+fAod(kTRUE),
+fMap(kFALSE),
+fMct(kFALSE)
+{
+    fWriter = kFALSE;
+    fWriteCollection = kFALSE;
+    fWriteEvents = 0;
+    fFirstEventWritten = kFALSE;
+    fChargedAod  = new PAFChargedAodBase();
+    fNeutralAod  = new PAFNeutralAodBase();
+    fMcTruth     = new PAFMcBase();
+    fMcAssoc     = new PAFMcAssocBase();
+    fBtaAssoc    = 0; //new BtaCandAssocMapR();
+    fGarbageBin  = new THashList();
+    fTrackList   = new TCandList();
+    fBits        = new PAFBitBase();
+    fContent     = new PAFEventBase();
+    
+    fWriter = kTRUE;
+    TParameterManager *mgr = TRho::Instance()-&gt;GetParameterManager();
+    SetStreamStatus("tag",mgr-&gt;GetBoolParm("tag"));
+    SetStreamStatus("aod",mgr-&gt;GetBoolParm("aod"));
+    SetStreamStatus("mct",mgr-&gt;GetBoolParm("mct"));
+    SetStreamStatus("map",mgr-&gt;GetBoolParm("map"));
+    InitWrite(file);
+} 
+
+<a name="TEventWriter:TEventWriter"> </a>TEventWriter::TEventWriter(VAbsCollection *collection)
+: VAbsWriter(collection),
+fTagStream( 0 ),
+fAodStream( 0 ),
+fMctStream( 0 ),
+fStreams( 0 ),
+fEventNumber( 0 ),
+fNumMcTracks( 0 ),
+fTag(kFALSE),
+fAod(kFALSE),
+fMap(kFALSE),
+fMct(kFALSE)
+{
+    fWriter = kFALSE;
+    fWriteCollection = kFALSE;
+    fWriteEvents = 0;
+    fFirstEventWritten = kFALSE;
+    
+    fWriteCollection = kTRUE;
+    TString name(collection-&gt;ClassName());
+    if (name!="TEventCollection") {
+	cerr &lt;&lt; "TEventWriter: Request to write to " &lt;&lt; collection-&gt;ClassName() &lt;&lt; endl;
+	cerr &lt;&lt; "TEventWriter: Only supports TEventCollection" &lt;&lt; endl;
+	exit(0);
+    }
+    fCollection = collection;
+} 
+
+<a name="TEventWriter:~TEventWriter"> </a>TEventWriter::~TEventWriter() 
+{  
+    if (fWriteCollection) {
+	delete fCollection;
+    }
+    else {
+	delete fChargedAod;
+	delete fNeutralAod;
+	delete fTrackList;
+	delete fMcTruth;
+	delete fMcAssoc;
+<b>	//delete <a href=".././TEventWriter.html#TEventWriter:fBtaAssoc">fBtaAssoc</a>;</b>
+	delete <a href=".././TEventWriter.html#TEventWriter:fBits">fBits</a>;
+	delete <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>;
+    
+<b>	// Close all connected files</b>
+	TIter iter(<a href=".././TEventWriter.html#TEventWriter:fStreams">fStreams</a>);
+	<a href=".././PAFStream.html">PAFStream</a> *s = 0;
+	while (s = (<a href=".././PAFStream.html">PAFStream</a> *) iter.Next()) {
+	    if (s-&gt;GetFile()) s-&gt;GetFile()-&gt;Close();
+	}
+    
+	<a href=".././TEventWriter.html#TEventWriter:fStreams">fStreams</a>-&gt;Delete(); delete <a href=".././TEventWriter.html#TEventWriter:fStreams">fStreams</a>;
+	<a href=".././TEventWriter.html#TEventWriter:fGarbageBin">fGarbageBin</a>-&gt;Delete(); delete <a href=".././TEventWriter.html#TEventWriter:fGarbageBin">fGarbageBin</a>;
+    }
+}
+
+<a name="TEventWriter:DumpList"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:DumpList">TEventWriter::DumpList</a>(TCandList *list)
+{
+    TCandListIterator iterTrk(*list);
+    TCandidate* trk;
+    while ( 0 != ( trk = iterTrk.Next()) ) {
+	
+<b>	// Should we skip this entry ?</b>
+	for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;<a href=".././TEventWriter.html#TEventWriter:fGarbageBin">fGarbageBin</a>-&gt;GetSize();i++) {
+	    TCandidate *skip = (TCandidate *) <a href=".././TEventWriter.html#TEventWriter:fGarbageBin">fGarbageBin</a>-&gt;At(i);
+	    if (trk-&gt;Overlaps(*skip)) continue;
+	}
+	
+	VAbsMicroCandidate &amp;c = trk-&gt;GetMicroCandidate();
+	if (c.GetCharge() == 0) {
+	    <a href="#TEventWriter:ConvertCandidate">ConvertCandidate</a>(<a href=".././TEventWriter.html#TEventWriter:fNeutralAod">fNeutralAod</a>,&amp;c);
+	    <a href="#TEventWriter:Fill">Fill</a>(<a href=".././TEventWriter.html#TEventWriter:fNeutralAod">fNeutralAod</a>);
+	}
+	else {
+	    <a href="#TEventWriter:ConvertCandidate">ConvertCandidate</a>(<a href=".././TEventWriter.html#TEventWriter:fChargedAod">fChargedAod</a>,&amp;c);
+	    <a href="#TEventWriter:Fill">Fill</a>(<a href=".././TEventWriter.html#TEventWriter:fChargedAod">fChargedAod</a>);
+	}
+    }
+}
+
+<a name="TEventWriter:Exclude"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:Exclude">TEventWriter::Exclude</a>(TCandidate *c)
+{
+    static <a href="../ListOfTypes.html#Int_t">Int_t</a> oldEvent = -1;
+    if (<a href="#TEventWriter:GetEventNumber">GetEventNumber</a>()!=oldEvent) {
+	oldEvent = <a href="#TEventWriter:GetEventNumber">GetEventNumber</a>();
+	<a href=".././TEventWriter.html#TEventWriter:fGarbageBin">fGarbageBin</a>-&gt;Delete();
+    }
+
+    <a href=".././TEventWriter.html#TEventWriter:fGarbageBin">fGarbageBin</a>-&gt;Add((TObject*)c);
+}
+
+<b>// __________________________ VAbsMicroCandidate -&gt; PAFChargedAod ___________________________</b>
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TEventWriter:ConvertCandidate"> </a><a href=".././TEventWriter.html#TEventWriter:ConvertCandidate">TEventWriter::ConvertCandidate</a>(<a href=".././PAFChargedAodBase.html">PAFChargedAodBase</a> *aod,VAbsMicroCandidate *cand)
+{
+    <a href="../ListOfTypes.html#int">int</a> i;
+    
+    aod-&gt;SetEmcLateralShape(cand-&gt;GetEmcLateralShape());
+    aod-&gt;SetEmcSecondMoment(cand-&gt;GetEmcSecondMoment());
+    aod-&gt;SetEmcZernikeMoment20(cand-&gt;GetEmcZernikeMoment20());
+    aod-&gt;SetEmcZernikeMoment42(cand-&gt;GetEmcZernikeMoment42());
+    aod-&gt;SetEmcS9S25(cand-&gt;GetEmcS9S25());
+    aod-&gt;SetEmcS1S9(cand-&gt;GetEmcS1S9());
+    aod-&gt;SetEmcRawEnergy(cand-&gt;GetEmcRawEnergy());
+    aod-&gt;SetEmcCalEnergy(cand-&gt;GetEmcCalEnergy()); // New in 8.6.x
+    aod-&gt;SetEmcStatus(cand-&gt;GetEmcStatus()); // New in 8.6.x
+    aod-&gt;SetEmcNumberOfCrystals(cand-&gt;GetEmcNumberOfCrystals());
+    aod-&gt;SetNeutralPidHypo(cand-&gt;GetNeutralPidHypo());
+    aod-&gt;SetEmcNumberOfBumps(cand-&gt;GetEmcNumberOfBumps());
+    aod-&gt;SetEmcConsistencyValue(cand-&gt;GetEmcConsistencyValue());
+    aod-&gt;SetEmcCentroid(cand-&gt;GetEmcCentroid());
+<b>    //aod-&gt;SetEmcCovarianceEnergy(cand-&gt;GetEmcCovarianceEnergy());</b>
+<b>    //aod-&gt;SetEmcCovariancePhi(cand-&gt;GetEmcCovariancePhi());</b>
+<b>    //aod-&gt;SetEmcCovarianceTheta(cand-&gt;GetEmcCovarianceTheta());</b>
+<b>    //aod-&gt;SetEmcCovarianceRho(cand-&gt;GetEmcCovarianceRho());</b>
+    
+    aod-&gt;SetIfrPattern(cand-&gt;GetIfrPattern());
+    aod-&gt;SetIfrMeasuredInteractionLengths(cand-&gt;GetIfrMeasuredInteractionLengths());
+    aod-&gt;SetIfrExpectedInteractionLengths(cand-&gt;GetIfrExpectedInteractionLengths());
+    aod-&gt;SetIfrInteractionLengthsBeforeIron(cand-&gt;GetIfrInteractionLengthsBeforeIron());
+    aod-&gt;SetIfrTrackMatchConsistency(cand-&gt;GetIfrTrackMatchConsistency());
+    aod-&gt;SetIfrEmcMatchConsistency(cand-&gt;GetIfrEmcMatchConsistency());
+    aod-&gt;SetIfrFirstHit(cand-&gt;GetIfrFirstHit());
+    aod-&gt;SetIfrLastHit(cand-&gt;GetIfrLastHit());
+    aod-&gt;SetIfrNumberOfStrips(cand-&gt;GetIfrNumberOfStrips());
+    for (i=0;i&lt;20;i++) {
+	aod-&gt;SetIfrNumberOfStrips(cand-&gt;GetIfrNumberOfStrips(i),i);
+    }
+    aod-&gt;SetIfrLastBarrel(cand-&gt;GetIfrLastBarrel());
+    aod-&gt;SetIfrClusfitChi2(cand-&gt;GetIfrClusterFit()); // New in 8.6.x
+    aod-&gt;SetIfrRpcMuProb(cand-&gt;GetIfrRpcMuonProbability()); // New in 8.6.x
+    aod-&gt;SetIfrHitLayers(cand-&gt;GetIfrHitLayers());
+    
+    aod-&gt;SetSvtHitPattern(cand-&gt;GetSvtHitPattern());
+    aod-&gt;SetDchInnerLayer(cand-&gt;GetDchInnerLayer());
+    aod-&gt;SetDchOuterLayer(cand-&gt;GetDchOuterLayer());
+    aod-&gt;SetDegreesOfFreedom(cand-&gt;GetDegreesOfFreedom());
+    aod-&gt;SetProbability(cand-&gt;GetProbability());
+    aod-&gt;SetChiSquared(cand-&gt;GetChiSquared());
+    aod-&gt;SetDchHits(cand-&gt;GetDchHits());
+    aod-&gt;SetSvtHits(cand-&gt;GetSvtHits());
+    aod-&gt;SetChargedPidHypo(cand-&gt;GetChargedPidHypo());
+    aod-&gt;SetFitStatus(cand-&gt;GetFitStatus());
+    aod-&gt;SetTrackLength(cand-&gt;GetTrackLength());
+    aod-&gt;SetTrackStartFoundRange(cand-&gt;GetTrackStartFoundRange());
+    
+    aod-&gt;SetDchMeanDEdx(cand-&gt;GetDchMeanDEdx());
+    aod-&gt;SetSvtMeanDEdx(cand-&gt;GetSvtMeanDEdx());
+    aod-&gt;SetDchSamples(cand-&gt;GetDchSamples());
+    aod-&gt;SetSvtSamples(cand-&gt;GetSvtSamples());
+    aod-&gt;SetDrcNumberOfPhotons(cand-&gt;GetDrcNumberOfPhotons());
+    aod-&gt;SetDrcNumberOfBackgroundPhotons(cand-&gt;GetDrcNumberOfBackgroundPhotons());
+    for (i=0;i&lt;5;i++)
+	aod-&gt;SetDrcNumberOfExpectedPhotons(cand-&gt;GetDrcNumberOfExpectedPhotons(i),i);
+    aod-&gt;SetDrcThetaC(cand-&gt;GetDrcThetaC());
+    aod-&gt;SetDrcThetaCError(cand-&gt;GetDrcThetaCError());
+    aod-&gt;SetDrcNumBar(cand-&gt;GetDrcInBar()); // New in 8.5.x
+    aod-&gt;SetDrcExit(cand-&gt;GetDrcExitBar()); // New in 8.5.x 
+    aod-&gt;SetDrcXpos(cand-&gt;GetDrcXPos()); // New in 8.5.x 
+    aod-&gt;SetEmcInterPhi(cand-&gt;GetDrcPhiAtEmc()); // New in 8.6.x
+    aod-&gt;SetEmcInterTheta(cand-&gt;GetDrcThetaAtEmc()); // New in 8.6.x
+    aod-&gt;SetDrcDeltaMomentum(cand-&gt;GetDrcDeltaMomentum()); // New in 8.5.x
+    aod-&gt;SetDchDeltaMomentum(cand-&gt;GetDchDeltaMomentum());
+    
+<b>    // Copy MC-Truth (PAF)</b>
+    
+    aod-&gt;SetMcPid(cand-&gt;GetMcPid());
+    
+<b>    // Copy PID info</b>
+    
+    <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a> svt;
+    for (i=0;i&lt;5;i++) {
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> sl = cand-&gt;GetSvtPidInfo().GetSignificance(i);
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> lhood = cand-&gt;GetSvtPidInfo().GetLikelihood(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> status = cand-&gt;GetSvtPidInfo().GetStatus(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> sign = cand-&gt;GetSvtPidInfo().GetSign(i);
+	svt.SetStats(i, sl,lhood, status, sign);
+    }
+    aod-&gt;SetSvtPidInfo(svt);
+    
+    <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a> dch;
+    for (i=0;i&lt;5;i++) {
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> sl = cand-&gt;GetDchPidInfo().GetSignificance(i);
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> lhood = cand-&gt;GetDchPidInfo().GetLikelihood(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> status = cand-&gt;GetDchPidInfo().GetStatus(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> sign = cand-&gt;GetDchPidInfo().GetSign(i);
+	dch.SetStats(i, sl,lhood, status, sign);
+    }
+    aod-&gt;SetDchPidInfo(dch);
+    
+    <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a> drc;
+    for (i=0;i&lt;5;i++) {
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> sl = cand-&gt;GetDrcPidInfo().GetSignificance(i);
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> lhood = cand-&gt;GetDrcPidInfo().GetLikelihood(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> status = cand-&gt;GetDrcPidInfo().GetStatus(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> sign = cand-&gt;GetDrcPidInfo().GetSign(i);
+	drc.SetStats(i, sl,lhood, status, sign);
+    }
+    aod-&gt;SetDrcPidInfo(drc);
+    
+    <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a> emc;
+    for (i=0;i&lt;5;i++) {
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> sl = cand-&gt;GetEmcPidInfo().GetSignificance(i);
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> lhood = cand-&gt;GetEmcPidInfo().GetLikelihood(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> status = cand-&gt;GetEmcPidInfo().GetStatus(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> sign = cand-&gt;GetEmcPidInfo().GetSign(i);
+	emc.SetStats(i, sl,lhood, status, sign);
+    }
+    aod-&gt;SetEmcPidInfo(emc);
+    
+    <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a> ifr;
+    for (i=0;i&lt;5;i++) {
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> sl = cand-&gt;GetIfrPidInfo().GetSignificance(i);
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> lhood = cand-&gt;GetIfrPidInfo().GetLikelihood(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> status = cand-&gt;GetIfrPidInfo().GetStatus(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> sign = cand-&gt;GetIfrPidInfo().GetSign(i);
+	ifr.SetStats(i, sl,lhood, status, sign);
+    }
+    aod-&gt;SetIfrPidInfo(ifr);
+    
+<b>    // FitParams</b>
+    aod-&gt;SetPosition(cand-&gt;GetPosition());
+    TLorentzVector x = cand-&gt;GetLorentzVector();
+    aod-&gt;SetLorentzVector(x);
+    aod-&gt;SetCharge(cand-&gt;GetCharge());
+    
+<b>    // Error Matrix</b>
+    aod-&gt;SetErrorP7((<a href="../ListOfTypes.html#Float_t">Float_t</a>*)cand-&gt;GetErrorP7());
+}
+
+<b>// __________________________ VAbsMicroCandidate -&gt; PAFNeutralAod ___________________________</b>
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TEventWriter:ConvertCandidate"> </a><a href=".././TEventWriter.html#TEventWriter:ConvertCandidate">TEventWriter::ConvertCandidate</a>(<a href=".././PAFNeutralAodBase.html">PAFNeutralAodBase</a> *aod,VAbsMicroCandidate *cand)
+{
+    <a href="../ListOfTypes.html#int">int</a> i;
+    
+    aod-&gt;SetEmcLateralShape(cand-&gt;GetEmcLateralShape());
+    aod-&gt;SetEmcSecondMoment(cand-&gt;GetEmcSecondMoment());
+    aod-&gt;SetEmcZernikeMoment20(cand-&gt;GetEmcZernikeMoment20());
+    aod-&gt;SetEmcZernikeMoment42(cand-&gt;GetEmcZernikeMoment42());
+    aod-&gt;SetEmcS9S25(cand-&gt;GetEmcS9S25());
+    aod-&gt;SetEmcS1S9(cand-&gt;GetEmcS1S9());
+    aod-&gt;SetEmcRawEnergy(cand-&gt;GetEmcRawEnergy());
+    aod-&gt;SetEmcCalEnergy(cand-&gt;GetEmcCalEnergy()); // New in 8.6.x
+    aod-&gt;SetEmcStatus(cand-&gt;GetEmcStatus()); // New in 8.6.x
+    aod-&gt;SetEmcNumberOfCrystals(cand-&gt;GetEmcNumberOfCrystals());
+    aod-&gt;SetNeutralPidHypo(cand-&gt;GetNeutralPidHypo());
+    aod-&gt;SetEmcNumberOfBumps(cand-&gt;GetEmcNumberOfBumps());
+    aod-&gt;SetEmcConsistencyValue(cand-&gt;GetEmcConsistencyValue());
+    aod-&gt;SetEmcCentroid(cand-&gt;GetEmcCentroid());
+<b>    //aod-&gt;SetEmcCovarianceEnergy(cand-&gt;GetEmcCovarianceEnergy());</b>
+<b>    //aod-&gt;SetEmcCovariancePhi(cand-&gt;GetEmcCovariancePhi());</b>
+<b>    //aod-&gt;SetEmcCovarianceTheta(cand-&gt;GetEmcCovarianceTheta());</b>
+<b>    //aod-&gt;SetEmcCovarianceRho(cand-&gt;GetEmcCovarianceRho());</b>
+    
+    aod-&gt;SetIfrPattern(cand-&gt;GetIfrPattern());
+    aod-&gt;SetIfrMeasuredInteractionLengths(cand-&gt;GetIfrMeasuredInteractionLengths());
+    aod-&gt;SetIfrExpectedInteractionLengths(cand-&gt;GetIfrExpectedInteractionLengths());
+    aod-&gt;SetIfrInteractionLengthsBeforeIron(cand-&gt;GetIfrInteractionLengthsBeforeIron());
+    aod-&gt;SetIfrTrackMatchConsistency(cand-&gt;GetIfrTrackMatchConsistency());
+    aod-&gt;SetIfrEmcMatchConsistency(cand-&gt;GetIfrEmcMatchConsistency());
+    aod-&gt;SetIfrFirstHit(cand-&gt;GetIfrFirstHit());
+    aod-&gt;SetIfrLastHit(cand-&gt;GetIfrLastHit());
+    aod-&gt;SetIfrNumberOfStrips(cand-&gt;GetIfrNumberOfStrips());
+    for (i=0;i&lt;20;i++) {
+	aod-&gt;SetIfrNumberOfStrips(cand-&gt;GetIfrNumberOfStrips(i),i);
+    }
+    aod-&gt;SetIfrLastBarrel(cand-&gt;GetIfrLastBarrel());
+    aod-&gt;SetIfrClusfitChi2(cand-&gt;GetIfrClusterFit()); // New in 8.6.x
+    aod-&gt;SetIfrRpcMuProb(cand-&gt;GetIfrRpcMuonProbability()); // New in 8.6.x
+    aod-&gt;SetIfrHitLayers(cand-&gt;GetIfrHitLayers());
+    
+<b>    // Copy MC-Truth (PAF)</b>
+    
+    aod-&gt;SetMcPid(cand-&gt;GetMcPid());
+    
+<b>    // Copy PID info</b>
+    
+    <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a> emc;
+    for (i=0;i&lt;5;i++) {
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> sl = cand-&gt;GetEmcPidInfo().GetSignificance(i);
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> lhood = cand-&gt;GetEmcPidInfo().GetLikelihood(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> status = cand-&gt;GetEmcPidInfo().GetStatus(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> sign = cand-&gt;GetEmcPidInfo().GetSign(i);
+	emc.SetStats(i, sl,lhood, status, sign);
+    }
+    aod-&gt;SetEmcPidInfo(emc);
+    
+    <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a> ifr;
+    for (i=0;i&lt;5;i++) {
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> sl = cand-&gt;GetIfrPidInfo().GetSignificance(i);
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> lhood = cand-&gt;GetIfrPidInfo().GetLikelihood(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> status = cand-&gt;GetIfrPidInfo().GetStatus(i);
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> sign = cand-&gt;GetIfrPidInfo().GetSign(i);
+	ifr.SetStats(i, sl,lhood, status, sign);
+    }
+    aod-&gt;SetIfrPidInfo(ifr);
+    
+<b>    // FitParams</b>
+    aod-&gt;SetPosition(cand-&gt;GetPosition());
+    TLorentzVector x(cand-&gt;GetLorentzVector());
+    aod-&gt;SetLorentzVector(x);
+    aod-&gt;SetCharge(cand-&gt;GetCharge());
+    
+<b>    // Error Matrix</b>
+    aod-&gt;SetErrorP7((<a href="../ListOfTypes.html#Float_t">Float_t</a>*)cand-&gt;GetErrorP7());
+}
+
+<b>// From PAFEvent</b>
+
+<a name="TEventWriter:InitWrite"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:InitWrite">TEventWriter::InitWrite</a>(const <a href="../ListOfTypes.html#char">char</a> *fname) {
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> BuffSize= 32000;
+    TString fFile(fname);
+    
+    <a href="#TEventWriter:InitializeStreams">InitializeStreams</a>();
+    
+<b>    // Authorize special writer account or default</b>
+    if (getenv("RHOUSERW")!=0)  {
+	const <a href="../ListOfTypes.html#char">char</a> *user = getenv("RHOUSERW");
+	const <a href="../ListOfTypes.html#char">char</a> *passwd = 0;
+	if (getenv("RHOPASSWDW")!=0) passwd = getenv("RHOPASSWDW");
+	TRho::Instance()-&gt;Authorize(user,passwd); 
+    }
+    else if (getenv("RHOUSER")!=0)
+	TRho::Instance()-&gt;Authorize();
+    
+    TIter iter(<a href=".././TEventWriter.html#TEventWriter:fStreams">fStreams</a>);
+    <a href=".././PAFStream.html">PAFStream</a> *s = 0;
+    while (s = (<a href=".././PAFStream.html">PAFStream</a> *) iter.Next()) {
+	
+	s-&gt;SetFile(TFile::Open(fFile+s-&gt;GetFileNameBase()+".root","recreate"));
+	cout &lt;&lt; "<a href=".././TEventWriter.html#TEventWriter:InitWrite">TEventWriter::InitWrite</a> open " &lt;&lt; fFile+s-&gt;GetFileNameBase()+".root" &lt;&lt; endl;
+	s-&gt;GetFile()-&gt;SetCompressionLevel(2);
+	TString comment("A Root TTree for "); 
+	comment+= s-&gt;GetFileNameBase();
+	s-&gt;SetTree(new TTree(s-&gt;GetTreeName(),comment));
+	
+<b>	// iterate over all stream members and add corresponding branches to the tree: </b>
+	for (<a href="../ListOfTypes.html#int">int</a> j=0; j &lt; s-&gt;GetMembers()-&gt;GetEntriesFast(); j++) {
+	    const PAFStreamMember *m= s-&gt;GetMember(j);
+	    switch (m-&gt;fMemberType) {
+	    case PAFStreamMember::ClonesArray: 
+		s-&gt;GetTree()-&gt;Branch(m-&gt;fBranchName,m-&gt;fBranchAddress,BuffSize); break;
+	    case PAFStreamMember::Leaflist:    
+		s-&gt;GetTree()-&gt;Branch(m-&gt;fBranchName,m-&gt;fBranchAddress,m-&gt;fClassName); break;
+	    case PAFStreamMember::Object:      
+		s-&gt;GetTree()-&gt;Branch(m-&gt;fBranchName,m-&gt;fClassName,m-&gt;fBranchAddress,BuffSize); break;
+	    }
+	}
+	
+    }
+
+    if (<a href=".././TEventWriter.html#TEventWriter:fAod">fAod</a> &amp;&amp; <a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>) {
+	<a href=".././TEventWriter.html#TEventWriter:fAodListsComp">fAodListsComp</a>-&gt;<a href=".././PAFListBase.html#PAFListBase:SetMode">SetMode</a>(1); // Set to write - mode
+	<a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:GetFile">GetFile</a>()-&gt;cd();
+	<a href=".././TEventWriter.html#TEventWriter:fAodListsComp">fAodListsComp</a>-&gt;<a href=".././PAFListBase.html#PAFListBase:SetTree">SetTree</a>(new TTree(KMAP,"Tree of comp. AOD - objects"));
+    }
+    
+    if (<a href=".././TEventWriter.html#TEventWriter:fTag">fTag</a> &amp;&amp; <a href=".././TEventWriter.html#TEventWriter:fTagStream">fTagStream</a>) <a href=".././TEventWriter.html#TEventWriter:fBits">fBits</a>-&gt;SetTree(<a href=".././TEventWriter.html#TEventWriter:fTagStream">fTagStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:GetTree">GetTree</a>());
+}	
+
+
+<a name="TEventWriter:InitUpdate"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:InitUpdate">TEventWriter::InitUpdate</a>(const <a href="../ListOfTypes.html#char">char</a> *fname) {
+<b>    // Open the files in update mode to append data</b>
+    TString fFile(fname);
+    
+    <a href="#TEventWriter:InitializeStreams">InitializeStreams</a>();
+    if (getenv("RHOUSER")!=0) TRho::Instance()-&gt;Authorize();
+    
+    TIter iter(<a href=".././TEventWriter.html#TEventWriter:fStreams">fStreams</a>);
+    <a href=".././PAFStream.html">PAFStream</a> *s = 0;
+    while (s = (<a href=".././PAFStream.html">PAFStream</a> *) iter.Next()) {
+	
+	if (s-&gt;IsActive()) {
+	    
+<b>	    //s-&gt;SetFile( new TFile(fFile+s-&gt;GetFileNameBase()+".root","update") );</b>
+	    s-&gt;SetFile( TFile::Open(fFile+s-&gt;GetFileNameBase()+".root","update") );
+	    s-&gt;SetTree( (TTree*)s-&gt;GetFile()-&gt;Get(s-&gt;GetTreeName()) );
+	    
+<b>	    // iterate over all stream members and set the branch addresses: </b>
+	    for (<a href="../ListOfTypes.html#int">int</a> j=0; j &lt; s-&gt;GetMembers()-&gt;GetEntriesFast(); j++) {
+		const PAFStreamMember *m= s-&gt;GetMember(j);
+		s-&gt;GetTree()-&gt;GetBranch(m-&gt;fBranchName)-&gt;SetAddress(m-&gt;fBranchAddress);
+	    }
+	    
+	}
+    }
+    
+    <a href=".././TEventWriter.html#TEventWriter:fBits">fBits</a>-&gt;SetTree(<a href=".././TEventWriter.html#TEventWriter:fTagStream">fTagStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:GetTree">GetTree</a>());
+    
+    <a href=".././TEventWriter.html#TEventWriter:fEventNumber">fEventNumber</a>= (<a href="../ListOfTypes.html#UInt_t">UInt_t</a>) <a href=".././TEventWriter.html#TEventWriter:fTagStream">fTagStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:GetTree">GetTree</a>()-&gt;GetEntries();
+    cout&lt;&lt;"compression"&lt;&lt;<a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:GetFile">GetFile</a>()-&gt;GetCompressionLevel()&lt;&lt;endl;
+}
+
+<a name="TEventWriter:NewEvent"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:NewEvent">TEventWriter::NewEvent</a>() {
+    static <a href="../ListOfTypes.html#int">int</a> total = 1;
+<b>    // Prepare to store a new event</b>
+    <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:SetTime">SetTime</a>(total++);
+    <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:NewEvent">NewEvent</a>();
+}
+
+<a name="TEventWriter:NewChargedCandidate"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:NewChargedCandidate">TEventWriter::NewChargedCandidate</a>() {
+<b>    // Store a new charged track</b>
+    <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:NewChargedTrack">NewChargedTrack</a>();
+}
+
+<a name="TEventWriter:NewNeutralCandidate"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:NewNeutralCandidate">TEventWriter::NewNeutralCandidate</a>() {
+<b>    // Store a new neutral track</b>
+    <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:NewNeutralTrack">NewNeutralTrack</a>();
+}
+
+<b>// _______ Fill TagBase Only ______________________________</b>
+
+<a name="TEventWriter:Fill"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>( <a href=".././PAFTagBase.html">PAFTagBase</a>* c ) {
+<b>    // Fill the TAG</b>
+    <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:AddTag">AddTag</a>(c); 
+}
+
+<a name="TEventWriter:Fill"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>( VAbsBit* b ) {
+<b>    // Fill the BIT</b>
+    VAbsBitBoolIterator boolIter(b);
+    while (boolIter.Next()) {
+	<a href=".././TEventWriter.html#TEventWriter:fBits">fBits</a>-&gt;SetBool(boolIter.Key(),boolIter.Value());
+    } 
+}
+
+<a name="TEventWriter:Fill"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>( VAbsTag* c) {
+<b>    // We have to fill the <a href=".././PAFTagBase.html">PAFTagBase</a> as well</b>
+    <a href=".././PAFTagBase.html">PAFTagBase</a> &amp;tag = <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:GetTag">GetTag</a>();
+    tag.SetNumberOfTracks(c-&gt;GetNumberOfTracks());
+    tag.SetNumberOfGoodTracksLoose(c-&gt;GetNumberOfGoodTracksLoose());
+    tag.SetNumberOfGoodTracksTight(c-&gt;GetNumberOfGoodTracksTight());
+    tag.SetTotalMomentum(c-&gt;GetTotalMomentum());
+    tag.SetTotalEnergy(c-&gt;GetTotalEnergy());
+    tag.SetTotalMass(c-&gt;GetTotalMass());
+    tag.SetPrimaryTrackMomentum(c-&gt;GetPrimaryTrackMomentum());
+    tag.SetPrimaryTrackShowerEnergy(c-&gt;GetPrimaryTrackShowerEnergy());
+    tag.SetPrimaryTrackHypothesis(c-&gt;GetPrimaryTrackHypothesis());
+    tag.SetSecondaryTrackMomentum(c-&gt;GetSecondaryTrackMomentum());
+    tag.SetSecondaryTrackShowerEnergy(c-&gt;GetSecondaryTrackShowerEnergy());
+    tag.SetSecondaryTrackHypothesis(c-&gt;GetSecondaryTrackHypothesis());
+    tag.SetTotalChargeLoose(c-&gt;GetTotalChargeLoose());
+    tag.SetTotalChargeTight(c-&gt;GetTotalChargeTight());
+<b>    // Lepton Information</b>
+<b>    //tag.SetPrimaryLeptonHypothesisLoose(c-&gt;GetPrimaryLeptonHypothesisLoose());</b>
+<b>    //tag.SetSecondaryLeptonHypothesisLoose(c-&gt;GetSecondaryLeptonHypothesisLoose());</b>
+<b>    //tag.SetPrimaryLeptonHypothesisTight(c-&gt;GetPrimaryLeptonHypothesisTight());</b>
+<b>    //tag.SetSecondaryLeptonHypothesisTight(c-&gt;GetSecondaryLeptonHypothesisTight());</b>
+<b>    //tag.SetPrimaryLeptonChargeLoose(c-&gt;GetPrimaryLeptonChargeLoose());</b>
+<b>    //tag.SetSecondaryLeptonChargeLoose(c-&gt;GetSecondaryLeptonChargeLoose());</b>
+<b>    //tag.SetPrimaryLeptonChargeTight(c-&gt;GetPrimaryLeptonChargeTight());</b>
+<b>    //tag.SetSecondaryLeptonChargeTight(c-&gt;GetSecondaryLeptonChargeTight());</b>
+<b>    //tag.SetPrimaryLeptonMomentumLoose(c-&gt;GetPrimaryLeptonMomentumLoose());</b>
+<b>    //tag.SetSecondaryLeptonMomentumLoose(c-&gt;GetSecondaryLeptonMomentumLoose());</b>
+<b>    //tag.SetPrimaryLeptonMomentumTight(c-&gt;GetPrimaryLeptonMomentumTight());</b>
+<b>    //tag.SetSecondaryLeptonMomentumTight(c-&gt;GetSecondaryLeptonMomentumTight());</b>
+<b>    // Calorimeter information</b>
+    tag.SetTotalNeutralEnergy(c-&gt;GetTotalNeutralEnergy());
+    tag.SetHighestEnergyShower(c-&gt;GetHighestEnergyShower());
+    tag.SetSecondHighestEnergyShower(c-&gt;GetSecondHighestEnergyShower());
+<b>    // Vertex and shape</b>
+    tag.SetPrimaryVertex(c-&gt;GetPrimaryVertex());
+    tag.SetPrimaryVertexProbability(c-&gt;GetPrimaryVertexProbability());
+    tag.SetThrust(c-&gt;GetThrust());
+    tag.SetR2(c-&gt;GetR2());   
+<b>    // Particle numbers</b>
+<b>    //tag.SetLeptonsLoose(c-&gt;GetLeptonsLoose());</b>
+    tag.SetElectronsLoose(c-&gt;GetElectronsLoose());
+    tag.SetMuonsLoose(c-&gt;GetMuonsLoose());
+<b>    //tag.SetPionsLoose(c-&gt;GetPionsLoose());</b>
+    tag.SetKaonsLoose(c-&gt;GetKaonsLoose());
+    tag.SetProtonsLoose(c-&gt;GetProtonsLoose());
+    tag.SetGammasLoose(c-&gt;GetGammasLoose());
+    tag.SetMergedPi0Loose(c-&gt;GetMergedPi0Loose());
+<b>    //tag.SetPi0Loose(c-&gt;GetPi0Loose());</b>
+    tag.SetKsLoose(c-&gt;GetKsLoose());
+<b>    //tag.SetLeptonsTight(c-&gt;GetLeptonsTight());</b>
+    tag.SetElectronsTight(c-&gt;GetElectronsTight());
+    tag.SetMuonsTight(c-&gt;GetMuonsTight());
+<b>    //tag.SetPionsTight(c-&gt;GetPionsTight());</b>
+    tag.SetKaonsTight(c-&gt;GetKaonsTight());
+    tag.SetProtonsTight(c-&gt;GetProtonsTight());
+    tag.SetGammasTight(c-&gt;GetGammasTight());
+    tag.SetMergedPi0Tight(c-&gt;GetMergedPi0Tight());
+<b>    //tag.SetPi0Tight(c-&gt;GetPi0Tight());</b>
+    tag.SetKsTight(c-&gt;GetKsTight());
+<b>    // New items for 8.8.0</b>
+    tag.SetBbqqDiscr(c-&gt;GetBbqqDiscr()); 
+    tag.SetBGFR2(c-&gt;GetBGFR2());
+    tag.SetBunchT0DeltaDircTrk(c-&gt;GetBunchT0DeltaDircTrk());
+    tag.SetBunchT0DeltaFF(c-&gt;GetBunchT0DeltaFF()); 
+    tag.SetBunchT0FinderErr(c-&gt;GetBunchT0FinderErr()); 
+    tag.SetBunchT0FitterErr(c-&gt;GetBunchT0FitterErr());
+    tag.SetECharShow(c-&gt;GetECharShow()); 
+    tag.SetElecLoose1cm(c-&gt;GetElecLoose1cm());
+    tag.SetElecLoose1l(c-&gt;GetElecLoose1l());
+    tag.SetElecLoose2cm(c-&gt;GetElecLoose2cm()); 
+    tag.SetElecLoose2l(c-&gt;GetElecLoose2l()); 
+    tag.SetElecTight1cm(c-&gt;GetElecTight1cm());
+    tag.SetElecTight1l(c-&gt;GetElecTight1l()); 
+    tag.SetElecTight2cm(c-&gt;GetElecTight2cm()); 
+    tag.SetElecTight2l(c-&gt;GetElecTight2l());
+    tag.SetENeutShow(c-&gt;GetENeutShow());
+    tag.SetL3OutBhabhaFlatOprValue(c-&gt;GetL3OutBhabhaFlatOprValue()); 
+    tag.SetL3OutBhabhaFlatValue(c-&gt;GetL3OutBhabhaFlatValue());
+    tag.SetMuonLoose1cm(c-&gt;GetMuonLoose1cm()); 
+    tag.SetMuonLoose1l(c-&gt;GetMuonLoose1l()); 
+    tag.SetMuonLoose2cm(c-&gt;GetMuonLoose2cm()); 
+    tag.SetMuonLoose2l(c-&gt;GetMuonLoose2l()); 
+    tag.SetMuonTight1cm(c-&gt;GetMuonTight1cm()); 
+    tag.SetMuonTight1l(c-&gt;GetMuonTight1l()); 
+    tag.SetMuonTight2cm(c-&gt;GetMuonTight2cm()); 
+    tag.SetMuonTight2l(c-&gt;GetMuonTight2l());
+    tag.SetPTotalScalar(c-&gt;GetPTotalScalar());
+    tag.SetR2All(c-&gt;GetR2All());
+    tag.SetSphericityAll(c-&gt;GetSphericityAll()); 
+    tag.SetTagLooseProton_maxCmsP(c-&gt;GetTagLooseProton_maxCmsP()); 
+    tag.SetTagTightProton_maxCmsP(c-&gt;GetTagTightProton_maxCmsP());
+    tag.SetThrustCosThAll(c-&gt;GetThrustCosThAll()); 
+    tag.SetThrustMagAll(c-&gt;GetThrustMagAll()); 
+    tag.SetThrustPhiAll(c-&gt;GetThrustPhiAll());
+    tag.SetD3PS(c-&gt;GetD3PS());
+    tag.SetDmeson0(c-&gt;GetDmeson0()); 
+    tag.SetDsmeson0(c-&gt;GetDsmeson0()); 
+    tag.SetDstar0(c-&gt;GetDstar0());
+    tag.SetDstar1(c-&gt;GetDstar1()); 
+<b>    //tag.SetLumiBhabhaWeight(c-&gt;GetLumiBhabhaWeight());</b>
+    tag.SetNumberOfNeutralCands(c-&gt;GetNumberOfNeutralCands());
+    tag.SetNumberOfNeutralCndLoose(c-&gt;GetNumberOfNeutralCndLoose());
+    tag.SetNumberOfNeutralCndTight(c-&gt;GetNumberOfNeutralCndTight());
+    tag.SetTagEtaPeppTwoBody_maxCmsPmaxCosT(c-&gt;GetTagEtaPeppTwoBody_maxCmsPmaxCosT());
+    tag.SetTagEtaPrhogTwoBody_maxCmsPmaxCosT(c-&gt;GetTagEtaPrhogTwoBody_maxCmsPmaxCosT());
+    tag.SetTagEtaTwoBody_maxCmsPmaxCosT(c-&gt;GetTagEtaTwoBody_maxCmsPmaxCosT());
+    tag.SetTagKstpTwoBody_maxCmsPmaxCosT(c-&gt;GetTagKstpTwoBody_maxCmsPmaxCosT()); 
+    tag.SetTagKstTwoBody_maxCmsPmaxCosT(c-&gt;GetTagKstTwoBody_maxCmsPmaxCosT());
+    tag.SetTagKTwoBody_maxCmsPmaxCosT(c-&gt;GetTagKTwoBody_maxCmsPmaxCosT());
+    tag.SetTagK_S0TwoBody_maxCmsPmaxCosT(c-&gt;GetTagK_S0TwoBody_maxCmsPmaxCosT());
+    tag.SetTagOmegaTwoBody_maxCmsPmaxCosT(c-&gt;GetTagOmegaTwoBody_maxCmsPmaxCosT()); 
+    tag.SetTagPhiTwoBody_maxCmsPmaxCosT(c-&gt;GetTagPhiTwoBody_maxCmsPmaxCosT());
+    tag.SetTagPi0TwoBody_maxCmsPmaxCosT(c-&gt;GetTagPi0TwoBody_maxCmsPmaxCosT());
+    tag.SetTagRhopTwoBody_maxCmsPmaxCosT(c-&gt;GetTagRhopTwoBody_maxCmsPmaxCosT()); 
+    tag.SetTagRhoTwoBody_maxCmsPmaxCosT(c-&gt;GetTagRhoTwoBody_maxCmsPmaxCosT());
+    <a href="#TEventWriter:Fill">Fill</a>(&amp;tag);
+}
+
+<b>// _______ Fill AodBase Only _______________________________</b>
+
+<a name="TEventWriter:Fill"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>( <a href=".././PAFAodBase.html">PAFAodBase</a>* c ) {
+<b>    // Fill the AOD (either charged or neutral)</b>
+    if (c-&gt;GetCharge()==0) {
+	<a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:AddNeutralTrack">AddNeutralTrack</a>();
+	<a href=".././PAFNeutralAodBase.html">PAFNeutralAodBase</a> *cn = (<a href=".././PAFNeutralAodBase.html">PAFNeutralAodBase</a>*) c;
+	new ((*<a href=".././TEventWriter.html#TEventWriter:fAodListNeutral">fAodListNeutral</a>)[<a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:GetNumberOfNeutralTracks">GetNumberOfNeutralTracks</a>()-1]) <a href=".././PAFNeutralAodBase.html">PAFNeutralAodBase</a>(*cn);
+	return <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:GetNumberOfNeutralTracks">GetNumberOfNeutralTracks</a>()-1;
+    } else {
+	<a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:AddChargedTrack">AddChargedTrack</a>();
+	<a href=".././PAFChargedAodBase.html">PAFChargedAodBase</a> *cc = (<a href=".././PAFChargedAodBase.html">PAFChargedAodBase</a>*) c;
+	new ((*<a href=".././TEventWriter.html#TEventWriter:fAodListCharged">fAodListCharged</a>)[<a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:GetNumberOfChargedTracks">GetNumberOfChargedTracks</a>()-1]) <a href=".././PAFChargedAodBase.html">PAFChargedAodBase</a>(*cc);
+	return <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:GetNumberOfChargedTracks">GetNumberOfChargedTracks</a>()-1;
+    }
+}
+
+<a name="TEventWriter:Fill"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>( <a href=".././PAFMcBase.html">PAFMcBase</a>* mc ) 
+{
+    if (!mc) {
+	cout &lt;&lt; "<a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>( <a href=".././PAFMcBase.html">PAFMcBase</a>* ) : error (nil)" &lt;&lt; endl;
+	return;
+    }
+    new (  (*<a href=".././TEventWriter.html#TEventWriter:fMctList">fMctList</a>)[<a href=".././TEventWriter.html#TEventWriter:fNumMcTracks">fNumMcTracks</a>++] ) <a href=".././PAFMcBase.html">PAFMcBase</a>( *mc );
+}
+
+<a name="TEventWriter:Fill"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>( <a href=".././PAFMcAssocBase.html">PAFMcAssocBase</a>* mc ) 
+{
+    if (!mc) {
+	cout &lt;&lt; "<a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>( <a href=".././PAFMcAssocBase.html">PAFMcAssocBase</a>* ) : error (nil)" &lt;&lt; endl;
+	return;
+    }
+    new (  (*<a href=".././TEventWriter.html#TEventWriter:fAssList">fAssList</a>)[<a href=".././TEventWriter.html#TEventWriter:fNumMcAssoc">fNumMcAssoc</a>++] ) <a href=".././PAFMcAssocBase.html">PAFMcAssocBase</a>( *mc );
+}
+
+<a name="TEventWriter:Fill"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>( <a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a>* mc ) 
+{
+/*
+    if (!mc) {
+	cout &lt;&lt; "<a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>( <a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a>* ) : error (nil)" &lt;&lt; endl;
+	return;
+    }
+    new (  (*<a href=".././TEventWriter.html#TEventWriter:fBtaList">fBtaList</a>)[<a href=".././TEventWriter.html#TEventWriter:fNumBtaMcAssoc">fNumBtaMcAssoc</a>++] ) <a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a>( *mc );
+*/
+}
+
+<b>// _____ Fill Tree ___________________________________________</b>
+
+<a name="TEventWriter:Fill"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:Fill">TEventWriter::Fill</a>() {
+<b>    // Fill all trees</b>
+    <a href=".././TEventWriter.html#TEventWriter:fTimeStampMajor">fTimeStampMajor</a> = <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:GetMajorID">GetMajorID</a>();
+    <a href=".././TEventWriter.html#TEventWriter:fTimeStampMinor">fTimeStampMinor</a> = <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:GetMinorID">GetMinorID</a>();
+    TIter iter(<a href=".././TEventWriter.html#TEventWriter:fStreams">fStreams</a>);
+    <a href=".././PAFStream.html">PAFStream</a> *s = 0;
+    while (s = (<a href=".././PAFStream.html">PAFStream</a> *) iter.Next()) {
+	if (s-&gt;IsActive()) s-&gt;GetTree()-&gt;<a href="#TEventWriter:Fill">Fill</a>();
+    }
+    if (<a href=".././TEventWriter.html#TEventWriter:fMap">fMap</a>) <a href=".././TEventWriter.html#TEventWriter:fAodListsComp">fAodListsComp</a>-&gt;<a href=".././PAFListBase.html#PAFListBase:Fill">Fill</a>();
+    <a href=".././TEventWriter.html#TEventWriter:fWriteEvents">fWriteEvents</a>++;
+}
+
+<a name="TEventWriter:InitializeStreams"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:InitializeStreams">TEventWriter::InitializeStreams</a>()
+{
+<b>    // Allocate PAF streams</b>
+    cout &lt;&lt; "<a href=".././TEventWriter.html">TEventWriter</a>: Allocate PAF streams" &lt;&lt; endl;
+    if (<a href=".././TEventWriter.html#TEventWriter:fTag">fTag</a>) <a href=".././TEventWriter.html#TEventWriter:fTagStream">fTagStream</a> = <a href="#TEventWriter:NewStream">NewStream</a>(SUFFTAG,KTAG); cout &lt;&lt; "Add Tag-Stream" &lt;&lt; endl; 
+    if (<a href=".././TEventWriter.html#TEventWriter:fAod">fAod</a>) <a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a> = <a href="#TEventWriter:NewStream">NewStream</a>(SUFFAOD,KAOD); cout &lt;&lt; "Add Aod-Stream" &lt;&lt; endl; 
+    if (<a href=".././TEventWriter.html#TEventWriter:fMct">fMct</a>) <a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a> = <a href="#TEventWriter:NewStream">NewStream</a>(SUFFMCT,KMCT); cout &lt;&lt; "Add Mct-Stream" &lt;&lt; endl;
+    
+<b>    // initialize the "common blocks" (sorry for using fortran slang)</b>
+    
+    <a href=".././TEventWriter.html#TEventWriter:fAodListsComp">fAodListsComp</a>  = new <a href=".././PAFListBase.html">PAFListBase</a>();
+    <a href=".././TEventWriter.html#TEventWriter:fAodListCharged">fAodListCharged</a> = new TClonesArray("<a href=".././PAFChargedAodBase.html">PAFChargedAodBase</a>");
+    <a href=".././TEventWriter.html#TEventWriter:fAodListNeutral">fAodListNeutral</a> = new TClonesArray("<a href=".././PAFNeutralAodBase.html">PAFNeutralAodBase</a>");
+    <a href=".././TEventWriter.html#TEventWriter:fMctList">fMctList</a> = new TClonesArray("<a href=".././PAFMcBase.html">PAFMcBase</a>");
+    <a href=".././TEventWriter.html#TEventWriter:fNumMcTracks">fNumMcTracks</a> = 0;
+    <a href=".././TEventWriter.html#TEventWriter:fAssList">fAssList</a> = new TClonesArray("<a href=".././PAFMcAssocBase.html">PAFMcAssocBase</a>");
+    <a href=".././TEventWriter.html#TEventWriter:fNumMcAssoc">fNumMcAssoc</a> = 0;
+    <a href=".././TEventWriter.html#TEventWriter:fBtaList">fBtaList</a> = 0; //new TClonesArray("<a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a>");
+    <a href=".././TEventWriter.html#TEventWriter:fNumBtaMcAssoc">fNumBtaMcAssoc</a> = 0;
+    
+<b>    // Set up the default streams:</b>
+
+    if (<a href=".././TEventWriter.html#TEventWriter:fTagStream">fTagStream</a>) {
+	<a href=".././TEventWriter.html#TEventWriter:fTagStream">fTagStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddObject">AddObject</a>("",TAGBRANCH,&amp;<a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>,"<a href=".././PAFEventBase.html">PAFEventBase</a>");
+	<a href=".././TEventWriter.html#TEventWriter:fTagStream">fTagStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddLeaflist">AddLeaflist</a>("","TStampMajor",&amp;<a href=".././TEventWriter.html#TEventWriter:fTimeStampMajor">fTimeStampMajor</a>,"i");
+	<a href=".././TEventWriter.html#TEventWriter:fTagStream">fTagStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddLeaflist">AddLeaflist</a>("","TStampMinor",&amp;<a href=".././TEventWriter.html#TEventWriter:fTimeStampMinor">fTimeStampMinor</a>,"i");
+	<a href=".././TEventWriter.html#TEventWriter:fTagStream">fTagStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:Enable">Enable</a>();
+    }
+    
+    if (<a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>) {
+	<a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddClonesArray">AddClonesArray</a>("",AODCBRANCH,&amp;<a href=".././TEventWriter.html#TEventWriter:fAodListCharged">fAodListCharged</a>,"<a href=".././PAFChargedAodBase.html">PAFChargedAodBase</a>");
+	<a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddClonesArray">AddClonesArray</a>("",AODNBRANCH,&amp;<a href=".././TEventWriter.html#TEventWriter:fAodListNeutral">fAodListNeutral</a>,"<a href=".././PAFNeutralAodBase.html">PAFNeutralAodBase</a>");
+	<a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddLeaflist">AddLeaflist</a>("","TStampMajor",&amp;<a href=".././TEventWriter.html#TEventWriter:fTimeStampMajor">fTimeStampMajor</a>,"i");
+	<a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddLeaflist">AddLeaflist</a>("","TStampMinor",&amp;<a href=".././TEventWriter.html#TEventWriter:fTimeStampMinor">fTimeStampMinor</a>,"i");
+	<a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:Enable">Enable</a>();
+    }
+    
+    if (<a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a>) {
+	<a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddClonesArray">AddClonesArray</a>("",MCTBRANCH,&amp;<a href=".././TEventWriter.html#TEventWriter:fMctList">fMctList</a>,"<a href=".././PAFMcBase.html">PAFMcBase</a>");
+	<a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddClonesArray">AddClonesArray</a>("",ASSBRANCH,&amp;<a href=".././TEventWriter.html#TEventWriter:fAssList">fAssList</a>,"<a href=".././PAFMcAssocBase.html">PAFMcAssocBase</a>");
+<b>	//<a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddClonesArray">AddClonesArray</a>("",MAPBRANCH,&amp;<a href=".././TEventWriter.html#TEventWriter:fBtaList">fBtaList</a>,"<a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a>");</b>
+	<a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddLeaflist">AddLeaflist</a>("","NumberOfTracks",&amp;<a href=".././TEventWriter.html#TEventWriter:fNumMcTracks">fNumMcTracks</a>,"I");
+	<a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddLeaflist">AddLeaflist</a>("","TStampMajor",&amp;<a href=".././TEventWriter.html#TEventWriter:fTimeStampMajor">fTimeStampMajor</a>,"i");
+	<a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:AddLeaflist">AddLeaflist</a>("","TStampMinor",&amp;<a href=".././TEventWriter.html#TEventWriter:fTimeStampMinor">fTimeStampMinor</a>,"i");
+	<a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:Enable">Enable</a>();
+    }
+
+}
+
+<a name="TEventWriter:ClearBuffer"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:ClearBuffer">TEventWriter::ClearBuffer</a>() {
+<b>    // Reset all buffers</b>
+    if (<a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>!=0 &amp;&amp; <a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:IsActive">IsActive</a>() ) 
+    { 
+	<a href=".././TEventWriter.html#TEventWriter:fAodListCharged">fAodListCharged</a>-&gt;Clear(); <a href=".././TEventWriter.html#TEventWriter:fAodListNeutral">fAodListNeutral</a>-&gt;Clear();
+	if (<a href=".././TEventWriter.html#TEventWriter:fMap">fMap</a>)  <a href=".././TEventWriter.html#TEventWriter:fAodListsComp">fAodListsComp</a>-&gt;<a href=".././PAFListBase.html#PAFListBase:Reset">Reset</a>(); 
+    }
+    
+
+    if ( <a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a>!=0 &amp;&amp; <a href=".././TEventWriter.html#TEventWriter:fMctStream">fMctStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:IsActive">IsActive</a>() ) {
+	<a href=".././TEventWriter.html#TEventWriter:fMctList">fMctList</a>-&gt;Clear();
+	<a href=".././TEventWriter.html#TEventWriter:fNumMcTracks">fNumMcTracks</a> = 0;
+	<a href=".././TEventWriter.html#TEventWriter:fAssList">fAssList</a>-&gt;Clear();
+	<a href=".././TEventWriter.html#TEventWriter:fNumMcAssoc">fNumMcAssoc</a> = 0;
+<b>	//<a href=".././TEventWriter.html#TEventWriter:fBtaList">fBtaList</a>-&gt;Clear();</b>
+	<a href=".././TEventWriter.html#TEventWriter:fNumBtaMcAssoc">fNumBtaMcAssoc</a> = 0;
+    }
+}
+
+<a name="TEventWriter:Store"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:Store">TEventWriter::Store</a>() {
+    if (<a href=".././TEventWriter.html#TEventWriter:fWriter">fWriter</a>) {
+<b>	// Write the trees to file</b>
+	cout&lt;&lt;"Writing "&lt;&lt;endl;
+<b>	//write files</b>
+	TIter iter(<a href=".././TEventWriter.html#TEventWriter:fStreams">fStreams</a>);
+	<a href=".././PAFStream.html">PAFStream</a> *s = 0;
+	while (s = (<a href=".././PAFStream.html">PAFStream</a> *) iter.Next()) {
+	    if (s-&gt;IsActive() &amp;&amp; s-&gt;GetFile() ) {
+		cout &lt;&lt; s-&gt;GetFileNameBase();
+		s-&gt;GetFile()-&gt;Write();
+		s-&gt;GetFile()-&gt;Close();
+	    }
+	}
+	cout &lt;&lt; endl;
+	cout&lt;&lt;"Wrote "&lt;&lt;<a href=".././TEventWriter.html#TEventWriter:fWriteEvents">fWriteEvents</a>&lt;&lt;" events"&lt;&lt;endl;
+    }
+    if (<a href=".././TEventWriter.html#TEventWriter:fWriteCollection">fWriteCollection</a>) {
+	delete <a href=".././TEventWriter.html#TEventWriter:fCollection">fCollection</a>;
+	cout&lt;&lt;"Collected "&lt;&lt;<a href=".././TEventWriter.html#TEventWriter:fWriteEvents">fWriteEvents</a>&lt;&lt;" events"&lt;&lt;endl;
+    }
+}
+
+<a name="TEventWriter:NewStream"> </a><a href=".././PAFStream.html">PAFStream</a>* <a href=".././TEventWriter.html#TEventWriter:NewStream">TEventWriter::NewStream</a>(const <a href="../ListOfTypes.html#char">char</a>* AFileNameBase, const <a href="../ListOfTypes.html#char">char</a>* ATreeName)
+{
+    <a href=".././PAFStream.html">PAFStream</a> *s= new <a href=".././PAFStream.html">PAFStream</a>(AFileNameBase,ATreeName);  
+    <a href=".././TEventWriter.html#TEventWriter:fStreams">fStreams</a>-&gt;Add(s);
+    return s;
+}
+
+<a name="TEventWriter:GetRunNumber"> </a><a href="../ListOfTypes.html#UInt_t">UInt_t</a> <a href=".././TEventWriter.html#TEventWriter:GetRunNumber">TEventWriter::GetRunNumber</a>() const {
+<b>    // Return the actual run number</b>
+    return <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:GetRunNumber">GetRunNumber</a>();
+}
+
+<a name="TEventWriter:GetEventNumber"> </a><a href="../ListOfTypes.html#UInt_t">UInt_t</a> <a href=".././TEventWriter.html#TEventWriter:GetEventNumber">TEventWriter::GetEventNumber</a>() const {
+<b>    // Return the actual event number</b>
+    return <a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>-&gt;<a href=".././PAFEventBase.html#PAFEventBase:GetEventNumber">GetEventNumber</a>();
+}
+
+<b>// Access to object handles</b>
+
+<a name="TEventWriter:GetHeader"> </a><a href=".././PAFEventBase.html">PAFEventBase</a>&amp; <a href=".././TEventWriter.html#TEventWriter:GetHeader">TEventWriter::GetHeader</a>() const {
+<b>    // Return a handle to the event header</b>
+    return *<a href=".././TEventWriter.html#TEventWriter:fContent">fContent</a>;
+}    
+
+<a name="TEventWriter:GetTag"> </a>VAbsTag&amp; <a href=".././TEventWriter.html#TEventWriter:GetTag">TEventWriter::GetTag</a>() const {
+<b>    // Return a handle to the TAG</b>
+    return *<a href=".././TEventWriter.html#TEventWriter:fBits">fBits</a>;
+}
+
+<a name="TEventWriter:GetBit"> </a>VAbsBit&amp; <a href=".././TEventWriter.html#TEventWriter:GetBit">TEventWriter::GetBit</a>() const {
+<b>    // Return a handle to the BIT</b>
+    return *<a href=".././TEventWriter.html#TEventWriter:fBits">fBits</a>;
+}    
+
+<a name="TEventWriter:GetListBase"> </a><a href=".././PAFListBase.html">PAFListBase</a>&amp; <a href=".././TEventWriter.html#TEventWriter:GetListBase">TEventWriter::GetListBase</a>() const {
+    if (<a href=".././TEventWriter.html#TEventWriter:fAodListsComp">fAodListsComp</a>-&gt;<a href=".././PAFListBase.html#PAFListBase:GetTree">GetTree</a>()==0) {
+	<a href=".././TEventWriter.html#TEventWriter:fAodListsComp">fAodListsComp</a>-&gt;<a href=".././PAFListBase.html#PAFListBase:SetMode">SetMode</a>(1); // Set to write - mode
+<b>	//<a href=".././TEventWriter.html#TEventWriter:fAodStream">fAodStream</a>-&gt;<a href=".././PAFStream.html#PAFStream:GetFile">GetFile</a>()-&gt;cd();</b>
+	<a href=".././TEventWriter.html#TEventWriter:fAodListsComp">fAodListsComp</a>-&gt;<a href=".././PAFListBase.html#PAFListBase:SetTree">SetTree</a>(new TTree("CompTree","Tree of comp. AOD - objects"));
+    }
+    return *<a href=".././TEventWriter.html#TEventWriter:fAodListsComp">fAodListsComp</a>;
+}
+
+<a name="TEventWriter:SetStreamStatus"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TEventWriter.html#TEventWriter:SetStreamStatus">TEventWriter::SetStreamStatus</a>(const <a href="../ListOfTypes.html#char">char</a> *stream,<a href="../ListOfTypes.html#Bool_t">Bool_t</a> status)
+{
+    TString s(stream);
+    if (s=="tag")
+	<a href=".././TEventWriter.html#TEventWriter:fTag">fTag</a> = status;
+    else if (s=="aod"||s=="micro")
+	<a href=".././TEventWriter.html#TEventWriter:fAod">fAod</a> = status;
+    else if (s=="mct")
+	<a href=".././TEventWriter.html#TEventWriter:fMct">fMct</a> = status;
+    else if (s=="map"||s=="readMaps")
+	<a href=".././TEventWriter.html#TEventWriter:fMap">fMap</a> = status;
+    else {
+	cerr &lt;&lt; "<a href=".././PAFReader.html#PAFReader:SetStreamStatus">PAFReader::SetStreamStatus</a>: Stream not defined " &lt;&lt; stream &lt;&lt; endl;
+	return kFALSE;
+    }
+
+    TString stat("on");
+    if (!status) stat = "off";
+    cout &lt;&lt; "<a href=".././TEventWriter.html#TEventWriter:SetStreamStatus">TEventWriter::SetStreamStatus</a>: " &lt;&lt; s &lt;&lt; "=" &lt;&lt; stat &lt;&lt; endl;
+
+    return kTRUE;
+}
+
+<a name="TEventWriter:WriteEvent"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TEventWriter.html#TEventWriter:WriteEvent">TEventWriter::WriteEvent</a>(<a href=".././TEventManager.html">TEventManager</a> *evtmgr, TCandList *list)
+{
+#ifdef DEBUG
+    cout &lt;&lt; "TEventWriter " &lt;&lt; GetName() &lt;&lt; ": Write event #" &lt;&lt; evtmgr-&gt;GetEventNumber() &lt;&lt; endl;
+#endif
+
+    if (fWriteCollection) {
+	VAbsCollection *collection = GetCollection();
+	if (collection!=0) {
+	    fWriteEvents++;
+	    evtmgr-&gt;AddEventToCollection(collection);
+<b>	    //collection-&gt;<a href="#TEventWriter:Fill">Fill</a>(GetNumberOfEventsProcessed(),GetMajorID(),GetMinorID());</b>
+	}
+	return;
+    }
+
+    if (<a href="#TEventWriter:Map">Map</a>()) {
+#ifdef DEBUG
+	cout &lt;&lt; "Lists in the event:" &lt;&lt; evtmgr-&gt;GetNumberOfLists() &lt;&lt; endl;
+	for (int i=0;i&lt;evtmgr-&gt;GetNumberOfLists();i++) 
+	    cout &lt;&lt; evtmgr-&gt;GetListName(i) &lt;&lt; endl;
+#endif
+<b>	// Set up the default lists</b>
+	static <a href="../ListOfTypes.html#Bool_t">Bool_t</a> initialized = kFALSE;
+	if (!initialized) {
+	    initialized = kTRUE;
+	    TTree *originalListTree = evtmgr-&gt;<a href="#TEventWriter:GetListBase">GetListBase</a>().GetTree();
+	    if (originalListTree!=0) {
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("TaggingList");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("NeutralHadEMCNeutral");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("CalorClusterNeutral");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("SingleBumpNeutralClusters");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("pi0MergedDefault");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("eLoose");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("eTight");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("eDefault");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("muLoose");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("muTight");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("muDefault");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("piLoose");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("piTight");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("piDefault");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("KLoose");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("KTight");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("KDefault");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("pLoose");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("pTight");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("pDefault");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("MergedPi0s");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("KsDefault");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("KsLoose");
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList("KsTight");
+	    }
+	}
+    }
+    
+    <a href="#TEventWriter:NewEvent">NewEvent</a>();
+    
+    <a href="#TEventWriter:GetHeader">GetHeader</a>().SetMajorID(evtmgr-&gt;GetMajorID());
+    <a href="#TEventWriter:GetHeader">GetHeader</a>().SetMinorID(evtmgr-&gt;GetMinorID());
+    <a href="#TEventWriter:GetHeader">GetHeader</a>().SetRunNumber(evtmgr-&gt;<a href="#TEventWriter:GetRunNumber">GetRunNumber</a>());
+    
+<b>    // Copy Tag </b>
+<b>    //if (<a href="#TEventWriter:Tag">Tag</a>()) <a href="#TEventWriter:Fill">Fill</a>(&amp;<a href="#TEventWriter:GetTag">GetTag</a>());</b>
+    if (<a href="#TEventWriter:Tag">Tag</a>()) <a href="#TEventWriter:Fill">Fill</a>(&amp;<a href="#TEventWriter:GetBit">GetBit</a>());
+    
+    if (<a href="#TEventWriter:Aod">Aod</a>()) {
+<b>	// Copy micro</b>
+	if (list != 0) { // Dump tracks in the list
+	    <a href="#TEventWriter:DumpList">DumpList</a>(list);
+	}
+	else { // Dump all tracks in the event
+	    static TCandList tracks;
+	    evtmgr-&gt;<a href="#TEventWriter:Fill">Fill</a>(&amp;tracks);
+	    <a href="#TEventWriter:DumpList">DumpList</a>(&amp;tracks);
+	}
+    }
+    
+<b>    // Copy Lists</b>
+    
+<b>    // The reading of the lists translates Kanga-&gt;PAF</b>
+    
+    if (<a href="#TEventWriter:Map">Map</a>()) {
+	
+	<a href="#TEventWriter:GetListBase">GetListBase</a>().Reset();
+	<a href=".././PAFListBase.html">PAFListBase</a>&amp; theListBase = evtmgr-&gt;<a href="#TEventWriter:GetListBase">GetListBase</a>();
+	theListBase.Reset();
+
+	for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;evtmgr-&gt;GetNumberOfLists();i++) {
+	    TCandList dummy;
+	    TString name = evtmgr-&gt;GetListName(i);
+	    evtmgr-&gt;FillFromList(&amp;dummy,name); // Try to get the list from evm
+#ifdef DEBUG
+	    cout &lt;&lt; "Read list " &lt;&lt; name.Data() &lt;&lt; ":" &lt;&lt; dummy.GetNumberOfCandidates() &lt;&lt; endl;
+#endif
+	}
+	
+<b>	// Set up a copy of the lists in the writing event manager</b>
+<b>	// Always add the lists, as new lists might show up</b>
+	TTree *originalListTree = evtmgr-&gt;<a href="#TEventWriter:GetListBase">GetListBase</a>().GetTree();
+	if (originalListTree!=0) {
+	    TObjArray *branchList = originalListTree-&gt;GetListOfBranches();
+	    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> k=0; k&lt;branchList-&gt;GetEntriesFast(); k++) {
+		TBranch *br = (TBranch*) ((*branchList)[k]);
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().AddList((<a href="../ListOfTypes.html#char">char</a>*)br-&gt;GetName());
+		<a href="#TEventWriter:GetListBase">GetListBase</a>().SetActiveList(br-&gt;GetName());
+		TClonesArray *originalList = evtmgr-&gt;<a href="#TEventWriter:GetListBase">GetListBase</a>().GetList(br-&gt;GetName(),evtmgr-&gt;GetCurrentIndex());
+		<a href="../ListOfTypes.html#Int_t">Int_t</a> originalListLen = evtmgr-&gt;<a href="#TEventWriter:GetListBase">GetListBase</a>().GetListLength(br-&gt;GetName(),evtmgr-&gt;GetCurrentIndex());
+		for (<a href="../ListOfTypes.html#Int_t">Int_t</a> l=0; l&lt;originalListLen; l++) {
+		    <a href=".././PAFCompAodBase.html">PAFCompAodBase</a> *b1 = (<a href=".././PAFCompAodBase.html">PAFCompAodBase</a>*) ((*originalList)[l]);
+		    <a href="#TEventWriter:GetListBase">GetListBase</a>().AddCompAodBase(*b1);
+		}
+#ifdef DEBUG
+		cout &lt;&lt; "Write list " &lt;&lt; br-&gt;GetName() &lt;&lt; ":" &lt;&lt; originalListLen &lt;&lt; endl;
+#endif
+	    }
+	}
+    }
+
+    
+<b>    // Copy MC-truth</b>
+    
+    if (<a href="#TEventWriter:Mct">Mct</a>()) {
+	for (<a href="../ListOfTypes.html#int">int</a> j=0;j&lt;evtmgr-&gt;GetNumberOfMcTruthTracks();j++)
+	    <a href="#TEventWriter:Fill">Fill</a>(&amp;evtmgr-&gt;GetReader()-&gt;GetMcBase(j));
+	for (<a href="../ListOfTypes.html#int">int</a> k=0;k&lt;evtmgr-&gt;GetReader()-&gt;GetNumberOfCandAssocs();k++) {
+	    <a href="#TEventWriter:Fill">Fill</a>(&amp;evtmgr-&gt;GetReader()-&gt;GetMcAssocBase(k));
+	    <a href="#TEventWriter:Fill">Fill</a>(&amp;evtmgr-&gt;GetReader()-&gt;GetCandAssocMap(k));
+	}
+    }
+    
+<b>    // Dump all </b>
+    <a href="#TEventWriter:Fill">Fill</a>();
+    <a href="#TEventWriter:ClearBuffer">ClearBuffer</a>();
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

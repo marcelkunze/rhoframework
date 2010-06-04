@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:40 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TBtaPidInfoR</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TBtaPidInfoR</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TBtaPidInfoR:description">class description</a> - <a href="src/TBtaPidInfoR.cxx.html">source file</a> - <a href="TBtaPidInfoR_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TBtaPidInfoR" href="TBtaPidInfoR.h">TBtaPidInfoR</a> </h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->       <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:TBtaPidInfoR">TBtaPidInfoR</a><!--PLAIN-->(const <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a>&amp;)
+<!--TAB6-->      <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a>&amp; <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:operator=">operator=</a><!--PLAIN-->(const <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a>&amp;)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->         <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:TBtaPidInfoR">TBtaPidInfoR</a><!--PLAIN-->()
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:~TBtaPidInfoR">~TBtaPidInfoR</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:GetCoBits">GetCoBits</a><!--PLAIN-->(<a href="ListOfTypes.html#UChar_t">UChar_t</a>* bits) const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:GetCoLhoods">GetCoLhoods</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>* lhoods) const
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:GetConsistency">GetConsistency</a><!--PLAIN-->(<a href="./PidSystem.html#PidSystem:System">PidSystem::System</a> sys)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:GetCoValues">GetCoValues</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>* values) const
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:GetLikelihood">GetLikelihood</a><!--PLAIN-->(<a href="./PidSystem.html#PidSystem:System">PidSystem::System</a> sys)
+<!--TAB6-->             <a href="ListOfTypes.html#UShort_t">UShort_t</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:GetNent">GetNent</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#UChar_t">UChar_t</a>* <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:GetStatus">GetStatus</a><!--PLAIN-->(<a href="./PidSystem.html#PidSystem:System">PidSystem::System</a> sys)
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:Reset">Reset</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:SetCoBits">SetCoBits</a><!--PLAIN-->(const <a href="ListOfTypes.html#UChar_t">UChar_t</a>* bits)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:SetCoLhoods">SetCoLhoods</a><!--PLAIN-->(const <a href="ListOfTypes.html#Float_t">Float_t</a>* lhoods)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:SetCoValues">SetCoValues</a><!--PLAIN-->(const <a href="ListOfTypes.html#Float_t">Float_t</a>* values)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:SetNent">SetNent</a><!--PLAIN-->(<a href="ListOfTypes.html#UShort_t">UShort_t</a> nent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaPidInfoR:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TBtaPidInfoR:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->                  <a href="ListOfTypes.html#UShort_t">UShort_t</a> <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:_nent">_nent</a><!--PLAIN-->          <!--TAB--><i><a name="Title:_nent">Number of actual entries in arrays</a></i>
+<!--TAB6-->                   <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:_coValues">_coValues[30]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_coValues">Consistency values</a></i>
+<!--TAB6-->                   <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:_coLhoods">_coLhoods[30]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_coLhoods">Consistency likelihoods</a></i>
+<!--TAB6-->                   <a href="ListOfTypes.html#UChar_t">UChar_t</a> <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:_coBits">_coBits[30]</a><!--PLAIN-->    <!--TAB--><i><a name="Title:_coBits">Consistency sign and status bits</a></i>
+<!--TAB6-->                  <a href="ListOfTypes.html#UShort_t">UShort_t</a> <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:_Cons">_Cons[25]</a><!--PLAIN-->      <!--TAB--><i><a name="Title:_Cons">Dch/Svt/Drc/Emc/Ifr Consistency</a></i>
+<!--TAB6-->                    <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:_status">_status[25]</a><!--PLAIN-->    <!--TAB--><i><a name="Title:_status"></a></i>
+<!--TAB6-->      static ComPackUFloat <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:packer">packer</a><!--PLAIN-->         <!--TAB--><i><a name="Title:packer"></a></i>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->       static const <a href="./TBtaPidInfoR.html#TBtaPidInfoR:dims">TBtaPidInfoR::dims</a> <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:NCHENT">NCHENT</a><!--PLAIN-->   <!--TAB--><i><a name="Title:NCHENT"></a></i>
+<!--TAB6-->       static const <a href="./TBtaPidInfoR.html#TBtaPidInfoR:dims">TBtaPidInfoR::dims</a> <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:NNEUENT">NNEUENT</a><!--PLAIN-->  <!--TAB--><i><a name="Title:NNEUENT"></a></i>
+<!--TAB6-->      static const enum <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a>:: <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:FRACLEN">FRACLEN</a><!--PLAIN-->  <!--TAB--><i><a name="Title:FRACLEN"></a></i>
+<!--TAB6-->      static const enum <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a>:: <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:EXPLEN">EXPLEN</a><!--PLAIN-->   <!--TAB--><i><a name="Title:EXPLEN"></a></i>
+<!--TAB6-->      static const enum <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a>:: <!--TAB--><!--BOLD--><a name="TBtaPidInfoR:BIAS">BIAS</a><!--PLAIN-->     <!--TAB--><i><a name="Title:BIAS"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TBtaPidInfoR:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--> <a name="TBtaPidInfoR:TBtaPidInfoR" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:TBtaPidInfoR">TBtaPidInfoR</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TBtaPidInfoR:~TBtaPidInfoR" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:~TBtaPidInfoR">~TBtaPidInfoR</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:Reset" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:Reset">Reset</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:Streamer" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:Streamer">Streamer</a>( TBuffer &amp; R__b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UShort_t">UShort_t</a> <a name="TBtaPidInfoR:GetNent" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:GetNent">GetNent</a>() const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:GetCoValues" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:GetCoValues">GetCoValues</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> values[<a href="./TBtaPidInfoR.html#TBtaPidInfoR:NCHENT">NCHENT</a>]) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:GetCoLhoods" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:GetCoLhoods">GetCoLhoods</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> lhoods[<a href="./TBtaPidInfoR.html#TBtaPidInfoR:NCHENT">NCHENT</a>]) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:GetCoBits" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:GetCoBits">GetCoBits</a>(<a href="ListOfTypes.html#UChar_t">UChar_t</a> bits[<a href="./TBtaPidInfoR.html#TBtaPidInfoR:NCHENT">NCHENT</a>]) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:SetCoValues" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:SetCoValues">SetCoValues</a>(const <a href="ListOfTypes.html#Float_t">Float_t</a> values[<a href="./TBtaPidInfoR.html#TBtaPidInfoR:NCHENT">NCHENT</a>])
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:SetCoLhoods" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:SetCoLhoods">SetCoLhoods</a>(const <a href="ListOfTypes.html#Float_t">Float_t</a> lhoods[<a href="./TBtaPidInfoR.html#TBtaPidInfoR:NCHENT">NCHENT</a>])
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:SetCoBits" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:SetCoBits">SetCoBits</a>(const <a href="ListOfTypes.html#UChar_t">UChar_t</a> bits[<a href="./TBtaPidInfoR.html#TBtaPidInfoR:NCHENT">NCHENT</a>])
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TBtaPidInfoR:GetConsistency" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:GetConsistency">GetConsistency</a>(<a href="./PidSystem.html#PidSystem:System">PidSystem::System</a> sys)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TBtaPidInfoR:GetLikelihood" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:GetLikelihood">GetLikelihood</a>(<a href="./PidSystem.html#PidSystem:System">PidSystem::System</a> sys)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UChar_t">UChar_t</a>* <a name="TBtaPidInfoR:GetStatus" href="src/TBtaPidInfoR.cxx.html#TBtaPidInfoR:GetStatus">GetStatus</a>(<a href="./PidSystem.html#PidSystem:System">PidSystem::System</a> sys)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:SetNent" href="TBtaPidInfoR.h">SetNent</a>(<a href="ListOfTypes.html#UShort_t">UShort_t</a> nent)
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a> <a name="TBtaPidInfoR:TBtaPidInfoR" href="TBtaPidInfoR.h">TBtaPidInfoR</a>(const <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a>&amp; <a name="TBtaPidInfoR:operator=" href="TBtaPidInfoR.h">operator=</a>(const <a href="./TBtaPidInfoR.html">TBtaPidInfoR</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->              TClass* <a name="TBtaPidInfoR:Class" href="TBtaPidInfoR.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->              TClass* <a name="TBtaPidInfoR:IsA" href="TBtaPidInfoR.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:ShowMembers" href="TBtaPidInfoR.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TBtaPidInfoR:StreamerNVirtual" href="TBtaPidInfoR.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:40 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

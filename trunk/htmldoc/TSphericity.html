@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:27 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TSphericity</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TSphericity</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TSphericity:description">class description</a> - <a href="src/TSphericity.cxx.html">source file</a> - <a href="TSphericity_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TSphericity" href="TSphericity.h">TSphericity</a> : public TObject</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->          <a href="./TSphericity.html">TSphericity</a> <!--TAB--><!--BOLD--><a href="#TSphericity:TSphericity">TSphericity</a><!--PLAIN-->(TCandList&amp;, const TEventInfo&amp;, <a href="ListOfTypes.html#Bool_t">Bool_t</a> chargedTracksOnly = kTRUE)
+<!--TAB6-->          <a href="./TSphericity.html">TSphericity</a> <!--TAB--><!--BOLD--><a href="#TSphericity:TSphericity">TSphericity</a><!--PLAIN-->(const <a href="./TSphericity.html">TSphericity</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSphericity:~TSphericity">~TSphericity</a><!--PLAIN-->()
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TSphericity:Apl">Apl</a><!--PLAIN-->() const
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TSphericity:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->              TVector <!--TAB--><!--BOLD--><a href="#TSphericity:EValues">EValues</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TSphericity:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TSphericity:Pla">Pla</a><!--PLAIN-->() const
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#TSphericity:SecAx">SecAx</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSphericity:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TSphericity:Sph">Sph</a><!--PLAIN-->() const
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#TSphericity:SphAx">SphAx</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSphericity:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSphericity:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#TSphericity:ThrAx">ThrAx</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="TSphericity:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->        <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a name="TSphericity:_sph">_sph</a><!--PLAIN-->    <!--TAB--><i><a name="Title:_sph">!</a></i>
+<!--TAB6-->        <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a name="TSphericity:_apl">_apl</a><!--PLAIN-->    <!--TAB--><i><a name="Title:_apl">!</a></i>
+<!--TAB6-->        <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a name="TSphericity:_pla">_pla</a><!--PLAIN-->    <!--TAB--><i><a name="Title:_pla">!</a></i>
+<!--TAB6-->      TVector3 <!--TAB--><!--BOLD--><a name="TSphericity:_sphAx">_sphAx</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_sphAx">!</a></i>
+<!--TAB6-->      TVector3 <!--TAB--><!--BOLD--><a name="TSphericity:_secAx">_secAx</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_secAx">!</a></i>
+<!--TAB6-->      TVector3 <!--TAB--><!--BOLD--><a name="TSphericity:_thrAx">_thrAx</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_thrAx">!</a></i>
+<!--TAB6-->       TVector <!--TAB--><!--BOLD--><a name="TSphericity:_E">_E</a><!--PLAIN-->      <!--TAB--><i><a name="Title:_E">!</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TSphericity:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--> <a name="TSphericity:TSphericity" href="src/TSphericity.cxx.html#TSphericity:TSphericity">TSphericity</a>(TCandList&amp; list, 
+			 const TEventInfo&amp; evtinfo,
+			 <a href="ListOfTypes.html#Bool_t">Bool_t</a> chargedTracksOnly) 
+			 : <a href="./TSphericity.html#TSphericity:_E">_E</a>(3)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TSphericity:~TSphericity" href="src/TSphericity.cxx.html#TSphericity:~TSphericity">~TSphericity</a>() <br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#double">double</a> <a name="TSphericity:Sph" href="TSphericity.h">Sph</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#double">double</a> <a name="TSphericity:Apl" href="TSphericity.h">Apl</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#double">double</a> <a name="TSphericity:Pla" href="TSphericity.h">Pla</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->           TVector3 <a name="TSphericity:SphAx" href="TSphericity.h">SphAx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->           TVector3 <a name="TSphericity:SecAx" href="TSphericity.h">SecAx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->           TVector3 <a name="TSphericity:ThrAx" href="TSphericity.h">ThrAx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->            TVector <a name="TSphericity:EValues" href="TSphericity.h">EValues</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TSphericity:Class" href="TSphericity.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TSphericity:IsA" href="TSphericity.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TSphericity:ShowMembers" href="TSphericity.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TSphericity:Streamer" href="TSphericity.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TSphericity:StreamerNVirtual" href="TSphericity.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TSphericity.html">TSphericity</a> <a name="TSphericity:TSphericity" href="TSphericity.h">TSphericity</a>(const <a href="./TSphericity.html">TSphericity</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:28 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

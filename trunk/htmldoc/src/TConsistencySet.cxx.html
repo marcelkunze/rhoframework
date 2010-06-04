@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:44 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TConsistencySet - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TConsistencySet.html">TConsistencySet</a>			    				//</b>
+<b>//                                                                      //</b>
+<b>// Combined consistency class						//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, RUB, Nov. 99					//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//                                                                      //</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "RhoMath/TConsistencySet.h"
+
+ClassImp(TConsistencySet)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TConsistencySet *&amp;obj)
+{
+   obj = (TConsistencySet *) buf.ReadObject(TConsistencySet::Class());
+   return buf;
+}
+
+<b>//-------------</b>
+<b>// C Headers --</b>
+<b>//-------------</b>
+#include &lt;assert.h&gt;
+
+<b>//---------------</b>
+<b>// C++ Headers --</b>
+<b>//---------------</b>
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+<a name="TConsistencySet:TConsistencySet"> </a><a href=".././TConsistencySet.html#TConsistencySet:TConsistencySet">TConsistencySet::TConsistencySet</a>()
+{
+}
+
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+<a name="TConsistencySet:~TConsistencySet"> </a><a href=".././TConsistencySet.html">TConsistencySet</a>::~<a href=".././TConsistencySet.html">TConsistencySet</a>()
+{
+}
+
+<b>//-------------</b>
+<b>// Methods   --</b>
+<b>//-------------</b>
+<a href="../ListOfTypes.html#size_t">size_t</a>
+<a name="TConsistencySet:NParents"> </a><a href=".././TConsistencySet.html#TConsistencySet:NParents">TConsistencySet::NParents</a>() const
+{
+    return <a href=".././TConsistencySet.html#TConsistencySet:fConsistencyList">fConsistencyList</a>.GetSize();
+}
+
+<a href=".././TConsistency.html">TConsistency</a>*        
+<a name="TConsistencySet:GetConsistency"> </a><a href=".././TConsistencySet.html#TConsistencySet:GetConsistency">TConsistencySet::GetConsistency</a>( <a href="../ListOfTypes.html#size_t">size_t</a> index )
+{
+    if( index&gt;=<a href=".././TConsistencySet.html#TConsistencySet:fConsistencyList">fConsistencyList</a>.GetSize() ) return 0;
+    return (<a href=".././TConsistency.html">TConsistency</a>*) <a href=".././TConsistencySet.html#TConsistencySet:fConsistencyList">fConsistencyList</a>.At(index);
+}
+
+<a href=".././TConsistency.html">TConsistency</a>*        
+<a name="TConsistencySet:GetLabelConsistency"> </a><a href=".././TConsistencySet.html#TConsistencySet:GetLabelConsistency">TConsistencySet::GetLabelConsistency</a>( const <a href="../ListOfTypes.html#char">char</a>* label )
+{
+    return (<a href=".././TConsistency.html">TConsistency</a>*) <a href=".././TConsistencySet.html#TConsistencySet:fConsistencyList">fConsistencyList</a>.FindObject( label );
+}
+
+const <a href="../ListOfTypes.html#char">char</a>* 
+<a name="TConsistencySet:GetLabel"> </a><a href=".././TConsistencySet.html#TConsistencySet:GetLabel">TConsistencySet::GetLabel</a>( <a href="../ListOfTypes.html#size_t">size_t</a> index )
+{
+    if( index&gt;=<a href=".././TConsistencySet.html#TConsistencySet:fConsistencyList">fConsistencyList</a>.GetSize() ) return 0;
+    return <a href=".././TConsistencySet.html#TConsistencySet:fConsistencyList">fConsistencyList</a>.At(index)-&gt;GetName();
+}
+
+<a href="../ListOfTypes.html#Double_t">Double_t</a>      
+<a name="TConsistencySet:WorstSignificance"> </a><a href=".././TConsistencySet.html#TConsistencySet:WorstSignificance">TConsistencySet::WorstSignificance</a>()
+{
+    <a href="../ListOfTypes.html#size_t">size_t</a> index;
+    if( !<a href="#TConsistencySet:WorstSignificanceIndex_">WorstSignificanceIndex_</a>( index ) ) return 0.;
+    <a href=".././TConsistency.html">TConsistency</a>* cons = <a href="#TConsistencySet:GetConsistency">GetConsistency</a>( index );
+    assert( cons!=0 );
+    return cons-&gt;SignificanceLevel();
+}
+
+const <a href="../ListOfTypes.html#char">char</a>* 
+<a name="TConsistencySet:WorstSignificanceLabel"> </a><a href=".././TConsistencySet.html#TConsistencySet:WorstSignificanceLabel">TConsistencySet::WorstSignificanceLabel</a>()
+{
+    <a href="../ListOfTypes.html#size_t">size_t</a> index;
+    if( !<a href="#TConsistencySet:WorstSignificanceIndex_">WorstSignificanceIndex_</a>( index ) ) return 0;
+    return <a href="#TConsistencySet:GetLabel">GetLabel</a>( index );
+}
+
+<a href=".././TConsistencySet.html">TConsistencySet</a>* 
+<a name="TConsistencySet:Overlap"> </a><a href=".././TConsistencySet.html#TConsistencySet:Overlap">TConsistencySet::Overlap</a>(<a href=".././TConsistencySet.html">TConsistencySet</a>&amp; other)
+{
+    <a href=".././TConsistencySet.html">TConsistencySet</a>* result = 0;
+    
+    for (<a href="../ListOfTypes.html#size_t">size_t</a> i=0; i&lt;this-&gt;<a href="#TConsistencySet:NParents">NParents</a>(); i++ ) {
+	if ( 0 != other.<a href="#TConsistencySet:GetLabelConsistency">GetLabelConsistency</a>(this-&gt;<a href="#TConsistencySet:GetLabel">GetLabel</a>(i)) ) {
+	    if ( 0 == result ) {
+		result = new <a href=".././TConsistencySet.html">TConsistencySet</a>;
+	    }
+	    
+	    result-&gt;<a href="#TConsistencySet:Add">Add</a>(this-&gt;<a href="#TConsistencySet:GetLabel">GetLabel</a>(i), *(this-&gt;<a href="#TConsistencySet:GetConsistency">GetConsistency</a>(i)) );
+	}
+    }
+    
+    return result;
+}
+
+
+
+<b>//-------------</b>
+<b>// Operators --</b>
+<b>//-------------</b>
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> 
+<a href=".././TConsistencySet.html#TConsistencySet:operator">TConsistencySet::operator</a>==(<a href=".././TConsistencySet.html">TConsistencySet</a>&amp; rhs) {
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> retval = kFALSE;
+    
+<b>    // just in case</b>
+    if ( this != &amp;rhs ) {
+	
+	if ( this-&gt;<a href="#TConsistencySet:NParents">NParents</a>() == rhs.<a href="#TConsistencySet:NParents">NParents</a>() ) {
+	    
+	    retval = kTRUE;
+	    for (<a href="../ListOfTypes.html#size_t">size_t</a> i=0;i&lt;<a href="#TConsistencySet:NParents">NParents</a>();i++) {
+<b>		// order is not guaranteed to be the same even for equal objects</b>
+		if ( 0 == rhs.<a href="#TConsistencySet:GetLabelConsistency">GetLabelConsistency</a>(this-&gt;<a href="#TConsistencySet:GetLabel">GetLabel</a>(i)) ) {
+		    retval = kFALSE;
+		    return retval;
+		}
+	    }
+	}
+    }
+    
+    return retval;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> 
+<a href=".././TConsistencySet.html#TConsistencySet:operator">TConsistencySet::operator</a>!=(<a href=".././TConsistencySet.html">TConsistencySet</a>&amp; rhs) {
+    return !(*this == rhs);
+}
+
+<b>//-------------</b>
+<b>// Selectors --</b>
+<b>//-------------</b>
+
+<b>//-------------</b>
+<b>// Modifiers --</b>
+<b>//-------------</b>
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TConsistencySet:Reset"> </a><a href=".././TConsistencySet.html#TConsistencySet:Reset">TConsistencySet::Reset</a>()
+{
+    <a href=".././TConsistencySet.html#TConsistencySet:fConsistencyList">fConsistencyList</a>.Delete();
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="TConsistencySet:Add"> </a><a href=".././TConsistencySet.html#TConsistencySet:Add">TConsistencySet::Add</a>( const <a href="../ListOfTypes.html#char">char</a>* label, <a href=".././TConsistency.html">TConsistency</a>&amp; c )
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> retval = kFALSE;
+    
+<b>    // some idiot-proofing</b>
+    
+    if ( 0 != label ) {
+	TString d( label );
+	d.ToLower();
+	
+<b>	// test for overlaps</b>
+	<a href="../ListOfTypes.html#size_t">size_t</a> index;
+	
+	if( <a href=".././TConsistencySet.html#TConsistencySet:fConsistencyList">fConsistencyList</a>.FindObject( label ) == 0 ) {
+	    c.SetName(label);
+	    <a href=".././TConsistencySet.html#TConsistencySet:fConsistencyList">fConsistencyList</a>.<a href="#TConsistencySet:Add">Add</a>( (TObject*) &amp;c );
+	    retval = kTRUE;
+	}
+    }
+    
+    return retval;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> 
+<a name="TConsistencySet:Combine"> </a><a href=".././TConsistencySet.html#TConsistencySet:Combine">TConsistencySet::Combine</a>(<a href=".././TConsistencySet.html">TConsistencySet</a>&amp; other) {
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> retval = kTRUE;
+    for (<a href="../ListOfTypes.html#size_t">size_t</a> i=0;i&lt;other.<a href="#TConsistencySet:NParents">NParents</a>();i++) {
+	retval = retval &amp;&amp; <a href="#TConsistencySet:Add">Add</a>(other.<a href="#TConsistencySet:GetLabel">GetLabel</a>(i),*(other.<a href="#TConsistencySet:GetConsistency">GetConsistency</a>(i)));
+    }
+    
+    return retval;
+}
+
+
+<b>//</b>
+<b>//  Internal protected functions</b>
+<b>//</b>
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>   
+<a name="TConsistencySet:WorstSignificanceIndex_"> </a><a href=".././TConsistencySet.html#TConsistencySet:WorstSignificanceIndex_">TConsistencySet::WorstSignificanceIndex_</a>( <a href="../ListOfTypes.html#size_t">size_t</a>&amp; index )
+{
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> worst( 999. );
+    const <a href=".././TConsistency.html">TConsistency</a>* cons;
+    <a href="../ListOfTypes.html#size_t">size_t</a> i=0;
+    while( cons=<a href="#TConsistencySet:GetConsistency">GetConsistency</a>(i) )
+    {
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> value=cons-&gt;SignificanceLevel();
+	if( value&lt;worst )
+	{
+	    index=i;
+	    worst=value;
+	}
+	i++;
+    }
+    return worst&lt;=1.;
+}
+
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TConsistencySet:PrintOn"> </a><a href=".././TConsistencySet.html#TConsistencySet:PrintOn">TConsistencySet::PrintOn</a>(std::ostream&amp; os) const
+{
+    os &lt;&lt; <a href="#TConsistencySet:NParents">NParents</a>() &lt;&lt; " parents:" &lt;&lt; endl;
+    for (<a href="../ListOfTypes.html#size_t">size_t</a> i=0;i&lt;<a href="#TConsistencySet:NParents">NParents</a>();i++) {
+	<a href=".././TConsistency.html">TConsistency</a> *c = (<a href=".././TConsistency.html">TConsistency</a> *) <a href=".././TConsistencySet.html#TConsistencySet:fConsistencyList">fConsistencyList</a>.At(i);
+	os &lt;&lt; setw(3) &lt;&lt; i;
+	os &lt;&lt; setw(10) &lt;&lt; c-&gt;GetName() &lt;&lt; " : ";
+	c-&gt;<a href="#TConsistencySet:PrintOn">PrintOn</a>(os);
+    }
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

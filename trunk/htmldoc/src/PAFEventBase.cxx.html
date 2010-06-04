@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:15 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFEventBase - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././PAFEventBase.html">PAFEventBase</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Event header class in PAF(Pico Analysis Framework)			//</b>
+<b>//                                                                      //</b>
+<b>// Author: Sascha Berger, Bochum University, Feb. 99			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "TTree.h"
+#include "TBranch.h"
+#include "TBranchObject.h"
+
+#include "PAFSchema/PAFEventBase.h"
+
+ClassImp(PAFEventBase)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="PAFEventBase:PAFEventBase"> </a>PAFEventBase::PAFEventBase() : 
+_runno(0), 
+_eventno(0), 
+_majorID(0),
+_minorID(0), 
+_nChargedTracks(0), 
+_nNeutralTracks(0), 
+_tag()
+{
+    fBranches[0] = new TBranch();  fBranches[0]-&gt;ResetBit(kDoNotProcess);
+    for (Int_t i=1; i&lt;NELEM_EVENTBASE; i++) {
+	fBranches[i]=fBranches[0];
+    }
+}
+
+<a name="PAFEventBase:~PAFEventBase"> </a>PAFEventBase::~PAFEventBase()
+{
+    Reset();
+    delete fBranches[0];
+}
+
+<a name="PAFEventBase:AddTag"> </a>void PAFEventBase::AddTag( PAFTagBase* c) {
+    _tag=*c;
+}
+
+<a name="PAFEventBase:AddNeutralTrack"> </a>void PAFEventBase::AddNeutralTrack() { 
+    _nNeutralTracks++;
+}
+
+<a name="PAFEventBase:AddChargedTrack"> </a>void PAFEventBase::AddChargedTrack() { 
+    _nChargedTracks++;
+}
+
+<a name="PAFEventBase:Reset"> </a>void PAFEventBase::Reset() {
+}
+
+<a name="PAFEventBase:NewEvent"> </a>void PAFEventBase::NewEvent()  {
+    _nChargedTracks = 0;
+    _nNeutralTracks = 0;
+    ++_eventno;   
+}
+
+<a name="PAFEventBase:NewChargedTrack"> </a>void PAFEventBase::NewChargedTrack() {
+    ++_nChargedTracks;
+}
+
+<a name="PAFEventBase:NewNeutralTrack"> </a>void PAFEventBase::NewNeutralTrack() {
+    ++_nNeutralTracks;
+}
+
+<a name="PAFEventBase:SetRunNumber"> </a>void PAFEventBase::SetRunNumber(UInt_t r) {
+    _runno=r;
+}
+
+<a name="PAFEventBase:SetEventNumber"> </a>void PAFEventBase::SetEventNumber(Int_t e) {
+    _eventno=e;
+}
+
+<a name="PAFEventBase:SetNumberOfChargedTracks"> </a>void PAFEventBase::SetNumberOfChargedTracks(UInt_t n) {
+    _nChargedTracks = n; 
+}
+
+<a name="PAFEventBase:SetNumberOfNeutralTracks"> </a>void PAFEventBase::SetNumberOfNeutralTracks(UInt_t n) {
+    _nNeutralTracks = n; 
+}
+
+<a name="PAFEventBase:GetRunNumber"> </a>UInt_t   PAFEventBase::GetRunNumber() const {
+    return GetUInt(fBranches[1],_runno);
+}
+
+<a name="PAFEventBase:GetEventNumber"> </a>Int_t  PAFEventBase::GetEventNumber() const { 
+    return GetInt(fBranches[2],_eventno); 
+}
+
+<a name="PAFEventBase:Eof"> </a>Bool_t  PAFEventBase::Eof() { 
+    SetEventNumber(-1); // Reset to check EoF
+    return (GetEventNumber() == -1); 
+}
+
+<a name="PAFEventBase:GetMajorID"> </a>UInt_t	PAFEventBase::GetMajorID() const { return GetUInt(fBranches[3],_majorID); }
+<a name="PAFEventBase:GetMinorID"> </a>UInt_t	PAFEventBase::GetMinorID() const { return GetUInt(fBranches[4],_minorID); }
+
+<a name="PAFEventBase:GetNumberOfTracks"> </a>UInt_t   PAFEventBase::GetNumberOfTracks() const {
+    return GetUShort(fBranches[5],_nChargedTracks) + GetUShort(fBranches[6],_nNeutralTracks);
+}
+
+<a name="PAFEventBase:GetNumberOfChargedTracks"> </a>UInt_t   PAFEventBase::GetNumberOfChargedTracks() const {
+    return GetUShort(fBranches[5],_nChargedTracks);
+}
+
+<a name="PAFEventBase:GetNumberOfNeutralTracks"> </a>UInt_t   PAFEventBase::GetNumberOfNeutralTracks() const {
+    return  GetUShort(fBranches[6],_nNeutralTracks);
+}
+
+<a name="PAFEventBase:GetBoost"> </a>TVector3 PAFEventBase::GetBoost() const {
+    TVector3 upsiboost(0.,0.,0.486976); // Upsilon boost
+    TLorentzVector v = _tag.GetCMFrame();
+    if (v.T() &lt;= 0) return upsiboost; // Upsilon boost
+    return TVector3(v.X()/v.T(), v.Y()/v.T(), v.Z()/v.T());
+}
+
+<a name="PAFEventBase:GetTag"> </a>PAFTagBase&amp;  PAFEventBase::GetTag() {
+    return _tag;
+}
+
+<a name="PAFEventBase:PrintOn"> </a>void PAFEventBase::PrintOn(std::ostream&amp; o) const {
+    o &lt;&lt; endl;
+    o &lt;&lt; "Run number     : " &lt;&lt; GetRunNumber() &lt;&lt; endl;
+    o &lt;&lt; "Event number   : " &lt;&lt; GetEventNumber() &lt;&lt; endl;
+    o &lt;&lt; "Time (GMT)     : " &lt;&lt; GetTime() &lt;&lt; endl;
+    o &lt;&lt; "Candidates     : " &lt;&lt; GetNumberOfTracks();
+    o &lt;&lt; ", Charged: " &lt;&lt; GetNumberOfChargedTracks();
+    o &lt;&lt; ", Neutral: " &lt;&lt; GetNumberOfNeutralTracks() &lt;&lt; endl &lt;&lt; endl;
+    o &lt;&lt; _tag&lt;&lt;endl;
+}
+
+
+<a name="PAFEventBase:GetTime"> </a>TRhoTime  PAFEventBase::GetTime() const { return TRhoTime(GetUInt(fBranches[3],_majorID)); }
+
+
+void
+<a name="PAFEventBase:SetTree"> </a>PAFEventBase::SetTree(TTree *theTree)
+{
+    TBranch *subBranch;
+    TObjArray *list1 = theTree-&gt;GetListOfBranches();
+    TBranchObject *objBranch = (TBranchObject*) (*list1)[0];
+    _tag.Init(objBranch);
+    TObjArray *list = objBranch-&gt;GetListOfBranches();
+    Int_t listLen = list-&gt;GetEntries();
+    for (Int_t i=0; i&lt;listLen; i++) {
+	subBranch = (TBranch*) (*list)[i];
+	TString t(subBranch-&gt;GetName());
+	if (t == "_runno") { fBranches[1] = subBranch; }
+	if (t == "_eventno") { fBranches[2] = subBranch; }
+	if (t == "_majorID") { fBranches[3] = subBranch; }
+	if (t == "_minorID") { fBranches[4] = subBranch; }
+	if (t == "_nChargedTracks") { fBranches[5] = subBranch; }
+	if (t == "_nNeutralTracks") { fBranches[6] = subBranch; }
+    }
+<b>    //test dump</b>
+<b>    //for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;NELEM_EVENTBASE; i++) {</b>
+<b>    //  cout &lt;&lt; "EventBase - Branch #" &lt;&lt; i &lt;&lt; " has Address " &lt;&lt; <a href=".././PAFEventBase.html#PAFEventBase:fBranches">fBranches</a>[i] &lt;&lt; endl;</b>
+<b>    //}</b>
+}
+
+
+<a name="PAFEventBase:SetOtherEventNumber"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFEventBase.html#PAFEventBase:SetOtherEventNumber">PAFEventBase::SetOtherEventNumber</a>(<a href="../ListOfTypes.html#UInt_t">UInt_t</a> i)
+{
+    <a href=".././PAFEventBase.html#PAFEventBase:fEventNumber">fEventNumber</a>=i;
+    <a href=".././PAFEventBase.html#PAFEventBase:_tag">_tag</a>.<a href=".././PAFTagBase.html#PAFTagBase:SetEventNumber">SetEventNumber</a>(i);
+}
+
+<a name="PAFEventBase:GetUInt"> </a><a href="../ListOfTypes.html#UInt_t">UInt_t</a> <a href=".././PAFEventBase.html#PAFEventBase:GetUInt">PAFEventBase::GetUInt</a>(TBranch *theBranch, const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> &amp;value) const
+{
+    theBranch-&gt;GetEntry(<a href=".././PAFEventBase.html#PAFEventBase:fEventNumber">fEventNumber</a>);
+    return value;
+}
+
+<a name="PAFEventBase:GetInt"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFEventBase.html#PAFEventBase:GetInt">PAFEventBase::GetInt</a>(TBranch *theBranch, const <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;value) const
+{
+    theBranch-&gt;GetEntry(<a href=".././PAFEventBase.html#PAFEventBase:fEventNumber">fEventNumber</a>);
+    return value;
+}
+
+<a name="PAFEventBase:GetUShort"> </a><a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href=".././PAFEventBase.html#PAFEventBase:GetUShort">PAFEventBase::GetUShort</a>(TBranch *theBranch, const <a href="../ListOfTypes.html#UShort_t">UShort_t</a> &amp;value) const
+{
+    theBranch-&gt;GetEntry(<a href=".././PAFEventBase.html#PAFEventBase:fEventNumber">fEventNumber</a>);
+    return value;
+}
+
+
+
+
+<b>// --------------------</b>
+<b>// non-member functions</b>
+<b>// --------------------</b>
+
+std::ostream&amp;  operator &lt;&lt; (std::ostream&amp; o, const <a href=".././PAFEventBase.html">PAFEventBase</a>&amp; a) {a.<a href="#PAFEventBase:PrintOn">PrintOn</a>(o); return o;}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

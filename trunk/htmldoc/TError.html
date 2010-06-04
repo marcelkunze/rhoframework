@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:50 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TError</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TError</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TError:description">class description</a> - <a href="src/TError.cxx.html">source file</a> - <a href="TError_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TError" href="TError.h">TError</a> : public TMatrixD</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->               <a href="./TError.html">TError</a> <!--TAB--><!--BOLD--><a href="#TError:TError">TError</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n, <a href="ListOfTypes.html#Double_t">Double_t</a> init = 0.0)
+<!--TAB6-->               <a href="./TError.html">TError</a> <!--TAB--><!--BOLD--><a href="#TError:TError">TError</a><!--PLAIN-->(const TMatrixD&amp; p)
+<!--TAB6-->               <a href="./TError.html">TError</a> <!--TAB--><!--BOLD--><a href="#TError:TError">TError</a><!--PLAIN-->(const <a href="./TError.html">TError</a>&amp; v)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TError:~TError">~TError</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TError:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TError:DetermineChisq">DetermineChisq</a><!--PLAIN-->(TVectorD&amp; diff)
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TError:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->              <a href="./TError.html">TError</a>&amp; <!--TAB--><!--BOLD--><a href="#TError:operator*=">operator*=</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> t)
+<!--TAB6-->              <a href="./TError.html">TError</a>&amp; <!--TAB--><!--BOLD--><a href="#TError:operator-">operator-</a><!--PLAIN-->()
+<!--TAB6-->              <a href="./TError.html">TError</a>&amp; <!--TAB--><!--BOLD--><a href="#TError:operator=">operator=</a><!--PLAIN-->(const <a href="./TError.html">TError</a>&amp; v)
+<!--TAB6-->              <a href="./TError.html">TError</a>&amp; <!--TAB--><!--BOLD--><a href="#TError:operator=">operator=</a><!--PLAIN-->(const TMatrixD&amp; v)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TError:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->              <a href="./TError.html">TError</a>&amp; <!--TAB--><!--BOLD--><a href="#TError:Similarity">Similarity</a><!--PLAIN-->(const <a href="./TError.html">TError</a>&amp; E)
+<!--TAB6-->              <a href="./TError.html">TError</a>&amp; <!--TAB--><!--BOLD--><a href="#TError:Similarity">Similarity</a><!--PLAIN-->(const TMatrixD&amp; m1) const
+<!--TAB6-->              <a href="./TError.html">TError</a>&amp; <!--TAB--><!--BOLD--><a href="#TError:Similarity">Similarity</a><!--PLAIN-->(const TRotation&amp; rot) const
+<!--TAB6-->              <a href="./TError.html">TError</a>&amp; <!--TAB--><!--BOLD--><a href="#TError:Similarity">Similarity</a><!--PLAIN-->(const TLorentzRotation&amp; rot) const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TError:Similarity">Similarity</a><!--PLAIN-->(TVectorD&amp; m1)
+<!--TAB6-->            TMatrixD&amp; <!--TAB--><!--BOLD--><a href="#TError:SimilarityT">SimilarityT</a><!--PLAIN-->(TMatrixD&amp; m1)
+<!--TAB6-->              <a href="./TError.html">TError</a>&amp; <!--TAB--><!--BOLD--><a href="#TError:SimilarityWith">SimilarityWith</a><!--PLAIN-->(const <a href="./TError.html">TError</a>&amp; m, const TMatrixD&amp; m1)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TError:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TError:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TError:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      static const <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TError:chisqUndef">chisqUndef</a><!--PLAIN-->  <!--TAB--><i><a name="Title:chisqUndef"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TError:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TError.html">TError</a>		    						
+                                                                      
+ Error matrix class							
+                                                                      
+ Author: Marcel Kunze, RUB, Nov. 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TError:TError" href="src/TError.cxx.html#TError:TError">TError</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n, <a href="ListOfTypes.html#Double_t">Double_t</a> init) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TError:TError" href="src/TError.cxx.html#TError:TError">TError</a>( const <a href="./TError.html">TError</a>&amp; v ) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TError:TError" href="src/TError.cxx.html#TError:TError">TError</a>( const TMatrixD &amp;p ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./TError.html">TError</a> <a name="TError:Similarity" href="src/TError.cxx.html#TError:Similarity">Similarity</a>(const TRotation&amp; rot) const
+<br>
+<hr>
+<!--FUNCTION--><a href="./TError.html">TError</a> <a name="TError:Similarity" href="src/TError.cxx.html#TError:Similarity">Similarity</a>(const TMatrixD&amp; m1) const
+<br>
+<hr>
+<!--FUNCTION--><a href="./TError.html">TError</a> <a name="TError:Similarity" href="src/TError.cxx.html#TError:Similarity">Similarity</a>(const TLorentzRotation&amp; rot) const
+<br>
+<hr>
+<!--FUNCTION--><a href="./TError.html">TError</a> <a name="TError:Similarity" href="src/TError.cxx.html#TError:Similarity">Similarity</a>(const <a href="./TError.html">TError</a>&amp; E)
+<br>
+<hr>
+<!--FUNCTION--><a href="./TError.html">TError</a> <a name="TError:SimilarityWith" href="src/TError.cxx.html#TError:SimilarityWith">SimilarityWith</a>(const <a href="./TError.html">TError</a>&amp; mat,const TMatrixD&amp; m1)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TError:DetermineChisq" href="src/TError.cxx.html#TError:DetermineChisq">DetermineChisq</a>(TVectorD&amp; diff)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TError:Similarity" href="src/TError.cxx.html#TError:Similarity">Similarity</a>(TVectorD &amp;m1)
+<br>
+<hr>
+<!--FUNCTION-->TMatrixD <a name="TError:SimilarityT" href="src/TError.cxx.html#TError:SimilarityT">SimilarityT</a>(TMatrixD &amp;m1)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TError.html">TError</a>&amp; <a name="TError:operator=" href="TError.h">operator=</a>(const <a href="./TError.html">TError</a>&amp; v)
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TError.html">TError</a>&amp; <a name="TError:operator=" href="TError.h">operator=</a>(const TMatrixD&amp; v)
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TError.html">TError</a>&amp; <a name="TError:operator*=" href="TError.h">operator*=</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> t)
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TError.html">TError</a>&amp; <a name="TError:operator-" href="TError.h">operator-</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TError:Class" href="TError.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TError:IsA" href="TError.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TError:ShowMembers" href="TError.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TError:Streamer" href="TError.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TError:StreamerNVirtual" href="TError.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TError:~TError" href="TError.h">~TError</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?Nov.">Nov.</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:02:51 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

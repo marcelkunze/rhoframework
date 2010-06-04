@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:11 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TPerceptron</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TPerceptron</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TPerceptron:description">class description</a> - <a href="src/TPerceptron.cxx.html">source file</a> - <a href="TPerceptron_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TPerceptron" href="TPerceptron.h">TPerceptron</a> : public <a href="./VSupervisedNet.html">VSupervisedNet</a></h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:AllocNet">AllocNet</a><!--PLAIN-->()
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:InitNet">InitNet</a><!--PLAIN-->()
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->            <a href="./TPerceptron.html">TPerceptron</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:TPerceptron">TPerceptron</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> fInNodes, <a href="ListOfTypes.html#Int_t">Int_t</a> fOutNodes, <a href="ListOfTypes.html#Double_t">Double_t</a> fLearnStep, <a href="./TNeuralNetParameters.html#TNeuralNetParameters:TRANSFER">TNeuralNetParameters::TRANSFER</a> fTransferId, <a href="ListOfTypes.html#Int_t">Int_t</a> fPerceptronId)
+<!--TAB6-->            <a href="./TPerceptron.html">TPerceptron</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:TPerceptron">TPerceptron</a><!--PLAIN-->(<a href="./TPerceptron.html">TPerceptron</a>* Prev, <a href="ListOfTypes.html#Int_t">Int_t</a> fOutNodes, <a href="ListOfTypes.html#Double_t">Double_t</a> learnstep, <a href="./TNeuralNetParameters.html#TNeuralNetParameters:TRANSFER">TNeuralNetParameters::TRANSFER</a> fTransferId, <a href="ListOfTypes.html#Int_t">Int_t</a> fPerceptronId)
+<!--TAB6-->            <a href="./TPerceptron.html">TPerceptron</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:TPerceptron">TPerceptron</a><!--PLAIN-->()
+<!--TAB6-->            <a href="./TPerceptron.html">TPerceptron</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:TPerceptron">TPerceptron</a><!--PLAIN-->(<a href="./TPerceptron.html">TPerceptron</a>* Prev)
+<!--TAB6-->            <a href="./TPerceptron.html">TPerceptron</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:TPerceptron">TPerceptron</a><!--PLAIN-->(const <a href="./TPerceptron.html">TPerceptron</a>&amp;)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:~TPerceptron">~TPerceptron</a><!--PLAIN-->()
+<!--TAB6-->         static TClass* <!--TAB--><!--BOLD--><a href="#TPerceptron:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->        virtual TClass* <!--TAB--><!--BOLD--><a href="#TPerceptron:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:ReadBinary">ReadBinary</a><!--PLAIN-->()
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:ReadText">ReadText</a><!--PLAIN-->()
+<!--TAB6-->      virtual <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a href="#TPerceptron:Recall">Recall</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in = 0, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out = 0)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:SetFile">SetFile</a><!--PLAIN-->(FILE* f)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:Train">Train</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in = 0, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out = 0)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:WriteBinary">WriteBinary</a><!--PLAIN-->()
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPerceptron:WriteText">WriteText</a><!--PLAIN-->()
+</pre>
+
+<h3><!--TAB2-->  <a name="TPerceptron:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->         <a href="./TPerceptron.html">TPerceptron</a>* <!--TAB--><!--BOLD--><a name="TPerceptron:fPrev">fPrev</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fPrev">! previous perceptron</a></i>
+<!--TAB6-->      PerceptronUnit* <!--TAB--><!--BOLD--><a name="TPerceptron:fUbound">fUbound</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fUbound">! Temp. unit</a></i>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                                          PerceptronUnit* <!--TAB--><!--BOLD--><a name="TPerceptron:fU">fU</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fU">! Temp. unit</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> (*)(<a href="ListOfTypes.html#Double_t">Double_t</a> in,<a href="ListOfTypes.html#Double_t">Double_t</a>* out,<a href="ListOfTypes.html#Double_t">Double_t</a>* deriv) <!--TAB--><!--BOLD--><a name="TPerceptron:Transfer">Transfer</a><!--PLAIN-->  <!--TAB--><i><a name="Title:Transfer">! Transfer function</a></i>
+<!--TAB6-->                                                <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a name="TPerceptron:fIn">fIn</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fIn">!inputvector:  in[fInNodes]</a></i>
+<!--TAB6-->                                                <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a name="TPerceptron:fOut">fOut</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fOut">!outputvector: out[fOutNodes];</a></i>
+<!--TAB6-->                                                <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a name="TPerceptron:fDiffSrc">fDiffSrc</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fDiffSrc">!error derivation from following net: fDiffSrc[fOutNodes]</a></i>
+<!--TAB6-->                                                <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a name="TPerceptron:fDiffDst">fDiffDst</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fDiffDst">!error derivation to previous net:    fDiffDst[fInNodes]</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TPerceptron:description">Class Description</a></h2>
+<pre>									
+ <a href="./TPerceptron.html">TPerceptron</a>								
+									
+ Implementation of the perceptron (Supervised Learning)		
+ Part of the Neural Network Objects package (NNO)			
+									
+ Author List:								
+ Johannes Steffens, Bochum University					
+ M.Kunze, Bochum University						
+ (C) Copyright Johannes Steffens 1995, Ruhr-University Bochum.	
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TPerceptron:TPerceptron" href="src/TPerceptron.cxx.html#TPerceptron:TPerceptron">TPerceptron</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> inNodes,
+			 <a href="ListOfTypes.html#Int_t">Int_t</a> outNodes,
+			 <a href="ListOfTypes.html#Double_t">Double_t</a> learnStep,
+			 <a href="./TNeuralNetParameters.html#TNeuralNetParameters:TRANSFER">TNeuralNetParameters::TRANSFER</a> transferId,
+			 <a href="ListOfTypes.html#Int_t">Int_t</a> perceptronId) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TPerceptron:TPerceptron" href="src/TPerceptron.cxx.html#TPerceptron:TPerceptron">TPerceptron</a>(<a href="./TPerceptron.html">TPerceptron</a>* prev,
+			 <a href="ListOfTypes.html#Int_t">Int_t</a> outNodes,
+			 <a href="ListOfTypes.html#Double_t">Double_t</a> learnStep,
+			 <a href="./TNeuralNetParameters.html#TNeuralNetParameters:TRANSFER">TNeuralNetParameters::TRANSFER</a> transferId,
+			 <a href="ListOfTypes.html#Int_t">Int_t</a> perceptronId) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TPerceptron:TPerceptron" href="src/TPerceptron.cxx.html#TPerceptron:TPerceptron">TPerceptron</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TPerceptron:TPerceptron" href="src/TPerceptron.cxx.html#TPerceptron:TPerceptron">TPerceptron</a>(<a href="./TPerceptron.html">TPerceptron</a>* prev) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:AllocNet" href="src/TPerceptron.cxx.html#TPerceptron:AllocNet">AllocNet</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:InitNet" href="src/TPerceptron.cxx.html#TPerceptron:InitNet">InitNet</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:WriteBinary" href="src/TPerceptron.cxx.html#TPerceptron:WriteBinary">WriteBinary</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:ReadBinary" href="src/TPerceptron.cxx.html#TPerceptron:ReadBinary">ReadBinary</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:WriteText" href="src/TPerceptron.cxx.html#TPerceptron:WriteText">WriteText</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:ReadText" href="src/TPerceptron.cxx.html#TPerceptron:ReadText">ReadText</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a>* <a name="TPerceptron:Recall" href="src/TPerceptron.cxx.html#TPerceptron:Recall">Recall</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in,<a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TPerceptron:Train" href="src/TPerceptron.cxx.html#TPerceptron:Train">Train</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in,<a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out) 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:SetFile" href="TPerceptron.h">SetFile</a>(FILE* f)
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TPerceptron:Class" href="TPerceptron.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TPerceptron:IsA" href="TPerceptron.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:ShowMembers" href="TPerceptron.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:Streamer" href="TPerceptron.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:StreamerNVirtual" href="TPerceptron.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TPerceptron.html">TPerceptron</a> <a name="TPerceptron:TPerceptron" href="TPerceptron.h">TPerceptron</a>(const <a href="./TPerceptron.html">TPerceptron</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPerceptron:~TPerceptron" href="TPerceptron.h">~TPerceptron</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:11 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

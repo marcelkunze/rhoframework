@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:06 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>KangaReader</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>KangaReader</h1>
+<hr width=300>
+<!--SDL--><em><a href="#KangaReader:description">class description</a> - <a href="src/KangaReader.cxx.html">source file</a> - <a href="KangaReader_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="KangaReader" href="KangaReader.h">KangaReader</a> : public VAbsReader</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->            <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:CreateTCandList">CreateTCandList</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*)
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:InitAodBranches">InitAodBranches</a><!--PLAIN-->(TTree* theTree)
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:InitBitBranches">InitBitBranches</a><!--PLAIN-->(TTree* theTree)
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:InitCmpBranches">InitCmpBranches</a><!--PLAIN-->(TTree* theTree)
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:InitMapBranches">InitMapBranches</a><!--PLAIN-->(TTree* theTree)
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:InitMctBranches">InitMctBranches</a><!--PLAIN-->(TTree* theTree)
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:InitTagBranches">InitTagBranches</a><!--PLAIN-->(TTree* theTree)
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:InitTruBranches">InitTruBranches</a><!--PLAIN-->(TTree* theTree)
+<!--TAB6-->            <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:makeCompBase_cluster">makeCompBase_cluster</a><!--PLAIN-->(<a href="./BtaCandPtrR.html">BtaCandPtrR</a>* bcp, <a href="./PAFCompAodBase.html">PAFCompAodBase</a>&amp; dest)
+<!--TAB6-->            <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:makeCompBase_pid">makeCompBase_pid</a><!--PLAIN-->(<a href="./BtaCandPtrR.html">BtaCandPtrR</a>* bcp, <a href="./PAFCompAodBase.html">PAFCompAodBase</a>&amp; dest)
+<!--TAB6-->            <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:makeCompBase_V0">makeCompBase_V0</a><!--PLAIN-->(<a href="./BtaCandPtrR.html">BtaCandPtrR</a>* bcp, <a href="./PAFCompAodBase.html">PAFCompAodBase</a>&amp; dest)
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="./PAFStream.html">PAFStream</a>* <!--TAB--><!--BOLD--><a href="#KangaReader:NewStream">NewStream</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* AFileNameBase, const <a href="ListOfTypes.html#char">char</a>* ATreeName)
+<!--TAB6-->            <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:SetChargedTree">SetChargedTree</a><!--PLAIN-->()
+<!--TAB6-->            <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:SetNeutralTree">SetNeutralTree</a><!--PLAIN-->()
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                      <a href="./KangaReader.html">KangaReader</a> <!--TAB--><!--BOLD--><a href="#KangaReader:KangaReader">KangaReader</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, const <a href="ListOfTypes.html#char">char</a>* description = "PAF Kanga Reader")
+<!--TAB6-->                      <a href="./KangaReader.html">KangaReader</a> <!--TAB--><!--BOLD--><a href="#KangaReader:KangaReader">KangaReader</a><!--PLAIN-->(const <a href="./KangaReader.html">KangaReader</a>&amp;)
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:~KangaReader">~KangaReader</a><!--PLAIN-->()
+<!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:CreateMcTruthList">CreateMcTruthList</a><!--PLAIN-->()
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:EvalBitFormula">EvalBitFormula</a><!--PLAIN-->()
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:EvalTagFormula">EvalTagFormula</a><!--PLAIN-->()
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:Fill">Fill</a><!--PLAIN-->(TCandList*)
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:FillAllCompositeList">FillAllCompositeList</a><!--PLAIN-->(TCandList* l)
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:FillCanonicalMcTruthList">FillCanonicalMcTruthList</a><!--PLAIN-->(TCandList*)
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:FillCharged">FillCharged</a><!--PLAIN-->(TCandList*)
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:FillCompositeList">FillCompositeList</a><!--PLAIN-->(TCandList* l, const <a href="ListOfTypes.html#char">char</a>* listname)
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:FillFromList">FillFromList</a><!--PLAIN-->(TCandList* l, const <a href="ListOfTypes.html#char">char</a>* listname)
+<!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:FillMcList">FillMcList</a><!--PLAIN-->(TList&amp; list, TNode&amp; cand)
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:FillMcTruthList">FillMcTruthList</a><!--PLAIN-->(TCandList*)
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:FillNeutral">FillNeutral</a><!--PLAIN-->(TCandList*)
+<!--TAB6-->                 virtual VAbsBit&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetBit">GetBit</a><!--PLAIN-->() const
+<!--TAB6-->        virtual <a href="./BtaCandAssocMapR.html">BtaCandAssocMapR</a>&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetCandAssocMap">GetCandAssocMap</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--TAB6-->            virtual <a href="./BtaCandListR.html">BtaCandListR</a>&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetCandList">GetCandList</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--TAB6-->              virtual TCandidate&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetCompositeCandidate">GetCompositeCandidate</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetCurrentIndex">GetCurrentIndex</a><!--PLAIN-->()
+<!--TAB6-->                virtual <a href="./EidInfoR.html">EidInfoR</a>&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetEidInfo">GetEidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetEvent">GetEvent</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a> number)
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetEventNumber">GetEventNumber</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="./PAFEventBase.html">PAFEventBase</a>&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetHeader">GetHeader</a><!--PLAIN-->() const
+<!--TAB6-->             virtual <a href="./PAFListBase.html">PAFListBase</a>&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetListBase">GetListBase</a><!--PLAIN-->() const
+<!--TAB6-->              virtual const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#KangaReader:GetListName">GetListName</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetMajorID">GetMajorID</a><!--PLAIN-->() const
+<!--TAB6-->          virtual <a href="./PAFMcAssocBase.html">PAFMcAssocBase</a>&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetMcAssocBase">GetMcAssocBase</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--TAB6-->               virtual <a href="./PAFMcBase.html">PAFMcBase</a>&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetMcBase">GetMcBase</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n) const
+<!--TAB6-->               virtual VAbsTruth&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetMcTruth">GetMcTruth</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<!--TAB6-->      virtual VAbsMicroCandidate&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetMicroCandidate">GetMicroCandidate</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetMinorID">GetMinorID</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetNumberOfCandAssocs">GetNumberOfCandAssocs</a><!--PLAIN-->() const
+<!--TAB6-->                           <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetNumberOfCandidates">GetNumberOfCandidates</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetNumberOfChargedTracks">GetNumberOfChargedTracks</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetNumberOfComposites">GetNumberOfComposites</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetNumberOfEventsProcessed">GetNumberOfEventsProcessed</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetNumberOfLists">GetNumberOfLists</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetNumberOfMcTruthTracks">GetNumberOfMcTruthTracks</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetNumberOfNeutralTracks">GetNumberOfNeutralTracks</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetNumberOfTracks">GetNumberOfTracks</a><!--PLAIN-->() const
+<!--TAB6-->              virtual <a href="./TPrintTree.html">TPrintTree</a>* <!--TAB--><!--BOLD--><a href="#KangaReader:GetPrintTree">GetPrintTree</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:GetRunNumber">GetRunNumber</a><!--PLAIN-->() const
+<!--TAB6-->              virtual <a href="./StdHepTrkR.html">StdHepTrkR</a>&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetStdHepTrk">GetStdHepTrk</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n) const
+<!--TAB6-->                       <a href="./PAFStream.html">PAFStream</a>* <!--TAB--><!--BOLD--><a href="#KangaReader:GetStream">GetStream</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> StreamNo)
+<!--TAB6-->                 virtual VAbsTag&amp; <!--TAB--><!--BOLD--><a href="#KangaReader:GetTag">GetTag</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:InitializeStreams">InitializeStreams</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> multi = kTRUE)
+<!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:LoadMcNodes">LoadMcNodes</a><!--PLAIN-->(TList* mcList)
+<!--TAB6-->                           <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:MakeNodeFromStdTrack">MakeNodeFromStdTrack</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> i, TNode*&amp; mother)
+<!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:PrintMcList">PrintMcList</a><!--PLAIN-->(TNode&amp; cand)
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:SetBitFormula">SetBitFormula</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* expr)
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:SetPrintTree">SetPrintTree</a><!--PLAIN-->(<a href="./TPrintTree.html">TPrintTree</a>* tree)
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#KangaReader:SetStreamStatus">SetStreamStatus</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* stream, <a href="ListOfTypes.html#Bool_t">Bool_t</a> status = kTRUE)
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:SetTagFormula">SetTagFormula</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* expr)
+<!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#KangaReader:SetVerbose">SetVerbose</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesNo = kTRUE)
+</pre>
+
+<h3><!--TAB2-->  <a name="KangaReader:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="./PAFMcAssocBase.html">PAFMcAssocBase</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fAss">fAss</a><!--PLAIN-->                  <!--TAB--><i><a name="Title:fAss">! Temp. variable</a></i>
+<!--TAB6-->               TList* <!--TAB--><!--BOLD--><a name="KangaReader:fMcList">fMcList</a><!--PLAIN-->               <!--TAB--><i><a name="Title:fMcList">! Temp. list</a></i>
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fUseStdHepTrack">fUseStdHepTrack[512]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fUseStdHepTrack">!Do not stream</a></i>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->                            <a href="./PAFEventBase.html">PAFEventBase</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fContent">fContent</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fContent">!Persistent TAG and HDR</a></i>
+<!--TAB6-->                                 VAbsBit* <!--TAB--><!--BOLD--><a name="KangaReader:fBits">fBits</a><!--PLAIN-->               <!--TAB--><i><a name="Title:fBits">!Persistent BIT</a></i>
+<!--TAB6-->                             <a href="./PAFListBase.html">PAFListBase</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fAodListsComp">fAodListsComp</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fAodListsComp">!Container for persistent composite lists  					     </a></i>
+<!--TAB6-->                            TClonesArray* <!--TAB--><!--BOLD--><a name="KangaReader:fAodListCharged">fAodListCharged</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fAodListCharged"></a></i>
+<!--TAB6-->                            TClonesArray* <!--TAB--><!--BOLD--><a name="KangaReader:fAodListNeutral">fAodListNeutral</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fAodListNeutral">!Persistent AOD, neutral part</a></i>
+<!--TAB6-->                            TClonesArray* <!--TAB--><!--BOLD--><a name="KangaReader:fOwnList">fOwnList</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fOwnList">!List to hold the MicroCandidates       </a></i>
+<!--TAB6-->                                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fEntries">fEntries</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fEntries">!Number of candidates</a></i>
+<!--TAB6-->                            TClonesArray* <!--TAB--><!--BOLD--><a name="KangaReader:fMctList">fMctList</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fMctList">!Persistent MCT</a></i>
+<!--TAB6-->                            TClonesArray* <!--TAB--><!--BOLD--><a name="KangaReader:fAssList">fAssList</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fAssList">!Persistent MCT associations</a></i>
+<!--TAB6-->                                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fNumMctTracks">fNumMctTracks</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fNumMctTracks">!</a></i>
+<!--TAB6-->                                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fNumMcAssoc">fNumMcAssoc</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fNumMcAssoc">!</a></i>
+<!--TAB6-->                                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fNumRecTracks">fNumRecTracks</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fNumRecTracks">!</a></i>
+<!--TAB6-->                                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fNumMaps">fNumMaps</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fNumMaps">!</a></i>
+<!--TAB6-->                            TClonesArray* <!--TAB--><!--BOLD--><a name="KangaReader:fPAFMcTruthList">fPAFMcTruthList</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fPAFMcTruthList">!this list holds the VAbsTruth Objects. They are instantiated</a></i>
+<!--TAB6-->                                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fPAFMcTruthEntries">fPAFMcTruthEntries</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fPAFMcTruthEntries">!number of valid entries in fVAbsTruthList.</a></i>
+<!--TAB6-->                                <a href="./EidInfoR.html">EidInfoR</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fEidInfo">fEidInfo</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fEidInfo">!kanga EidInfo</a></i>
+<!--TAB6-->                            TClonesArray* <!--TAB--><!--BOLD--><a name="KangaReader:fBtaMicroList">fBtaMicroList</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fBtaMicroList">!kanga BtaMicroCandR objects</a></i>
+<!--TAB6-->                               TObjArray* <!--TAB--><!--BOLD--><a name="KangaReader:fBtaCandList">fBtaCandList</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fBtaCandList">!kanga BtaCandListR objects</a></i>
+<!--TAB6-->                               TObjArray* <!--TAB--><!--BOLD--><a name="KangaReader:fBtaCompList">fBtaCompList</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fBtaCompList">!kanga composite objects</a></i>
+<!--TAB6-->      RooClonesVectorR&lt;<a href="./BtaCandAssocMapR.html">BtaCandAssocMapR</a>&gt;* <!--TAB--><!--BOLD--><a name="KangaReader:fBtaCandAssocMap">fBtaCandAssocMap</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fBtaCandAssocMap">!kanga BtaCandAssocMap objects</a></i>
+<!--TAB6-->                                 <a href="./StdHepR.html">StdHepR</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fStdHepR">fStdHepR</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fStdHepR">!kanga StdHepR object</a></i>
+<!--TAB6-->                            TTreeFormula* <!--TAB--><!--BOLD--><a name="KangaReader:fTagFormula">fTagFormula</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fTagFormula">!Fromula to evaluate Tag				     </a></i>
+<!--TAB6-->                            TTreeFormula* <!--TAB--><!--BOLD--><a name="KangaReader:fBitFormula">fBitFormula</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fBitFormula">!Fromula to evaluate analysis bits				     </a></i>
+<!--TAB6-->                                  TString <!--TAB--><!--BOLD--><a name="KangaReader:fTagExpr">fTagExpr</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fTagExpr">!Dynamic tag formula				     </a></i>
+<!--TAB6-->                                  TString <!--TAB--><!--BOLD--><a name="KangaReader:fBitExpr">fBitExpr</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fBitExpr">!Dynamic tag formula				     </a></i>
+<!--TAB6-->                                  TString <!--TAB--><!--BOLD--><a name="KangaReader:fPAFTagExpr">fPAFTagExpr</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fPAFTagExpr">!The PAF tag formula uses different syntax				     </a></i>
+<!--TAB6-->                               <a href="./PAFStream.html">PAFStream</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fTagStream">fTagStream</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fTagStream">!read Tag			     </a></i>
+<!--TAB6-->                               <a href="./PAFStream.html">PAFStream</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fEidStream">fEidStream</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fEidStream">!read Eid			     </a></i>
+<!--TAB6-->                               <a href="./PAFStream.html">PAFStream</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fAodStream">fAodStream</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fAodStream">!read micro			     </a></i>
+<!--TAB6-->                               <a href="./PAFStream.html">PAFStream</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fMapStream">fMapStream</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fMapStream">!read candidate maps			     </a></i>
+<!--TAB6-->                               <a href="./PAFStream.html">PAFStream</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fCmpStream">fCmpStream</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fCmpStream">!read candidate maps			     </a></i>
+<!--TAB6-->                               <a href="./PAFStream.html">PAFStream</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fMctStream">fMctStream</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fMctStream">!read MC-Truth			     </a></i>
+<!--TAB6-->                               <a href="./PAFStream.html">PAFStream</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fTruStream">fTruStream</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fTruStream">!read MC-Truth			     </a></i>
+<!--TAB6-->                               THashList* <!--TAB--><!--BOLD--><a name="KangaReader:fStreams">fStreams</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fStreams">!list of PAFStream objects</a></i>
+<!--TAB6-->                              <a href="./TPrintTree.html">TPrintTree</a>* <!--TAB--><!--BOLD--><a name="KangaReader:fPrintTree">fPrintTree</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fPrintTree">!prints MC input</a></i>
+<!--TAB6-->                                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fTimeStampMajor">fTimeStampMajor</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fTimeStampMajor">!The timestamp (secs since 1/1/1901)</a></i>
+<!--TAB6-->                                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fTimeStampMinor">fTimeStampMinor</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fTimeStampMinor">!Nanos in sec</a></i>
+<!--TAB6-->                                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fCounter">fCounter</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fCounter">!Relative event counter (file)</a></i>
+<!--TAB6-->                                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fTotal">fTotal</a><!--PLAIN-->              <!--TAB--><i><a name="Title:fTotal">!Absolute event counter</a></i>
+<!--TAB6-->                                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fMaxC">fMaxC</a><!--PLAIN-->               <!--TAB--><i><a name="Title:fMaxC"></a></i>
+<!--TAB6-->                                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fMaxN">fMaxN</a><!--PLAIN-->               <!--TAB--><i><a name="Title:fMaxN">!Length of longest charged/ </a></i>
+<!--TAB6-->                                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fTag">fTag</a><!--PLAIN-->                <!--TAB--><i><a name="Title:fTag"></a></i>
+<!--TAB6-->                                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fAod">fAod</a><!--PLAIN-->                <!--TAB--><i><a name="Title:fAod"></a></i>
+<!--TAB6-->                                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fMct">fMct</a><!--PLAIN-->                <!--TAB--><i><a name="Title:fMct"></a></i>
+<!--TAB6-->                                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fMap">fMap</a><!--PLAIN-->                <!--TAB--><i><a name="Title:fMap"></a></i>
+<!--TAB6-->                                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fCmp">fCmp</a><!--PLAIN-->                <!--TAB--><i><a name="Title:fCmp">!stream status</a></i>
+<!--TAB6-->                                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="KangaReader:fVerbose">fVerbose</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fVerbose">!Debug</a></i>
+<!--TAB6-->                            TClonesArray* <!--TAB--><!--BOLD--><a name="KangaReader:fBtaList">fBtaList</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fBtaList">! BABAR like McTruth association</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="KangaReader:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./KangaReader.html">KangaReader</a>								
+                                                                      
+ Implementation of the PAF event reader classes			
+ This class reads the Kanga schema					
+                                                                      
+ Author: Marcel Kunze, RUB, May 2000					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="./KangaReader.html">KangaReader</a> <a name="KangaReader:KangaReader" href="KangaReader.h">KangaReader</a>(const <a href="ListOfTypes.html#char">char</a>*, const <a href="ListOfTypes.html#char">char</a>* description = "PAF Kanga Reader")
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:SetVerbose" href="KangaReader.h">SetVerbose</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesNo = kTRUE)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="./PAFStream.html">PAFStream</a>* <a name="KangaReader:GetStream" href="KangaReader.h">GetStream</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> StreamNo)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="KangaReader:SetStreamStatus" href="KangaReader.h">SetStreamStatus</a>(const <a href="ListOfTypes.html#char">char</a>* stream, <a href="ListOfTypes.html#Bool_t">Bool_t</a> status = kTRUE)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:InitializeStreams" href="KangaReader.h">InitializeStreams</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> multi = kTRUE)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetCurrentIndex" href="KangaReader.h">GetCurrentIndex</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="KangaReader:GetEvent" href="KangaReader.h">GetEvent</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> number)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetNumberOfCandidates" href="KangaReader.h">GetNumberOfCandidates</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetNumberOfEventsProcessed" href="KangaReader.h">GetNumberOfEventsProcessed</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetRunNumber" href="KangaReader.h">GetRunNumber</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetEventNumber" href="KangaReader.h">GetEventNumber</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetNumberOfTracks" href="KangaReader.h">GetNumberOfTracks</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetNumberOfChargedTracks" href="KangaReader.h">GetNumberOfChargedTracks</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetNumberOfNeutralTracks" href="KangaReader.h">GetNumberOfNeutralTracks</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetNumberOfMcTruthTracks" href="KangaReader.h">GetNumberOfMcTruthTracks</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetNumberOfCandAssocs" href="KangaReader.h">GetNumberOfCandAssocs</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetNumberOfLists" href="KangaReader.h">GetNumberOfLists</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                const <a href="ListOfTypes.html#char">char</a>* <a name="KangaReader:GetListName" href="KangaReader.h">GetListName</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetNumberOfComposites" href="KangaReader.h">GetNumberOfComposites</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                TCandidate&amp; <a name="KangaReader:GetCompositeCandidate" href="KangaReader.h">GetCompositeCandidate</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->        VAbsMicroCandidate&amp; <a name="KangaReader:GetMicroCandidate" href="KangaReader.h">GetMicroCandidate</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetMajorID" href="KangaReader.h">GetMajorID</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="KangaReader:GetMinorID" href="KangaReader.h">GetMinorID</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="./PAFEventBase.html">PAFEventBase</a>&amp; <a name="KangaReader:GetHeader" href="KangaReader.h">GetHeader</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                   VAbsTag&amp; <a name="KangaReader:GetTag" href="KangaReader.h">GetTag</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                   VAbsBit&amp; <a name="KangaReader:GetBit" href="KangaReader.h">GetBit</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="./PAFListBase.html">PAFListBase</a>&amp; <a name="KangaReader:GetListBase" href="KangaReader.h">GetListBase</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="./EidInfoR.html">EidInfoR</a>&amp; <a name="KangaReader:GetEidInfo" href="KangaReader.h">GetEidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 VAbsTruth&amp; <a name="KangaReader:GetMcTruth" href="KangaReader.h">GetMcTruth</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:CreateMcTruthList" href="KangaReader.h">CreateMcTruthList</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="./PAFMcBase.html">PAFMcBase</a>&amp; <a name="KangaReader:GetMcBase" href="KangaReader.h">GetMcBase</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n) const
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./PAFMcAssocBase.html">PAFMcAssocBase</a>&amp; <a name="KangaReader:GetMcAssocBase" href="KangaReader.h">GetMcAssocBase</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="./StdHepTrkR.html">StdHepTrkR</a>&amp; <a name="KangaReader:GetStdHepTrk" href="KangaReader.h">GetStdHepTrk</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n) const
+<!--INLINE FUNCTION--><!--TAB6-->          <a href="./BtaCandAssocMapR.html">BtaCandAssocMapR</a>&amp; <a name="KangaReader:GetCandAssocMap" href="KangaReader.h">GetCandAssocMap</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="./BtaCandListR.html">BtaCandListR</a>&amp; <a name="KangaReader:GetCandList" href="KangaReader.h">GetCandList</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="KangaReader:Fill" href="KangaReader.h">Fill</a>(TCandList*)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="KangaReader:FillCharged" href="KangaReader.h">FillCharged</a>(TCandList*)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="KangaReader:FillNeutral" href="KangaReader.h">FillNeutral</a>(TCandList*)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="KangaReader:FillFromList" href="KangaReader.h">FillFromList</a>(TCandList* l, const <a href="ListOfTypes.html#char">char</a>* listname)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="KangaReader:FillCompositeList" href="KangaReader.h">FillCompositeList</a>(TCandList* l, const <a href="ListOfTypes.html#char">char</a>* listname)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="KangaReader:FillAllCompositeList" href="KangaReader.h">FillAllCompositeList</a>(TCandList* l)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="KangaReader:FillCanonicalMcTruthList" href="KangaReader.h">FillCanonicalMcTruthList</a>(TCandList*)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="KangaReader:FillMcTruthList" href="KangaReader.h">FillMcTruthList</a>(TCandList*)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:SetPrintTree" href="KangaReader.h">SetPrintTree</a>(<a href="./TPrintTree.html">TPrintTree</a>* tree)
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="./TPrintTree.html">TPrintTree</a>* <a name="KangaReader:GetPrintTree" href="KangaReader.h">GetPrintTree</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:LoadMcNodes" href="KangaReader.h">LoadMcNodes</a>(TList* mcList)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:PrintMcList" href="KangaReader.h">PrintMcList</a>(TNode&amp; cand)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:FillMcList" href="KangaReader.h">FillMcList</a>(TList&amp; list, TNode&amp; cand)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="KangaReader:MakeNodeFromStdTrack" href="KangaReader.h">MakeNodeFromStdTrack</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i, TNode*&amp; mother)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:SetTagFormula" href="KangaReader.h">SetTagFormula</a>(const <a href="ListOfTypes.html#char">char</a>* expr)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:SetBitFormula" href="KangaReader.h">SetBitFormula</a>(const <a href="ListOfTypes.html#char">char</a>* expr)
+<!--INLINE FUNCTION--><!--TAB6-->                   <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="KangaReader:EvalTagFormula" href="KangaReader.h">EvalTagFormula</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                   <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="KangaReader:EvalBitFormula" href="KangaReader.h">EvalBitFormula</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:InitTagBranches" href="KangaReader.h">InitTagBranches</a>(TTree* theTree)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:InitBitBranches" href="KangaReader.h">InitBitBranches</a>(TTree* theTree)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:InitAodBranches" href="KangaReader.h">InitAodBranches</a>(TTree* theTree)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:InitMapBranches" href="KangaReader.h">InitMapBranches</a>(TTree* theTree)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:InitCmpBranches" href="KangaReader.h">InitCmpBranches</a>(TTree* theTree)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:InitMctBranches" href="KangaReader.h">InitMctBranches</a>(TTree* theTree)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:InitTruBranches" href="KangaReader.h">InitTruBranches</a>(TTree* theTree)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="KangaReader:makeCompBase_pid" href="KangaReader.h">makeCompBase_pid</a>(<a href="./BtaCandPtrR.html">BtaCandPtrR</a>* bcp, <a href="./PAFCompAodBase.html">PAFCompAodBase</a>&amp; dest)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="KangaReader:makeCompBase_cluster" href="KangaReader.h">makeCompBase_cluster</a>(<a href="./BtaCandPtrR.html">BtaCandPtrR</a>* bcp, <a href="./PAFCompAodBase.html">PAFCompAodBase</a>&amp; dest)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="KangaReader:makeCompBase_V0" href="KangaReader.h">makeCompBase_V0</a>(<a href="./BtaCandPtrR.html">BtaCandPtrR</a>* bcp, <a href="./PAFCompAodBase.html">PAFCompAodBase</a>&amp; dest)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="KangaReader:CreateTCandList" href="KangaReader.h">CreateTCandList</a>(const <a href="ListOfTypes.html#char">char</a>*)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="./PAFStream.html">PAFStream</a>* <a name="KangaReader:NewStream" href="KangaReader.h">NewStream</a>(const <a href="ListOfTypes.html#char">char</a>* AFileNameBase, const <a href="ListOfTypes.html#char">char</a>* ATreeName)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:SetChargedTree" href="KangaReader.h">SetChargedTree</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:SetNeutralTree" href="KangaReader.h">SetNeutralTree</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="./KangaReader.html">KangaReader</a> <a name="KangaReader:KangaReader" href="KangaReader.h">KangaReader</a>(const <a href="./KangaReader.html">KangaReader</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="KangaReader:~KangaReader" href="KangaReader.h">~KangaReader</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?May">May</a> 2000					//</em><br>
+<em>Last update: Fri Dec 20 16:02:08 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

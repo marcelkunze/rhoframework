@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:50 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TEoverPHistogram</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TEoverPHistogram</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TEoverPHistogram:description">class description</a> - <a href="src/TEoverPHistogram.cxx.html">source file</a> - <a href="TEoverPHistogram_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TEoverPHistogram" href="THistogram.h">TEoverPHistogram</a> : public <a href="./THistogram.html">THistogram</a></h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->       <a href="./TEoverPHistogram.html">TEoverPHistogram</a> <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:TEoverPHistogram">TEoverPHistogram</a><!--PLAIN-->(const <a href="ListOfTypes.html#Text_t">Text_t</a>* name, const <a href="ListOfTypes.html#Text_t">Text_t</a>* title, <a href="ListOfTypes.html#Int_t">Int_t</a> nbinsx, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xlow, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xup, <a href="ListOfTypes.html#Int_t">Int_t</a> nbinsy, <a href="ListOfTypes.html#Axis_t">Axis_t</a> ylow, <a href="ListOfTypes.html#Axis_t">Axis_t</a> yup)
+<!--TAB6-->       <a href="./TEoverPHistogram.html">TEoverPHistogram</a> <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:TEoverPHistogram">TEoverPHistogram</a><!--PLAIN-->(const <a href="./TEoverPHistogram.html">TEoverPHistogram</a>&amp;)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:~TEoverPHistogram">~TEoverPHistogram</a><!--PLAIN-->()
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:Accumulate">Accumulate</a><!--PLAIN-->(<a href="ListOfTypes.html#Axis_t">Axis_t</a> x, <a href="ListOfTypes.html#Axis_t">Axis_t</a> y, <a href="ListOfTypes.html#Stat_t">Stat_t</a> weight = 1.0)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:Accumulate">Accumulate</a><!--PLAIN-->(TCandList&amp; l)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:Accumulate">Accumulate</a><!--PLAIN-->(TCandidate&amp; p)
+<!--TAB6-->         static TClass* <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->        virtual TClass* <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->      <a href="./TEoverPHistogram.html">TEoverPHistogram</a>&amp; <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:operator&lt;&lt;">operator&lt;&lt;</a><!--PLAIN-->(TCandList&amp; l)
+<!--TAB6-->      <a href="./TEoverPHistogram.html">TEoverPHistogram</a>&amp; <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:operator&lt;&lt;">operator&lt;&lt;</a><!--PLAIN-->(TCandidate&amp; p)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEoverPHistogram:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TEoverPHistogram:Data Members">Data Members</a></h3>
+<pre>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TEoverPHistogram:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./THistogram.html">THistogram</a>			    					
+                                                                      
+ Histogram class							
+                                                                      
+ Author: Marcel Kunze, RUB, March 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TEoverPHistogram:TEoverPHistogram" href="src/TEoverPHistogram.cxx.html#TEoverPHistogram:TEoverPHistogram">TEoverPHistogram</a>(const <a href="ListOfTypes.html#Text_t">Text_t</a> *name,const <a href="ListOfTypes.html#Text_t">Text_t</a> *title,<a href="ListOfTypes.html#Int_t">Int_t</a> nbinsx,<a href="ListOfTypes.html#Axis_t">Axis_t</a> xlow,<a href="ListOfTypes.html#Axis_t">Axis_t</a> xup
+					   ,<a href="ListOfTypes.html#Int_t">Int_t</a> nbinsy,<a href="ListOfTypes.html#Axis_t">Axis_t</a> ylow,<a href="ListOfTypes.html#Axis_t">Axis_t</a> yup)
+					   : <a href="./THistogram.html">THistogram</a>(name,title,nbinsx,xlow,xup,nbinsy,ylow,yup)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TEoverPHistogram:~TEoverPHistogram" href="src/TEoverPHistogram.cxx.html#TEoverPHistogram:~TEoverPHistogram">~TEoverPHistogram</a>( ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEoverPHistogram:Accumulate" href="src/TEoverPHistogram.cxx.html#TEoverPHistogram:Accumulate">Accumulate</a>( <a href="ListOfTypes.html#Axis_t">Axis_t</a> x, <a href="ListOfTypes.html#Axis_t">Axis_t</a> y, <a href="ListOfTypes.html#Stat_t">Stat_t</a> weight ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEoverPHistogram:Accumulate" href="src/TEoverPHistogram.cxx.html#TEoverPHistogram:Accumulate">Accumulate</a>(TCandList &amp;l) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEoverPHistogram:Accumulate" href="src/TEoverPHistogram.cxx.html#TEoverPHistogram:Accumulate">Accumulate</a>(TCandidate &amp;c) 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TEoverPHistogram.html">TEoverPHistogram</a>&amp; <a name="TEoverPHistogram:operator<<" href="THistogram.h">operator<<</a>(TCandList&amp; l)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TEoverPHistogram.html">TEoverPHistogram</a>&amp; <a name="TEoverPHistogram:operator<<" href="THistogram.h">operator<<</a>(TCandidate&amp; p)
+<!--INLINE FUNCTION--><!--TAB6-->                  TClass* <a name="TEoverPHistogram:Class" href="THistogram.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                  TClass* <a name="TEoverPHistogram:IsA" href="THistogram.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <a name="TEoverPHistogram:ShowMembers" href="THistogram.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <a name="TEoverPHistogram:Streamer" href="THistogram.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <a name="TEoverPHistogram:StreamerNVirtual" href="THistogram.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TEoverPHistogram.html">TEoverPHistogram</a> <a name="TEoverPHistogram:TEoverPHistogram" href="THistogram.h">TEoverPHistogram</a>(const <a href="./TEoverPHistogram.html">TEoverPHistogram</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?March">March</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:02:50 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,959 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=FrontPage.Editor.Document>
+<meta name=Generator content="Microsoft FrontPage 5.0">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=Edit-Time-Data href="./Rho-Dateien/editdata.mso">
+<title>Rho: A Set of Analysis Tools for ROOT</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>marcel</o:Author>
+  <o:LastAuthor>marcel</o:LastAuthor>
+  <o:Revision>31</o:Revision>
+  <o:Created>2001-05-06T18:47:00Z</o:Created>
+  <o:LastSaved>2001-05-28T17:12:00Z</o:LastSaved>
+  <o:Pages>5</o:Pages>
+  <o:Words>2350</o:Words>
+  <o:Characters>13395</o:Characters>
+  <o:Company>RUB</o:Company>
+  <o:Lines>111</o:Lines>
+  <o:Paragraphs>26</o:Paragraphs>
+  <o:CharactersWithSpaces>16450</o:CharactersWithSpaces>
+  <o:Version>9.2812</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:HyphenationZone>21</w:HyphenationZone>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:553679495 -2147483648 8 0 66047 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman"; margin-left:0cm; margin-right:0cm; margin-top:0cm}
+h1
+	{margin-right:0cm;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	mso-outline-level:1;
+	font-size:24.0pt;
+	font-family:"Times New Roman";
+	mso-font-kerning:18.0pt;
+	font-weight:bold;}
+h2
+	{margin-right:0cm;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	mso-outline-level:2;
+	font-size:18.0pt;
+	font-family:"Times New Roman";
+	font-weight:bold;}
+h3
+	{margin-right:0cm;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	mso-outline-level:3;
+	font-size:13.5pt;
+	font-family:"Times New Roman";
+	font-weight:bold;}
+h4
+	{mso-style-next:Standard;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:EN-GB;
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+p.MsoDocumentMap, li.MsoDocumentMap, div.MsoDocumentMap
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	background:navy;
+	font-size:12.0pt;
+	font-family:Tahoma;
+	mso-fareast-font-family:"Times New Roman";}
+p
+	{margin-right:0cm;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+address
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	font-style:italic;}
+code
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Courier New";}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 70.85pt 2.0cm 70.85pt;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:493302525;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1193218816 67567617 67567619 67567621 67567617 67567619 67567621 67567617 67567619 67567621;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:1065764827;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-624904552 1986295670 -1998394484 8425574 680409406 1633209396 -2016121540 -301139136 1415750366 -1184577884;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l2
+	{mso-list-id:2071265777;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1561072584 539944282 1525828040 -102489572 -695674370 -2063850986 -50530272 -1646645780 719867812 -888095636;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor=white lang=DE link=blue vlink=blue style='tab-interval:35.4pt'>
+<!--:WIT:StartHeader:--><!-- Web Improvement Team Header File -->
+
+<div class=Section1>
+
+<p class=MsoNormal><span style='display:none;mso-hide:all'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<!-- CELL 1, Containing SLAC & BaBar links --><!-- SLAC, PEP2 -->
+
+<h1><span lang=EN-GB style='mso-ansi-language:EN-GB'><!-- Left Strip -->Rho: A
+Set of Analysis Tools for ROOT<o:p></o:p></span></h1>
+
+<p><span lang=EN-GB style='mso-ansi-language:EN-GB'>This page collects
+information about the <a href="htmldoc\ClassIndex.html">Rho analysis tool kit</a>.
+Further documentation on topics is available if you follow the links.<br>
+<a href="#intro">Introduction</a><span style="mso-spacerun: yes">  </span><br>
+<a href="#use">Using Rho</a>: [<a href="#use-basic">Using candidates</a>] [<a
+href="#started">Getting Started</a>] [<a href="#_Availability_and_Installation">Availability
+and Installation</a>]<br>
+<br>
+Other pages of interest: [</span><a
+href="http://www.ep1.ruhr-uni-bochum.de/~marcel/PAF.html"><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Pico Analysis Framework</span></a><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>]<o:p></o:p></span></p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<h3><span lang=EN-GB style='mso-ansi-language:EN-GB'>Recent Changes<o:p></o:p></span></h3>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo3;tab-stops:list 36.0pt'><em><span lang=EN-GB
+     style='mso-ansi-language:EN-GB'>6 May, 2001</span></em><span lang=EN-GB
+     style='mso-ansi-language:EN-GB'> – First release of Rho ( Marcel
+     Kunze)<span style="mso-spacerun: yes">  </span><o:p></o:p></span></li>
+</ul>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<h2><a name=intro><span lang=EN-GB style='mso-ansi-language:EN-GB'>Introduction</span></a><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></h2>
+
+<p class=MsoNormal><span lang=EN-GB style='mso-ansi-language:EN-GB'>The Rho
+package is an analysis tool kit for use with ROOT. It owes a lot to it's
+predecessors, including ALPHA from ALEPH and BaBar's Beta. Unlike Beta, Rho is
+based on the solid fundaments of the freely available ROOT framework and runs
+interactively out-of-the-box on all computing platforms supporting ROOT. Rho
+fully complies to the ROOT coding conventions and is free of commercial
+components: There is no need for additional products like CLHEP, PDT or
+RogueWave Tools.h++ as ROOT already offers the corresponding functionality. Rho
+has been very carefully optimised to interactive work and thus speed:<o:p></o:p></span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'><span
+     lang=EN-GB style='mso-ansi-language:EN-GB'>Communication between modules
+     in general happens through abstract interfaces rather than transient
+     objects<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'><span
+     lang=EN-GB style='mso-ansi-language:EN-GB'>The consequent use of smart
+     pointers to the ROOT data store allows to filter events at several 100 kHz
+     on a standard PC<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'><span
+     lang=EN-GB style='mso-ansi-language:EN-GB'>The consequent use of ROOTD for
+     file I/O allows for efficient interactive access to data distributed over
+     various Tier sites<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'><span
+     lang=EN-GB style='mso-ansi-language:EN-GB'>The consequent use of the
+     &quot;new with placement&quot; operator for recruitment of analysis
+     objects out of a fixed memory arena prevents memory fragmentation even in
+     long lasting jobs<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'><span
+     lang=EN-GB style='mso-ansi-language:EN-GB'>A built-in garbage collection
+     mechanism resolves the burden of ownership issues for candidates and
+     vertices (“Don’t care”)<o:p></o:p></span></li>
+</ul>
+
+<p class=MsoNormal><span lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p><span lang=EN-GB style='mso-ansi-language:EN-GB'>The primary goal is to
+provide a simple, common basis for writing detailed physics analysis programs.<o:p></o:p></span></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo9;tab-stops:list 36.0pt'><span lang=EN-GB
+     style='mso-ansi-language:EN-GB'>It must be very easy to use, with easy to
+     understand metaphors for common tasks, and without requiring the user to
+     master the archania of the C++ programming language. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo9;tab-stops:list 36.0pt'><span lang=EN-GB
+     style='mso-ansi-language:EN-GB'>It must be complete, in the sense that it
+     permits the analyst to examine anything available within the
+     reconstruction processing and output. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo9;tab-stops:list 36.0pt'><span lang=EN-GB
+     style='mso-ansi-language:EN-GB'>It must be common, which means that it
+     must be usable on all platforms, with all our sources of data, at all
+     levels of detail. <o:p></o:p></span></li>
+</ul>
+
+<p><span lang=EN-GB style='mso-ansi-language:EN-GB'>To do this, Rho defines
+several basic concepts:<o:p></o:p></span></p>
+
+<h4><span lang=EN-GB>Candidate </span></h4>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>A candidate is the Rho representation of what
+is known or assumed about some particle that <b>may</b> have existed in the
+event in question. Charged tracks can be candidate pions, neutral clusters can
+be candidate photons. The output of vertexing two candidates is another
+candidate, representing the &quot;particle&quot; that might have decayed to
+those two tracks. There are many types of candidates, from different sources
+and with different implementations. But <b>all</b> of them provide the same,
+complete interface, so they can be used interchangeably.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TCandidate.html">TCandidate</a>]
+<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h4><span lang=EN-GB>Operator </span></h4>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>An operator can combine one or more candidates
+to form new ones. Vertexing, mass constrained fitting, and simple fourvector addition
+are all operators. The analyst selects the operator needed at particular stages
+in the analysis, trading off accuracy and completeness for speed and
+flexibility. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TOperatorBase.html">TOperatorBase</a>]
+[<a href="htmldoc\TOperator.html">TOperator</a>] [<a href="htmldoc\TOpAdd4.html">TOpAdd4</a>]
+[<a href="htmldoc\TOpClone.html">TOpClone</a>] [<a
+href="htmldoc\TOpMakeTree.html">TOpMakeTree</a>] [<a
+href="htmldoc\TUnaryOperator.html">TUnaryOperator</a>] [<a
+href="htmldoc\VAbsFitter.html">VAbsFitter</a>]<o:p></o:p></span></p>
+
+<p><span lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p><span lang=EN-GB style='mso-ansi-language:EN-GB'>In addition, we have
+defined some higher level concepts. As those are common, they help us share
+analysis algorithms:<o:p></o:p></span></p>
+
+<h4><span lang=EN-GB>Selector </span></h4>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>A basic operation of analysis is applying
+&quot;cuts&quot; to select hypotheses that are acceptable. For example, a kaon
+candidate might have to pass cuts on the signatures seen in a Cerenkov device
+and dE/dx. To the extent that these are reusable in other analyses, they become
+&quot;selectors&quot;. We have a whole spectrum, ranging from general PID
+selectors based on various algorithms, to selectors for various forms of
+composite particles (D and B mesons, for example), down to ones that are very
+specific to a particular analysis. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Base classes:<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\VAbsPidSelector.html">VAbsPidSelector</a>]
+[<a href="htmldoc\VAbsVertexSelector.html">VAbsVertexSelector</a>] <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Vertex selectors:<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TSimpleVertexSelector.html">TSimpleVertexSelector</a>]
+<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Event selectors for TAG and AOD level:<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TEventSelector.html">TEventSelector</a>]
+[<a href="htmldoc\TBhabhaTagSelector.html">TBhabhaTagSelector</a>] [<a
+href="htmldoc\TDimuonTagSelector.html">TDimuonTagSelector</a>] [<a
+href="htmldoc\TGammaGammaTagSelector.html">TGammaGammaTagSelector</a>] [<a
+href="htmldoc\THadronTagSelector.html">THadronTagSelector</a>] [<a
+href="htmldoc\TTwoprongTagSelector.html">TTwoprongTagSelector</a>] [<a
+href="htmldoc\TBhabhaAodSelector.html">TBhabhaAodSelector</a> ] [<a
+href="htmldoc\TDimuonAodSelector.html">TDimuonAodSelector</a> ] [<a
+href="htmldoc\THadronAodSelector.html">THadronAodSelector</a>] <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Track selectors:<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TGoodTrackSelector.html">TGoodTrackSelector</a>]
+[<a href="htmldoc\TGoodPhotonSelector.html">TGoodPhotonSelector</a>] [<a
+href="htmldoc\TPidChargedSelector.html">TPidChargedSelector</a>] [<a
+href="htmldoc\TPidEnergySelector.html">TPidEnergySelector</a>] [<a
+href="htmldoc\TPidMassSelector.html">TPidMassSelector</a>] [<a
+href="htmldoc\TPidMinusSelector.html">TPidMinusSelector</a>] [<a
+href="htmldoc\TPidMomentumSelector.html">TPidMomentumSelector</a>] [<a
+href="htmldoc\TPidNeutralSelector.html">TPidNeutralSelector</a>] [<a
+href="htmldoc\TPidPlusSelector.html">TPidPlusSelector</a>]<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>PID selectors:<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TPidNNOElectronSelector.html">TPidNNOElectronSelector</a>]
+[<a href="htmldoc\TPidNNOMuonSelector.html">TPidNNOMuonSelector</a>] [<a
+href="htmldoc\TPidNNOPionSelector.html">TPidNNOPionSelector</a>] [<a
+href="htmldoc\TPidNNOKaonSelector.html">TPidNNOKaonSelector</a>] [<a
+href="htmldoc\TPidNNOProtonSelector.html">TPidNNOProtonSelector</a>]<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a
+href="htmldoc\TPidTruthElectronSelector.html">TPidTruthElectronSelector</a>] [<a
+href="htmldoc\TPidTruthMuonSelector.html">TPidTruthMuonSelector</a>] [<a
+href="htmldoc\TPidTruthPionSelector.html">TPidTruthPionSelector</a>] [<a
+href="htmldoc\TPidTruthKaonSelector.html">TPidTruthKaonSelector</a>] [<a
+href="htmldoc\TPidTruthProtonSelector.html">TPidTruthProtonSelector</a>]<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h4><span lang=EN-GB>Associator </span></h4>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Its often useful to &quot;associate&quot; one
+candidate with another during analysis. Reconstruction candidates are
+associated with their appropriate Monte Carlo truth candidates, charged track
+candidates are associated with neutral cluster candidates, etc. The <i>TAssociator</i>
+classes provide a family of ways to do this with a consistent interface. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TAssociator.html">TAssociator</a>]<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p style='margin:0cm;margin-bottom:.0001pt'><b><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Manager<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Managers allow to organize objects and
+messages, data flow, candidate lists, analysis modules, parameter setting and histogramming.
+Event I/O happens through suiting <a href="htmldoc\VAbsReader.html">VAbsReader</a>
+and <a href="htmldoc\VAbsWriter.html">VAbsWriter</a> interfaces, using smart
+pointers into the ROOT trees.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TCacheManager.html">TCacheManager</a>]
+[<a href="htmldoc\TCandListManager.html">TCandListManager</a>] [<a
+href="htmldoc\TDirectoryManager.html">TDirectoryManager</a>] [<a
+href="htmldoc\TEventManager.html">TEventManager</a>] [<a
+href="htmldoc\TObjectManager.html">TObjectManager</a>] [<a
+href="htmldoc\TParameterManager.html">TParameterManager</a>] [<a
+href="htmldoc\TPersistenceManager.html">TPersistenceManager</a>]<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p style='margin:0cm;margin-bottom:.0001pt'><b><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Lists<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Candidates are organized in candidate lists and
+Rho offers a comprehensive set of list processing functionality. Candidates can
+be sorted, vertexed and filtered using PID or vertex selectors; the contents of
+lists can be easily histogrammed by use of the I/O operator.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TCandList.html">TCandList</a>]<span
+style="mso-spacerun: yes">  </span>[<a href="htmldoc\TCandListIterator.html">TCandListIterator</a>]<span
+style="mso-spacerun: yes">  </span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p style='margin:0cm;margin-bottom:.0001pt'><b><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Collections<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Collections are used to memorize and persist
+the result of a previous selection. Rho knows run collections, event
+collections and index collections<span style="mso-spacerun: yes">  </span>A
+collection can effectively replay events into an analysis out of a vast data
+store, even distributed over various Tier sites (“isPhysicsEvents”). All
+collections share a common <i>VAbsCollection</i> interface.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\VAbsCollection.html">VAbsCollection</a>]
+[<a href="htmldoc\TEventCollection.html">TEventCollection</a>] [<a
+href="htmldoc\TIndexCollection.html">TIndexCollection</a>] [<a
+href="htmldoc\TRunCollection.html">TRunCollection</a>]<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='mso-ansi-language:EN-GB'>In order to
+perform a multi-level detailed analysis the following classes help to set up
+and run sequences of algorithms:<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p style='margin:0cm;margin-bottom:.0001pt'><b><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Module<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>A module defines a well separated part of a
+physics analysis, like a preselection of events, a fit etc. All modules inherit
+from the TModule base class that defines the obligatory <i>Begin</i>, <i>Event</i>
+and <i>End</i> interface.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TModule.html">TModule</a>]<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p style='margin:0cm;margin-bottom:.0001pt'><b><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Analysis<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>An analysis orders and executes the modules in
+a suiting sequence. It is responsible for event I/O using the event manager.
+Modules can be added to form an analysis sequence.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TAnalysis.html">TAnalysis</a>]<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p style='margin:0cm;margin-bottom:.0001pt'><b><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Services<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Services like the list manager, the persistence
+manager or the directory manager are provided by a service manager singleton.
+It is possible to register services and make them available everywhere in your
+programs.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TRho.html">TRho</a>]<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h4><span lang=EN-GB>Parameters</span></h4>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>All modules can define parameters that are to
+be set or modified from C++, the command line or a TCL-like steering file.
+Parameters belonging to different modules can be distinguished using the C++
+scope operator. Valid parameter types are Bool_t, Int_t, Double_t and TString. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>[<a href="htmldoc\TParm.html">TParm</a>] [<a
+href="htmldoc\TParmBool.html">TParmBool</a>] [<a href="htmldoc\TParmInt.html">TParmInt</a>]
+[<a href="htmldoc\TParmDouble.html">TParmDouble</a>] [<a
+href="htmldoc\TParmString.html">TParmString</a>]<o:p></o:p></span></p>
+
+<h2><a name=use><span lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></a></h2>
+
+<h2><span style='mso-bookmark:use'><span lang=EN-GB style='mso-ansi-language:
+EN-GB'>Using Rho</span></span><span lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></h2>
+
+<h3><span lang=EN-GB style='mso-ansi-language:EN-GB'>Contents<o:p></o:p></span></h3>
+
+<p class=MsoNormal><span lang=EN-GB style='mso-ansi-language:EN-GB'>The basic
+Rho release consists of five packages: <o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>RhoMath</span></b><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>A statistics package to enhance ROOT with error
+classes, error functions and consistency calculation <o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=FR style='mso-ansi-language:FR'>RhoBase</span></b><span
+lang=FR style='mso-ansi-language:FR'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=FR style='mso-ansi-language:
+FR'>Candidate classes, base classes, list processing etc. <o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>
+<a href="RhoToolsPackage.html">RhoTools</a></span></b><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Analysis-level tools, boosters, event shape
+variables, etc. <o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>RhoExamples</span></b><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Analysis-level examples of techniques you might
+want to use in your program <o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>RhoParameters</span></b><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Particle data tables, neural network files and
+schema definitions <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB style='mso-ansi-language:
+EN-GB'>Several independent optional tools packages complement the basic release<o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>RhoHistogram</span></b><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>A Heptuple compliant interface to support
+THistogram and TTuple classes <o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>
+<a href="RhoNNO.html">RhoNNO</a></span></b><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>The ROOT implementation of the Neural Network
+Objects package <o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>RhoGA</span></b><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>MIT’s library for implementation of genetic
+algorithms <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB style='mso-ansi-language:
+EN-GB'>There are additional packages to allow for event and environmental
+management, and readers and writers for various applications<o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>RhoManager</span></b><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Event manager classes for modules, I/O, object
+persistence etc.<o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>PAFSchema
+and KangaSchema</span></b><span lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>Implementation of readers and writers for data
+of the BABAR experiment<o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>RhoSelector</span></b><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>A sample of event selectors, PID selectors and
+vertex selectors <o:p></o:p></span></p>
+
+<p class=MsoNormal><b><span lang=EN-GB style='mso-ansi-language:EN-GB'>RhoConditions</span></b><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB
+style='mso-ansi-language:EN-GB'>A standalone sample implementation of a ROOT
+based conditions database for beam parameters etc. Databases are transparently
+accessible over WAN using ROOTD.<o:p></o:p></span></p>
+
+<pre><span lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<h3 style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><a
+name=use-basic><span lang=EN-GB style='mso-ansi-language:EN-GB'>Using
+candidates</span></a><span lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>Pending better documentation, the
+best way to find the names of available member functions, etc., is to read the <a
+href="htmldoc\TCandidate.html">TCandidate.h</a> file. Some useful ones are: <o:p></o:p></span></p>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>Accessors to contained information,
+stated at the primary vertex<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=FR style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+FR'>Double_t Charge() const</span></code><span lang=FR style='mso-ansi-language:
+FR'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'>TLorentzVector P4() const</span></code><span lang=EN-GB
+style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'>Double_t Mass() const</span></code><span lang=EN-GB style='mso-ansi-language:
+EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'>TVector3 P3() const</span></code><span lang=EN-GB style='mso-ansi-language:
+EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'>Double_t Energy() const</span></code><span lang=EN-GB style='mso-ansi-language:
+EN-GB'> <o:p></o:p></span></p>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>Accessors to values at nearest
+approach to a point. Note that these can be significantly slower and/or less
+accurate than accessing the information at the IP.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'>TLorentzVector P4(const TVector3&amp; pt) const</span></code><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'>TVector3 P3(const TVector3&amp; pt) const</span></code><span lang=EN-GB
+style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>Candidates can maintain
+&quot;genealogy&quot; information, which consists of links to
+&quot;mothers&quot; and &quot;daughters&quot;. The daughters of a candidate C
+are those candidates that were used by a <a href="htmldoc\TOperator.html">TOperator</a>
+to create C. C is a mother to each of those daughters. A candidate can have
+more than one mother. Member functions are provided to navigate those
+relations.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'>Int_t NDaughters() const</span></code><span lang=EN-GB style='mso-ansi-language:
+EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'><a href="htmldoc\TCandListIterator.html">TCandListIterator</a>
+DaughterIterator() const</span></code><span lang=EN-GB style='mso-ansi-language:
+EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'>Bool_t Overlaps(const <a href="htmldoc\TCandidate.html">TCandidate</a>&amp;)
+const</span></code><span lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>Two candidates are said to
+&quot;overlap&quot; if they or at least one of their daughters are the same
+object. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>Service routines: <o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'>virtual void PrintOn(ostream&amp; o) const</span></code><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><code><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:
+EN-GB'><a href="htmldoc\TCandidate.html">TCandidate</a>&amp; operator =( const <a
+href="htmldoc\TCandidate.html">TCandidate</a> &amp;)</span></code><span
+lang=EN-GB style='mso-ansi-language:EN-GB'> <o:p></o:p></span></p>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>The available operators are:<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><a href="htmldoc\TOpAdd4.html">TOpAdd4</a>
+for combining fourvector and charge<br>
+<a href="htmldoc\TOpClone.html">TOpClone</a> for cloning candidates <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><a href="htmldoc\TOpMakeTree.html">TOpMakeTree</a>
+for generation of candidate trees from <a href="htmldoc\TCandList.html">TCandLists</a><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><a href="htmldoc\VAbsFitter.html">VAbsFitter</a>
+for generation of trees by vertex fitters<o:p></o:p></span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>The <a
+href="htmldoc\src\RhoToolsTest.cxx">RhoToolsTest.cxx</a> file in the
+RhoExamples package contains an example of the use of these. To combine two <a
+href="htmldoc\TCandidate.html">TCandidates</a> c1 and c2 via addition, filling
+an existing candidate c3:<o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><span style="mso-spacerun:
+yes"> </span><o:p></o:p></span></p>
+
+<pre style='margin-left:35.4pt'><span lang=EN-GB style='mso-ansi-language:EN-GB'><a
+href="htmldoc\TOpAdd4.html">TOpAdd4</a> op;<span style="mso-spacerun: yes">    </span><o:p></o:p></span></pre><pre
+style='margin-left:35.4pt'><span lang=EN-GB style='mso-ansi-language:EN-GB'>c3 = op.Combine(c1,c2); <o:p></o:p></span></pre>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>In order to run the example program
+interactively, make sure to set the RHO environment to resolve the
+RhoParameters directory location for the particle data table and execute it as
+a macro in a ROOT session:<o:p></o:p></span></p>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>test&gt; setenv RHO $PWD<br>
+root[0].x $RHO/RhoExamples/ RhoToolsTest.cxx<o:p></o:p></span></p>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h3 style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><a
+name=started><span lang=EN-GB style='mso-ansi-language:EN-GB'>Getting started</span></a><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></h3>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>Sample code for a simple analysis is
+provided in the <a href="htmldoc\src\Analysis.cxx">Analysis.cxx</a> file. It's
+intended as an example of several techniques, not a first step toward a
+polished analysis. It searches for K0s -&gt; pi+ pi- as an example of a finder
+routine and vertexing, and then searches for J/psi -&gt; 2 charged tracks using
+a selector. It makes various histograms of masses before and after fits, decay
+lengths, momenta in lab and CM frame, etc. The example can be run either as an
+executable or interactively from the CINT interpreter.<o:p></o:p></span></p>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>In order to run the example program
+interactively, make sure to set the RHO environment to allow the system to
+resolve the RhoParameters directory location for the particle data table and
+execute it as a macro out of a ROOT session. You may want to specify the location
+of a suiting ROOT Kanga or PAF data file as a parameter: <o:p></o:p></span></p>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>test&gt; setenv RHO $PWD<br>
+root[0].x $RHO/RhoExamples/Analysis.cxx(“test/out-micro”)<o:p></o:p></span></p>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>Rho is smart enough to distinguish
+between different input formats and load the corresponding schema.<o:p></o:p></span></p>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h1 style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><a
+name="_Availability_and_Installation"></a><span lang=EN-GB style='mso-ansi-language:
+EN-GB'>Availability and Installation<o:p></o:p></span></h1>
+
+<font SIZE="2">
+<p><span lang="EN-GB">Rho resides in the CVS repository :ext:anoncvs@gridportal.fzk.de:/cvs/hep/rho. 
+If you wish to install and build, you have to check out and build the 
+corresponding packages:</span></p>
+<p><span lang="EN-GB">First, you should set the CVS environment</span></p>
+<p><span lang="EN-GB" style="font-size: 10.0pt; font-family: Courier New">&gt; 
+setenv CVSROOT </span>
+<span style="font-size:
+10.0pt;font-family:&quot;Courier New&quot;">
+<a href="mailto::ext:anoncvs@gridportal.fzk.de:/cvs/hep/rho" style="color: blue; text-decoration: underline; text-underline: single">
+<span lang="EN-GB">:ext:anoncvs@gridportal.fzk.de:/cvs/hep/rho</span></a></span><span lang="EN-GB" style="font-size: 10.0pt; font-family: Courier New"><br>
+&gt; setenv CVS_RSH ssh</span></p>
+<p><span lang="EN-GB">Then, install a release directory (The environment RHO 
+needs to be set up to point to the directory):</span></p>
+<p><span lang="EN-GB" style="font-size: 10.0pt; font-family: Courier New">&gt; 
+mkdir Rho<br>
+&gt; cd Rho<br>
+&gt; setenv RHO $PWD<br>
+&gt; mkdir bin lib</span><span style="font-size: 10.0pt; font-family: Courier New"> 
+workdir</span></p>
+<p><span lang="EN-GB">You might want to check out and read documentation first</span> 
+(htmldoc holds the ROOT class documentation)<span lang="EN-GB">:</span></p>
+<p><span lang="EN-GB" style="font-size: 10.0pt; font-family: Courier New">&gt; cvs 
+co doc<br>
+</span><span style="font-size: 10.0pt; font-family: Courier New">&gt; cvs co 
+htmldoc</span></p>
+<p><span lang="EN-GB">Then check out the Rho sources and start the build:</span></p>
+<p><span lang="EN-GB" style="font-size: 10.0pt; font-family: Courier New">&gt; cvs 
+-z3 -t co Rho</span><span style="font-size: 10.0pt; font-family: Courier New">Makefiles<br>
+&gt; RhoMakefiles/addRho<br>
+</span><span lang="EN-GB" style="font-size: 10.0pt; font-family: Courier New">&gt; 
+make –f </span><span style="font-size: 10.0pt; font-family: Courier New">
+RhoMakefiles/</span><span lang="EN-GB" style="font-size: 10.0pt; font-family: Courier New">GNUmakefile.Linux</span></p>
+<p>Prior to start you should install the most recent production version of ROOT&nbsp; 
+from root.cern.ch and set the ROOTSYS environment variable correspondingly. In 
+addition you have to add $ROOTSYS/lib and $RHO/lib to your LD_LIBRARY_PATH in 
+order to resolve the shared libs.</p>
+</font>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>A Windows distribution is available 
+upon request.<o:p></o:p></span></p>
+
+
+<div class=MsoNormal align=center style='text-align:center;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<p class=MsoNormal style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><br>
+Maintained by Marcel Kunze, <o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'>
+<a href="mailto:marcel.kunze@hik.fzk.de"><span lang=EN-GB style='mso-ansi-language:
+EN-GB'>marcel</span><span style='mso-ansi-language:
+EN-GB'>.kunze</span><span lang=EN-GB style='mso-ansi-language:
+EN-GB'>@</span><span style='mso-ansi-language:
+EN-GB'>hik.fzk</span><span lang=EN-GB style='mso-ansi-language:
+EN-GB'>.de</span></a><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:49 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TDoubleErr - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TDoubleErr.html">TDoubleErr</a>		    						//</b>
+<b>//                                                                      //</b>
+<b>// Double w/ error							//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, RUB, Nov. 99					//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//                                                                      //</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "RhoMath/TDoubleErr.h"
+
+#include &lt;math.h&gt;
+
+ClassImp(TDoubleErr)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TDoubleErr *&amp;obj)
+{
+   obj = (TDoubleErr *) buf.ReadObject(TDoubleErr::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+static const char rscid[] = "$Id: TDoubleErr.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $";
+
+<a name="TDoubleErr:TDoubleErr"> </a>TDoubleErr::TDoubleErr(const TDoubleErr &amp; original) {
+    *this = original;
+}
+
+TDoubleErr &amp; TDoubleErr::operator = (const TDoubleErr &amp; original) {
+    fValue = original.fValue;
+    fCovariance = original.fCovariance;
+    return *this;
+}
+
+Double_t 
+<a name="TDoubleErr:DetermineChisq"> </a>TDoubleErr::DetermineChisq(Double_t ref) const {
+    if (0 &gt;= fCovariance){
+	return -1.;
+    }
+    else{
+	Double_t diff = (ref - fValue);
+	return (diff * diff) / fCovariance;
+    }
+}
+
+TDoubleErr TDoubleErr::operator-() {
+    return TDoubleErr(-fValue, fCovariance);
+}
+
+TDoubleErr TDoubleErr::operator - (const TDoubleErr &amp; bde) {
+    return TDoubleErr(fValue - bde.fValue, fCovariance - bde.fCovariance);
+}
+
+TDoubleErr TDoubleErr::operator + (const TDoubleErr &amp; bde) {
+    return TDoubleErr(fValue + bde.fValue, fCovariance + bde.fCovariance);
+}
+
+TDoubleErr TDoubleErr::operator * (const TDoubleErr &amp; bde) {
+    return TDoubleErr(fValue * bde.fValue, 
+		      fCovariance * bde.fValue * bde.fValue +
+		      bde.fCovariance * fValue * fValue);
+}
+
+TDoubleErr TDoubleErr::operator / (const TDoubleErr &amp; bde) {
+    register Double_t bde2 = bde.fValue * bde.fValue;
+    
+    return TDoubleErr(fValue / bde.fValue,
+		      fCovariance / bde2 +
+		      bde.fCovariance * fValue * fValue / (bde2 * bde2));
+}		      
+
+TDoubleErr &amp; TDoubleErr::operator += (const TDoubleErr &amp; bde) {
+    *this = *this + bde;
+    return *this;
+}
+
+TDoubleErr &amp; TDoubleErr::operator -= (const TDoubleErr &amp; bde) {
+    *this = *this - bde;
+    return *this;
+}
+
+TDoubleErr &amp; TDoubleErr::operator *= (const TDoubleErr &amp; bde) {
+    *this = *this * bde;
+    return *this;
+}
+
+TDoubleErr &amp; TDoubleErr::operator /= (const TDoubleErr &amp; bde) {
+    *this = *this / bde;
+    return *this;
+}
+
+std::ostream &amp; operator&lt;&lt;(std::ostream &amp; stream, const TDoubleErr &amp; bde) {
+    stream &lt;&lt; "value: " &lt;&lt; bde.Value() 
+	&lt;&lt; " covariance: " &lt;&lt; bde.Covariance();
+    
+    return stream;
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

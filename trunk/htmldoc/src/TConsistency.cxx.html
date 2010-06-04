@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:44 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TConsistency - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TConsistency.html">TConsistency</a>				    				//</b>
+<b>//                                                                      //</b>
+<b>// Consistency base class						//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, RUB, Nov. 99					//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//                                                                      //</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include &lt;math.h&gt;
+#include &lt;assert.h&gt;
+
+#include "RhoMath/TConsistency.h"
+
+ClassImp(TConsistency)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TConsistency *&amp;obj)
+{
+   obj = (TConsistency *) buf.ReadObject(TConsistency::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+<a name="TConsistency:TConsistency"> </a>TConsistency::TConsistency() 
+: fStat(noMeasure), fValue(0), fLikelihood(1.), fSign(unknown)
+{
+}
+
+<a name="TConsistency:TConsistency"> </a>TConsistency::TConsistency(Double_t v, Double_t l)
+: fStat(OK), fValue(v), fLikelihood(l), fSign(unknown)
+{
+}
+
+<a name="TConsistency:TConsistency"> </a>TConsistency::TConsistency(const TConsistency&amp; rhs) 
+: fStat(rhs.fStat), fValue(rhs.fValue)
+, fLikelihood(rhs.fLikelihood), fSign(rhs.fSign)
+{
+}
+
+<b>// operators</b>
+<a href=".././TConsistency.html">TConsistency</a>&amp; 
+<a href=".././TConsistency.html#TConsistency:operator">TConsistency::operator</a>=(const <a href=".././TConsistency.html">TConsistency</a>&amp; rhs)
+{
+    <a href=".././TConsistency.html#TConsistency:fStat">fStat</a>=rhs.<a href=".././TConsistency.html#TConsistency:fStat">fStat</a>;
+    <a href=".././TConsistency.html#TConsistency:fValue">fValue</a>=rhs.<a href=".././TConsistency.html#TConsistency:fValue">fValue</a>;
+    <a href=".././TConsistency.html#TConsistency:fLikelihood">fLikelihood</a>=rhs.<a href=".././TConsistency.html#TConsistency:fLikelihood">fLikelihood</a>;
+    <a href=".././TConsistency.html#TConsistency:fSign">fSign</a>=rhs.<a href=".././TConsistency.html#TConsistency:fSign">fSign</a>;
+    
+    return *this;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a href=".././TConsistency.html#TConsistency:operator">TConsistency::operator</a>==(const <a href=".././TConsistency.html">TConsistency</a>&amp; rhs) const
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> answer = kFALSE;
+    if (<a href=".././TConsistency.html#TConsistency:fStat">fStat</a>       == rhs.<a href=".././TConsistency.html#TConsistency:fStat">fStat</a> &amp;&amp;
+	<a href=".././TConsistency.html#TConsistency:fValue">fValue</a>      == rhs.<a href=".././TConsistency.html#TConsistency:fValue">fValue</a> &amp;&amp;
+	<a href=".././TConsistency.html#TConsistency:fLikelihood">fLikelihood</a> == rhs.<a href=".././TConsistency.html#TConsistency:fLikelihood">fLikelihood</a> &amp;&amp;
+	<a href=".././TConsistency.html#TConsistency:fSign">fSign</a>       == rhs.<a href=".././TConsistency.html#TConsistency:fSign">fSign</a>) {
+	answer = kTRUE;
+    }
+    
+    return answer;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a href=".././TConsistency.html#TConsistency:operator">TConsistency::operator</a>&lt;(const <a href=".././TConsistency.html">TConsistency</a>&amp; rhs) const
+{
+<b>    //</b>
+<b>    // this is not unique...</b>
+<b>    //</b>
+    
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> answer = kFALSE;
+    if (<a href=".././TConsistency.html#TConsistency:fStat">fStat</a> == <a href=".././TConsistency.html#TConsistency:OK">OK</a> &amp;&amp; rhs.<a href=".././TConsistency.html#TConsistency:fStat">fStat</a> == <a href=".././TConsistency.html#TConsistency:OK">OK</a> ) {
+<b>	//</b>
+<b>	// Dare to use consistency for comparison. </b>
+<b>	// Likelihood may give a different answer</b>
+<b>	//</b>
+	if (<a href=".././TConsistency.html#TConsistency:fValue">fValue</a> &lt; rhs.<a href=".././TConsistency.html#TConsistency:fValue">fValue</a>) {
+	    answer = kTRUE;
+	}
+    } else {
+	if (rhs.<a href=".././TConsistency.html#TConsistency:fStat">fStat</a> == <a href=".././TConsistency.html#TConsistency:OK">OK</a>) {
+	    answer = kTRUE;
+	}
+    }
+    
+    return answer;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a href=".././TConsistency.html#TConsistency:operator">TConsistency::operator</a>&gt;(const <a href=".././TConsistency.html">TConsistency</a>&amp; rhs) const
+{
+<b>    // ghm</b>
+    if( *this==rhs ) return kFALSE;
+    return( ! (*this&lt;rhs) );
+}
+
+
+const <a href=".././TConsistencySet.html">TConsistencySet</a>* 
+<a name="TConsistency:Genealogy"> </a><a href=".././TConsistency.html#TConsistency:Genealogy">TConsistency::Genealogy</a>() const
+{
+    return 0;
+}
+
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TConsistency:PrintOn"> </a><a href=".././TConsistency.html#TConsistency:PrintOn">TConsistency::PrintOn</a>(std::ostream&amp; os) const
+{
+    os &lt;&lt; "Likelihood = ";
+    os &lt;&lt;  setw(7) &lt;&lt; setprecision(4);
+    os &lt;&lt; <a href=".././TConsistency.html#TConsistency:fLikelihood">fLikelihood</a>;
+    os &lt;&lt; "t SignificanceLevel = ";
+    os &lt;&lt; setw(7) &lt;&lt; setprecision(4);
+    os &lt;&lt; <a href=".././TConsistency.html#TConsistency:fValue">fValue</a>;
+    os &lt;&lt; "t Status ";
+    switch( <a href="#TConsistency:Status">Status</a>() ) {
+    case <a href=".././TConsistency.html#TConsistency:OK">TConsistency::OK</a>  :
+	os &lt;&lt; "<a href=".././TConsistency.html#TConsistency:OK">OK</a>"; 
+	break;
+    case  <a href=".././TConsistency.html#TConsistency:noMeasure">TConsistency::noMeasure</a>  :
+	os &lt;&lt; "<a href=".././TConsistency.html#TConsistency:noMeasure">noMeasure</a>"; 
+	break;
+    case  <a href=".././TConsistency.html#TConsistency:underFlow">TConsistency::underFlow</a>  :
+	os &lt;&lt; "<a href=".././TConsistency.html#TConsistency:underFlow">underFlow</a>"; 
+	break;
+    case  <a href=".././TConsistency.html#TConsistency:unPhysical">TConsistency::unPhysical</a>  :
+	os &lt;&lt; "<a href=".././TConsistency.html#TConsistency:unPhysical">unPhysical</a>"; 
+	break;
+    default:
+	os &lt;&lt; "<a href=".././TConsistency.html#TConsistency:unknown">unknown</a>";
+    }
+    os &lt;&lt; endl;
+}
+
+<b>//------------------</b>
+<b>// Static methods --</b>
+<b>//------------------</b>
+
+const <a href=".././TConsistency.html">TConsistency</a>&amp;
+<a name="TConsistency:BadMeasurement"> </a><a href=".././TConsistency.html#TConsistency:BadMeasurement">TConsistency::BadMeasurement</a>() 
+{
+    static <a href=".././TConsistency.html">TConsistency</a> bad(1.,1.);
+    bad.<a href="#TConsistency:SetStatus">SetStatus</a>(<a href=".././TConsistency.html#TConsistency:noMeasure">noMeasure</a>);
+    
+    return bad;
+}
+
+<a name="TConsistency:Consistency"> </a><a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././TConsistency.html#TConsistency:Consistency">TConsistency::Consistency</a>() const 
+{ return <a href=".././TConsistency.html#TConsistency:fValue">fValue</a>; }
+
+<a name="TConsistency:SignificanceLevel"> </a><a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././TConsistency.html#TConsistency:SignificanceLevel">TConsistency::SignificanceLevel</a>() const 
+{ return <a href=".././TConsistency.html#TConsistency:fValue">fValue</a>; }
+
+<a name="TConsistency:Likelihood"> </a><a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././TConsistency.html#TConsistency:Likelihood">TConsistency::Likelihood</a>() const 
+{ return  <a href=".././TConsistency.html#TConsistency:fLikelihood">fLikelihood</a>;}
+
+<a href=".././TConsistency.html#TConsistency:EConsistentStatus">TConsistency::EConsistentStatus</a> <a href=".././TConsistency.html#TConsistency:Status">TConsistency::Status</a>() const 
+{return <a href=".././TConsistency.html#TConsistency:fStat">fStat</a>;}
+
+<a name="TConsistency:SetStatus"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TConsistency.html#TConsistency:SetStatus">TConsistency::SetStatus</a>(EConsistentStatus s ) 
+{ <a href=".././TConsistency.html#TConsistency:fStat">fStat</a> = s; }
+
+<a href=".././TConsistency.html#TConsistency:EConsistentSign">TConsistency::EConsistentSign</a> <a href=".././TConsistency.html#TConsistency:Sign">TConsistency::Sign</a>() const 
+{return <a href=".././TConsistency.html#TConsistency:fSign">fSign</a>; }
+
+<a name="TConsistency:SetSign"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TConsistency.html#TConsistency:SetSign">TConsistency::SetSign</a>(EConsistentSign s ) 
+{ <a href=".././TConsistency.html#TConsistency:fSign">fSign</a> = s; }
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

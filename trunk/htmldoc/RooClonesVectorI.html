@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:25 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>RooClonesVectorI</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>RooClonesVectorI</h1>
+<hr width=300>
+<!--SDL--><em><a href="#RooClonesVectorI:description">class description</a> - <a href="src/RooClonesVectorI.cxx.html">source file</a> - <a href="RooClonesVectorI_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="RooClonesVectorI" href="RooClonesVectorI.h">RooClonesVectorI</a> : public <a href="./RooPersObj.html">RooPersObj</a></h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->           <a href="./RooClonesVectorI.html">RooClonesVectorI</a> <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:RooClonesVectorI">RooClonesVectorI</a><!--PLAIN-->()
+<!--TAB6-->           <a href="./RooClonesVectorI.html">RooClonesVectorI</a> <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:RooClonesVectorI">RooClonesVectorI</a><!--PLAIN-->(const <a href="./RooClonesVectorI.html">RooClonesVectorI</a>&amp;)
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:~RooClonesVectorI">~RooClonesVectorI</a><!--PLAIN-->()
+<!--TAB6-->        virtual <a href="./RooPersObj.html">RooPersObj</a>* <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:at">at</a><!--PLAIN-->(const <a href="ListOfTypes.html#int">int</a>&amp; index) const
+<!--TAB6-->             static TClass* <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->      virtual TClonesArray* <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:getArray">getArray</a><!--PLAIN-->() const
+<!--TAB6-->      virtual const <a href="ListOfTypes.html#UInt_t">UInt_t</a>&amp; <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:getNEntries">getNEntries</a><!--PLAIN-->() const
+<!--TAB6-->            virtual TClass* <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:setOwnArray">setOwnArray</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> ownArray)
+<!--TAB6-->                static <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:setTheArray">setTheArray</a><!--PLAIN-->(TClonesArray*)
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#RooClonesVectorI:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="RooClonesVectorI:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->                    <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="RooClonesVectorI:_nent">_nent</a><!--PLAIN-->      <!--TAB--><i><a name="Title:_nent">Number of entries in TClonesArray</a></i>
+<!--TAB6-->             TClonesArray* <!--TAB--><!--BOLD--><a name="RooClonesVectorI:_array">_array</a><!--PLAIN-->     <!--TAB--><i><a name="Title:_array">TClonesArray</a></i>
+<!--TAB6-->      static TClonesArray* <!--TAB--><!--BOLD--><a name="RooClonesVectorI:_theArray">_theArray</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_theArray">Pointer to shared actual memory</a></i>
+<!--TAB6-->                    <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="RooClonesVectorI:_ownArray">_ownArray</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_ownArray">! Do we own the TClonesArray?</a></i>
+</pre>
+<!--END-->
+<br><hr>
+<!--SEE ALSO--><h2>See also</h2><dl><dd>
+<a href="./RooClonesVectorR_BtaCandAssocMapR_.html">RooClonesVectorR<BtaCandAssocMapR></a>, <a href="./RooClonesVectorR_BtaMicroCandR_.html">RooClonesVectorR<BtaMicroCandR></a>, <a href="./RooClonesVectorR_BtaMicroCandR_001_.html">RooClonesVectorR<BtaMicroCandR_001></a>, <a href="./RooClonesVectorR_BtaMicroCandR_002_.html">RooClonesVectorR<BtaMicroCandR_002></a>, <a href="./RooClonesVectorR_BtaMicroCandR_003_.html">RooClonesVectorR<BtaMicroCandR_003></a>, <a href="./RooClonesVectorR_BtaMicroCandR_004_.html">RooClonesVectorR<BtaMicroCandR_004></a>, <a href="./RooClonesVectorR_BtaMicroCandR_005_.html">RooClonesVectorR<BtaMicroCandR_005></a></dl>
+<hr>
+<!--DESCRIPTION--><h2><a name="RooClonesVectorI:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="RooClonesVectorI:setTheArray" href="src/RooClonesVectorI.cxx.html#RooClonesVectorI:setTheArray">setTheArray</a>( TClonesArray* theArray ) <br>
+<hr>
+<!--FUNCTION--> <a name="RooClonesVectorI:RooClonesVectorI" href="src/RooClonesVectorI.cxx.html#RooClonesVectorI:RooClonesVectorI">RooClonesVectorI</a>() :
+  <a href="./RooPersObj.html">RooPersObj</a>(),
+  <a href="./RooClonesVectorI.html#RooClonesVectorI:_ownArray">_ownArray</a>( kTRUE ), 
+  <a href="./RooClonesVectorI.html#RooClonesVectorI:_nent">_nent</a>( 0 ), 
+  <a href="./RooClonesVectorI.html#RooClonesVectorI:_array">_array</a>( 0 )
+<br>
+<hr>
+<!--FUNCTION--> <a name="RooClonesVectorI:~RooClonesVectorI" href="src/RooClonesVectorI.cxx.html#RooClonesVectorI:~RooClonesVectorI">~RooClonesVectorI</a>() <br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->           const <a href="ListOfTypes.html#UInt_t">UInt_t</a>&amp; <a name="RooClonesVectorI:getNEntries" href="RooClonesVectorI.h">getNEntries</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./RooPersObj.html">RooPersObj</a>* <a name="RooClonesVectorI:at" href="RooClonesVectorI.h">at</a>(const <a href="ListOfTypes.html#int">int</a>&amp; index) const
+<!--INLINE FUNCTION--><!--TAB6-->           TClonesArray* <a name="RooClonesVectorI:getArray" href="RooClonesVectorI.h">getArray</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <a name="RooClonesVectorI:setOwnArray" href="RooClonesVectorI.h">setOwnArray</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> ownArray)
+<!--INLINE FUNCTION--><!--TAB6-->                 TClass* <a name="RooClonesVectorI:Class" href="RooClonesVectorI.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                 TClass* <a name="RooClonesVectorI:IsA" href="RooClonesVectorI.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <a name="RooClonesVectorI:ShowMembers" href="RooClonesVectorI.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <a name="RooClonesVectorI:Streamer" href="RooClonesVectorI.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <a name="RooClonesVectorI:StreamerNVirtual" href="RooClonesVectorI.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./RooClonesVectorI.html">RooClonesVectorI</a> <a name="RooClonesVectorI:RooClonesVectorI" href="RooClonesVectorI.h">RooClonesVectorI</a>(const <a href="./RooClonesVectorI.html">RooClonesVectorI</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:25 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:18 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFStream - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>// 									//</b>
+<b>// <a href=".././PAFStream.html">PAFStream</a>			               				//</b>
+<b>// 									//</b>
+<b>// Data stream class in PAF(Pico Analysis Framework)	    		//</b>
+<b>// A "stream" is a file with a Tree in it                               //</b>
+<b>// 									//</b>
+<b>// Author: Leif Wilden &amp; Thorsten Brandt, TU Dresden			//</b>
+<b>// changes: network capability, Helmut Schmuecker, Oct. 99		//</b>
+<b>// Mods:   Stream is TNamed, MK, Jan 2k					//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "TFile.h"
+#include "TNetFile.h"
+#include "TTree.h"
+#include "TBranch.h"
+
+#include "PAFSchema/PAFStream.h"
+#include "RhoBase/TRho.h"
+
+ClassImp(PAFStream)
+
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+<b>//------------------------------------------------------------------------</b>
+
+<a name="PAFStream:PAFStream"> </a><a href=".././PAFStream.html#PAFStream:PAFStream">PAFStream::PAFStream</a>(const <a href="../ListOfTypes.html#char">char</a>* AFileNameBase, const <a href="../ListOfTypes.html#char">char</a>* ATreeName):
+TNamed(AFileNameBase,ATreeName),
+<a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a>(""),
+<a href=".././PAFStream.html#PAFStream:fFile">fFile</a>(0), <a href=".././PAFStream.html#PAFStream:fTree">fTree</a>(0), <a href=".././PAFStream.html#PAFStream:fOk">fOk</a>(kFALSE), <a href=".././PAFStream.html#PAFStream:fActive">fActive</a>(kTRUE), <a href=".././PAFStream.html#PAFStream:fLock">fLock</a>(kFALSE), <a href=".././PAFStream.html#PAFStream:fCount">fCount</a>(0)
+{ 
+    <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>= new TObjArray(10);
+}
+
+<a name="PAFStream:~PAFStream"> </a><a href=".././PAFStream.html">PAFStream</a>::~<a href=".././PAFStream.html">PAFStream</a>()
+{
+    if (<a href=".././PAFStream.html#PAFStream:fFile">fFile</a> != 0) <a href=".././PAFStream.html#PAFStream:fFile">fFile</a>-&gt;Close();
+    <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;Delete();
+    delete <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>;
+    <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>= 0;
+}
+
+<b>//------------------------------------------------------------------------</b>
+
+<a name="PAFStream:AddClonesArray"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFStream.html#PAFStream:AddClonesArray">PAFStream::AddClonesArray</a>(const <a href="../ListOfTypes.html#char">char</a>* ASubBranch, const <a href="../ListOfTypes.html#char">char</a>* ABranchName, 
+			       <a href="../ListOfTypes.html#void">void</a>* ABranchAddress, const <a href="../ListOfTypes.html#Text_t">Text_t</a>* AClassName)
+{
+    <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;Add(new PAFStreamMember
+	(PAFStreamMember::ClonesArray,ASubBranch,ABranchName,ABranchAddress, AClassName) );
+}
+
+<a name="PAFStream:AddLeaflist"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFStream.html#PAFStream:AddLeaflist">PAFStream::AddLeaflist</a>(const <a href="../ListOfTypes.html#char">char</a>* ASubBranch, const <a href="../ListOfTypes.html#char">char</a>* ABranchName,
+			    <a href="../ListOfTypes.html#void">void</a>* ABranchAddress, const <a href="../ListOfTypes.html#Text_t">Text_t</a> *ALeaflist)
+{
+    <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;Add(new PAFStreamMember
+	(PAFStreamMember::Leaflist,ASubBranch,ABranchName,ABranchAddress, ALeaflist) );
+}
+
+<a name="PAFStream:AddObject"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFStream.html#PAFStream:AddObject">PAFStream::AddObject</a>(const <a href="../ListOfTypes.html#char">char</a>* ASubBranch, const <a href="../ListOfTypes.html#char">char</a>* ABranchName,
+			  <a href="../ListOfTypes.html#void">void</a>* ABranchAddress, const <a href="../ListOfTypes.html#Text_t">Text_t</a>* AClassName)
+{
+    <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;Add(new PAFStreamMember
+	(PAFStreamMember::Object,ASubBranch,ABranchName,ABranchAddress, AClassName) );
+}
+
+<b>//------------------------------------------------------------------------</b>
+
+<a name="PAFStream:PrintOn"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFStream.html#PAFStream:PrintOn">PAFStream::PrintOn</a>(std::ostream&amp; o) const
+{
+    o &lt;&lt; "Stream " &lt;&lt; GetName() &lt;&lt; "; Treename= " &lt;&lt; GetTitle();
+    if (<a href=".././PAFStream.html#PAFStream:fActive">fActive</a>) o &lt;&lt; "; enabled" &lt;&lt; endl; else o &lt;&lt; "; disabled" &lt;&lt; endl;
+    for (<a href="../ListOfTypes.html#int">int</a> j=0; j &lt; <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;GetEntriesFast(); j++) {
+	const PAFStreamMember *m= (PAFStreamMember*)<a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;At(j);
+	o &lt;&lt; "  ";
+	switch (m-&gt;fMemberType) {
+	case (PAFStreamMember::ClonesArray): o &lt;&lt; "ClonesArray"; break;
+	case (PAFStreamMember::Leaflist)   : o &lt;&lt; "Leaflist"; break;
+	case (PAFStreamMember::Object)     : o &lt;&lt; "Object"; break;
+	}
+	o &lt;&lt; "; " &lt;&lt; m-&gt;fSubBranch.Data() &lt;&lt; "; " &lt;&lt; m-&gt;fBranchName.Data() &lt;&lt; "; " &lt;&lt; m-&gt;fClassName &lt;&lt; endl;
+    }
+}
+
+<b>//------------------------------------------------------------------------</b>
+
+TFile *
+<a name="PAFStream:OpenFile"> </a><a href=".././PAFStream.html#PAFStream:OpenFile">PAFStream::OpenFile</a>(const <a href="../ListOfTypes.html#char">char</a> *filename, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> activate)
+{
+    
+    if (<a href=".././PAFStream.html#PAFStream:fFile">fFile</a>!=NULL) {
+	<a href=".././PAFStream.html#PAFStream:fFile">fFile</a>-&gt;Close();
+	<a href=".././PAFStream.html#PAFStream:fFile">fFile</a>=NULL;
+    }
+    
+    TString fn(filename);
+    if (fn.Index(".root")&lt;0) { // Generic name given ?
+	fn = fn + GetName() + ".root";
+    }
+    <a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a> = fn;
+    
+    if (<a href=".././PAFStream.html#PAFStream:fActive">fActive</a> || activate) {
+	if (<a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a>.Index("root:")&gt;=0) TRho::Instance()-&gt;Authorize();
+	cout &lt;&lt; "**** Open " &lt;&lt; <a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a>.Data() &lt;&lt; endl;
+<b>	// static TFile::Open returns either TFile or TNetFile depending on <a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a></b>
+	<a href=".././PAFStream.html#PAFStream:fFile">fFile</a> = TFile::Open(<a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a>.Data()); 
+	if (<a href=".././PAFStream.html#PAFStream:fFile">fFile</a>-&gt;IsOpen()) {
+	    TTree* newTree = (TTree*) <a href=".././PAFStream.html#PAFStream:fFile">fFile</a>-&gt;Get(GetTitle());
+	    if (newTree==NULL) {
+		cout &lt;&lt; "ERROR ! Could not find " &lt;&lt; GetTitle() 
+		    &lt;&lt; " in File " &lt;&lt; <a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a>.Data() &lt;&lt; endl;
+		return kFALSE;
+	    }
+	    newTree-&gt;SetBranchStatus("*",0); // Disable all branches
+	    <a href="#PAFStream:SetTree">SetTree</a>(newTree);
+	    <a href=".././PAFStream.html#PAFStream:fOk">fOk</a>=kTRUE;
+	}
+	else
+	    <a href=".././PAFStream.html#PAFStream:fFile">fFile</a> = 0;
+    } else {
+	<a href="#PAFStream:SetTree">SetTree</a>(NULL);
+	<a href=".././PAFStream.html#PAFStream:fOk">fOk</a> = kFALSE;
+    }
+    return <a href=".././PAFStream.html#PAFStream:fFile">fFile</a>;
+}
+
+<b>//------------------------------------------------------------------------</b>
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFStream:CloseFile"> </a><a href=".././PAFStream.html#PAFStream:CloseFile">PAFStream::CloseFile</a>()
+{
+    if (<a href=".././PAFStream.html#PAFStream:fFile">fFile</a>!=0) {
+	<a href=".././PAFStream.html#PAFStream:fFile">fFile</a>-&gt;Close();
+	<a href=".././PAFStream.html#PAFStream:fFile">fFile</a>=0;
+    }
+    <a href=".././PAFStream.html#PAFStream:fCount">fCount</a> = 0;
+}
+
+<b>//------------------------------------------------------------------------</b>
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="PAFStream:SetTree"> </a><a href=".././PAFStream.html#PAFStream:SetTree">PAFStream::SetTree</a>(TTree *t)
+{
+    <a href=".././PAFStream.html#PAFStream:fTree">fTree</a>=t;
+    if (<a href=".././PAFStream.html#PAFStream:fActive">fActive</a>) {
+	<a href=".././PAFStream.html#PAFStream:fCount">fCount</a> = (<a href="../ListOfTypes.html#Int_t">Int_t</a>) t-&gt;GetEntries(); // Number of entries in the tree
+<b>	// iterate over all members and set their branch address:</b>
+	for (<a href="../ListOfTypes.html#int">int</a> j=0; j &lt; <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;GetEntriesFast(); j++) {
+	    PAFStreamMember *m=  (PAFStreamMember*) <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;At(j);
+	    m-&gt;fBranch = <a href="#PAFStream:FindBranch">FindBranch</a>(m); // Set the actual branch
+	}
+	<a href=".././PAFStream.html#PAFStream:fOk">fOk</a>=kTRUE;
+    } else {
+	<a href=".././PAFStream.html#PAFStream:fOk">fOk</a> = kFALSE;
+    }
+    return <a href=".././PAFStream.html#PAFStream:fOk">fOk</a>;
+}
+
+<b>//------------------------------------------------------------------------</b>
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="PAFStream:Enable"> </a><a href=".././PAFStream.html#PAFStream:Enable">PAFStream::Enable</a>()
+{
+    if (<a href=".././PAFStream.html#PAFStream:fLock">fLock</a>) return kFALSE;
+    
+    <a href=".././PAFStream.html#PAFStream:fActive">fActive</a>=kTRUE;
+    if (!<a href=".././PAFStream.html#PAFStream:fOk">fOk</a>) {
+	if (<a href=".././PAFStream.html#PAFStream:fTree">fTree</a>!=NULL) { 
+	    for (<a href="../ListOfTypes.html#int">int</a> j=0; j &lt; <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;GetEntriesFast(); j++) {
+		PAFStreamMember *m=  (PAFStreamMember*) <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;At(j);
+		m-&gt;fBranch = <a href="#PAFStream:FindBranch">FindBranch</a>(m); // Set the actual branch
+	    }
+	    <a href=".././PAFStream.html#PAFStream:fOk">fOk</a> = kTRUE;
+	} 
+	else
+	    return <a href="#PAFStream:Exists">Exists</a>();
+    }
+    return kTRUE;
+}
+
+<b>//------------------------------------------------------------------------</b>
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="PAFStream:Exists"> </a><a href=".././PAFStream.html#PAFStream:Exists">PAFStream::Exists</a>()
+{
+    if (<a href=".././PAFStream.html#PAFStream:fFile">fFile</a> != 0) return kTRUE; // Already open
+    if (<a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a> == "") return kFALSE; // Do not try to open this, yet no file assigned
+    if (<a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a>.Index("root:")&gt;=0) TRho::Instance()-&gt;Authorize();
+    cout &lt;&lt; "<a href=".././PAFStream.html#PAFStream:OpenFile">PAFStream::OpenFile</a> " &lt;&lt; <a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a>.Data() &lt;&lt; endl;
+    <a href=".././PAFStream.html#PAFStream:fFile">fFile</a> = TFile::Open(<a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a>.Data());
+    if (<a href=".././PAFStream.html#PAFStream:fFile">fFile</a>-&gt;IsOpen()) {
+	TTree* newTree = (TTree*) <a href=".././PAFStream.html#PAFStream:fFile">fFile</a>-&gt;Get(GetTitle());
+	if (newTree==NULL) {
+	    cout &lt;&lt; "ERROR ! Could not find " &lt;&lt; GetTitle() 
+		&lt;&lt; " in File " &lt;&lt; <a href=".././PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a>.Data() &lt;&lt; endl;
+	    <a href=".././PAFStream.html#PAFStream:fActive">fActive</a> = kFALSE;
+	    return kFALSE; 
+	}
+	<a href="#PAFStream:SetTree">SetTree</a>(newTree);
+	<a href=".././PAFStream.html#PAFStream:fOk">fOk</a>=kTRUE;
+    }
+    else
+	return kFALSE;
+    
+    return kTRUE;
+}
+
+<b>//------------------------------------------------------------------------</b>
+
+PAFStreamMember::PAFStreamMember(MemberType AMemberType, const <a href="../ListOfTypes.html#char">char</a>* ASubBranch,
+				 const <a href="../ListOfTypes.html#char">char</a>* ABranchName, <a href="../ListOfTypes.html#void">void</a>* ABranchAddress, const <a href="../ListOfTypes.html#char">char</a>* AClassName):
+fMemberType(AMemberType),
+fSubBranch(ASubBranch),
+fBranchName(ABranchName),
+fBranch(0),
+fBranchAddress(ABranchAddress),
+fClassName(AClassName)
+{
+}
+
+
+<b>//------------------------------------------------------------------------</b>
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="PAFStream:Append"> </a><a href=".././PAFStream.html#PAFStream:Append">PAFStream::Append</a>(TFile *file)
+{ 
+    <a href=".././PAFStream.html#PAFStream:fTree">fTree</a> = 0;
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> ok = kFALSE;
+    
+    if (file-&gt;IsOpen()) {
+	TTree* newTree = (TTree*) file-&gt;Get(GetTitle());
+	if (newTree == 0) {
+	    cerr &lt;&lt; "<a href=".././PAFStream.html">PAFStream</a>: Could not find " &lt;&lt; GetTitle() 
+		&lt;&lt; " in file " &lt;&lt; file-&gt;GetName() &lt;&lt; endl;
+	    <a href=".././PAFStream.html#PAFStream:fActive">fActive</a> = kFALSE;
+	    return kFALSE;
+	}
+	ok = <a href="#PAFStream:SetTree">SetTree</a>(newTree);
+	<a href=".././PAFStream.html#PAFStream:fFile">fFile</a> = file;
+    }
+    else {
+	cerr &lt;&lt; "<a href=".././PAFStream.html">PAFStream</a>: Could not append " &lt;&lt; GetTitle()
+	    &lt;&lt; " to file " &lt;&lt; file-&gt;GetName() &lt;&lt; endl;
+	<a href=".././PAFStream.html#PAFStream:fActive">fActive</a> = kFALSE;
+    }
+    
+    return ok;
+}
+
+<b>//------------------------------------------------------------------------</b>
+
+<b>// Retrieves the n-th Element from the current Tree and returns the number of Btyes read, or </b>
+<b>// -1 in case the Stream is disabled</b>
+<a name="PAFStream:GetEvent"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFStream.html#PAFStream:GetEvent">PAFStream::GetEvent</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> n) 
+{
+    if (n&gt;<a href=".././PAFStream.html#PAFStream:fCount">fCount</a>) return -1; // We try to read beyond last entry
+    
+    if (<a href=".././PAFStream.html#PAFStream:fLock">fLock</a>) return 0;
+    
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> nBytes = 0;
+    if (<a href=".././PAFStream.html#PAFStream:fActive">fActive</a>) { 
+	if (<a href=".././PAFStream.html#PAFStream:fTree">fTree</a>) {
+<b>	    //return <a href=".././PAFStream.html#PAFStream:fTree">fTree</a>-&gt;GetEvent(n); // This traverses all branches</b>
+<b>	    //The following goes faster as only the actual branches are read</b>
+	    for (<a href="../ListOfTypes.html#int">int</a> j=0; j &lt; <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;GetEntriesFast(); j++) {
+		PAFStreamMember *m=  (PAFStreamMember*) <a href=".././PAFStream.html#PAFStream:fMembers">fMembers</a>-&gt;At(j);
+		if (m-&gt;fBranch!=0) nBytes += m-&gt;fBranch-&gt;<a href="#PAFStream:GetEvent">GetEvent</a>(n); // Get all branches
+	    }
+	    
+	} else {
+	    cout &lt;&lt; "<a href=".././PAFStream.html#PAFStream:GetEvent">PAFStream::GetEvent</a>: NO STREAM !!"&lt;&lt;endl;
+	    return nBytes;
+	}
+    } 
+
+    return nBytes; 
+}
+
+<b>//------------------------------------------------------------------------</b>
+
+<a name="PAFStream:FindBranch"> </a>TBranch* <a href=".././PAFStream.html#PAFStream:FindBranch">PAFStream::FindBranch</a>(PAFStreamMember *m)
+{
+    if (<a href=".././PAFStream.html#PAFStream:fTree">fTree</a>==0 || m==0) return 0;
+
+    if (!strcmp("",m-&gt;fBranchName.Data())) return 0; // Nothing to do
+
+<b>    // Data lives in the top level</b>
+    if (!strcmp("",m-&gt;fSubBranch.Data())) {
+	cout &lt;&lt; "<a href=".././PAFStream.html#PAFStream:FindBranch">PAFStream::FindBranch</a>: Looking for " &lt;&lt; m-&gt;fBranchName.Data() &lt;&lt; " in " &lt;&lt; GetTitle();
+	TBranch *theBranch = <a href=".././PAFStream.html#PAFStream:fTree">fTree</a>-&gt;GetBranch(m-&gt;fBranchName.Data());
+	if (theBranch != 0) {
+	    cout &lt;&lt; " (OK)" &lt;&lt; endl;
+	    theBranch-&gt;ResetBit(kDoNotProcess);
+	    theBranch-&gt;SetAddress(m-&gt;fBranchAddress);
+	}
+	else
+	    cout &lt;&lt; " (not OK)" &lt;&lt; endl;
+
+	return theBranch;
+    }
+
+<b>    // Data lives in a sub branch</b>
+    TBranch *b = <a href=".././PAFStream.html#PAFStream:fTree">fTree</a>-&gt;GetBranch(m-&gt;fSubBranch.Data());
+    if (b) {
+      cout &lt;&lt; "<a href=".././PAFStream.html#PAFStream:FindBranch">PAFStream::FindBranch</a>: Looking for " &lt;&lt; m-&gt;fBranchName.Data() &lt;&lt; " in " &lt;&lt; m-&gt;fSubBranch.Data();
+      b-&gt;ResetBit(kDoNotProcess);
+      TIterator* iter = b-&gt;GetListOfBranches()-&gt;MakeIterator();
+      TObject* p = 0;
+      while (p=iter-&gt;Next()) {
+	  TBranch *branch = static_cast&lt;TBranch*&gt;(p);
+	  const <a href="../ListOfTypes.html#char">char</a> *name = branch-&gt;GetName();
+          if (!strcmp(name,m-&gt;fBranchName.Data())) {
+	      cout &lt;&lt; " (OK)" &lt;&lt; endl;
+	      branch-&gt;ResetBit(kDoNotProcess);
+	      branch-&gt;SetAddress(m-&gt;fBranchAddress);
+	      return branch;
+	  }
+      }
+      cout &lt;&lt; " (not OK)" &lt;&lt; endl;
+    }
+    else	
+	cerr &lt;&lt; "<a href=".././PAFStream.html#PAFStream:FindBranch">PAFStream::FindBranch</a>: The tree " &lt;&lt; GetTitle() &lt;&lt; " does not contain a branch " &lt;&lt; m-&gt;fSubBranch.Data() &lt;&lt; endl;
+
+    return 0;
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

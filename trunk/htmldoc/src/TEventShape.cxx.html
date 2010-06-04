@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:53 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TEventShape - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>// Implementation of the <a href=".././TEventShape.html">TEventShape</a> class </b>
+<b>// Author: Jens Brose, TUD, Aug. 1999</b>
+<b>//--------------------------------------------------------------------------</b>
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandidate.h"
+#include "RhoTools/TEventShape.h"
+
+ClassImp(TEventShape)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TEventShape *&amp;obj)
+{
+   obj = (TEventShape *) buf.ReadObject(TEventShape::Class());
+   return buf;
+}
+
+<a name="TEventShape:TEventShape"> </a>TEventShape::TEventShape() 
+{
+  _tot4mom = TLorentzVector(0.,0.,0.,0.);
+  _fw2 = 0;
+  _totm = 0;
+  _totE = 0;
+  _totp = 0;
+  _totpt = 0;
+  _totabsmom = 0;
+}
+
+<a name="TEventShape:TEventShape"> </a>TEventShape::TEventShape(TCandList &amp;l)
+{
+  _tot4mom = TLorentzVector(0.,0.,0.,0.);
+  _totabsmom = 0;
+  Double_t fw2n = 0;
+  Int_t nl = l.GetNumberOfTracks();
+  for (Int_t i=0; i&lt;nl; ++i) {
+    TCandidate *c1 = l.Get(i);
+    TVector3 p1 = c1-&gt;P3();
+    _totabsmom += p1.Mag();
+    _tot4mom += c1-&gt;P4();
+    for (Int_t j=i; j&lt;nl; ++j) {
+      TCandidate *c2 = l.Get(j);
+      TVector3 p2 = c2-&gt;P3();
+      Double_t cosal = p1.Dot(p2) /(p1.Mag()*p2.Mag());
+      Double_t legendre2 = 3.*cosal*cosal - 1.;
+      if (i == j) legendre2 = legendre2 / 2.;
+      fw2n += legendre2 * p1.Mag() * p2.Mag();
+    }
+  }
+  _fw2 = fw2n/(_totabsmom*_totabsmom);
+  _totm = _tot4mom.M();
+  _totE = _tot4mom.E();
+  _totp = _tot4mom.Rho();
+  _totpt = _tot4mom.Perp();
+}
+
+<a name="TEventShape:~TEventShape"> </a>TEventShape::~TEventShape() {}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

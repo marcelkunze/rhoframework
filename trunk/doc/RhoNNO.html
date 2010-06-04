@@ -1,0 +1,1154 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 10 (filtered)">
+<title>The Neural Network Objects</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Courier;
+	panose-1:2 7 4 9 2 2 5 2 4 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h1
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	page-break-after:avoid;
+	font-size:18.0pt;
+	font-family:"Times New Roman";
+	font-weight:normal;
+	font-style:italic;}
+h2
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	page-break-after:avoid;
+	font-size:20.0pt;
+	font-family:"Times New Roman";
+	font-weight:normal;}
+h3
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	font-weight:bold;}
+h4
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:30.0pt;
+	margin-left:0cm;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	color:white;
+	font-weight:bold;
+	font-style:italic;}
+p.MsoFootnoteText, li.MsoFootnoteText, div.MsoFootnoteText
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+span.MsoFootnoteReference
+	{vertical-align:super;}
+p.MsoTitle, li.MsoTitle, div.MsoTitle
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	font-size:22.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 70.85pt 2.0cm 70.85pt;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=DE link=blue vlink=purple>
+
+<div class=Section1>
+
+<p class=MsoTitle><span lang=EN-GB>The Neural Network Objects</span></p>
+
+<p class=MsoTitle><span lang=EN-GB style='font-size:12.0pt'><a
+href="mailto:john@eyematic.com">Johannes Steffens</a></span><a href="#_ftn1"
+name="_ftnref1" title=""><span class=MsoFootnoteReference><span
+style='font-size:12.0pt'><span class=MsoFootnoteReference><span
+style='font-size:12.0pt;font-family:"Times New Roman"'>[1]</span></span></span></span></a><span
+lang=EN-GB style='font-size:12.0pt'>, <a
+href="http://www.ep1.ruhr-uni-bochum.de/~marcel/Marcel.html">Marcel Kunze</a>, </span><span
+style='font-size:12.0pt'><a href="http://www.ep1.ruhr-uni-bochum.de/~helmut"><span
+lang=EN-GB>Helmut Schmücker</span></a></span></p>
+
+<p class=MsoTitle><span style='font-size:12.0pt'>Institut für
+Experimentalphysik 1, Ruhr-Universität Bochum</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal><span lang=EN-GB>Neural Network Objects (NNO) is a C++ class
+library that implements the most popular conventional neural networks together
+with novel </span><a
+href="http://www.ki.inf.tu-dresden.de/~fritzke/research/incremental.html"><span
+lang=EN-GB>incremental models</span></a><span lang=EN-GB> that have been
+invented at </span><span lang=EN-GB>Bochum</span><span lang=EN-GB> </span><span
+  lang=EN-GB>University</span><span lang=EN-GB>. The package is publicly available
+and has proven versatile in a broad range of applications over the past years.
+Recently NNO has been completely revised in order to take full advantage of the
+<a href="http://root.cern.ch">ROOT framework</a> for data management and
+graphics. The <a href="Rho.html">Rho Analysis Framework</a> is distributed with
+all the example programs and training files mentioned in this document.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><img border=0 width=604 height=604
+src="RhoNNO-Dateien/image001.jpg"> </span></p>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-GB>Fig.1: Live updating graphics to control
+the progress of network training</span></p>
+
+<p class=MsoNormal><span lang=EN-GB>The example shows the network output for
+training and test sample (upper row) and the corresponding error function as
+the training cycles commence.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+<h1><span lang=EN-GB>Architecture</span></h1>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-GB>At the time being the package comprises </span></p>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+<div align=center>
+
+<table class=MsoNormalTable border=1 cellpadding=0 style='border:outset 1.5pt'>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><span
+  lang=EN-GB>Supervised Training Models</span></b></p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB>Multi-Layer Perceptron (TMLP, TXMLP)</span></p>
+  <p class=MsoNormal><span lang=EN-GB>Fisher Discriminant (TFD)<br>
+  Supervised Growing Cell Structure (TSGCS)<br>
+  Supervised Growing Neural Gas (TSGNG) </span></p>
+  <p class=MsoNormal>Neural Network Kernel (TNNK)</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><span
+  lang=EN-GB>Unsupervised Training Models</span></b></p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB>Learning Vector Quantisation (TLVQ)<br>
+  Growing Cell Structure (TGCS)<br>
+  Growing Neural Gas (TGNG) </span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p><span lang=EN-GB>The design foresees that all models are derived from the
+same abstract base class <b><i>VNeuralNet</i></b>. The common base class
+enforces a unique interface to data management, training and recall cycles and
+graphics operations at one central place. <b><i>VSupervisedNet</i></b> and <b><i>VUnsupervisedNet</i></b>
+both inherit from <b><i>VNeuralNet</i></b> and take care of the different
+learning paradigms. In addition specific implementations of the networks can
+utilize a plotter to produce a live updating graphics window to control the
+training progress: The abstract <b><i>VNeuralNetPlotter</i></b> interface
+allows to plug in a graphics engine, like the default <b>TSimpleNeuralNetPlotter</b>.</span></p>
+
+<p class=MsoNormal><img border=0 width=588 height=397
+src="RhoNNO-Dateien/image002.gif"></p>
+
+<p><span lang=EN-GB>Fig.2: NNO class hierarchy<br>
+All networks implement the <b><i>VNeuralNet</i></b> interface and use a <b><i>VNeuralNetPlotter</i></b>
+to show their training progress.</span></p>
+
+<h1><span lang=EN-GB>Implementation</span></h1>
+
+<p><span lang=EN-GB>The <b><i>VNeuralNet</i></b> abstract interface defines the
+following contract for the implementation of specific neural network models:</span></p>
+
+<div align=center>
+
+<table class=MsoNormalTable border=1 cellpadding=0 width=675 style='width:505.95pt;
+ margin-left:-14.1pt;border:outset 1.5pt'>
+ <tr style='height:115.3pt'>
+  <td width=671 style='width:502.95pt;padding:.75pt .75pt .75pt .75pt;
+  height:115.3pt'>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    // Abstract
+  interface for all networks</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    virtual
+  void AllocNet() = 0;</span></p>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='font-family:Courier'>    virtual void InitNet() = 0;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    virtual
+  void WriteText() = 0;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    virtual
+  void WriteBinary() = 0;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    virtual
+  void ReadText() = 0;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    virtual
+  void ReadBinary() = 0;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    virtual Double_t*
+  Recall(NNO_INTYPE* in,NNO_OUTTYPE* out=0) = 0;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    virtual Double_t
+  Train(NNO_INTYPE* in,NNO_OUTTYPE* out=0) = 0;</span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p><i><span lang=EN-GB>AllocNet</span></i><span lang=EN-GB> acquires resources
+and is executed during network construction. <i>InitNet</i> sets up the network
+weight matrix. <i>WriteText</i> persists the network as an ASCII file, <i>WriteBinary</i>
+produces a binary file. The corresponding reading versions are able to
+regenerate a network in the state it was at the time when it was saved. The <i>Recall</i>
+method takes an input vector as parameter and returns the corresponding network
+output. The <i>Train</i> function takes a pair of input/output vectors,
+performs a <i>Recall</i>, modifies the weight matrix to better adapt the input
+probability density function and returns the squared error of the sample.</span></p>
+
+<p><span lang=EN-GB>Besides the abstract interface, concrete methods have been
+implemented to support the execution of training cycles and to set training
+parameters:</span></p>
+
+<div align=center>
+
+<table class=MsoNormalTable border=1 cellpadding=0 width=675 style='width:505.95pt;
+ margin-left:-14.1pt;border:outset 1.5pt'>
+ <tr style='height:115.3pt'>
+  <td width=671 style='width:502.95pt;padding:.75pt .75pt .75pt .75pt;
+  height:115.3pt'>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    //
+  Training and testing</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    Double_t   
+  TrainEpoch(TDataServe *server, Int_t nEpoch=1);</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    Double_t   
+  TestEpoch(TDataServe *server);</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    void       
+  BalanceSamples(Bool_t yesNo = kTRUE);</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    virtual
+  void SetMomentumTerm(Double_t f);</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:Courier'>    virtual
+  void SetFlatSpotElimination(Double_t f);</span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p><b><span lang=EN-GB>TDataServe</span></b><span lang=EN-GB> is a mini
+database to support management of input/output vector relations. It allows to
+partition datasets into training and test samples, retrieve arbitrary samples
+and shuffle a data set prior to a new training cycle. <i>TrainEpoch</i> and <i>TestEpoch</i>
+are functions  to train and test networks with a complete set of vectors out of
+a <b>TDataServe </b>object. The <i>BalanceSamples</i> option allows to have
+equal training statistics for good and bad samples, independent of the number
+of vectors per sample. The application of a momentum term might lead to faster
+convergence in some applications by noting the direction of gradient descent,
+the flat spot elimination might improve training progress in regions where the
+derivatives of the error matrix are near zero.</span></p>
+
+<p><span lang=EN-GB>Each network implementation has to implement the abstract
+interface mentioned above. As an example for the integration of an independent
+neural network implementation into the context of NNO we have managed to
+support J.P. Ernenwein’s Neural Network Kernel: The <b><i>TNNK</i></b>
+interface yields seamless access to the Neural Network Kernel in the scope of
+NNO.</span></p>
+
+<h1><span lang=EN-GB>NetworkTrainer</span></h1>
+
+<p><span lang=EN-GB>Network training requires to identify pairs of input
+vectors and output vectors out of a dataset of good and bad samples to describe
+the problem at hand. It usually takes a certain amount of time to  select
+suiting quantities and assemble corresponding training and test files prior to
+network training and write a corresponding training program or macro. However,
+it turns out that ROOT is performing enough to allow for interactive training
+of large networks with large data samples out of arbitrary ROOT files in one
+go. In that spirit a <i>NetworkTrainer</i> program has been written on the
+basis of the NNO package. <i>NetworkTrainer</i> assists to</span></p>
+
+<p style='margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN-GB
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-GB>Assemble training and testing data sets out of
+ROOT trees</span></p>
+
+<p style='margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN-GB
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-GB>Define the network architecture</span></p>
+
+<p style='margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN-GB
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-GB>Define a training schedule</span></p>
+
+<p style='margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN-GB
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-GB>Persist networks</span></p>
+
+<p style='margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN-GB
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-GB>Generate C++ code to perform network recall</span></p>
+
+<p><span lang=EN-GB>At the time being <i>NetworkTrainer</i> reads an ASCII
+steering file when it launches (a GUI is in preparation). The steering file
+knows the following directives:</span></p>
+
+<div align=center>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='margin-left:-44.35pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:solid teal 1.5pt;
+  border-left:solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:
+  none;background:black;padding:.75pt .75pt .75pt .75pt'>
+  <h3><i><span lang=EN-GB style='color:white'>Parameter</span></i></h3>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border-top:solid teal 1.5pt;
+  border-left:none;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  black;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>Type</span></i></b></p>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='font-size:8.0pt;color:white'>I
+  = input<br>
+  O = output</span></i></b></p>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='font-size:8.0pt;color:white'>H
+  = hidden</span></i></b></p>
+  <p class=MsoNormal><b><i><span lang=FR style='font-size:8.0pt;color:white'>C
+  = cells</span></i></b></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:solid teal 1.5pt;border-left:
+  none;border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:
+  black;padding:.75pt .75pt .75pt .75pt'>
+  <h4 style='margin-bottom:42.0pt'><span lang=FR>Description</span></h4>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><b><i><span lang=EN-GB
+  style='color:white'>fisher</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=IT style='color:white'>vector<br>
+  </span><span lang=IT style='font-size:10.0pt;color:white'>(I O)</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Multi-layer perceptron
+  (0 hidden layer)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><b><i><span lang=EN-GB
+  style='color:white'>mlp</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=IT style='color:white'>vector<br>
+  </span><span lang=IT style='font-size:10.0pt;color:white'>(I H O)</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Multi-layer perceptron
+  (1 hidden layer)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><b><i><span lang=EN-GB
+  style='color:white'>xmlp</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=IT style='color:white'>vector<br>
+  </span><span lang=IT style='font-size:10.0pt;color:white'>(I H H O)</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Multi-layer perceptron
+  (2 hidden layers)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><b><i><span lang=EN-GB
+  style='color:white'>tnnk</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>vector<br>
+  </span><span lang=IT style='font-size:10.0pt;color:white'>(I H H O)</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Multi-layer perceptron
+  (Neural Network Kernel)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><b><i><span lang=EN-GB
+  style='color:white'>sgng</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=IT style='color:white'>vector<br>
+  </span><span lang=IT style='font-size:10.0pt;color:white'>(I C O)</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Supervised growing
+  neural gas </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><b><i><span lang=EN-GB
+  style='color:white'>sgcs</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=IT style='color:white'>vector<br>
+  </span><span lang=IT style='font-size:10.0pt;color:white'>(I C O)</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Supervised growing
+  cell structures</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><b><i><span lang=EN-GB
+  style='color:white'>gng</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>vector<br>
+  </span><span lang=EN-GB style='font-size:10.0pt;color:white'>(I C)</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Growing neural gas</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><b><i><span lang=EN-GB
+  style='color:white'>gcs</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>vector<br>
+  </span><span lang=EN-GB style='font-size:10.0pt;color:white'>(I C)</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Growing cell
+  structures</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><b><i><span lang=EN-GB
+  style='color:white'>lvq</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>vector<br>
+  </span><span lang=EN-GB style='font-size:10.0pt;color:white'>(I C)</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Learning vector
+  quantization</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>start</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>int</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>First training epoch </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>stop</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>int</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Last training epoch </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>epoch</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>int</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Number of training
+  samples per epoch</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>test</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>int</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Number of test
+  samples per epoch</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>networkpath</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>string</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Directory to save the
+  trained networks</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>datapath</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>string</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Directory to look up
+  data files</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>file</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>string</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>ROOT training file
+  containing good and bad samples</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>pro</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>string</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>ROOT training file
+  containing good samples (1D output only)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>con</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>string</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>ROOT training file
+  containing bad samples (1D output only)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>tree</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>string</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>ROOT tree that acts
+  as source to assemble the vectors</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>cut</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>string</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>ROOT TFormula for preselection
+  of samples</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>input</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>string</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Input vector, ROOT TFormulae
+  (separated by colon)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>output</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>string</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Output vector, ROOT TFormulae
+  (separated by colon)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>transfer</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>string</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Transfer function
+  (TR_FERMI,TR_LINEAR,TR_LINEAR_BEND,TR_SIGMOID)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>momentum</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>float</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Momentum term</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>scale</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>float</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Global scale factor
+  to apply to input layer</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>inscale</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>vector</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Scale factors to
+  apply to input layer</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>outscale</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>vector</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Scale factors to
+  apply to output layer</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>autoscale</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>bool</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Determine scale factors
+  to apply to input layer</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid aqua 1.0pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>plot</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid aqua 1.0pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>bool</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid aqua 1.0pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Produce graphics
+  output (1D output only)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=127 valign=top style='width:95.35pt;border-top:none;border-left:
+  solid teal 1.5pt;border-bottom:solid teal 1.5pt;border-right:none;background:
+  navy;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><b><i><span lang=EN-GB style='color:white'>balance</span></i></b></p>
+  </td>
+  <td width=58 valign=top style='width:43.15pt;border:none;border-bottom:solid teal 1.5pt;
+  background:teal;padding:.75pt .75pt .75pt .75pt'>
+  <p style='margin:0cm;margin-bottom:.0001pt'><span lang=EN-GB
+  style='color:white'>bool</span></p>
+  </td>
+  <td width=425 style='width:318.5pt;border-top:none;border-left:none;
+  border-bottom:solid teal 1.5pt;border-right:solid teal 1.5pt;background:teal;
+  padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='color:white'>Enforce presentation
+  of equal number of good and bad samples</span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p><span lang=EN-GB>A sample steering file for training of a selector to
+separate different charged particles in a typical HEP experiment could look
+like the following:</span></p>
+
+<div align=center>
+
+<table class=MsoNormalTable border=1 cellpadding=0 style='border:outset 1.5pt'>
+ <tr>
+  <td width=588 style='width:441.35pt;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>#
+  Training of PIDSelectors with NNO</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>#define
+  the network topology</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>xmlp 7
+  15 10 1</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>transfer
+  TR_FERMI</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>momentum
+  0.2</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>balance
+  true</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>plots
+  true</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>test
+  10000</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>start 1</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>stop
+  200</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>#define
+  the data source</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>datapath
+  ../Data</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>networkpath
+  ../Networks</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>file
+  PidTuple1.root</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>file
+  PidTuple2.root</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>#set up
+  the input layer (use branch names)</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>tree PidTuple</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>cut
+  mom&gt;0.5&amp;&amp;dch&gt;0&amp;&amp;dch&lt;10000</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>input mom:acos(theta):svt:emc:drc:dch:ifr:ifrExp:ifrAdd</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>autoscale
+  true</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>#set up
+  the output layer (use branch names)</span></p>
+  <p class=MsoNormal><span lang=FR style='font-family:"Courier New"'>#Particles
+  pid = {electron=1,muon,pion,kaon,proton}</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>output
+  abs(pid)==3</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>#end of
+  file</span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p><span lang=EN-GB>The example above reads two input files, assembles a data
+server using all samples surviving the cut and runs for 200 training epochs
+with a 7-15-10-1 multi-layer perceptron using all available samples. In the
+course of the training after each epoch a persistent network file NNOxxxx.TXMLP
+is saved into the Networks directory, where xxxx denotes the epoch number. At
+the end, NetworkTrainer produces a template recall function that can be plugged
+into another program that wants to make use of a network. For the above example
+the file RecallTXMLP.cpp looks like is shown below for illustration purposes:</span></p>
+
+<div align=center>
+
+<table class=MsoNormalTable border=1 cellpadding=0 width=679 style='width:509.55pt;
+ margin-left:-42.0pt;border:outset 1.5pt'>
+ <tr>
+  <td width=675 style='width:506.55pt;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>//
+  TXMLP network trained with NNO NetworkTrainer at Fri Apr 27 </span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>//
+  Input parameters mom:acos(theta):svt:emc:drc:dch:ifr:ifrExp:ifrAdd</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>//
+  Output parameters abs(pid)==3</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>//
+  Training files:</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>//../Data/PidTuple1.root</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>//../Data/PidTuple2.root</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>#include
+  &quot;RhoNNO/TXMLP.h&quot;</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=FR style='font-family:"Courier New"'>Double_t* Recall(Double_t
+  *invec)</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>{</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>     static
+  TXMLP net(&quot;TXMLP.net&quot;);</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>     </span><span
+  lang=FR style='font-family:"Courier New"'>Float_t x[7];</span></p>
+  <p class=MsoNormal><span lang=FR style='font-family:"Courier New"'>     x[0]     =
+  0.76594 *    invec[0]; // mom</span></p>
+  <p class=MsoNormal><span lang=FR style='font-family:"Courier New"'>     </span><span
+  lang=IT style='font-family:"Courier New"'>x[1]     = 2.21056 *    invec[1]; //
+  acos(theta)</span></p>
+  <p class=MsoNormal><span lang=IT style='font-family:"Courier New"'>     x[2]     =
+  0.20365 *   invec[2]; // svt</span></p>
+  <p class=MsoNormal><span lang=IT style='font-family:"Courier New"'>     </span><span
+  lang=FR style='font-family:"Courier New"'>x[3]     = 2.2859 *    invec[3]; //
+  emc</span></p>
+  <p class=MsoNormal><span lang=FR style='font-family:"Courier New"'>     x[4]     =
+  1.75435 *    invec[4]; // drc</span></p>
+  <p class=MsoNormal><span lang=FR style='font-family:"Courier New"'>     </span><span
+  lang=EN-GB style='font-family:"Courier New"'>x[5]     = 0.00165 *    invec[5]; //
+  dch</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>     x[6]
+      = 0.85728 *    invec[6]; // ifr</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>     return
+  net.Recall(x);</span></p>
+  <p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New"'>}</span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<h1><span lang=EN-GB>How to get and build RhoNNO</span></h1>
+
+<p><span lang=EN-GB>Rho</span><span lang=EN-GB> resides in the CVS repository :ext:anoncvs@gridportal.fzk.de:/cvs/hep/rho.
+If you wish to install and build, you have to check out and build the
+corresponding packages:</span></p>
+
+<p><span lang=EN-GB>First, you should set the CVS environment</span></p>
+
+<p><span lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'>&gt; setenv
+CVSROOT </span><span style='font-size:10.0pt;font-family:"Courier New"'><a
+href="mailto::ext:anoncvs@gridportal.fzk.de:/cvs/hep/rho"><span lang=EN-GB>:ext:anoncvs@gridportal.fzk.de:/cvs/hep/rho</span></a></span><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'><br>
+&gt; setenv CVS_RSH ssh</span></p>
+
+<p><span lang=EN-GB>Then, install a release directory (The environment </span><span
+  lang=EN-GB>RHO</span><span lang=EN-GB> needs to be set up to point to the
+directory):</span></p>
+
+<p><span lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'>&gt; mkdir
+</span><span lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'>Rho</span><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'><br>
+&gt; cd </span><span lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'>Rho</span><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'><br>
+&gt; setenv </span><span lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'>RHO</span><span
+lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'> $PWD<br>
+&gt; mkdir bin lib Networks</span></p>
+
+<p><span lang=EN-GB>You might want to check out and read documentation first:</span></p>
+
+<p><span lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'>&gt; cvs
+co doc</span></p>
+
+<p><span lang=EN-GB>Then check out the RhoNNO sources and start the build:</span></p>
+
+<p><span lang=EN-GB style='font-size:10.0pt;font-family:"Courier New"'>&gt; cvs
+-z3 -t co RhoNNO<br>
+&gt; cd RhoNNO<br>
+&gt; make –f GNUmakefile.Linux</span></p>
+
+<p><span lang=EN-GB>Build and run the applications</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-GB
+style='font-size:10.0pt;font-family:"Courier New"'>&gt; make -f GNUmakefile.Linux
+strain</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-GB
+style='font-size:10.0pt;font-family:"Courier New"'>&gt; $RHO/bin/strain</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-GB
+style='font-size:10.0pt;font-family:"Courier New"'>&gt; make -f GNUmakefile.Linux
+NetworkTrainer<br>
+&gt; $RHO/bin/NetworkTrainer pid.nno</span></p>
+
+<p><span lang=EN-GB>Prior to start you should install the most recent production
+version of ROOT&nbsp;from root.cern.ch and set the ROOTSYS environment variable
+correspondingly. In addition you have to add $ROOTSYS/lib and $RHO/lib to your
+LD_LIBRARY_PATH in order to resolve the shared libs.</span></p>
+
+<p><span lang=EN-GB>A Windows distribution is available upon request.</span></p>
+
+<p><span lang=EN-GB>&nbsp;</span></p>
+
+<h1><span lang=EN-GB>References</span></h1>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=MsoNormal><a href="http://tau.ep1.ruhr-uni-bochum.de/~marcel/nno.pdf"><span
+lang=EN-GB>The Neural Network Objects</span></a><span lang=EN-GB>, J.Steffens, M.Kunze</span></p>
+
+<p class=MsoNormal><a
+href="http://tau.ep1.ruhr-uni-bochum.de/~marcel/mlpsgng.pdf"><span lang=EN-GB>A
+Comparison between the Performance of SGNG and MLP (240 kB)</span></a><span
+lang=EN-GB>, R.Berlich, M.Kunze</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://e.home.cern.ch/e/ernen/www/NN/index.html">Neural Network
+Application</a>, J.P.Ernenwein</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://www.ep1.ruhr-uni-bochum.de/~marcel/PAF/"><span lang=DE>The Pico
+Analysis Framework</span></a></span>, S.Berger, M. Kunze, H.Schmücker</p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+<div><br clear=all>
+
+<hr align=left size=1 width="33%">
+
+<div id=ftn1>
+
+<p class=MsoFootnoteText><a href="#_ftnref1" name="_ftn1" title=""><span
+class=MsoFootnoteReference><span class=MsoFootnoteReference><span
+style='font-size:10.0pt;font-family:"Times New Roman"'>[1]</span></span></span></a><span
+lang=EN-GB> Now director of  software development at <a
+href="http://www.eyematic.com/">Eyematic Interfaces Inc</a>., </span><span
+ lang=EN-GB>LA</span></p>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

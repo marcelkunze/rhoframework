@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:39 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TBtaMicroCandR - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//------------------------------------------------------------------------</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//	Stefan Kluth           Originator</b>
+<b>//      Leif Wilden</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999     LBNL, TU Dresden</b>
+<b>//</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "KangaSchema/TBtaMicroCandR.h"
+
+ClassImp(TBtaMicroCandR)
+
+<b>//------------------------------------------------------------------------</b>
+
+<a name="TBtaMicroCandR:TBtaMicroCandR"> </a><a href=".././TBtaMicroCandR.html#TBtaMicroCandR:TBtaMicroCandR">TBtaMicroCandR::TBtaMicroCandR</a>() :
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_fitParams">_fitParams</a>(),
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_subObjStatus">_subObjStatus</a>( 0 ), 
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_trkQual">_trkQual</a>(), 
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_calQual">_calQual</a>(), 
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_pidQual">_pidQual</a>(), 
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_pidInfo">_pidInfo</a>(),
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_ifrQual">_ifrQual</a>()
+{}
+
+<a name="TBtaMicroCandR:~TBtaMicroCandR"> </a><a href=".././TBtaMicroCandR.html">TBtaMicroCandR</a>::~<a href=".././TBtaMicroCandR.html">TBtaMicroCandR</a>() {}
+
+<a name="TBtaMicroCandR:GetSubObjStatus"> </a><a href="../ListOfTypes.html#UChar_t">UChar_t</a> <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:GetSubObjStatus">TBtaMicroCandR::GetSubObjStatus</a>() const
+{ return <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_subObjStatus">_subObjStatus</a>; }
+
+<a name="TBtaMicroCandR:GetFitParams"> </a><a href=".././TBtaFitParamsR.html">TBtaFitParamsR</a>* <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:GetFitParams">TBtaMicroCandR::GetFitParams</a>()
+{ return &amp;<a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_fitParams">_fitParams</a>; }
+
+<a name="TBtaMicroCandR:GetTrkQual"> </a><a href=".././TBtaTrkQualR.html">TBtaTrkQualR</a>* <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:GetTrkQual">TBtaMicroCandR::GetTrkQual</a>()
+{ return &amp;<a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_trkQual">_trkQual</a>; }
+
+<a name="TBtaMicroCandR:GetCalQual"> </a><a href=".././TBtaCalQualR.html">TBtaCalQualR</a>* <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:GetCalQual">TBtaMicroCandR::GetCalQual</a>()
+{ return &amp;<a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_calQual">_calQual</a>; }
+
+<a name="TBtaMicroCandR:GetIfrQual"> </a><a href=".././TBtaIfrQualR.html">TBtaIfrQualR</a>* <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:GetIfrQual">TBtaMicroCandR::GetIfrQual</a>()
+{ return &amp;<a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_ifrQual">_ifrQual</a>; }
+
+<a name="TBtaMicroCandR:GetPidQual"> </a><a href=".././TBtaPidQualR.html">TBtaPidQualR</a>* <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:GetPidQual">TBtaMicroCandR::GetPidQual</a>()
+{ return &amp;<a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_pidQual">_pidQual</a>; }
+
+<a name="TBtaMicroCandR:GetPidInfo"> </a><a href=".././TBtaPidInfoR.html">TBtaPidInfoR</a>* <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:GetPidInfo">TBtaMicroCandR::GetPidInfo</a>()
+{ return &amp;<a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_pidInfo">_pidInfo</a>; }
+
+<a name="TBtaMicroCandR:SetSubObjStatus"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:SetSubObjStatus">TBtaMicroCandR::SetSubObjStatus</a>(<a href="../ListOfTypes.html#UChar_t">UChar_t</a> status)
+{ <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_subObjStatus">_subObjStatus</a>= status; }
+    
+<a name="TBtaMicroCandR:Reset"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:Reset">TBtaMicroCandR::Reset</a>()
+{
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_subObjStatus">_subObjStatus</a>= 0;
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_fitParams">_fitParams</a>.<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:Reset">Reset</a>();
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_trkQual">_trkQual</a>.<a href=".././TBtaTrkQualR.html#TBtaTrkQualR:Reset">Reset</a>();
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_calQual">_calQual</a>.<a href=".././TBtaCalQualR.html#TBtaCalQualR:Reset">Reset</a>();
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_ifrQual">_ifrQual</a>.<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:Reset">Reset</a>();
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_pidQual">_pidQual</a>.<a href=".././TBtaPidQualR.html#TBtaPidQualR:Reset">Reset</a>();
+  <a href=".././TBtaMicroCandR.html#TBtaMicroCandR:_pidInfo">_pidInfo</a>.<a href=".././TBtaPidInfoR.html#TBtaPidInfoR:Reset">Reset</a>();
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

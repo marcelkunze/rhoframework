@@ -1,0 +1,534 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:09 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TNeuralNetParameters - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//									//</b>
+<b>// <a href=".././VNeuralNet.html">VNeuralNet</a>								//</b>
+<b>//									//</b>
+<b>// Base classes for unsupervised and supervised networks		//</b>
+<b>// Partof the Neural Network Objects package (NNO)			//</b>
+<b>//									//</b>
+<b>// Author List:								//</b>
+<b>// Johannes Steffens, Bochum University					//</b>
+<b>// M.Kunze, Bochum University						//</b>
+<b>// (C) Copyright Johannes Steffens 1995, Ruhr-University Bochum.	//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+<a href="../ListOfTypes.html#char">char</a>* NNO_VERSION="1.3ROOT";
+
+#include &lt;stdio.h&gt;
+#include &lt;stdarg.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include "TRandom.h"
+
+#include "RhoNNO/VNeuralNet.h"
+#include "RhoNNO/VNeuralNetPlotter.h"
+#include "RhoNNO/TDataServe.h"
+
+#ifdef WIN32
+DllImport TRandom *gRandom;
+#endif
+
+ClassImp(TNeuralNetParameters)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TNeuralNetParameters:TNeuralNetParameters"> </a>TNeuralNetParameters::TNeuralNetParameters() 
+{
+    for (int i=0;i&lt;9;i++) fNetId[i] = 0;
+    fLayers = 0;
+    fInScale = 1.0;
+    fInNodes = 0;
+    fOutNodes = 0;
+    fLearnStep = 0.01;
+    fTransferId = TNeuralNetParameters::TR_FERMI;
+    fPerceptronId = 0;
+    fThreshold = 0.0;
+    fMu = 0.0;
+    fFse = 0.0;
+}
+
+ClassImp(VNeuralNet)
+
+VNeuralNet::VNeuralNet() 
+  : TNamed("NNO","NNO"), fParm(), fPlotter(0), fOwnPlotter(kFALSE), fBalance(kFALSE)
+{
+    fShouldSave = kFALSE; 
+    fFile  = 0;
+    fOut = 0;
+}
+
+VNeuralNet::VNeuralNet(const char* netID,Int_t innodes,Int_t outnodes,const char* netFile)
+ : TNamed(netID,netID), fParm(), fPlotter(0), fOwnPlotter(kFALSE), fBalance(kFALSE) 
+{
+#ifndef NNORAND
+    gRandom-&gt;SetSeed(); // Randomize the numbers
+#endif
+    fFilename = netFile;
+    strncpy(fParm.fNetId,netID,9);
+    fShouldSave  = kTRUE;
+    fFiletype    = FILE_TEXT;
+    fParm.fInNodes  = innodes;
+    fParm.fOutNodes = outnodes;
+    fFile   = 0;
+    fOut    = 0;
+    if (outnodes&gt;0) {
+	fOut = new Double_t[fParm.fOutNodes];
+	TestPointer(fOut);
+    }
+}
+
+VNeuralNet::VNeuralNet(const char* netFile)
+ : TNamed(netFile,netFile), fParm(), fPlotter(0), fOwnPlotter(kFALSE), fBalance(kFALSE) 
+{
+    fFilename   = netFile;
+    fShouldSave = kFALSE;
+    fFile	= 0;
+    fOut        = 0;
+}
+
+VNeuralNet::~VNeuralNet() 
+{ 
+    if (fOut!=0) { delete[] fOut; fOut = 0; }
+    if (fOwnPlotter) { delete fPlotter; fPlotter = 0; }
+}	
+
+void VNeuralNet::Save() 
+{
+    fFile = fopen(fFilename,"wb");
+    WriteNet();
+}
+
+void VNeuralNet::Save(char* file) 
+{
+    fFile = fopen(file,"wb");
+    WriteNet();
+}
+
+void VNeuralNet::WriteNet() 
+{
+    char ftype[16];
+    if (fFiletype==FILE_BINARY) strcpy(ftype,"binary"); else strcpy(ftype,"text");
+    if (fFile==0) { cerr &lt;&lt; "VNeuralNet::WriteNet:: Could not open for writing " &lt;&lt; fFilename &lt;&lt; endl; return; }
+    fprintf(fFile,"C++  NEURAL NETWORK OBJECTS   VERSION %s\n(C) Copyright Johannes Steffens\nFiletype %s\n",NNO_VERSION,ftype);
+    if (fFiletype==FILE_BINARY) WriteNetBinary(); else WriteNetText();
+    if (fFiletype==FILE_BINARY) WriteBinary();     else WriteText();
+    fclose(fFile);
+}
+
+void VNeuralNet::WriteNetText() 
+{
+    fprintf(fFile,"\nnetwork id  %s\n",fParm.fNetId);
+    fprintf(fFile,"innodes     %i\n",fParm.fInNodes);
+    fprintf(fFile,"outnodes    %i\n",fParm.fOutNodes);
+}
+
+void VNeuralNet::WriteNetBinary() 
+{
+    fwrite(&amp;fParm,sizeof(TNeuralNetParameters),1,fFile);
+}
+
+void VNeuralNet::ReadNet(const char* netID) 
+{
+    fFile = fopen(fFilename,"rb");
+    if (fFile==0) Errorf("file %s not found",fFilename);
+    char ftype[16];
+    char Version[16];
+    fscanf(fFile,"C++  NEURAL NETWORK OBJECTS   VERSION %s\n(C) Copyright Johannes Steffens\nFiletype %s\n",Version,ftype);
+    if      (!strcmp(ftype,"binary")) fFiletype = FILE_BINARY;
+    else if (!strcmp(ftype,"text"))   fFiletype = FILE_TEXT;
+    else Errorf("illegal fileformat: %s",fFilename);
+
+    if (fFiletype==FILE_BINARY) 
+	ReadNetBinary(); 
+    else 
+	ReadNetText();
+
+    fParm.fNetId[4]=0;
+    if (strcmp(netID,fParm.fNetId)) {
+	fclose(fFile);
+	Errorf("file %s  (incompatible network)\nnetwork ID is %s and should be %s",fFilename,fParm.fNetId,netID);
+    }
+
+    if (strcmp(Version,NNO_VERSION)) {
+	fclose(fFile);
+	Errorf("illegal NNO version number of file %s\nversion number is %s and should be %s",fFilename,Version,NNO_VERSION);
+    }
+
+    if (fFiletype==FILE_BINARY)
+	ReadBinary();
+    else
+	ReadText();
+
+    fOut = new Double_t[fParm.fOutNodes];
+
+    TestPointer(fOut);
+
+    fclose(fFile);
+}
+
+void VNeuralNet::ReadNetText() 
+{
+     fscanf(fFile,"\nnetwork id  %s\n",fParm.fNetId);
+     fscanf(fFile,"innodes     %i\n",&amp;fParm.fInNodes);
+     fscanf(fFile,"outnodes    %i\n",&amp;fParm.fOutNodes);
+}
+
+void VNeuralNet::ReadNetBinary() 
+{
+    fread(&amp;fParm,sizeof(TNeuralNetParameters),1,fFile);
+}
+
+void VNeuralNet::Errorf(char* format,...) 
+{
+     va_list ap;
+     va_start(ap, format);
+     char MainFormat[256];
+     sprintf(MainFormat,"NNO ERROR: %s\n",format);
+     vfprintf(stderr,MainFormat,ap);
+     exit(1);
+}
+
+void VNeuralNet::Warningf(FILE* f,char* format,...) 
+{
+     va_list ap;
+     va_start(ap, format);
+     char MainFormat[256];
+     sprintf(MainFormat,"NNO WARNING: %s\n",format);
+     vfprintf(f,MainFormat,ap);
+}
+
+void VNeuralNet::Messagef(FILE* f,char* format,...) 
+{
+     va_list ap;
+     va_start(ap, format);
+     char MainFormat[256];
+     sprintf(MainFormat,"NNO INFO: %s\n",format);
+     vfprintf(f,MainFormat,ap);
+}
+
+double VNeuralNet::Random(void) 
+{
+#ifdef NNORAND
+<b>//  Machine independent random number generator.</b>
+<b>//  Produces uniformly-distributed floating points between 0 and 1.</b>
+<b>//  Identical sequence on all machines of &gt;= 32 bits.</b>
+<b>//  Universal version (Fred james 1985).</b>
+<b>//  Return numbers in the range -0.5..0.5 (MK)</b>
+
+   const <a href="../ListOfTypes.html#float">float</a> kCONS = 4.6566128730774E-10;
+   const <a href="../ListOfTypes.html#int">int</a> kMASK31 = 2147483647;
+   static unsigned <a href="../ListOfTypes.html#int">int</a> fSeed = 65539;
+ 
+   fSeed *= 69069;
+<b>      // keep only lower 31 bits</b>
+   fSeed &amp;= kMASK31;
+<b>      // Set lower 8 bits to zero to assure exact <a href="../ListOfTypes.html#float">float</a></b>
+   <a href="../ListOfTypes.html#int">int</a> jy = (fSeed/256)*256;
+   <a href="../ListOfTypes.html#double">double</a> random = kCONS*jy;
+   return 1.0 - 2.0*random;
+#else
+    return 1.0 - 2.0*gRandom-&gt;Rndm();
+#endif
+}
+
+void VNeuralNet::TestPointer(void* Ptr) 
+{
+     if (Ptr==0) Errorf("not enough memory");
+}
+
+void VNeuralNet::SetupPlots(VNeuralNetPlotter *plotter)
+{
+    if (plotter==0) {
+	cout &lt;&lt; "Instantiating plotter for " &lt;&lt; GetName() &lt;&lt; endl;
+	if (fOwnPlotter) delete fPlotter;
+	fPlotter = new TSimpleNeuralNetPlotter(GetName());
+	fOwnPlotter = kTRUE;
+    }
+
+    fPlotter-&gt;Initialize();
+}
+
+void VNeuralNet::FillPlots(Double_t trn, Double_t tst)
+{
+    if (fPlotter==0) return;
+    fPlotter-&gt;AddTrainSample(trn,kTRUE);
+    fPlotter-&gt;AddTestSample(tst,kTRUE);
+}
+
+void VNeuralNet::ShowPlots()
+{
+    if (fPlotter==0) return;
+    fPlotter-&gt;ShowPlots();
+}
+
+Double_t VNeuralNet::TrainEpoch(TDataServe *server, Int_t nEpoch)
+{
+    double       error;			// squared error collector
+    unsigned int classError;		// classification Error
+    unsigned int n;			// number of samples
+
+    const Int_t samples = server-&gt;GetNumTrnvecs();
+    const Int_t tests   = server-&gt;GetNumTstvecs();
+
+    for (Int_t epo=0; epo&lt;nEpoch; epo++){
+	error = 0.0;
+	classError = 0;
+	n = 0;
+	
+	server-&gt;MixTrn(); // Shuffle the dataset
+
+	for (Int_t i=0; i&lt;samples; i++){
+
+	    Int_t trnind = i;
+	    if (fBalance) trnind = BalancedTrnIndex(server);
+
+	    Float_t *inv  = (Float_t *) server-&gt;GetInvecTrn(trnind);
+	    Float_t *outv = (Float_t *) server-&gt;GetOutvecTrn(trnind);
+	    
+	    error += Train(inv,outv);
+	    n++;
+	}
+
+	classError = (UInt_t) TestEpoch(server);
+	double percentage = 100. * classError;
+	if (tests&gt;0) percentage /= tests; else percentage = 0;
+	
+<b>	// print training info</b>
+	cout &lt;&lt; GetNetID() &lt;&lt; ": Epoch " &lt;&lt; epo &lt;&lt; 
+	    ", samples " &lt;&lt; n &lt;&lt; 
+	    ", Error " &lt;&lt; error &lt;&lt; 
+	    ", classError " &lt;&lt; classError &lt;&lt; 
+	    " (" &lt;&lt; (<a href="../ListOfTypes.html#int">int</a>)percentage &lt;&lt; "%)" &lt;&lt; endl;
+
+<b>	// Fill the plots (for a random recall)</b>
+	if (fPlotter!=0) {
+	    fPlotter-&gt;AddTrainGraph(error);
+	    fPlotter-&gt;AddTestGraph(classError);
+	    fPlotter-&gt;ShowPlots();
+	    fPlotter-&gt;Reset();
+	}
+    }
+
+    if (fShouldSave) Save(); // Store the net
+
+    return error;
+}
+
+<b>// Check the network performance</b>
+
+<a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././VNeuralNet.html#VNeuralNet:TestEpoch">VNeuralNet::TestEpoch</a>(<a href=".././TDataServe.html">TDataServe</a> *server)
+{
+    unsigned <a href="../ListOfTypes.html#int">int</a> classError = 0;    // classification Error
+    const <a href="../ListOfTypes.html#Int_t">Int_t</a> samples = server-&gt;GetNumTstvecs();
+    <a href=".././TNeuralNetParameters.html">TNeuralNetParameters</a> &amp;parm = GetParameters();
+
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;samples; i++){
+
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> tstind = i;
+	if (fBalance) tstind = BalancedTstIndex(server);
+
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> *inv  = server-&gt;GetInvecTst(tstind);
+	<a href="../ListOfTypes.html#Float_t">Float_t</a> *outv = server-&gt;GetOutvecTst(tstind);
+	
+<b>	// compare network recall with server</b>
+	Recall(inv,outv);
+
+	for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;parm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fOutNodes">fOutNodes</a>;++i) {
+	    <a href="../ListOfTypes.html#Double_t">Double_t</a> answer = GetOutput()[i];
+	    if ((answer&gt;parm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a> &amp;&amp; outv[i]&lt;=parm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a>) ||
+		(answer&lt;=parm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a> &amp;&amp; outv[i]&gt;parm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a>) )
+		++classError; // classification ok ?
+	}
+	
+    }
+
+    return classError;
+}
+
+<a href="../ListOfTypes.html#Double_t">Double_t</a>  <a href=".././VNeuralNet.html#VNeuralNet:Test">VNeuralNet::Test</a>(<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in,<a href="../ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out) 
+{
+    Recall(in,out);
+    <a href="../ListOfTypes.html#int">int</a> I;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a>* o = fOut;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> diff,totalError = 0.0;
+    for (I=0;I&lt;fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fOutNodes">fOutNodes</a>;++I) {
+	diff = *out++ - *o++; 
+	totalError += diff * diff;
+    }
+    return totalError;
+}
+
+<a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././VNeuralNet.html#VNeuralNet:TrainEpoch">VNeuralNet::TrainEpoch</a>(const <a href="../ListOfTypes.html#char">char</a> *file, <a href="../ListOfTypes.html#Int_t">Int_t</a> nEpoch)
+{
+    FILE* ftrn=fopen(file,"rb");
+    if (ftrn==0) {
+	cerr &lt;&lt; "Training file does not exist:" &lt;&lt; file &lt;&lt; endl;
+	return 0.0;
+    }
+    
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> epoch=0;		// epoch counter
+    <a href="../ListOfTypes.html#double">double</a> error;		// squared error collector
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> classError;		// classification Error
+
+    <a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>   *in  = new <a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>[fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fInNodes">fInNodes</a>];	    // inputvector
+    <a href="../ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>  *out = new <a href="../ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>[fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fOutNodes">fOutNodes</a>];   // outputvector
+    
+<b>    // begin of training</b>
+    do {
+	error      = 0.0;
+	classError = 0;
+	
+	while ( fread(in,sizeof(<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>),fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fInNodes">fInNodes</a>,ftrn) ) {  // read inputvector
+	    fread(out,sizeof(<a href="../ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>),fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fOutNodes">fOutNodes</a>,ftrn);      // read outputvector
+	    <a href="../ListOfTypes.html#Double_t">Double_t</a> output = out[0];
+
+	    error += Train(in,out);                // perform learnstep
+	    
+<b>	    // compare network output with 'Out'</b>
+	    <a href="../ListOfTypes.html#Double_t">Double_t</a> *net = GetOutput();
+	    <a href="../ListOfTypes.html#Double_t">Double_t</a> answer = net[0];
+	    for (<a href="../ListOfTypes.html#int">int</a> I=0;I&lt;fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fOutNodes">fOutNodes</a>;++I) {
+		if ((net[I]&gt;fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a> &amp;&amp; out[I]&lt;=fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a>) ||
+		    (net[I]&lt;=fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a> &amp;&amp; out[I]&gt;fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a>) )
+		    ++classError; // classification ok ?
+	    }
+
+	}
+	rewind(ftrn);  // epoch completed, rewind filepointer
+	++epoch;
+	
+<b>	// print training info</b>
+	cout &lt;&lt; GetNetID() &lt;&lt; ": Epoch " &lt;&lt; epoch &lt;&lt; ", Error " &lt;&lt; error &lt;&lt; ", classError " &lt;&lt; classError &lt;&lt; endl;
+
+<b>	// Fill the plots (for a random recall)</b>
+	if (fPlotter!=0) {
+	    fPlotter-&gt;AddTrainGraph(error);
+	    fPlotter-&gt;AddTestGraph(classError);
+	    fPlotter-&gt;ShowPlots();
+	    fPlotter-&gt;Reset();
+	}
+	
+    } while (classError&gt;0 &amp;&amp; epoch&lt;nEpoch);
+    
+    fclose(ftrn);
+
+    delete in, out;
+
+    if (fShouldSave) Save(); // Store the net
+    
+    return error;
+}
+
+<a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././VNeuralNet.html#VNeuralNet:TestEpoch">VNeuralNet::TestEpoch</a>(const <a href="../ListOfTypes.html#char">char</a> *file)
+{
+    FILE* ftst=fopen(file,"rb");
+    if (ftst==0) {
+	cerr &lt;&lt; "Test file does not exist:" &lt;&lt; file &lt;&lt; endl;
+	return 0.0;
+    }
+
+    unsigned <a href="../ListOfTypes.html#int">int</a> classError = 0;    // classification Error
+    <a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>   *in  = new <a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>[fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fInNodes">fInNodes</a>];	    // inputvector
+    <a href="../ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>  *out = new <a href="../ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>[fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fOutNodes">fOutNodes</a>];   // outputvector
+    
+    while ( fread(in,sizeof(<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>),fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fInNodes">fInNodes</a>,ftst) ) {   // read inputvector
+	fread(out,sizeof(<a href="../ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>),fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fOutNodes">fOutNodes</a>,ftst);		    // read outputvector
+	
+<b>	// compare network recall with file</b>
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> *net = Recall(in,out);
+	for (<a href="../ListOfTypes.html#int">int</a> I=0;I&lt;fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fOutNodes">fOutNodes</a>;++I) {
+	    if ((net[I]&gt;fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a> &amp;&amp; out[I]&lt;=fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a>) ||
+		(net[I]&lt;=fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a> &amp;&amp; out[I]&gt;fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fThreshold">fThreshold</a>) )
+		++classError; // classification ok ?
+	}
+
+    }
+    
+    fclose(ftst);
+
+    delete in, out;
+    
+    return classError;
+}
+
+<a href="../ListOfTypes.html#UInt_t">UInt_t</a> <a href=".././VNeuralNet.html#VNeuralNet:BalancedTrnIndex">VNeuralNet::BalancedTrnIndex</a>(<a href=".././TDataServe.html">TDataServe</a> *server)
+{
+    static <a href="../ListOfTypes.html#ULong_t">ULong_t</a> ngood=0, nbad=0;
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> samples = server-&gt;GetNumTrnvecs();
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> index = (<a href="../ListOfTypes.html#UInt_t">UInt_t</a>) (gRandom-&gt;Rndm()*samples);
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> *outv = server-&gt;GetOutvecTrn(index);
+
+    if (ngood&lt;nbad) 
+	while (outv[0]&lt;=0.0) {
+	  index++;
+	  outv = server-&gt;GetOutvecTrn(index%samples);
+	}
+
+    if (outv[0]&gt;0.0) ngood++; else nbad++;
+
+    return index%samples;
+}
+
+<a href="../ListOfTypes.html#UInt_t">UInt_t</a> <a href=".././VNeuralNet.html#VNeuralNet:BalancedTstIndex">VNeuralNet::BalancedTstIndex</a>(<a href=".././TDataServe.html">TDataServe</a> *server)
+{
+    static <a href="../ListOfTypes.html#ULong_t">ULong_t</a> ngood=0, nbad=0;
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> samples = server-&gt;GetNumTstvecs();
+    <a href="../ListOfTypes.html#UInt_t">UInt_t</a> index = (<a href="../ListOfTypes.html#UInt_t">UInt_t</a>) (gRandom-&gt;Rndm()*samples);
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> *outv = server-&gt;GetOutvecTst(index);
+
+    if (ngood&lt;nbad) 
+	while (outv[0]&lt;=0.0) {
+	  index++;
+	  outv = server-&gt;GetOutvecTst(index%samples);
+	}
+
+    if (outv[0]&gt;0.0) ngood++; else nbad++;
+
+    return index%samples;
+}
+
+<a href="../ListOfTypes.html#void">void</a> <a href=".././VNeuralNet.html#VNeuralNet:SetMomentumTerm">VNeuralNet::SetMomentumTerm</a>(<a href="../ListOfTypes.html#Double_t">Double_t</a> f) 
+{ 
+    fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fMu">fMu</a> = f;
+}
+
+<a href="../ListOfTypes.html#void">void</a> <a href=".././VNeuralNet.html#VNeuralNet:SetFlatSpotElimination">VNeuralNet::SetFlatSpotElimination</a>(<a href="../ListOfTypes.html#Double_t">Double_t</a> f) 
+{ 
+    fParm.<a href=".././TNeuralNetParameters.html#TNeuralNetParameters:fFse">fFse</a> = f;
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

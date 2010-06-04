@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:26 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TSGNG</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TSGNG</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TSGNG:description">class description</a> - <a href="src/TSGNG.cxx.html">source file</a> - <a href="TSGNG_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TSGNG" href="TSGNG.h">TSGNG</a> : public <a href="./VSupervisedNet.html">VSupervisedNet</a></h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:AllocNet">AllocNet</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TSGNG:CondDisconnect">CondDisconnect</a><!--PLAIN-->(<a href="./TNeuralNetCell.html">TNeuralNetCell</a>* Up1, <a href="./TNeuralNetCell.html">TNeuralNetCell</a>* Up2)
+<!--TAB6-->              <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:Connect">Connect</a><!--PLAIN-->(<a href="./TNeuralNetCell.html">TNeuralNetCell</a>* Up1, <a href="./TNeuralNetCell.html">TNeuralNetCell</a>* Up2)
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:InitNet">InitNet</a><!--PLAIN-->()
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:ReadBinary">ReadBinary</a><!--PLAIN-->()
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:ReadText">ReadText</a><!--PLAIN-->()
+<!--TAB6-->              <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:UpdateConnector">UpdateConnector</a><!--PLAIN-->(<a href="./TNeuralNetCell.html">TNeuralNetCell</a>* Up1, <a href="./TNeuralNetCell.html">TNeuralNetCell</a>* Up2)
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:WriteBinary">WriteBinary</a><!--PLAIN-->()
+<!--TAB6-->      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:WriteText">WriteText</a><!--PLAIN-->()
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                          <a href="./TSGNG.html">TSGNG</a> <!--TAB--><!--BOLD--><a href="#TSGNG:TSGNG">TSGNG</a><!--PLAIN-->()
+<!--TAB6-->                          <a href="./TSGNG.html">TSGNG</a> <!--TAB--><!--BOLD--><a href="#TSGNG:TSGNG">TSGNG</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> innodes, <a href="ListOfTypes.html#Int_t">Int_t</a> outnodes, <a href="ListOfTypes.html#Int_t">Int_t</a> maxCells, <a href="ListOfTypes.html#Double_t">Double_t</a> winStep, <a href="ListOfTypes.html#Double_t">Double_t</a> neiStep, <a href="ListOfTypes.html#Double_t">Double_t</a> neuStep, <a href="ListOfTypes.html#Double_t">Double_t</a> aErrCount, <a href="ListOfTypes.html#Double_t">Double_t</a> aEdgeCount, <a href="ListOfTypes.html#Double_t">Double_t</a> bSDev, <a href="ListOfTypes.html#Double_t">Double_t</a> minCount, <a href="ListOfTypes.html#Int_t">Int_t</a> connectors, <a href="ListOfTypes.html#Long_t">Long_t</a> insertStep, <a href="ListOfTypes.html#Long_t">Long_t</a> deleteStep, const <a href="ListOfTypes.html#char">char</a>* netFile)
+<!--TAB6-->                          <a href="./TSGNG.html">TSGNG</a> <!--TAB--><!--BOLD--><a href="#TSGNG:TSGNG">TSGNG</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* netFile)
+<!--TAB6-->                          <a href="./TSGNG.html">TSGNG</a> <!--TAB--><!--BOLD--><a href="#TSGNG:TSGNG">TSGNG</a><!--PLAIN-->(const <a href="./TSGNG.html">TSGNG</a>&amp; sgng, const <a href="ListOfTypes.html#char">char</a>* netFile)
+<!--TAB6-->                          <a href="./TSGNG.html">TSGNG</a> <!--TAB--><!--BOLD--><a href="#TSGNG:TSGNG">TSGNG</a><!--PLAIN-->(const <a href="./TSGNG.html">TSGNG</a>&amp;)
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:~TSGNG">~TSGNG</a><!--PLAIN-->()
+<!--TAB6-->                 static TClass* <!--TAB--><!--BOLD--><a href="#TSGNG:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                           <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:CopyData">CopyData</a><!--PLAIN-->(const <a href="./TSGNG.html">TSGNG</a>&amp; SGNG)
+<!--TAB6-->                          <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TSGNG:GetNumberOfCells">GetNumberOfCells</a><!--PLAIN-->() const
+<!--TAB6-->      <a href="./TNeuralNetCellParameters.html">TNeuralNetCellParameters</a>&amp; <!--TAB--><!--BOLD--><a href="#TSGNG:GetParameters">GetParameters</a><!--PLAIN-->()
+<!--TAB6-->                          <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TSGNG:Insert">Insert</a><!--PLAIN-->()
+<!--TAB6-->                virtual TClass* <!--TAB--><!--BOLD--><a href="#TSGNG:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                           <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:Prune">Prune</a><!--PLAIN-->()
+<!--TAB6-->              virtual <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a href="#TSGNG:Recall">Recall</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out)
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                           <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSGNG:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->               virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TSGNG:Train">Train</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out)
+</pre>
+
+<h3><!--TAB2-->  <a name="TSGNG:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->               <a href="./TNeuralNetCell.html">TNeuralNetCell</a>* <!--TAB--><!--BOLD--><a name="TSGNG:fU">fU</a><!--PLAIN-->               <!--TAB--><i><a name="Title:fU">! Temp. Cell</a></i>
+<!--TAB6-->      <a href="./TNeuralNetCellParameters.html">TNeuralNetCellParameters</a> <!--TAB--><!--BOLD--><a name="TSGNG:fXB">fXB</a><!--PLAIN-->              <!--TAB--><i><a name="Title:fXB">Network parameters</a></i>
+<!--TAB6-->               <a href="./TNeuralNetCell.html">TNeuralNetCell</a>* <!--TAB--><!--BOLD--><a name="TSGNG:fUbound">fUbound</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fUbound">! Temp. Cell</a></i>
+<!--TAB6-->               <a href="./TNeuralNetCell.html">TNeuralNetCell</a>* <!--TAB--><!--BOLD--><a name="TSGNG:fUwin1">fUwin1</a><!--PLAIN-->           <!--TAB--><i><a name="Title:fUwin1">! Temp. Cell</a></i>
+<!--TAB6-->               <a href="./TNeuralNetCell.html">TNeuralNetCell</a>* <!--TAB--><!--BOLD--><a name="TSGNG:fUwin2">fUwin2</a><!--PLAIN-->           <!--TAB--><i><a name="Title:fUwin2">! Temp. Cell</a></i>
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TSGNG:fMinDistSquare1">fMinDistSquare1</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fMinDistSquare1"></a></i>
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TSGNG:fMinDistSquare2">fMinDistSquare2</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fMinDistSquare2"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TSGNG:description">Class Description</a></h2>
+<pre>									
+ <a href="./TSGNG.html">TSGNG</a>								
+									
+ Implementation of the SUPERVISED-GROWING-NEURAL-GAS (SGNG)		
+ Part of the Neural Network Objects package (NNO)			
+									
+ Author List:								
+ Johannes Steffens, Bochum University					
+ M.Kunze, Bochum University						
+ (C) Copyright Johannes Steffens 1995, Ruhr-University Bochum.	
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TSGNG:TSGNG" href="src/TSGNG.cxx.html#TSGNG:TSGNG">TSGNG</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> innodes,
+	     <a href="ListOfTypes.html#Int_t">Int_t</a> outnodes,
+	     <a href="ListOfTypes.html#Int_t">Int_t</a> maxCells,
+	     <a href="ListOfTypes.html#Double_t">Double_t</a> winStep,
+	     <a href="ListOfTypes.html#Double_t">Double_t</a> neiStep,
+	     <a href="ListOfTypes.html#Double_t">Double_t</a> neuStep,
+	     <a href="ListOfTypes.html#Double_t">Double_t</a> aErrCount,
+	     <a href="ListOfTypes.html#Double_t">Double_t</a> aEdgeCount,
+	     <a href="ListOfTypes.html#Double_t">Double_t</a> bSDev,
+	     <a href="ListOfTypes.html#Double_t">Double_t</a> minCount,
+	     <a href="ListOfTypes.html#Int_t">Int_t</a>  connectors,
+	     <a href="ListOfTypes.html#Long_t">Long_t</a> insertStep,
+	     <a href="ListOfTypes.html#Long_t">Long_t</a> deleteStep,
+	     const <a href="ListOfTypes.html#char">char</a>* netFile)
+	     : <a href="./VSupervisedNet.html">VSupervisedNet</a>("SGNG",innodes,outnodes,netFile) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TSGNG:TSGNG" href="src/TSGNG.cxx.html#TSGNG:TSGNG">TSGNG</a>(const <a href="./TSGNG.html">TSGNG</a>&amp; sgng,const <a href="ListOfTypes.html#char">char</a>* netFile)
+: <a href="./VSupervisedNet.html">VSupervisedNet</a>("SGNG",sgng.<a href="./VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes,sgng.<a href="./VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes,netFile) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TSGNG:~TSGNG" href="src/TSGNG.cxx.html#TSGNG:~TSGNG">~TSGNG</a>() 
+<br>
+<pre>transform main_err_count, main_edge_count
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSGNG:ReadBinary" href="src/TSGNG.cxx.html#TSGNG:ReadBinary">ReadBinary</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSGNG:ReadText" href="src/TSGNG.cxx.html#TSGNG:ReadText">ReadText</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSGNG:WriteBinary" href="src/TSGNG.cxx.html#TSGNG:WriteBinary">WriteBinary</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSGNG:WriteText" href="src/TSGNG.cxx.html#TSGNG:WriteText">WriteText</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSGNG:AllocNet" href="src/TSGNG.cxx.html#TSGNG:AllocNet">AllocNet</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSGNG:InitNet" href="src/TSGNG.cxx.html#TSGNG:InitNet">InitNet</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSGNG:CopyData" href="src/TSGNG.cxx.html#TSGNG:CopyData">CopyData</a>(const <a href="./TSGNG.html">TSGNG</a>&amp; sgng) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TSGNG:CondDisconnect" href="src/TSGNG.cxx.html#TSGNG:CondDisconnect">CondDisconnect</a>(<a href="./TNeuralNetCell.html">TNeuralNetCell</a>* up1,<a href="./TNeuralNetCell.html">TNeuralNetCell</a>* up2) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSGNG:Connect" href="src/TSGNG.cxx.html#TSGNG:Connect">Connect</a>(<a href="./TNeuralNetCell.html">TNeuralNetCell</a>* up1,<a href="./TNeuralNetCell.html">TNeuralNetCell</a>* up2) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSGNG:UpdateConnector" href="src/TSGNG.cxx.html#TSGNG:UpdateConnector">UpdateConnector</a>(<a href="./TNeuralNetCell.html">TNeuralNetCell</a>* up1,<a href="./TNeuralNetCell.html">TNeuralNetCell</a>* up2) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a>* <a name="TSGNG:Recall" href="src/TSGNG.cxx.html#TSGNG:Recall">Recall</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in,<a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TSGNG:Train" href="src/TSGNG.cxx.html#TSGNG:Train">Train</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in,<a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TSGNG:Insert" href="src/TSGNG.cxx.html#TSGNG:Insert">Insert</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSGNG:Prune" href="src/TSGNG.cxx.html#TSGNG:Prune">Prune</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                            <a href="./TSGNG.html">TSGNG</a> <a name="TSGNG:TSGNG" href="TSGNG.h">TSGNG</a>(const <a href="ListOfTypes.html#char">char</a>* netFile)
+<!--INLINE FUNCTION--><!--TAB6-->                            <a href="./TSGNG.html">TSGNG</a> <a name="TSGNG:TSGNG" href="TSGNG.h">TSGNG</a>(const <a href="./TSGNG.html">TSGNG</a>&amp; sgng, const <a href="ListOfTypes.html#char">char</a>* netFile)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TNeuralNetCellParameters.html">TNeuralNetCellParameters</a>&amp; <a name="TSGNG:GetParameters" href="TSGNG.h">GetParameters</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                            <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TSGNG:GetNumberOfCells" href="TSGNG.h">GetNumberOfCells</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                          TClass* <a name="TSGNG:Class" href="TSGNG.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                          TClass* <a name="TSGNG:IsA" href="TSGNG.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <a name="TSGNG:ShowMembers" href="TSGNG.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <a name="TSGNG:Streamer" href="TSGNG.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <a name="TSGNG:StreamerNVirtual" href="TSGNG.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                            <a href="./TSGNG.html">TSGNG</a> <a name="TSGNG:TSGNG" href="TSGNG.h">TSGNG</a>(const <a href="./TSGNG.html">TSGNG</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:27 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

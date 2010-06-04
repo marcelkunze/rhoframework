@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:33 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>VAbsFitter</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>VAbsFitter</h1>
+<hr width=300>
+<!--SDL--><em><a href="#VAbsFitter:description">class description</a> - <a href="src/VAbsFitter.cxx.html">source file</a> - <a href="VAbsFitter_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="VAbsFitter" href="VAbsFitter.h">VAbsFitter</a> : public <a href="./TOperatorBase.html">TOperatorBase</a></h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      TCandidate* <!--TAB--><!--BOLD--><a href="#VAbsFitter:CopyTree">CopyTree</a><!--PLAIN-->(const TCandidate&amp;)
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      TCandidate&amp; <!--TAB--><!--BOLD--><a href="#VAbsFitter:HeadOfTree">HeadOfTree</a><!--PLAIN-->() const
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VAbsFitter:~VAbsFitter">~VAbsFitter</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#VAbsFitter:Chi2Contribution">Chi2Contribution</a><!--PLAIN-->(const TCandidate&amp;) const
+<!--TAB6-->         static TClass* <!--TAB--><!--BOLD--><a href="#VAbsFitter:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VAbsFitter:Fit">Fit</a><!--PLAIN-->()
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VAbsFitter:FitAll">FitAll</a><!--PLAIN-->()
+<!--TAB6-->      const TCandidate* <!--TAB--><!--BOLD--><a href="#VAbsFitter:FittedCand">FittedCand</a><!--PLAIN-->(const TCandidate&amp;) const
+<!--TAB6-->             TCandidate <!--TAB--><!--BOLD--><a href="#VAbsFitter:GetFitted">GetFitted</a><!--PLAIN-->(const TCandidate&amp;) const
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VAbsFitter:InsertChi2">InsertChi2</a><!--PLAIN-->(const TCandidate&amp; bc, const <a href="ListOfTypes.html#double">double</a>&amp; chi2)
+<!--TAB6-->        virtual TClass* <!--TAB--><!--BOLD--><a href="#VAbsFitter:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VAbsFitter:SetVerbose">SetVerbose</a><!--PLAIN-->()
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VAbsFitter:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VAbsFitter:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VAbsFitter:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="VAbsFitter:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      TCandidate* <!--TAB--><!--BOLD--><a name="VAbsFitter:fHeadOfTree">fHeadOfTree</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fHeadOfTree"></a></i>
+<!--TAB6-->         TVectorD <!--TAB--><!--BOLD--><a name="VAbsFitter:fChi2Map">fChi2Map</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fChi2Map"></a></i>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="VAbsFitter:fVerbose">fVerbose</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fVerbose"></a></i>
+</pre>
+<!--END-->
+<br><hr>
+<!--SEE ALSO--><h2>See also</h2><dl><dd>
+<a href="./TDummyFitter.html">TDummyFitter</a></dl>
+<hr>
+<!--DESCRIPTION--><h2><a name="VAbsFitter:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./VAbsFitter.html">VAbsFitter</a>				    				
+                                                                      
+ Abstract class for vertexers						
+                                                                      
+ Author: Marcel Kunze, RUB, Feb. 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="VAbsFitter:~VAbsFitter" href="src/VAbsFitter.cxx.html#VAbsFitter:~VAbsFitter">~VAbsFitter</a>() 
+<br>
+<hr>
+<!--FUNCTION--> <a name="VAbsFitter:CopyTree" href="src/VAbsFitter.cxx.html#VAbsFitter:CopyTree">CopyTree</a>( const TCandidate&amp; b )
+<br>
+<hr>
+<!--FUNCTION--> <a name="VAbsFitter:FittedCand" href="src/VAbsFitter.cxx.html#VAbsFitter:FittedCand">FittedCand</a>( const TCandidate&amp; c ) const 
+<br>
+<hr>
+<!--FUNCTION--> <a name="VAbsFitter:GetFitted" href="src/VAbsFitter.cxx.html#VAbsFitter:GetFitted">GetFitted</a>(const TCandidate&amp; c ) const 
+<br>
+<hr>
+<!--FUNCTION--> <a name="VAbsFitter:Chi2Contribution" href="src/VAbsFitter.cxx.html#VAbsFitter:Chi2Contribution">Chi2Contribution</a>( const TCandidate&amp; b ) const
+<br>
+<hr>
+<!--FUNCTION--> <a name="VAbsFitter:FitAll" href="src/VAbsFitter.cxx.html#VAbsFitter:FitAll">FitAll</a>()
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="VAbsFitter:Fit" href="VAbsFitter.h">Fit</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="VAbsFitter:InsertChi2" href="VAbsFitter.h">InsertChi2</a>(const TCandidate&amp; bc, const <a href="ListOfTypes.html#double">double</a>&amp; chi2)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="VAbsFitter:SetVerbose" href="VAbsFitter.h">SetVerbose</a>()
+<!--INLINE FUNCTION--><!--TAB6-->        TCandidate&amp; <a name="VAbsFitter:HeadOfTree" href="VAbsFitter.h">HeadOfTree</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="VAbsFitter:Class" href="VAbsFitter.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="VAbsFitter:IsA" href="VAbsFitter.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="VAbsFitter:ShowMembers" href="VAbsFitter.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="VAbsFitter:Streamer" href="VAbsFitter.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="VAbsFitter:StreamerNVirtual" href="VAbsFitter.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?Feb.">Feb.</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:03:34 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

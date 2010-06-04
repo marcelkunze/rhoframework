@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:23 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TRhoDate</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TRhoDate</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TRhoDate:description">class description</a> - <a href="src/TRhoDate.cxx.html">source file</a> - <a href="TRhoDate_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TRhoDate" href="TRhoDate.h">TRhoDate</a> : public TObject</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->       static <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:clobber">clobber</a><!--PLAIN-->(tm*)
+<!--TAB6-->      static <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:currentDate">currentDate</a><!--PLAIN-->()
+<!--TAB6-->              <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:mdy">mdy</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a>&amp; m, unsigned <a href="ListOfTypes.html#long">long</a>&amp; d, unsigned <a href="ListOfTypes.html#long">long</a>&amp; y) const
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      static <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:assertIndexOfMonth">assertIndexOfMonth</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> m)
+<!--TAB6-->      static <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:assertWeekDayNumber">assertWeekDayNumber</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> d)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                  <a href="./TRhoDate.html">TRhoDate</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:TRhoDate">TRhoDate</a><!--PLAIN-->()
+<!--TAB6-->                  <a href="./TRhoDate.html">TRhoDate</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:TRhoDate">TRhoDate</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> j)
+<!--TAB6-->                  <a href="./TRhoDate.html">TRhoDate</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:TRhoDate">TRhoDate</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> day, unsigned <a href="ListOfTypes.html#long">long</a> year)
+<!--TAB6-->                  <a href="./TRhoDate.html">TRhoDate</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:TRhoDate">TRhoDate</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> d, unsigned <a href="ListOfTypes.html#long">long</a> m, unsigned <a href="ListOfTypes.html#long">long</a> y)
+<!--TAB6-->                  <a href="./TRhoDate.html">TRhoDate</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Max">Max</a><!--PLAIN-->(const <a href="./TRhoDate.html">TRhoDate</a>&amp; dt) const
+<!--TAB6-->                  <a href="./TRhoDate.html">TRhoDate</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Min">Min</a><!--PLAIN-->(const <a href="./TRhoDate.html">TRhoDate</a>&amp; dt) const
+<!--TAB6-->                  <a href="./TRhoDate.html">TRhoDate</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Next">Next</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> day) const
+<!--TAB6-->                  <a href="./TRhoDate.html">TRhoDate</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Previous">Previous</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> day) const
+<!--TAB6-->           static <a href="./TRhoDate.html">TRhoDate</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Now">Now</a><!--PLAIN-->()
+<!--TAB6-->                  <a href="./TRhoDate.html">TRhoDate</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:TRhoDate">TRhoDate</a><!--PLAIN-->(const <a href="./TRhoDate.html">TRhoDate</a>&amp;)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:~TRhoDate">~TRhoDate</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Between">Between</a><!--PLAIN-->(const <a href="./TRhoDate.html">TRhoDate</a>&amp; d1, const <a href="./TRhoDate.html">TRhoDate</a>&amp; d2) const
+<!--TAB6-->            static TClass* <!--TAB--><!--BOLD--><a href="#TRhoDate:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                       <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:CompareTo">CompareTo</a><!--PLAIN-->(const <a href="./TRhoDate.html">TRhoDate</a>*) const
+<!--TAB6-->             unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Day">Day</a><!--PLAIN-->() const
+<!--TAB6-->             unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:DayOfMonth">DayOfMonth</a><!--PLAIN-->() const
+<!--TAB6-->      static unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:DaysInMonthYear">DaysInMonthYear</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> month, unsigned <a href="ListOfTypes.html#long">long</a> year)
+<!--TAB6-->      static unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:DaysInYear">DaysInYear</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> year)
+<!--TAB6-->             static <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:DayWithinMonth">DayWithinMonth</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> mon, unsigned <a href="ListOfTypes.html#long">long</a> day, unsigned <a href="ListOfTypes.html#long">long</a> yr)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Extract">Extract</a><!--PLAIN-->(tm*) const
+<!--TAB6-->             unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:FirstDayOfMonth">FirstDayOfMonth</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> mon) const
+<!--TAB6-->             unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:FirstDayOfMonth">FirstDayOfMonth</a><!--PLAIN-->() const
+<!--TAB6-->           virtual TClass* <!--TAB--><!--BOLD--><a href="#TRhoDate:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                    <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:IsValid">IsValid</a><!--PLAIN-->() const
+<!--TAB6-->              static <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Jday">Jday</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> mon, unsigned <a href="ListOfTypes.html#long">long</a> day, unsigned <a href="ListOfTypes.html#long">long</a> year)
+<!--TAB6-->                     <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Julian">Julian</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Julian">Julian</a><!--PLAIN-->(const <a href="ListOfTypes.html#Int_t">Int_t</a> j)
+<!--TAB6-->                    <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Leap">Leap</a><!--PLAIN-->() const
+<!--TAB6-->             static <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:LeapYear">LeapYear</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> year)
+<!--TAB6-->             unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Month">Month</a><!--PLAIN-->() const
+<!--TAB6-->                 <a href="./TRhoDate.html">TRhoDate</a>&amp; <!--TAB--><!--BOLD--><a href="#TRhoDate:operator++">operator++</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="./TRhoDate.html">TRhoDate</a>&amp; <!--TAB--><!--BOLD--><a href="#TRhoDate:operator+=">operator+=</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> dd)
+<!--TAB6-->                 <a href="./TRhoDate.html">TRhoDate</a>&amp; <!--TAB--><!--BOLD--><a href="#TRhoDate:operator--">operator--</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="./TRhoDate.html">TRhoDate</a>&amp; <!--TAB--><!--BOLD--><a href="#TRhoDate:operator-=">operator-=</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> dd)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; = std::cout) const
+<!--TAB6-->              virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->              virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->             unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:WeekDay">WeekDay</a><!--PLAIN-->() const
+<!--TAB6-->             unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoDate:Year">Year</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="TRhoDate:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TRhoDate:julnum">julnum</a><!--PLAIN-->  <!--TAB--><i><a name="Title:julnum">Julian Day Number (not same as Julian date).</a></i>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      static const unsigned <a href="ListOfTypes.html#char">char</a> <!--TAB--><!--BOLD--><a name="TRhoDate:daysInMonth">daysInMonth[12]</a><!--PLAIN-->          <!--TAB--><i><a name="Title:daysInMonth">[1..31]</a></i>
+<!--TAB6-->      static const unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a name="TRhoDate:firstDayOfEachMonth">firstDayOfEachMonth[12]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:firstDayOfEachMonth">[0..334]</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TRhoDate:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TRhoDate.html">TRhoDate</a>		    						
+                                                                      
+ Date and time class				    			
+                                                                      
+ Author: Marcel Kunze, RUB, Feb. 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TRhoDate:TRhoDate" href="src/TRhoDate.cxx.html#TRhoDate:TRhoDate">TRhoDate</a>(unsigned <a href="ListOfTypes.html#long">long</a> day, unsigned <a href="ListOfTypes.html#long">long</a> year) <br>
+<hr>
+<!--FUNCTION--> <a name="TRhoDate:TRhoDate" href="src/TRhoDate.cxx.html#TRhoDate:TRhoDate">TRhoDate</a>(unsigned <a href="ListOfTypes.html#long">long</a> day, unsigned <a href="ListOfTypes.html#long">long</a> month, unsigned <a href="ListOfTypes.html#long">long</a> year)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TRhoDate:Extract" href="src/TRhoDate.cxx.html#TRhoDate:Extract">Extract</a>(struct tm* tmbuf) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#int">int</a> <a name="TRhoDate:CompareTo" href="src/TRhoDate.cxx.html#TRhoDate:CompareTo">CompareTo</a>(
+                   const <a href="./TRhoDate.html">TRhoDate</a>* d) const
+<br>
+<hr>
+<!--FUNCTION--><a href="./TRhoDate.html">TRhoDate</a> <a name="TRhoDate:Max" href="src/TRhoDate.cxx.html#TRhoDate:Max">Max</a>(const <a href="./TRhoDate.html">TRhoDate</a>&amp; dt) const
+<br>
+<hr>
+<!--FUNCTION--><a href="./TRhoDate.html">TRhoDate</a> <a name="TRhoDate:Min" href="src/TRhoDate.cxx.html#TRhoDate:Min">Min</a>(const <a href="./TRhoDate.html">TRhoDate</a>&amp; dt) const 
+<br>
+<hr>
+<!--FUNCTION--><a href="./TRhoDate.html">TRhoDate</a> <a name="TRhoDate:Next" href="src/TRhoDate.cxx.html#TRhoDate:Next">Next</a>(unsigned <a href="ListOfTypes.html#long">long</a> desiredDayOfWeek) const
+<br>
+<hr>
+<!--FUNCTION--><a href="./TRhoDate.html">TRhoDate</a> <a name="TRhoDate:Previous" href="src/TRhoDate.cxx.html#TRhoDate:Previous">Previous</a>(unsigned <a href="ListOfTypes.html#long">long</a> desiredDayOfWeek) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TRhoDate:DayWithinMonth" href="src/TRhoDate.cxx.html#TRhoDate:DayWithinMonth">DayWithinMonth</a>(unsigned <a href="ListOfTypes.html#long">long</a> month, unsigned <a href="ListOfTypes.html#long">long</a> day, unsigned <a href="ListOfTypes.html#long">long</a> year)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TRhoDate:Jday" href="src/TRhoDate.cxx.html#TRhoDate:Jday">Jday</a>(unsigned <a href="ListOfTypes.html#long">long</a> m, unsigned <a href="ListOfTypes.html#long">long</a> d, unsigned <a href="ListOfTypes.html#long">long</a> y)
+<br>
+<hr>
+<!--FUNCTION--><a href="./TRhoDate.html">TRhoDate</a> <a name="TRhoDate:Now" href="src/TRhoDate.cxx.html#TRhoDate:Now">Now</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TRhoDate:PrintOn" href="src/TRhoDate.cxx.html#TRhoDate:PrintOn">PrintOn</a>(std::ostream&amp; o) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TRhoDate:mdy" href="src/TRhoDate.cxx.html#TRhoDate:mdy">mdy</a>(unsigned <a href="ListOfTypes.html#long">long</a>&amp; m, unsigned <a href="ListOfTypes.html#long">long</a>&amp; D, unsigned <a href="ListOfTypes.html#long">long</a>&amp; y) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TRhoDate:currentDate" href="src/TRhoDate.cxx.html#TRhoDate:currentDate">currentDate</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TRhoDate:LeapYear" href="src/TRhoDate.cxx.html#TRhoDate:LeapYear">LeapYear</a>(unsigned <a href="ListOfTypes.html#long">long</a> year)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TRhoDate:Leap" href="src/TRhoDate.cxx.html#TRhoDate:Leap">Leap</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TRhoDate:clobber" href="src/TRhoDate.cxx.html#TRhoDate:clobber">clobber</a>(struct tm* tmbuf)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TRhoDate.html">TRhoDate</a> <a name="TRhoDate:TRhoDate" href="TRhoDate.h">TRhoDate</a>(unsigned <a href="ListOfTypes.html#long">long</a> day, unsigned <a href="ListOfTypes.html#long">long</a> year)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TRhoDate.html">TRhoDate</a> <a name="TRhoDate:TRhoDate" href="TRhoDate.h">TRhoDate</a>(unsigned <a href="ListOfTypes.html#long">long</a> d, unsigned <a href="ListOfTypes.html#long">long</a> m, unsigned <a href="ListOfTypes.html#long">long</a> y)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TRhoDate:Between" href="TRhoDate.h">Between</a>(const <a href="./TRhoDate.html">TRhoDate</a>&amp; d1, const <a href="./TRhoDate.html">TRhoDate</a>&amp; d2) const
+<!--INLINE FUNCTION--><!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <a name="TRhoDate:Day" href="TRhoDate.h">Day</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <a name="TRhoDate:DayOfMonth" href="TRhoDate.h">DayOfMonth</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <a name="TRhoDate:FirstDayOfMonth" href="TRhoDate.h">FirstDayOfMonth</a>(unsigned <a href="ListOfTypes.html#long">long</a> mon) const
+<!--INLINE FUNCTION--><!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <a name="TRhoDate:FirstDayOfMonth" href="TRhoDate.h">FirstDayOfMonth</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TRhoDate:IsValid" href="TRhoDate.h">IsValid</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TRhoDate:Julian" href="TRhoDate.h">Julian</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TRhoDate:Julian" href="TRhoDate.h">Julian</a>(const <a href="ListOfTypes.html#Int_t">Int_t</a> j)
+<!--INLINE FUNCTION--><!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <a name="TRhoDate:Month" href="TRhoDate.h">Month</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <a name="TRhoDate:WeekDay" href="TRhoDate.h">WeekDay</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <a name="TRhoDate:Year" href="TRhoDate.h">Year</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TRhoDate.html">TRhoDate</a>&amp; <a name="TRhoDate:operator++" href="TRhoDate.h">operator++</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TRhoDate.html">TRhoDate</a>&amp; <a name="TRhoDate:operator--" href="TRhoDate.h">operator--</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TRhoDate.html">TRhoDate</a>&amp; <a name="TRhoDate:operator+=" href="TRhoDate.h">operator+=</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> dd)
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TRhoDate.html">TRhoDate</a>&amp; <a name="TRhoDate:operator-=" href="TRhoDate.h">operator-=</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> dd)
+<!--INLINE FUNCTION--><!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <a name="TRhoDate:DaysInYear" href="TRhoDate.h">DaysInYear</a>(unsigned <a href="ListOfTypes.html#long">long</a> year)
+<!--INLINE FUNCTION--><!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <a name="TRhoDate:DaysInMonthYear" href="TRhoDate.h">DaysInMonthYear</a>(unsigned <a href="ListOfTypes.html#long">long</a> month, unsigned <a href="ListOfTypes.html#long">long</a> year)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TRhoDate:assertWeekDayNumber" href="TRhoDate.h">assertWeekDayNumber</a>(unsigned <a href="ListOfTypes.html#long">long</a> d)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TRhoDate:assertIndexOfMonth" href="TRhoDate.h">assertIndexOfMonth</a>(unsigned <a href="ListOfTypes.html#long">long</a> m)
+<!--INLINE FUNCTION--><!--TAB6-->              TClass* <a name="TRhoDate:Class" href="TRhoDate.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->              TClass* <a name="TRhoDate:IsA" href="TRhoDate.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TRhoDate:ShowMembers" href="TRhoDate.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TRhoDate:Streamer" href="TRhoDate.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TRhoDate:StreamerNVirtual" href="TRhoDate.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TRhoDate.html">TRhoDate</a> <a name="TRhoDate:TRhoDate" href="TRhoDate.h">TRhoDate</a>(const <a href="./TRhoDate.html">TRhoDate</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TRhoDate:~TRhoDate" href="TRhoDate.h">~TRhoDate</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?Feb.">Feb.</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:03:24 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:37 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TBooster - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: TBooster.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//	Class <a href=".././TBooster.html">TBooster</a></b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//	Gautier Hamel de Monchenault - CEN Saclay &amp; Lawrence Berkeley Lab</b>
+<b>//</b>
+<b>// History (add to end):</b>
+<b>//      Gautier   Sept, 1997  - creation</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1997		Lawrence Berkeley Laboratory</b>
+<b>//	Copyright (C) 1997	       CEA - Centre d'Etude de Saclay</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "RhoTools/TBooster.h"
+#include "RhoMath/TLorentzVectorErr.h"
+#include "TRotation.h"
+#include "TLorentzVector.h"
+#include "TLorentzRotation.h"
+#include "RhoBase/TFactory.h"
+#include "RhoBase/TFitParams.h"
+#include "RhoBase/TCandidate.h"
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandListIterator.h"
+
+ClassImp(TBooster)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TBooster *&amp;obj)
+{
+   obj = (TBooster *) buf.ReadObject(TBooster::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<b>//</b>
+<b>// Constructors</b>
+<b>//</b>
+
+<a name="TBooster:TBooster"> </a><a href=".././TBooster.html#TBooster:TBooster">TBooster::TBooster</a>( const TCandidate* referenceCand, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> saveCovMatrix )
+: <a href=".././TBooster.html#TBooster:fParticle">fParticle</a>(0),
+<a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a>(0), <a href=".././TBooster.html#TBooster:fRotateAndBoostTo">fRotateAndBoostTo</a>(0), <a href=".././TBooster.html#TBooster:fRotateAndBoostFrom">fRotateAndBoostFrom</a>(0),
+<a href=".././TBooster.html#TBooster:fSaveCovMatrix">fSaveCovMatrix</a>(saveCovMatrix)
+{
+    if( referenceCand ) <a href="#TBooster:SetParticle">SetParticle</a>( *referenceCand );
+}
+
+<a name="TBooster:TBooster"> </a><a href=".././TBooster.html#TBooster:TBooster">TBooster::TBooster</a>( const TCandidate&amp; referenceCand, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> saveCovMatrix )
+: <a href=".././TBooster.html#TBooster:fParticle">fParticle</a>(0),
+<a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a>(0), <a href=".././TBooster.html#TBooster:fRotateAndBoostTo">fRotateAndBoostTo</a>(0), <a href=".././TBooster.html#TBooster:fRotateAndBoostFrom">fRotateAndBoostFrom</a>(0),
+<a href=".././TBooster.html#TBooster:fSaveCovMatrix">fSaveCovMatrix</a>(saveCovMatrix)
+{
+    <a href="#TBooster:SetParticle">SetParticle</a>( referenceCand );
+}
+
+<a name="TBooster:TBooster"> </a><a href=".././TBooster.html#TBooster:TBooster">TBooster::TBooster</a>( const TLorentzVector&amp; lorentzVector, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> saveCovMatrix )
+: <a href=".././TBooster.html#TBooster:fParticle">fParticle</a>(0),
+<a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a>(0), <a href=".././TBooster.html#TBooster:fRotateAndBoostTo">fRotateAndBoostTo</a>(0), <a href=".././TBooster.html#TBooster:fRotateAndBoostFrom">fRotateAndBoostFrom</a>(0),
+<a href=".././TBooster.html#TBooster:fSaveCovMatrix">fSaveCovMatrix</a>(saveCovMatrix)
+{
+    <a href="#TBooster:SetLorentzVector">SetLorentzVector</a>( lorentzVector );
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TBooster:SetParticle"> </a><a href=".././TBooster.html#TBooster:SetParticle">TBooster::SetParticle</a>( const TCandidate&amp; referenceCand )
+{
+    <a href="#TBooster:clean">clean</a>();
+    <a href=".././TBooster.html#TBooster:fParticle">fParticle</a> = TFactory::Instance()-&gt;NewCandidate( referenceCand );
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TBooster:SetLorentzVector"> </a><a href=".././TBooster.html#TBooster:SetLorentzVector">TBooster::SetLorentzVector</a>( const TLorentzVector&amp; lorentzVector )
+{
+    <a href="#TBooster:clean">clean</a>();
+    <a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a> = new TLorentzVector( lorentzVector );
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TBooster:~TBooster"> </a><a href=".././TBooster.html">TBooster</a>::~<a href=".././TBooster.html">TBooster</a>() 
+{
+    <a href="#TBooster:clean">clean</a>();
+}
+
+
+TCandidate&amp;
+<a name="TBooster:BoostTo"> </a><a href=".././TBooster.html#TBooster:BoostTo">TBooster::BoostTo</a>( const TCandidate&amp; cand) const
+{
+    return <a href="#TBooster:Boost">Boost</a>( cand, <a href=".././TBooster.html#TBooster:To">To</a>);
+}
+
+TCandidate&amp;
+<a name="TBooster:BoostFrom"> </a><a href=".././TBooster.html#TBooster:BoostFrom">TBooster::BoostFrom</a>( const TCandidate&amp; cand) const
+{
+    return <a href="#TBooster:Boost">Boost</a>( cand, <a href=".././TBooster.html#TBooster:From">From</a>);
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TBooster:BoostTo"> </a><a href=".././TBooster.html#TBooster:BoostTo">TBooster::BoostTo</a>( TCandList&amp; initialList, 
+		  TCandList&amp; boostedList,
+		  <a href="../ListOfTypes.html#Bool_t">Bool_t</a> cleanList) const
+{
+    if( cleanList ) {
+	boostedList.Cleanup();
+    }
+    TCandListIterator iter( initialList );
+    TCandidate* cand=0;
+    while( cand=iter.Next() )
+    {
+	boostedList.Add(<a href="#TBooster:Boost">Boost</a>( *cand, <a href=".././TBooster.html#TBooster:To">To</a> ));
+    }
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TBooster:BoostFrom"> </a><a href=".././TBooster.html#TBooster:BoostFrom">TBooster::BoostFrom</a>( TCandList&amp; initialList, 
+		    TCandList&amp; boostedList,
+		    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> cleanList) const
+{
+    if( cleanList ) {
+	boostedList.Cleanup();
+    }
+    TCandListIterator iter( initialList );
+    TCandidate* cand=0;
+    while( cand=iter.Next() )
+    {
+	boostedList.Add(<a href="#TBooster:Boost">Boost</a>( *cand, <a href=".././TBooster.html#TBooster:From">From</a> ));
+    }
+}
+
+
+<b>//		-----------------------------------------</b>
+<b>// 		-- Private Function Member Definitions --</b>
+<b>//		-----------------------------------------</b>
+
+TCandidate&amp;
+<a name="TBooster:Boost"> </a><a href=".././TBooster.html#TBooster:Boost">TBooster::Boost</a>( const TCandidate&amp; cand, 
+		BoostSign sign) const
+{
+    TCandidate *bc = TFactory::Instance()-&gt;NewCandidate(cand);
+    TVector3 boostVector = <a href="#TBooster:LorentzVector">LorentzVector</a>().BoostVector();
+    if (sign == <a href=".././TBooster.html#TBooster:To">To</a>)
+	bc-&gt;<a href="#TBooster:Boost">Boost</a>(-boostVector);
+    else
+	bc-&gt;<a href="#TBooster:Boost">Boost</a>(boostVector);
+    return *bc;
+
+<b>    //    // recursive implementation</b>
+<b>    //    // the function returns a poInt_ter to the current mother</b>
+<b>    //    // in order to establish mother-daughter links</b>
+<b>    //    //</b>
+<b>    //    // 1) get the boost vector beta=p/E of the moving frame.</b>
+<b>    //    TVector3 beta( theLorentzVector().boostVector() );</b>
+<b>    //    //      boostTo   : -beta</b>
+<b>    //    //      boostFrom :  beta</b>
+<b>    //    if( sign==<a href=".././TBooster.html#TBooster:To">To</a> ) beta *= -1;</b>
+<b>    //    // 2) now apply the boost to the four-vector</b>
+<b>    //    TLorentzVector the4Vector( cand.p4() ); // four-vector of the candidate</b>
+<b>    //    the4Vector.boost( beta );                 // boost it along the boost vector</b>
+    
+<b>    // Create a instance of a TCandidate with the boosted 4-vector</b>
+<b>    //  the problem is that we loose all connection with the original...</b>
+<b>    //  the solution would be to copy the TCandidate and then</b>
+<b>    //  to boost it !!!  We are missing a boost method in TCandidate,</b>
+<b>    //  or in TCandBase.</b>
+    
+    if (<a href=".././TBooster.html#TBooster:fSaveCovMatrix">fSaveCovMatrix</a> == kTRUE) {
+	
+	const TLorentzVector &amp;boosted4Mtm = <a href="#TBooster:BoostedP4">BoostedP4</a>(cand, sign);
+	
+<b>	// Boost 4-momentum error (covariance) matrix</b>
+	const <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a> &amp;boostedCovError = <a href="#TBooster:BoostedError">BoostedError</a>(cand, sign);
+	
+<b>	// Don't boost decay vertex - this will have a different meaning in the boosted</b>
+<b>	// frame - a new re-fit of the boosted candidates would need to be done to get the</b>
+<b>	// correct vertex in the boosted frame. Also, can't change the values</b>
+<b>	// of the vertex in the abstract class, TAbsVertex, unless we know what vertexer was</b>
+<b>	// used. This would complicate the <a href=".././TBooster.html">TBooster</a> Interface.</b>
+	
+<b>	// Set the trajectory for the boosted TCandidate </b>
+<b>	// (really, set it's new covariance matrix).</b>
+	
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> charge = cand.Charge(); // charge is <a href="../ListOfTypes.html#Double_t">Double_t</a>!
+	
+	TCandidate *boostedCand = TFactory::Instance()-&gt;NewCandidate(TCandidate(boosted4Mtm, charge));    
+	
+	boostedCand-&gt;SetTrajectory(boosted4Mtm, boostedCovError.CovMatrix(), charge, cand.PdtEntry(), 0);    
+	
+<b>	// now loop on daughters</b>
+	TCandListIterator iterDau = cand.DaughterIterator();
+	TCandidate* daug=0;
+	while ( daug=iterDau.Next() )
+	{
+	    
+	    const TLorentzVector &amp;boostedDaug4Mtm = <a href="#TBooster:BoostedP4">BoostedP4</a>(*daug, sign);
+	    
+<b>	    // Boost 4-momentum error (covariance) matrix</b>
+	    const <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a> &amp;boostedDaugCovError = <a href="#TBooster:BoostedError">BoostedError</a>(*daug, sign);
+	    
+<b>	    // Set the trajectory for the boosted TCandidate </b>
+<b>	    // (really, set it's new covariance matrix).</b>
+	    
+	    <a href="../ListOfTypes.html#Double_t">Double_t</a> daugCharge = daug-&gt;Charge(); // charge is <a href="../ListOfTypes.html#Double_t">Double_t</a>!
+	    
+	    TCandidate* boostedDaugCand = TFactory::Instance()-&gt;NewCandidate(TCandidate(boostedDaug4Mtm, daugCharge));
+	    
+	    boostedDaugCand-&gt;SetTrajectory(boostedDaug4Mtm, boostedDaugCovError.CovMatrix(), daugCharge, 
+		daug-&gt;PdtEntry(), 0);
+	    
+	    AddDaughterLink( *boostedCand, boostedDaugCand );
+	}
+	
+<b>	// Set mass here when the daughters are defined.</b>
+	boostedCand-&gt;SetMass( cand.Mass() );
+<b>	// have to cast off the const because of the TCandidate Int_terface !!!!!  </b>
+	if ( cand.PdtEntry() ) boostedCand-&gt;SetType(cand.PdtEntry() );
+	return *boostedCand;
+	
+    }
+    
+    TCandidate *boostedCand = TFactory::Instance()-&gt;NewCandidate(TCandidate( <a href="#TBooster:BoostedP4">BoostedP4</a>( cand, sign ), cand.Charge() ));
+<b>    //</b>
+<b>    // now loop on daughters</b>
+    TCandListIterator iterDau = cand.DaughterIterator();
+    TCandidate* dau=0;
+    while ( dau=iterDau.Next() )
+    {
+	TCandidate boostedDau = <a href="#TBooster:Boost">Boost</a>( *dau, sign );
+	AddDaughterLink( *boostedCand, &amp;boostedDau );
+    }
+    
+<b>    // Set mass here when the daughters are defined.</b>
+    boostedCand-&gt;SetMass( cand.Mass() );
+    if ( cand.PdtEntry() ) boostedCand-&gt;SetType( cand.PdtEntry() );
+    
+<b>    // set marker (for overlap checks)</b>
+    boostedCand-&gt;SetMarker(cand.GetMarker(0),0);
+    boostedCand-&gt;SetMarker(cand.GetMarker(1),1);
+    boostedCand-&gt;SetMarker(cand.GetMarker(2),2);
+    boostedCand-&gt;SetMarker(cand.GetMarker(3),3);
+    
+<b>    // set link to AOD Information</b>
+    if ( &amp;cand.GetMicroCandidate() ) {
+	boostedCand-&gt;SetMicroCandidate(cand.GetMicroCandidate());
+    }
+    return *boostedCand;
+    
+}
+
+TLorentzVector 
+<a name="TBooster:BoostedP4"> </a><a href=".././TBooster.html#TBooster:BoostedP4">TBooster::BoostedP4</a>( const TCandidate&amp; cand, BoostSign sign ) const
+{
+<b>    // new implemetation using Chris Hearty's rotateAndBoost</b>
+    return <a href="#TBooster:RotateAndBoost">RotateAndBoost</a>( sign ) * cand.P4();
+}
+
+<a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a>
+<a name="TBooster:BoostedError"> </a><a href=".././TBooster.html#TBooster:BoostedError">TBooster::BoostedError</a>(const TCandidate&amp; cand, BoostSign sign) const 
+{
+    
+<b>    // Get combined rotation and Lorentz Boost</b>
+    const TLorentzRotation &amp;rotation = <a href="#TBooster:RotateAndBoost">RotateAndBoost</a>( sign );
+<b>    // Form BbrLorentzVectorErr object for 4-momentum</b>
+<b>    // BbrLorentzVectorErr(4-momentum, covariance Matrix)</b>
+    
+    <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a> theError(cand.P4(), cand.P4Err());
+    
+<b>    // Now transform this error using the rotation and boost.</b>
+<b>    // The covariance matrix is changed using a similarity transformation</b>
+    
+    return theError.Transform(rotation);
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TBooster:clean"> </a><a href=".././TBooster.html#TBooster:clean">TBooster::clean</a>()
+{
+<b>    //delete <a href=".././TBooster.html#TBooster:fParticle">fParticle</a>; // comes from factory</b>
+    <a href=".././TBooster.html#TBooster:fParticle">fParticle</a>=0;
+    delete <a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a>;
+    <a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a>=0;
+    delete <a href=".././TBooster.html#TBooster:fRotateAndBoostTo">fRotateAndBoostTo</a>;
+    <a href=".././TBooster.html#TBooster:fRotateAndBoostTo">fRotateAndBoostTo</a>=0;
+    delete <a href=".././TBooster.html#TBooster:fRotateAndBoostFrom">fRotateAndBoostFrom</a>;
+    <a href=".././TBooster.html#TBooster:fRotateAndBoostFrom">fRotateAndBoostFrom</a>=0;
+}
+
+TCandidate*
+<a name="TBooster:Create"> </a><a href=".././TBooster.html#TBooster:Create">TBooster::Create</a>( const TCandidate&amp; input )
+{
+    return TFactory::Instance()-&gt;NewCandidate(TCandidate( <a href="#TBooster:BoostTo">BoostTo</a>( input ) ));
+}
+
+<a href=".././TBooster.html">TBooster</a>* 
+<a name="TBooster:myself_"> </a><a href=".././TBooster.html#TBooster:myself_">TBooster::myself_</a>() const
+{
+<b>    // cast off the const</b>
+    return (<a href=".././TBooster.html">TBooster</a>*) this;
+}
+
+const TCandidate&amp; 
+<a name="TBooster:RestParticle"> </a><a href=".././TBooster.html#TBooster:RestParticle">TBooster::RestParticle</a>() const
+{
+    if( <a href=".././TBooster.html#TBooster:fParticle">fParticle</a>==0 )
+    {
+	if( <a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a>==0 ) 
+	{
+	    cerr &lt;&lt; "Frame not set " &lt;&lt; endl;
+	}
+	
+<b>	// create the TCandidate</b>
+	<a href="#TBooster:myself_">myself_</a>()-&gt;<a href=".././TBooster.html#TBooster:fParticle">fParticle</a> = TFactory::Instance()-&gt;NewCandidate(TCandidate( *<a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a>, 0 ));
+    }
+    
+    return *<a href=".././TBooster.html#TBooster:fParticle">fParticle</a>;
+}
+
+const TLorentzVector&amp; 
+<a name="TBooster:LorentzVector"> </a><a href=".././TBooster.html#TBooster:LorentzVector">TBooster::LorentzVector</a>() const
+{
+    if( <a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a>==0 )
+    {
+	if( <a href=".././TBooster.html#TBooster:fParticle">fParticle</a>==0 ) 
+	{
+	    cerr &lt;&lt; "Reference candidate not set " &lt;&lt; endl;
+	}
+	
+<b>	// create the Lorentz Vector</b>
+	<a href="#TBooster:myself_">myself_</a>()-&gt;<a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a> = new TLorentzVector( <a href=".././TBooster.html#TBooster:fParticle">fParticle</a>-&gt;P4() );
+	
+    }
+    return *<a href=".././TBooster.html#TBooster:fLorentzVector">fLorentzVector</a>;
+}
+
+const TLorentzRotation&amp; 
+<a name="TBooster:RotateAndBoost"> </a><a href=".././TBooster.html#TBooster:RotateAndBoost">TBooster::RotateAndBoost</a>( BoostSign sign ) const
+{
+    TLorentzRotation* rAndB=0;
+    switch( sign )
+    {
+    case <a href=".././TBooster.html#TBooster:To">To</a> :
+	rAndB = <a href="#TBooster:myself_">myself_</a>()-&gt;<a href=".././TBooster.html#TBooster:fRotateAndBoostTo">fRotateAndBoostTo</a>;
+	break;
+    case <a href=".././TBooster.html#TBooster:From">From</a>:
+	rAndB = <a href="#TBooster:myself_">myself_</a>()-&gt;<a href=".././TBooster.html#TBooster:fRotateAndBoostFrom">fRotateAndBoostFrom</a>;
+	break;
+    default:
+	cerr &lt;&lt; "Unknown case " &lt;&lt; endl;
+    }
+    
+    if( rAndB==0 )
+    {
+<b>	// the boost vector</b>
+	TVector3 boostVector( <a href="#TBooster:LorentzVector">LorentzVector</a>().BoostVector() );
+<b>	//</b>
+<b>	// rotation matrix and boost</b>
+	
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> boost  = boostVector.Mag();  
+	TVector3 boostAlongZ( 0., 0., boost );
+	TLorentzRotation boostPart( boostAlongZ );  
+	
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> alpha( boostVector.Phi()   );
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> beta(  boostVector.Theta() );  
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> gamma(-boostVector.Phi()   );  
+	
+	TRotation euler;  
+	euler.RotateZ( gamma );  
+	euler.RotateY( beta  );
+	euler.RotateZ( alpha );
+	
+	TLorentzRotation rotationPart( euler );
+	TLorentzRotation product( rotationPart*boostPart );
+	
+	rAndB = new TLorentzRotation( product );
+	
+	if( sign==<a href=".././TBooster.html#TBooster:To">To</a> ) 
+	{  
+	    rAndB-&gt;Invert();
+	}
+<b>	// assign rAndB to the data member</b>
+	switch( sign )
+	{
+	case <a href=".././TBooster.html#TBooster:To">To</a> :
+	    <a href="#TBooster:myself_">myself_</a>()-&gt;<a href=".././TBooster.html#TBooster:fRotateAndBoostTo">fRotateAndBoostTo</a> = rAndB;
+	    break;
+	case <a href=".././TBooster.html#TBooster:From">From</a>:
+	    <a href="#TBooster:myself_">myself_</a>()-&gt;<a href=".././TBooster.html#TBooster:fRotateAndBoostFrom">fRotateAndBoostFrom</a> = rAndB;
+	    break;
+	default:
+	    cerr &lt;&lt; "Unknown case " &lt;&lt; endl;
+	}
+    }
+    
+    return *rAndB;
+}
+
+TCandMap*
+<a name="TBooster:BoostAndSort"> </a><a href=".././TBooster.html#TBooster:BoostAndSort">TBooster::BoostAndSort</a>( TCandList&amp; list,
+		       TCandList&amp; storedList,
+		       BoostSign sign)
+{
+<b>    // boost particles in the Ups(4S) frame</b>
+    TCandList boostedList;
+    if( sign==<a href=".././TBooster.html#TBooster:To">TBooster::To</a> )
+	<a href="#TBooster:BoostTo">BoostTo</a>( list, boostedList);
+    else
+	<a href="#TBooster:BoostFrom">BoostFrom</a>( list, boostedList);
+<b>    // Now store the list in a sorted way</b>
+    TCandidate* c=0;
+    TCandListIterator iterBoosted( boostedList );
+    c = iterBoosted.Next();  // the first one
+    if(c) {
+	storedList.Add(*c); // include the first one in the list
+<b>	// loop on subsequent candidates in the list</b>
+	while( c=iterBoosted.Next() ) 
+	{
+	    <a href="../ListOfTypes.html#Double_t">Double_t</a> p=c-&gt;P();
+	    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> stored(kFALSE);
+	    for( <a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;storedList.GetNumberOfCandidates(); i++ )
+	    {
+		TCandidate* cStored = &amp;storedList[i];
+		<a href="../ListOfTypes.html#Double_t">Double_t</a> pStored = cStored-&gt;P();
+		if( p&gt;pStored ) {
+		    storedList.InsertAt(i,*c);
+		    stored=kTRUE;
+		    break;
+		}
+	    }
+<b>	    // the candidate hasn't been stored : append it </b>
+	    if( !stored ) storedList.Add( *c );
+	}
+    }
+    return 0;
+}	
+
+
+
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

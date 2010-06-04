@@ -1,0 +1,676 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:01 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>THistogram - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././THistogram.html">THistogram</a>			    					//</b>
+<b>//                                                                      //</b>
+<b>// Histogram class							//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, RUB, March 99					//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//                                                                      //</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "TH1.h"
+#include "TH2.h"
+#include "TProfile.h"
+#include "TAxis.h"
+
+#include "RhoHistogram/THistID.h"
+#include "RhoHistogram/THistogram.h"
+#ifdef RHOFRAMEWORK
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandListIterator.h"
+#include "RhoBase/TCandidate.h"
+#endif
+
+ClassImp(THistogram)
+ClassImp(TMassHistogram)
+ClassImp(TEnergyHistogram)
+ClassImp(TMomentumHistogram)
+ClassImp(TEoverPHistogram)
+ClassImp(TMoverPHistogram)
+ClassImp(TDalitzPlot)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<b>// Constructors:</b>
+<b>// 1-D histo:</b>
+<a name="THistogram:THistogram"> </a><a href=".././THistogram.html#THistogram:THistogram">THistogram::THistogram</a>( const <a href="../ListOfTypes.html#char">char</a>* hname, const <a href="../ListOfTypes.html#char">char</a>* htitle, 
+			       <a href="../ListOfTypes.html#Int_t">Int_t</a> nbins, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowX, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> highX ) :
+TNamed( hname,htitle )
+{   
+<b>    // Create a 1-D ROOT histo:</b>
+    <a href=".././THistogram.html#THistogram:histp">histp</a>= new TH1F( hname, htitle, nbins, lowX, highX );    
+}
+
+<a name="THistogram:THistogram"> </a><a href=".././THistogram.html#THistogram:THistogram">THistogram::THistogram</a>( const <a href="../ListOfTypes.html#char">char</a>* hname, const <a href="../ListOfTypes.html#char">char</a>* htitle, 
+			       <a href="../ListOfTypes.html#Int_t">Int_t</a> nbinsX, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowX, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> highX,
+			       <a href="../ListOfTypes.html#Int_t">Int_t</a> nbinsY, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowY, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> highY ) :
+TNamed( hname,htitle )
+{    
+<b>    // Create a 2-D ROOT histo:</b>
+    <a href=".././THistogram.html#THistogram:histp">histp</a>= new TH2F( hname, htitle, nbinsX, lowX, highX, nbinsY, lowY, highY );   
+}
+
+<a name="THistogram:THistogram"> </a><a href=".././THistogram.html#THistogram:THistogram">THistogram::THistogram</a>( const <a href="../ListOfTypes.html#char">char</a>* hname, const <a href="../ListOfTypes.html#char">char</a>* htitle, 
+			       <a href="../ListOfTypes.html#Int_t">Int_t</a> nbins, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowX, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> highX, 
+			       <a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowY, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> highY ) :
+TNamed( hname,htitle )
+{   
+<b>    // Create a 1-D profile ROOT histo with default error calculation:</b>
+<b>    // error= sigma/sqrt(N)</b>
+    <a href=".././THistogram.html#THistogram:histp">histp</a>= new TProfile( (<a href="../ListOfTypes.html#char">char</a>*)hname, (<a href="../ListOfTypes.html#char">char</a>*)htitle, nbins, lowX, highX,lowY, highY );    
+}
+
+<a name="THistogram:~THistogram"> </a><a href=".././THistogram.html">THistogram</a>::~<a href=".././THistogram.html">THistogram</a>() 
+{
+    delete <a href=".././THistogram.html#THistogram:histp">histp</a>;
+}
+
+<a name="THistogram:Accumulate"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././THistogram.html#THistogram:Accumulate">THistogram::Accumulate</a>( <a href="../ListOfTypes.html#Axis_t">Axis_t</a> x, <a href="../ListOfTypes.html#Stat_t">Stat_t</a> weight ) 
+{    
+    if( <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetDimension() == 2 ||
+	( <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetDimension() == 1 &amp;&amp; 
+	<a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;IsA() == TProfile::<a href="#THistogram:Class">Class</a>() ) ) {
+	<a href="../ListOfTypes.html#Axis_t">Axis_t</a> y = weight;
+	weight = 1.0;
+	((TH2 *)<a href=".././THistogram.html#THistogram:histp">histp</a>)-&gt;<a href="#THistogram:Fill">Fill</a>( x, y, weight );
+    }
+    else {
+	<a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;Fill( x, weight );
+    }
+    return;    
+}
+
+<a name="THistogram:Accumulate1"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././THistogram.html#THistogram:Accumulate1">THistogram::Accumulate1</a>( <a href="../ListOfTypes.html#Axis_t">Axis_t</a> x, <a href="../ListOfTypes.html#Stat_t">Stat_t</a> weight ) 
+{    
+    <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;Fill( x, weight );
+}
+
+<a name="THistogram:Accumulate"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././THistogram.html#THistogram:Accumulate">THistogram::Accumulate</a>( <a href="../ListOfTypes.html#Axis_t">Axis_t</a> x, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> y, <a href="../ListOfTypes.html#Stat_t">Stat_t</a> weight ) 
+{    
+    ((TH2 *)<a href=".././THistogram.html#THistogram:histp">histp</a>)-&gt;<a href="#THistogram:Fill">Fill</a>( x, y, weight );   
+}
+
+<a name="THistogram:Accumulate2"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././THistogram.html#THistogram:Accumulate2">THistogram::Accumulate2</a>( <a href="../ListOfTypes.html#Axis_t">Axis_t</a> x, <a href="../ListOfTypes.html#Axis_t">Axis_t</a> y, <a href="../ListOfTypes.html#Stat_t">Stat_t</a> weight ) 
+{   
+    ((TH2 *)<a href=".././THistogram.html#THistogram:histp">histp</a>)-&gt;<a href="#THistogram:Fill">Fill</a>( x, y, weight );     
+}
+
+
+<a name="THistogram:Reset"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././THistogram.html#THistogram:Reset">THistogram::Reset</a>() 
+{
+    <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;Reset();
+}
+
+
+<a name="THistogram:GetContents"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././THistogram.html#THistogram:GetContents">THistogram::GetContents</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> nbinsX, <a href="../ListOfTypes.html#Int_t">Int_t</a> nbinsY ) const 
+{  
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> cont= 0;
+    if( nbinsY == 0 ) {
+	cont= (<a href="../ListOfTypes.html#Float_t">Float_t</a>) <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetBinContent( nbinsX );
+    }
+    else {
+	cont= (<a href="../ListOfTypes.html#Float_t">Float_t</a>) <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetCellContent( nbinsX, nbinsY );
+    }
+    return cont;    
+}
+
+<a name="THistogram:GetErrors"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././THistogram.html#THistogram:GetErrors">THistogram::GetErrors</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> nbinsX, <a href="../ListOfTypes.html#Int_t">Int_t</a> nbinsY ) const 
+{   
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> error= 0;
+    if( nbinsY == 0 ) {
+	error = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetBinError( nbinsX );
+    }
+    else {
+	error = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetCellError( nbinsX, nbinsY );
+    }
+    return error;   
+}
+
+
+
+<a name="THistogram:GetEntries"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././THistogram.html#THistogram:GetEntries">THistogram::GetEntries</a>() const { return (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetEntries(); }
+
+<a name="THistogram:GetWtSum"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././THistogram.html#THistogram:GetWtSum">THistogram::GetWtSum</a>() const 
+{    
+    return (<a href="../ListOfTypes.html#Float_t">Float_t</a>) <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetSumOfWeights();    
+}
+
+
+
+<a name="THistogram:GetNbins"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././THistogram.html#THistogram:GetNbins">THistogram::GetNbins</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> theDim ) const {
+    
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> nbins= 0;
+    if( theDim == 0 ) {
+	nbins= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetNbinsX();
+    }
+    else if( theDim == 1 ) {
+	if( <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetDimension() == 2 ) nbins= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetNbinsY();
+    }
+    return nbins;
+    
+}
+
+<a name="THistogram:GetLow"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././THistogram.html#THistogram:GetLow">THistogram::GetLow</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> theDim ) const {
+    
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> low= 0;
+    if( theDim == 0 ) {
+	low= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetXaxis()-&gt;GetBinLowEdge( 1 );
+    }
+    else if( theDim == 1 ) {
+	if( <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetDimension() == 2 ) {
+	    low= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetYaxis()-&gt;GetBinLowEdge( 1 );
+	}
+    }
+    return low;
+    
+}
+
+<a name="THistogram:GetHigh"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././THistogram.html#THistogram:GetHigh">THistogram::GetHigh</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> theDim ) const {
+    
+    TAxis* axisp= 0;
+    if( theDim == 0 ) {
+	axisp= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetXaxis();
+    }
+    else if( theDim == 1 ) {
+	if( <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetDimension() == 2 ) axisp= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetYaxis();
+    }
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> high= 0;
+    if( axisp != 0 ) {
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> n= axisp-&gt;<a href="#THistogram:GetNbins">GetNbins</a>();
+	high= axisp-&gt;GetBinLowEdge( n ) + axisp-&gt;GetBinWidth( n );
+    }
+    return high;
+    
+}
+
+<a name="THistogram:GetAvg"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././THistogram.html#THistogram:GetAvg">THistogram::GetAvg</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> theDim ) const {
+    
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> mean= 0;
+    if( theDim == 0 ) {
+	mean= (<a href="../ListOfTypes.html#Float_t">Float_t</a>) <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetMean( 1 );
+    }
+    else if( theDim == 1 ) {
+	if( <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetDimension() == 2 ) mean= (<a href="../ListOfTypes.html#Float_t">Float_t</a>) <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetMean( 2 );
+    }
+    return mean;
+    
+}
+
+<a name="THistogram:GetCovar"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././THistogram.html#THistogram:GetCovar">THistogram::GetCovar</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> dim1, <a href="../ListOfTypes.html#Int_t">Int_t</a> dim2 ) const {
+    
+<b>    // Calculate weighted sums:</b>
+    TAxis* xaxisp= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetXaxis();
+    TAxis* yaxisp= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetYaxis();
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> maxxbin= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetNbinsX();
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> maxybin= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetNbinsY();
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> meanx= 0;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> meany= 0;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> meanx2= 0;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> meany2= 0;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> meanxy= 0;
+    for( <a href="../ListOfTypes.html#Int_t">Int_t</a> ybin= 1; ybin &lt;= maxybin; ++ybin ) {
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> cony= 0;
+	for( <a href="../ListOfTypes.html#Int_t">Int_t</a> xbin= 1; xbin &lt;= maxxbin; ++xbin ) {
+	    <a href="../ListOfTypes.html#Double_t">Double_t</a> cellc= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetCellContent( xbin, ybin );
+	    cony+= cellc;
+	    <a href="../ListOfTypes.html#Double_t">Double_t</a> xbinc= xaxisp-&gt;GetBinCenter( xbin );
+	    meanx+= cellc * xbinc;
+	    meanx2+= cellc * xbinc*xbinc;
+	    meanxy+= cellc * xbinc * yaxisp-&gt;GetBinCenter( ybin );
+	}
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> ybinc= yaxisp-&gt;GetBinCenter( ybin );
+	meany+= cony * ybinc;
+	meany2+= cony * ybinc*ybinc;
+    }
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> sumcon= <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetSumOfWeights();
+    if( sumcon ) {
+	meanx/= sumcon;
+	meany/= sumcon;
+	meanx2/= sumcon;
+	meany2/= sumcon;
+	meanxy/= sumcon;
+    }
+    else {
+	meanx= 0;
+	meany= 0;
+	meanx2= 0;
+	meany2= 0;
+	meanxy= 0;
+    }
+    
+<b>    // Return covariance between dim1 and dim2:</b>
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> cov= 0;
+    if( dim1 == 0 &amp;&amp; dim2 == 0 ) {
+	cov = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) (meanx2 - meanx*meanx);
+    }
+    else if( dim1 == 0 &amp;&amp; dim2 == 1 || 
+	dim1 == 1 &amp;&amp; dim2 == 0 ) {
+	cov = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) (meanxy - meanx*meany);
+    }
+    else if( dim1 == 1 &amp;&amp; dim2 == 1 ) {
+	cov = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) (meany2 - meany*meany);
+    }
+    return cov;
+    
+}
+
+<a name="THistogram:GetType"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././THistogram.html#THistogram:GetType">THistogram::GetType</a>() const {
+    
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> ht= 0;
+    if( <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetDimension() == 1 ) ht= 1;
+    else if( <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetDimension() == 2 ) ht= 2;
+    return ht;
+    
+}
+
+<a name="THistogram:GetHistID"> </a><a href=".././THistID.html">THistID</a> <a href=".././THistogram.html#THistogram:GetHistID">THistogram::GetHistID</a>() const {
+    
+    return <a href=".././THistID.html">THistID</a>( <a href=".././THistogram.html#THistogram:histp">histp</a>-&gt;GetName() );
+    
+}
+
+<a name="THistogram:PtrIsEqual"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././THistogram.html#THistogram:PtrIsEqual">THistogram::PtrIsEqual</a>( TObject* ptr ) const {
+    
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> result;
+    if( (TObject*) <a href=".././THistogram.html#THistogram:histp">histp</a> == ptr ) result= kTRUE; 
+    else result= kFALSE;
+    return result;
+    
+}
+
+<a href=".././THistogram.html">THistogram</a>&amp; <a href=".././THistogram.html#THistogram:operator">THistogram::operator</a>&lt;&lt;(<a href="../ListOfTypes.html#Axis_t">Axis_t</a> x)
+{
+    <a href="#THistogram:Accumulate">Accumulate</a>(x); return *this;
+}
+
+
+<b>//----------------Spezialization-----------------</b>
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+
+<a href=".././TMassHistogram.html#TMassHistogram:TMassHistogram">TMassHistogram::TMassHistogram</a>(const <a href="../ListOfTypes.html#Text_t">Text_t</a> *name,const <a href="../ListOfTypes.html#Text_t">Text_t</a> *title,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbins,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> xlow,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> xup)  
+: <a href=".././THistogram.html">THistogram</a>(name,title,nbins,xlow,xup)
+{
+}
+
+<a href=".././TEnergyHistogram.html#TEnergyHistogram:TEnergyHistogram">TEnergyHistogram::TEnergyHistogram</a>(const <a href="../ListOfTypes.html#Text_t">Text_t</a> *name,const <a href="../ListOfTypes.html#Text_t">Text_t</a> *title,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbins,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> xlow,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> xup)  
+: <a href=".././THistogram.html">THistogram</a>(name,title,nbins,xlow,xup)
+{
+}
+
+<a href=".././TMomentumHistogram.html#TMomentumHistogram:TMomentumHistogram">TMomentumHistogram::TMomentumHistogram</a>(const <a href="../ListOfTypes.html#Text_t">Text_t</a> *name,const <a href="../ListOfTypes.html#Text_t">Text_t</a> *title,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbins,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> xlow,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> xup)  
+: <a href=".././THistogram.html">THistogram</a>(name,title,nbins,xlow,xup)
+{
+}
+
+<a href=".././TEoverPHistogram.html#TEoverPHistogram:TEoverPHistogram">TEoverPHistogram::TEoverPHistogram</a>(const <a href="../ListOfTypes.html#Text_t">Text_t</a> *name,const <a href="../ListOfTypes.html#Text_t">Text_t</a> *title,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbinsx,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> xlow,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> xup
+					   ,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbinsy,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> ylow,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> yup)
+					   : <a href=".././THistogram.html">THistogram</a>(name,title,nbinsx,xlow,xup,nbinsy,ylow,yup)
+{
+}
+
+<a href=".././TMoverPHistogram.html#TMoverPHistogram:TMoverPHistogram">TMoverPHistogram::TMoverPHistogram</a>(const <a href="../ListOfTypes.html#Text_t">Text_t</a> *name,const <a href="../ListOfTypes.html#Text_t">Text_t</a> *title,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbinsx,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> xlow,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> xup
+					   ,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbinsy,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> ylow,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> yup)
+					   : <a href=".././THistogram.html">THistogram</a>(name,title,nbinsx,xlow,xup,nbinsy,ylow,yup)
+{
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a href=".././TMassHistogram.html">TMassHistogram</a>::~<a href=".././TMassHistogram.html">TMassHistogram</a>( ) 
+{
+}
+
+<a href=".././TEnergyHistogram.html">TEnergyHistogram</a>::~<a href=".././TEnergyHistogram.html">TEnergyHistogram</a>( ) 
+{
+}
+
+<a href=".././TMomentumHistogram.html">TMomentumHistogram</a>::~<a href=".././TMomentumHistogram.html">TMomentumHistogram</a>( ) 
+{
+}
+
+<a href=".././TEoverPHistogram.html">TEoverPHistogram</a>::~<a href=".././TEoverPHistogram.html">TEoverPHistogram</a>( ) 
+{
+}
+
+<a href=".././TMoverPHistogram.html">TMoverPHistogram</a>::~<a href=".././TMoverPHistogram.html">TMoverPHistogram</a>( ) 
+{
+}
+
+<a href=".././TDalitzPlot.html">TDalitzPlot</a>::~<a href=".././TDalitzPlot.html">TDalitzPlot</a>( ) 
+{
+}
+
+<b>//----------------------</b>
+<b>//-- public Functions --</b>
+<b>//----------------------</b>
+
+<a href="../ListOfTypes.html#void">void</a> <a href=".././TMassHistogram.html#TMassHistogram:Accumulate">TMassHistogram::Accumulate</a>( <a href="../ListOfTypes.html#Axis_t">Axis_t</a> x, <a href="../ListOfTypes.html#Stat_t">Stat_t</a> weight ) 
+{    
+    <a href="#THistogram:Accumulate1">Accumulate1</a>( x, weight );
+}
+
+<a href="../ListOfTypes.html#void">void</a> <a href=".././TMassHistogram.html#TMassHistogram:Accumulate">TMassHistogram::Accumulate</a>(TCandList &amp;l) 
+{
+#ifdef RHOFRAMEWORK
+    for (Int_t i=0;i&lt;l.GetNumberOfTracks();++i) {
+        Accumulate1((Axis_t)l[i].GetMass());
+    }
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}        
+
+TMassHistogram&amp; TMassHistogram::operator&lt;&lt;(TCandList &amp;l)
+{
+    Accumulate(l); return *this;
+}
+
+void TMassHistogram::Accumulate(TCandidate &amp;p) 
+{
+#ifdef RHOFRAMEWORK
+    Accumulate1((Axis_t)p.GetMass());
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}        
+
+TMassHistogram&amp; TMassHistogram::operator&lt;&lt;(TCandidate &amp;p)
+{
+#ifdef RHOFRAMEWORK
+    Accumulate(p); return *this;
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}
+
+void TEnergyHistogram::Accumulate( Axis_t x, Stat_t weight ) 
+{    
+    Accumulate1( x, weight );
+}
+
+void TEnergyHistogram::Accumulate(TCandList &amp;l) 
+{
+#ifdef RHOFRAMEWORK
+    for (Int_t i=0;i&lt;l.GetNumberOfTracks();++i) {
+        Accumulate1((Axis_t)l[i].E());
+    }
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}
+
+TEnergyHistogram&amp; TEnergyHistogram::operator&lt;&lt;(TCandList &amp;l)
+{
+    Accumulate(l); return *this;
+}
+
+void TEnergyHistogram::Accumulate(TCandidate &amp;p) 
+{
+#ifdef RHOFRAMEWORK
+    Accumulate1((Axis_t)p.GetMass());
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}        
+
+TEnergyHistogram&amp; TEnergyHistogram::operator&lt;&lt;(TCandidate &amp;p)
+{
+    Accumulate(p); return *this;
+}
+
+void TMomentumHistogram::Accumulate( Axis_t x, Stat_t weight ) 
+{    
+    Accumulate1( x, weight );
+}
+
+void TMomentumHistogram::Accumulate(TCandList &amp;l) 
+{
+#ifdef RHOFRAMEWORK
+    for (Int_t i=0;i&lt;l.GetNumberOfTracks();++i) {
+        Accumulate1((Axis_t)l[i].P());
+    }
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}
+
+TMomentumHistogram&amp; TMomentumHistogram::operator&lt;&lt;(TCandList &amp;l)
+{
+    Accumulate(l); return *this;
+}
+
+void TMomentumHistogram::Accumulate(TCandidate &amp;p) 
+{
+#ifdef RHOFRAMEWORK
+    Accumulate1((Axis_t)p.GetMass());
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}        
+
+TMomentumHistogram&amp; TMomentumHistogram::operator&lt;&lt;(TCandidate &amp;p)
+{
+    Accumulate(p); return *this;
+}
+
+void TMomentumHistogram::Accumulate(TCandList &amp;l, Int_t component) 
+{
+#ifdef RHOFRAMEWORK
+    for (Int_t i=0;i&lt;l.GetNumberOfTracks();++i) {
+	switch (component) {
+	case(1): Accumulate1((Axis_t)l[i].Px()); break;
+	case(2): Accumulate1((Axis_t)l[i].Py()); break;
+	case(3): Accumulate1((Axis_t)l[i].Pz()); break;
+	default: Accumulate1((Axis_t)l[i].E()); break;
+	}      
+    }
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}
+
+void TEoverPHistogram::Accumulate( Axis_t x, Axis_t y, Stat_t weight ) 
+{    
+    Accumulate2( x, y, weight );
+}
+
+void TEoverPHistogram::Accumulate(TCandList &amp;l) 
+{
+#ifdef RHOFRAMEWORK
+    Stat_t weight = 1.0;
+    for (Int_t i=0;i&lt;l.GetNumberOfTracks();++i) {
+	Axis_t p=(Axis_t)l[i].P();
+	Axis_t e=(Axis_t)l[i].E();
+	Accumulate2(p,e,weight);
+    }
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}
+
+TEoverPHistogram&amp; TEoverPHistogram::operator&lt;&lt;(TCandList &amp;l)
+{
+    Accumulate(l); return *this;
+}
+
+void TEoverPHistogram::Accumulate(TCandidate &amp;c) 
+{
+#ifdef RHOFRAMEWORK
+    Stat_t weight = 1.0;
+    Axis_t p=(Axis_t)c.P();
+    Axis_t e=(Axis_t)c.E();
+    Accumulate2(p,e,weight);
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}        
+
+TEoverPHistogram&amp; TEoverPHistogram::operator&lt;&lt;(TCandidate &amp;p)
+{
+    Accumulate(p); return *this;
+}
+
+void TMoverPHistogram::Accumulate( Axis_t x, Axis_t y, Stat_t weight ) 
+{    
+    Accumulate2( x, y, weight );
+}
+
+void TMoverPHistogram::Accumulate(TCandList &amp;l)
+{
+#ifdef RHOFRAMEWORK
+    Stat_t weight = 1.0;
+    for (Int_t i=0;i&lt;l.GetNumberOfTracks();++i) {
+	Axis_t p=(Axis_t)l[i].P();
+	Axis_t m=(Axis_t)l[i].GetMass();
+        Accumulate2(p,m,weight);
+    }
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}
+
+TMoverPHistogram&amp; TMoverPHistogram::operator&lt;&lt;(TCandList &amp;l)
+{
+    Accumulate(l); return *this;
+}
+
+void TMoverPHistogram::Accumulate(TCandidate &amp;c) 
+{
+#ifdef RHOFRAMEWORK
+    Stat_t weight = 1.0;
+    Axis_t p=(Axis_t)c.P();
+    Axis_t m=(Axis_t)c.GetMass();
+    Accumulate2(p,m,weight);
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}        
+
+TMoverPHistogram&amp; TMoverPHistogram::operator&lt;&lt;(TCandidate &amp;p)
+{
+    Accumulate(p); return *this;
+}
+
+TDalitzPlot::TDalitzPlot(const Text_t *name,const Text_t *title,Int_t nbinsx,Axis_t xlow,Axis_t xup
+				 ,Int_t nbinsy,Axis_t ylow,Axis_t yup)
+				 : THistogram(name,title,nbinsx,xlow,xup,nbinsy,ylow,yup)
+{
+}
+
+/*
+* This function fills a Dalitzplot for the particles name1,name2 and name3 from descriptor p.
+* horizontal axis: (name1,name2), vertikal axis: (name2,name3)
+* There are three cases:
+* 1) Fill the plot for three identical particles (6 entries)
+* 2) Fill the plot for two different particles (2 entries)
+* 3) Fill the plot for three different particles (1 entry)
+*/
+void TDalitzPlot::Accumulate(TCandList &amp;pList1,TCandList &amp;pList2,TCandList &amp;pList3)
+{
+#ifdef RHOFRAMEWORK
+    TCandListIterator i1(pList1);
+    TCandListIterator i2(pList2);
+    TCandListIterator i3(pList3);
+    
+    TCandidate *p1 = 0;
+    TCandidate *p2 = 0;
+    TCandidate *p3 = 0;
+    
+    while ((p1=i1.Next())!=0)
+	while ((p2=i2.Next())!=0)
+	    while ((p3=i3.Next())!=0)
+		Accumulate(*p1,*p2,*p3);
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}
+
+void TDalitzPlot::Accumulate(TCandidate &amp;p1,TCandidate &amp;p2,TCandidate &amp;p3)
+{
+#ifdef RHOFRAMEWORK
+/*
+* Dalitz plot is invariant mass squared [GeV]
+*/
+    Axis_t mass12,mass21,mass13,mass31,mass23,mass32;
+    
+    mass12 = mass21 = (p1.P4()+p2.P4()).Mag2();
+    mass13 = mass31 = (p1.P4()+p3.P4()).Mag2();
+    mass23 = mass32 = (p2.P4()+p3.P4()).Mag2();
+    
+    Stat_t weight = 1.0;
+    
+<b>    // One particle</b>
+    if (p1.Overlaps(p2) &amp;&amp; p2.Overlaps(p3)) {
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass12,mass13,weight);
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass13,mass12,weight);
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass23,mass21,weight);
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass21,mass23,weight);
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass31,mass32,weight);
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass32,mass31,weight);
+    }
+<b>    // Two particles</b>
+    else if (p1.Overlaps(p2) &amp;&amp; !p2.Overlaps(p3)) {
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass12,mass13,weight);
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass12,mass23,weight);
+    }
+<b>    // Two particles</b>
+    else if (p1.Overlaps(p3) &amp;&amp; !p2.Overlaps(p3)) {
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass12,mass23,weight);
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass13,mass23,weight);
+    }
+<b>    // Two particles</b>
+    else if (p2.Overlaps(p3) &amp;&amp; !p1.Overlaps(p3)) {
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass12,mass23,weight);
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass23,mass12,weight);
+    }
+<b>    // Three particles</b>
+    else if (!p1.Overlaps(p2) &amp;&amp; !p2.Overlaps(p3)) {
+	<a href="#THistogram:Accumulate2">Accumulate2</a>(mass12,mass23,weight);
+    }
+#else
+    cerr &lt;&lt; "This feature is available in the framework version only." &lt;&lt; endl;
+#endif
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

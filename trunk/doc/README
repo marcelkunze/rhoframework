@@ -1,0 +1,67 @@
+Rho
+---
+
+The Rho package is an analysis tool kit for use with ROOT. 
+It owes a lot to it's predecessors, including ALPHA from ALEPH 
+and BaBar's Beta. Unlike Beta, Rho is based on the solid fundaments 
+of the freely available ROOT framework and runs interactively 
+out-of-the-box on all computing platforms supporting ROOT. 
+Rho fully complies to the ROOT coding conventions and is free of 
+commercial components: There is no need for additional products like 
+CLHEP, PDT or RogueWave Tools.h++ as ROOT already offers the 
+corresponding functionality. Rho has been very carefully optimised 
+to interactive work and thus speed:
+
+- Communication between modules in general happens through abstract 
+  interfaces rather than transient objects
+- The consequent use of smart pointers to the ROOT data store allows 
+  to filter events at several 100 kHz on a standard PC
+- The consequent use of ROOTD for file I/O allows for efficient 
+  interactive access to data distributed over various Tier sites
+- The consequent use of the "new with placement" operator for 
+  recruitment of analysis objects out of a fixed memory arena 
+  prevents memory fragmentation even in long lasting jobs
+- A built-in garbage collection mechanism resolves the burden of 
+  ownership issues for candidates and vertices (Dont care)
+
+
+Availability and Installation
+-----------------------------
+
+Rho resides in the CVS repository :ext:anoncvs@gridportal.fzk.de:/cvs/hep/rho. 
+If you wish to install and build, you have to check out and build the 
+corresponding packages:
+
+First, you should set the CVS environment
+
+> setenv CVSROOT :ext:anoncvs@gridportal.fzk.de:/cvs/hep/rho
+> setenv CVS_RSH ssh
+
+Then, install a release directory (The environment RHO needs to be set up 
+to point to the directory):
+
+> mkdir Rho
+> cd Rho
+> setenv RHO $PWD
+> mkdir bin lib workdir
+
+You might want to check out and read documentation first (htmldoc holds 
+the ROOT class documentation):
+
+> cvs co doc
+> cvs co htmldoc
+
+Then check out the Rho sources and start the build:
+
+> cvs -z3 -t co RhoMakefiles
+> RhoMakefiles/addRho
+> make f RhoMakefiles/GNUmakefile.Linux
+
+Prior to start you should install the most recent production version of ROOT 
+from root.cern.ch and set the ROOTSYS environment variable correspondingly. 
+In addition you have to add $ROOTSYS/lib and $RHO/lib to your LD_LIBRARY_PATH 
+in order to resolve the shared libs.
+
+A Windows distribution is available upon request.
+
+

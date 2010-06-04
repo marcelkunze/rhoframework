@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:30 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TThrustVector</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TThrustVector</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TThrustVector:description">class description</a> - <a href="src/TThrustVector.cxx.html">source file</a> - <a href="TThrustVector_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TThrustVector" href="TThrustVector.h">TThrustVector</a> : public TObject</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->       <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:acceptedTrack">acceptedTrack</a><!--PLAIN-->(const TCandidate* cand) const
+<!--TAB6-->         <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:calc_denom">calc_denom</a><!--PLAIN-->(const <a href="ListOfTypes.html#double">double</a>* X, const <a href="ListOfTypes.html#double">double</a>* Y, const <a href="ListOfTypes.html#double">double</a>* Z, const unsigned <a href="ListOfTypes.html#int">int</a>)
+<!--TAB6-->       <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:calc_thrust">calc_thrust</a><!--PLAIN-->(const <a href="ListOfTypes.html#double">double</a>* theAxis, const <a href="ListOfTypes.html#double">double</a>* X, const <a href="ListOfTypes.html#double">double</a>* Y, const <a href="ListOfTypes.html#double">double</a>* Z, const unsigned <a href="ListOfTypes.html#int">int</a>) const
+<!--TAB6-->      <a href="ListOfTypes.html#double">double</a>* <!--TAB--><!--BOLD--><a href="#TThrustVector:get_axis">get_axis</a><!--PLAIN-->(<a href="ListOfTypes.html#double">double</a> theta, <a href="ListOfTypes.html#double">double</a> phi) const
+<!--TAB6-->      <a href="ListOfTypes.html#double">double</a>* <!--TAB--><!--BOLD--><a href="#TThrustVector:get_final_axis">get_final_axis</a><!--PLAIN-->(<a href="ListOfTypes.html#double">double</a> thetaInit, <a href="ListOfTypes.html#double">double</a> phiInit, const <a href="ListOfTypes.html#double">double</a>* X, const <a href="ListOfTypes.html#double">double</a>* Y, const <a href="ListOfTypes.html#double">double</a>* Z, const unsigned <a href="ListOfTypes.html#int">int</a>) const
+<!--TAB6-->      <a href="ListOfTypes.html#double">double</a>* <!--TAB--><!--BOLD--><a href="#TThrustVector:get_initial_axis">get_initial_axis</a><!--PLAIN-->(const <a href="ListOfTypes.html#double">double</a>* X, const <a href="ListOfTypes.html#double">double</a>* Y, const <a href="ListOfTypes.html#double">double</a>* Z, const unsigned <a href="ListOfTypes.html#int">int</a>) const
+<!--TAB6-->         <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:init">init</a><!--PLAIN-->(const <a href="ListOfTypes.html#double">double</a>* valX, const <a href="ListOfTypes.html#double">double</a>* valY, const <a href="ListOfTypes.html#double">double</a>* valZ, const <a href="ListOfTypes.html#double">double</a> denominator, const unsigned <a href="ListOfTypes.html#int">int</a>)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->        <a href="./TThrustVector.html">TThrustVector</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:TThrustVector">TThrustVector</a><!--PLAIN-->()
+<!--TAB6-->        <a href="./TThrustVector.html">TThrustVector</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:TThrustVector">TThrustVector</a><!--PLAIN-->(const <a href="./TThrustVector.html">TThrustVector</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:~TThrustVector">~TThrustVector</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:BoostAndCompute">BoostAndCompute</a><!--PLAIN-->(TCandList&amp; list, <a href="./TBooster.html">TBooster</a>* booster, <a href="ListOfTypes.html#Bool_t">Bool_t</a> cutInCms = kFALSE, <a href="ListOfTypes.html#Bool_t">Bool_t</a> checkCharge = kFALSE, <a href="ListOfTypes.html#Bool_t">Bool_t</a> charged = kFALSE)
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TThrustVector:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:Compute">Compute</a><!--PLAIN-->(TCandList&amp; list)
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TThrustVector:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:Reset">Reset</a><!--PLAIN-->()
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TThrustVector:Thrust">Thrust</a><!--PLAIN-->() const
+<!--TAB6-->      const TVector3&amp; <!--TAB--><!--BOLD--><a href="#TThrustVector:ThrustAxis">ThrustAxis</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="TThrustVector:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->         <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a name="TThrustVector:_thrust">_thrust</a><!--PLAIN-->       <!--TAB--><i><a name="Title:_thrust">!</a></i>
+<!--TAB6-->       TVector3 <!--TAB--><!--BOLD--><a name="TThrustVector:_axis">_axis</a><!--PLAIN-->         <!--TAB--><i><a name="Title:_axis">!</a></i>
+<!--TAB6-->      <a href="./TBooster.html">TBooster</a>* <!--TAB--><!--BOLD--><a name="TThrustVector:_booster">_booster</a><!--PLAIN-->      <!--TAB--><i><a name="Title:_booster">!</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a name="TThrustVector:_denom_sum">_denom_sum</a><!--PLAIN-->    <!--TAB--><i><a name="Title:_denom_sum">!</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TThrustVector:_cutInCms">_cutInCms</a><!--PLAIN-->     <!--TAB--><i><a name="Title:_cutInCms"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TThrustVector:_charged">_charged</a><!--PLAIN-->      <!--TAB--><i><a name="Title:_charged"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TThrustVector:_checkCharge">_checkCharge</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_checkCharge">!</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TThrustVector:description">Class Description</a></h2>
+<pre> ROOT Version by Marcel Kunze, RUB
+--------------------------------------------------------------------------
+</pre><hr>
+<!--FUNCTION--> <a name="TThrustVector:TThrustVector" href="src/TThrustVector.cxx.html#TThrustVector:TThrustVector">TThrustVector</a>()
+  : <a href="./TThrustVector.html#TThrustVector:_thrust">_thrust</a>(0), <a href="./TThrustVector.html#TThrustVector:_denom_sum">_denom_sum</a>(0), <a href="./TThrustVector.html#TThrustVector:_booster">_booster</a>(0), <a href="./TThrustVector.html#TThrustVector:_cutInCms">_cutInCms</a>(kFALSE), <a href="./TThrustVector.html#TThrustVector:_charged">_charged</a>(kFALSE),
+    <a href="./TThrustVector.html#TThrustVector:_checkCharge">_checkCharge</a>(kFALSE)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TThrustVector:BoostAndCompute" href="src/TThrustVector.cxx.html#TThrustVector:BoostAndCompute">BoostAndCompute</a>( TCandList&amp; list,
+				     <a href="./TBooster.html">TBooster</a>* booster, 
+				     <a href="ListOfTypes.html#Bool_t">Bool_t</a> cutInCms, <a href="ListOfTypes.html#Bool_t">Bool_t</a> checkCharge,
+				     <a href="ListOfTypes.html#Bool_t">Bool_t</a> charged) <br>
+<hr>
+<!--FUNCTION--> <a name="TThrustVector:Compute" href="src/TThrustVector.cxx.html#TThrustVector:Compute">Compute</a>(TCandList&amp; list) <br>
+<hr>
+<!--FUNCTION--> <a name="TThrustVector:acceptedTrack" href="src/TThrustVector.cxx.html#TThrustVector:acceptedTrack">acceptedTrack</a>(const TCandidate *cand) const <br>
+<hr>
+<!--FUNCTION--> <a name="TThrustVector:init" href="src/TThrustVector.cxx.html#TThrustVector:init">init</a>(const <a href="ListOfTypes.html#double">double</a> * valX, const <a href="ListOfTypes.html#double">double</a> * valY,
+		      const <a href="ListOfTypes.html#double">double</a> * valZ, const <a href="ListOfTypes.html#double">double</a> denominator,
+		      const unsigned nTracks) <br>
+<hr>
+<!--FUNCTION--> <a name="TThrustVector:Reset" href="src/TThrustVector.cxx.html#TThrustVector:Reset">Reset</a>() 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TThrustVector:~TThrustVector" href="src/TThrustVector.cxx.html#TThrustVector:~TThrustVector">~TThrustVector</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#double">double</a>* <a name="TThrustVector:get_initial_axis" href="src/TThrustVector.cxx.html#TThrustVector:get_initial_axis">get_initial_axis</a>(const <a href="ListOfTypes.html#double">double</a> * valX, 
+					   const <a href="ListOfTypes.html#double">double</a> * valY,
+					   const <a href="ListOfTypes.html#double">double</a> * valZ, 
+					   const unsigned nTracks) const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#double">double</a>* <a name="TThrustVector:get_final_axis" href="src/TThrustVector.cxx.html#TThrustVector:get_final_axis">get_final_axis</a>(<a href="ListOfTypes.html#double">double</a> bestTheta, <a href="ListOfTypes.html#double">double</a> bestPhi,
+					 const <a href="ListOfTypes.html#double">double</a>* valX, 
+					 const <a href="ListOfTypes.html#double">double</a>* valY,
+					 const <a href="ListOfTypes.html#double">double</a>* valZ, 
+					 const unsigned nTracks) const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#double">double</a>* <a name="TThrustVector:get_axis" href="src/TThrustVector.cxx.html#TThrustVector:get_axis">get_axis</a>(<a href="ListOfTypes.html#double">double</a> theta, <a href="ListOfTypes.html#double">double</a> phi) const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#double">double</a> <a name="TThrustVector:calc_thrust" href="src/TThrustVector.cxx.html#TThrustVector:calc_thrust">calc_thrust</a>(const <a href="ListOfTypes.html#double">double</a> * axis, 
+				    const <a href="ListOfTypes.html#double">double</a> * valX, 
+				    const <a href="ListOfTypes.html#double">double</a> * valY,
+				    const <a href="ListOfTypes.html#double">double</a> * valZ,
+				    const unsigned nTracks) const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TThrustVector:calc_denom" href="src/TThrustVector.cxx.html#TThrustVector:calc_denom">calc_denom</a>(const <a href="ListOfTypes.html#double">double</a> * valX, const <a href="ListOfTypes.html#double">double</a> * valY,
+				 const <a href="ListOfTypes.html#double">double</a> * valZ, 
+				 const unsigned nTracks) <br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#double">double</a> <a name="TThrustVector:Thrust" href="TThrustVector.h">Thrust</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        const TVector3&amp; <a name="TThrustVector:ThrustAxis" href="TThrustVector.h">ThrustAxis</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                TClass* <a name="TThrustVector:Class" href="TThrustVector.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                TClass* <a name="TThrustVector:IsA" href="TThrustVector.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <a name="TThrustVector:ShowMembers" href="TThrustVector.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <a name="TThrustVector:Streamer" href="TThrustVector.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <a name="TThrustVector:StreamerNVirtual" href="TThrustVector.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->          <a href="./TThrustVector.html">TThrustVector</a> <a name="TThrustVector:TThrustVector" href="TThrustVector.h">TThrustVector</a>(const <a href="./TThrustVector.html">TThrustVector</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:31 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

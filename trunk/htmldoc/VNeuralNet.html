@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:34 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>VNeuralNet</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>VNeuralNet</h1>
+<hr width=300>
+<!--SDL--><em><a href="#VNeuralNet:description">class description</a> - <a href="src/VNeuralNet.cxx.html">source file</a> - <a href="VNeuralNet_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="VNeuralNet" href="VNeuralNet.h">VNeuralNet</a> : public TNamed</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:BalancedTrnIndex">BalancedTrnIndex</a><!--PLAIN-->(<a href="./TDataServe.html">TDataServe</a>* server)
+<!--TAB6-->      <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:BalancedTstIndex">BalancedTstIndex</a><!--PLAIN-->(<a href="./TDataServe.html">TDataServe</a>* server)
+<!--TAB6-->        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:ReadNetBinary">ReadNetBinary</a><!--PLAIN-->()
+<!--TAB6-->        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:ReadNetText">ReadNetText</a><!--PLAIN-->()
+<!--TAB6-->        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:WriteNet">WriteNet</a><!--PLAIN-->()
+<!--TAB6-->        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:WriteNetBinary">WriteNetBinary</a><!--PLAIN-->()
+<!--TAB6-->        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:WriteNetText">WriteNetText</a><!--PLAIN-->()
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:Errorf">Errorf</a><!--PLAIN-->(<a href="ListOfTypes.html#char">char</a>* format)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:freadvar">freadvar</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a> Var)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:fwritevar">fwritevar</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a> Var)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:Messagef">Messagef</a><!--PLAIN-->(FILE* f, <a href="ListOfTypes.html#char">char</a>* format)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:ReadNet">ReadNet</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* netID)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:TestPointer">TestPointer</a><!--PLAIN-->(<a href="ListOfTypes.html#void">void</a>* ptr)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:Warningf">Warningf</a><!--PLAIN-->(FILE* f, <a href="ListOfTypes.html#char">char</a>* format)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:~VNeuralNet">~VNeuralNet</a><!--PLAIN-->()
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:AllocNet">AllocNet</a><!--PLAIN-->()
+<!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:BalanceSamples">BalanceSamples</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesNo = kTRUE)
+<!--TAB6-->             static TClass* <!--TAB--><!--BOLD--><a href="#VNeuralNet:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:FillPlots">FillPlots</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> trn = 0.0, <a href="ListOfTypes.html#Double_t">Double_t</a> tst = 0.0)
+<!--TAB6-->                const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#VNeuralNet:GetFilename">GetFilename</a><!--PLAIN-->() const
+<!--TAB6-->                const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#VNeuralNet:GetNetID">GetNetID</a><!--PLAIN-->() const
+<!--TAB6-->                  <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a href="#VNeuralNet:GetOutput">GetOutput</a><!--PLAIN-->() const
+<!--TAB6-->      <a href="./TNeuralNetParameters.html">TNeuralNetParameters</a>&amp; <!--TAB--><!--BOLD--><a href="#VNeuralNet:GetParameters">GetParameters</a><!--PLAIN-->()
+<!--TAB6-->         <a href="./VNeuralNetPlotter.html">VNeuralNetPlotter</a>&amp; <!--TAB--><!--BOLD--><a href="#VNeuralNet:GetPlotter">GetPlotter</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:GetThreshold">GetThreshold</a><!--PLAIN-->() const
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:InitNet">InitNet</a><!--PLAIN-->()
+<!--TAB6-->            virtual TClass* <!--TAB--><!--BOLD--><a href="#VNeuralNet:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:Learnstep">Learnstep</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out = 0)
+<!--TAB6-->            static <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:Random">Random</a><!--PLAIN-->()
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:ReadBinary">ReadBinary</a><!--PLAIN-->()
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:ReadText">ReadText</a><!--PLAIN-->()
+<!--TAB6-->          virtual <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a href="#VNeuralNet:Recall">Recall</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out = 0)
+<!--TAB6-->                  <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a href="#VNeuralNet:Recallstep">Recallstep</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out = 0)
+<!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:Save">Save</a><!--PLAIN-->(<a href="ListOfTypes.html#char">char</a>* file)
+<!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:Save">Save</a><!--PLAIN-->()
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:SetFlatSpotElimination">SetFlatSpotElimination</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:SetMomentumTerm">SetMomentumTerm</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:SetPlotter">SetPlotter</a><!--PLAIN-->(<a href="./VNeuralNetPlotter.html">VNeuralNetPlotter</a>* plotter)
+<!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:SetThreshold">SetThreshold</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> t)
+<!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:SetupPlots">SetupPlots</a><!--PLAIN-->(<a href="./VNeuralNetPlotter.html">VNeuralNetPlotter</a>* plotter = 0)
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:ShowPlots">ShowPlots</a><!--PLAIN-->()
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                   <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:Test">Test</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* trn)
+<!--TAB6-->                   <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:TestEpoch">TestEpoch</a><!--PLAIN-->(<a href="./TDataServe.html">TDataServe</a>* server)
+<!--TAB6-->                   <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:TestEpoch">TestEpoch</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* file)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:Train">Train</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out = 0)
+<!--TAB6-->                   <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:TrainEpoch">TrainEpoch</a><!--PLAIN-->(<a href="./TDataServe.html">TDataServe</a>* server, <a href="ListOfTypes.html#Int_t">Int_t</a> nEpoch = 1)
+<!--TAB6-->                   <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:TrainEpoch">TrainEpoch</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* file, <a href="ListOfTypes.html#Int_t">Int_t</a> nEpoch = 1)
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:WriteBinary">WriteBinary</a><!--PLAIN-->()
+<!--TAB6-->               virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VNeuralNet:WriteText">WriteText</a><!--PLAIN-->()
+</pre>
+
+<h3><!--TAB2-->  <a name="VNeuralNet:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="VNeuralNet:fBalance">fBalance</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fBalance">!Balance positive and negative samples</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="VNeuralNet:fOwnPlotter">fOwnPlotter</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fOwnPlotter">!Ownership of plotter</a></i>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->                    TString <!--TAB--><!--BOLD--><a name="VNeuralNet:fFilename">fFilename</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fFilename">Name of network file</a></i>
+<!--TAB6-->      <a href="./VNeuralNet.html#VNeuralNet:FILE_TYPE">VNeuralNet::FILE_TYPE</a> <!--TAB--><!--BOLD--><a name="VNeuralNet:fFiletype">fFiletype</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fFiletype">Type of file</a></i>
+<!--TAB6-->       <a href="./TNeuralNetParameters.html">TNeuralNetParameters</a> <!--TAB--><!--BOLD--><a name="VNeuralNet:fParm">fParm</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fParm">Topology of network</a></i>
+<!--TAB6-->         <a href="./VNeuralNetPlotter.html">VNeuralNetPlotter</a>* <!--TAB--><!--BOLD--><a name="VNeuralNet:fPlotter">fPlotter</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fPlotter">!Show plots</a></i>
+<!--TAB6-->                  <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a name="VNeuralNet:fOut">fOut</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fOut">!Output nodes</a></i>
+<!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="VNeuralNet:fShouldSave">fShouldSave</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fShouldSave">!Save the network</a></i>
+<!--TAB6-->                      FILE* <!--TAB--><!--BOLD--><a name="VNeuralNet:fFile">fFile</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fFile">!File pointer</a></i>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      static const <a href="./VNeuralNet.html#VNeuralNet:FILE_TYPE">VNeuralNet::FILE_TYPE</a> <!--TAB--><!--BOLD--><a name="VNeuralNet:FILE_BINARY">FILE_BINARY</a><!--PLAIN-->  <!--TAB--><i><a name="Title:FILE_BINARY"></a></i>
+<!--TAB6-->      static const <a href="./VNeuralNet.html#VNeuralNet:FILE_TYPE">VNeuralNet::FILE_TYPE</a> <!--TAB--><!--BOLD--><a name="VNeuralNet:FILE_TEXT">FILE_TEXT</a><!--PLAIN-->    <!--TAB--><i><a name="Title:FILE_TEXT"></a></i>
+<!--TAB6-->      static const <a href="./VNeuralNet.html#VNeuralNet:FILE_TYPE">VNeuralNet::FILE_TYPE</a> <!--TAB--><!--BOLD--><a name="VNeuralNet:FILE_ROOT">FILE_ROOT</a><!--PLAIN-->    <!--TAB--><i><a name="Title:FILE_ROOT"></a></i>
+</pre>
+<!--END-->
+<br><hr>
+<!--SEE ALSO--><h2>See also</h2><dl><dd>
+<a href="./VSupervisedNet.html">VSupervisedNet</a>, <a href="./VUnsupervisedNet.html">VUnsupervisedNet</a></dl>
+<hr>
+<!--DESCRIPTION--><h2><a name="VNeuralNet:description">Class Description</a></h2>
+<pre>									
+ <a href="./VNeuralNet.html">VNeuralNet</a>								
+									
+ Base classes for unsupervised and supervised networks		
+ Partof the Neural Network Objects package (NNO)			
+									
+ Author List:								
+ Johannes Steffens, Bochum University					
+ M.Kunze, Bochum University						
+ (C) Copyright Johannes Steffens 1995, Ruhr-University Bochum.	
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="VNeuralNet:~VNeuralNet" href="src/VNeuralNet.cxx.html#VNeuralNet:~VNeuralNet">~VNeuralNet</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:Save" href="src/VNeuralNet.cxx.html#VNeuralNet:Save">Save</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:Save" href="src/VNeuralNet.cxx.html#VNeuralNet:Save">Save</a>(<a href="ListOfTypes.html#char">char</a>* file) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:WriteNet" href="src/VNeuralNet.cxx.html#VNeuralNet:WriteNet">WriteNet</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:WriteNetText" href="src/VNeuralNet.cxx.html#VNeuralNet:WriteNetText">WriteNetText</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:WriteNetBinary" href="src/VNeuralNet.cxx.html#VNeuralNet:WriteNetBinary">WriteNetBinary</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:ReadNet" href="src/VNeuralNet.cxx.html#VNeuralNet:ReadNet">ReadNet</a>(const <a href="ListOfTypes.html#char">char</a>* netID) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:ReadNetText" href="src/VNeuralNet.cxx.html#VNeuralNet:ReadNetText">ReadNetText</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:ReadNetBinary" href="src/VNeuralNet.cxx.html#VNeuralNet:ReadNetBinary">ReadNetBinary</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:Errorf" href="src/VNeuralNet.cxx.html#VNeuralNet:Errorf">Errorf</a>(<a href="ListOfTypes.html#char">char</a>* format,...) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:Warningf" href="src/VNeuralNet.cxx.html#VNeuralNet:Warningf">Warningf</a>(FILE* f,<a href="ListOfTypes.html#char">char</a>* format,...) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:Messagef" href="src/VNeuralNet.cxx.html#VNeuralNet:Messagef">Messagef</a>(FILE* f,<a href="ListOfTypes.html#char">char</a>* format,...) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#double">double</a> <a name="VNeuralNet:Random" href="src/VNeuralNet.cxx.html#VNeuralNet:Random">Random</a>(<a href="ListOfTypes.html#void">void</a>) 
+<br>
+<pre>  Machine independent random number generator.
+  Produces uniformly-distributed floating points between 0 and 1.
+  Identical sequence on all machines of &gt;= 32 bits.
+  Universal version (Fred james 1985).
+  Return numbers in the range -0.5..0.5 (MK)
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:TestPointer" href="src/VNeuralNet.cxx.html#VNeuralNet:TestPointer">TestPointer</a>(<a href="ListOfTypes.html#void">void</a>* Ptr) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:SetupPlots" href="src/VNeuralNet.cxx.html#VNeuralNet:SetupPlots">SetupPlots</a>(<a href="./VNeuralNetPlotter.html">VNeuralNetPlotter</a> *plotter)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:FillPlots" href="src/VNeuralNet.cxx.html#VNeuralNet:FillPlots">FillPlots</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> trn, <a href="ListOfTypes.html#Double_t">Double_t</a> tst)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:ShowPlots" href="src/VNeuralNet.cxx.html#VNeuralNet:ShowPlots">ShowPlots</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="VNeuralNet:TrainEpoch" href="src/VNeuralNet.cxx.html#VNeuralNet:TrainEpoch">TrainEpoch</a>(<a href="./TDataServe.html">TDataServe</a> *server, <a href="ListOfTypes.html#Int_t">Int_t</a> nEpoch)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="VNeuralNet:TestEpoch" href="src/VNeuralNet.cxx.html#VNeuralNet:TestEpoch">TestEpoch</a>(<a href="./TDataServe.html">TDataServe</a> *server)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="VNeuralNet:Test" href="src/VNeuralNet.cxx.html#VNeuralNet:Test">Test</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in,<a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="VNeuralNet:TrainEpoch" href="src/VNeuralNet.cxx.html#VNeuralNet:TrainEpoch">TrainEpoch</a>(const <a href="ListOfTypes.html#char">char</a> *file, <a href="ListOfTypes.html#Int_t">Int_t</a> nEpoch)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="VNeuralNet:TestEpoch" href="src/VNeuralNet.cxx.html#VNeuralNet:TestEpoch">TestEpoch</a>(const <a href="ListOfTypes.html#char">char</a> *file)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="VNeuralNet:BalancedTrnIndex" href="src/VNeuralNet.cxx.html#VNeuralNet:BalancedTrnIndex">BalancedTrnIndex</a>(<a href="./TDataServe.html">TDataServe</a> *server)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="VNeuralNet:BalancedTstIndex" href="src/VNeuralNet.cxx.html#VNeuralNet:BalancedTstIndex">BalancedTstIndex</a>(<a href="./TDataServe.html">TDataServe</a> *server)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:SetMomentumTerm" href="src/VNeuralNet.cxx.html#VNeuralNet:SetMomentumTerm">SetMomentumTerm</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> f) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:SetFlatSpotElimination" href="src/VNeuralNet.cxx.html#VNeuralNet:SetFlatSpotElimination">SetFlatSpotElimination</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> f) 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:AllocNet" href="VNeuralNet.h">AllocNet</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:InitNet" href="VNeuralNet.h">InitNet</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:WriteText" href="VNeuralNet.h">WriteText</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:WriteBinary" href="VNeuralNet.h">WriteBinary</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:ReadText" href="VNeuralNet.h">ReadText</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:ReadBinary" href="VNeuralNet.h">ReadBinary</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                    <a href="ListOfTypes.html#Double_t">Double_t</a>* <a name="VNeuralNet:Recall" href="VNeuralNet.h">Recall</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out = 0)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="VNeuralNet:Train" href="VNeuralNet.h">Train</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out = 0)
+<!--INLINE FUNCTION--><!--TAB6-->                    <a href="ListOfTypes.html#Double_t">Double_t</a>* <a name="VNeuralNet:Recallstep" href="VNeuralNet.h">Recallstep</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out = 0)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="VNeuralNet:Learnstep" href="VNeuralNet.h">Learnstep</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in, <a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out = 0)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:BalanceSamples" href="VNeuralNet.h">BalanceSamples</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesNo = kTRUE)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:freadvar" href="VNeuralNet.h">freadvar</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a> Var)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:fwritevar" href="VNeuralNet.h">fwritevar</a>(<a href="ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a> Var)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TNeuralNetParameters.html">TNeuralNetParameters</a>&amp; <a name="VNeuralNet:GetParameters" href="VNeuralNet.h">GetParameters</a>()
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="./VNeuralNetPlotter.html">VNeuralNetPlotter</a>&amp; <a name="VNeuralNet:GetPlotter" href="VNeuralNet.h">GetPlotter</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  const <a href="ListOfTypes.html#char">char</a>* <a name="VNeuralNet:GetFilename" href="VNeuralNet.h">GetFilename</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                    <a href="ListOfTypes.html#Double_t">Double_t</a>* <a name="VNeuralNet:GetOutput" href="VNeuralNet.h">GetOutput</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="VNeuralNet:GetThreshold" href="VNeuralNet.h">GetThreshold</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  const <a href="ListOfTypes.html#char">char</a>* <a name="VNeuralNet:GetNetID" href="VNeuralNet.h">GetNetID</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:SetThreshold" href="VNeuralNet.h">SetThreshold</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> t)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:SetPlotter" href="VNeuralNet.h">SetPlotter</a>(<a href="./VNeuralNetPlotter.html">VNeuralNetPlotter</a>* plotter)
+<!--INLINE FUNCTION--><!--TAB6-->                      TClass* <a name="VNeuralNet:Class" href="VNeuralNet.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                      TClass* <a name="VNeuralNet:IsA" href="VNeuralNet.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:ShowMembers" href="VNeuralNet.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:Streamer" href="VNeuralNet.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <a name="VNeuralNet:StreamerNVirtual" href="VNeuralNet.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:34 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

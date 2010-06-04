@@ -1,0 +1,587 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:32 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TBVariables - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//==========================================================================</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: TBVariables.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>//--------------------------------------------------------------------------</b>
+<b>// Description:</b>
+<b>//	See <a href=".././TBVariables.html">TBVariables</a>.h</b>
+<b>//</b>
+<b>//--------------------------------------------------------------------------</b>
+<b>// Sample User Code:</b>
+<b>//</b>
+<b>//--------------------------------------------------------------------------</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>//--------------------------------------------------------------------------</b>
+<b>// Author List:</b>
+<b>//	Abi Soffer              (Original author)</b>
+<b>//      Bill Ford        (Added m_ES)</b>
+<b>//</b>
+<b>//--------------------------------------------------------------------------</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999	Colorado State University</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//==========================================================================</b>
+
+<b>//-------------</b>
+<b>// C Headers --</b>
+<b>//-------------</b>
+
+<b>//---------------</b>
+<b>// C++ Headers --</b>
+<b>//---------------</b>
+#include &lt;math.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;float.h&gt;
+
+#include "TDatabasePDG.h"
+#include "TLorentzVector.h"
+
+<b>//----------------</b>
+<b>// BaBar Header --</b>
+<b>//----------------</b>
+
+<b>//-----------------------</b>
+<b>// This Class's Header --</b>
+<b>//-----------------------</b>
+#include "RhoTools/TBVariables.h"
+
+<b>//-------------------------------</b>
+<b>// Collaborating Class Headers --</b>
+<b>//-------------------------------</b>
+#include "RhoBase/TRho.h"
+#ifdef RHOFRAMEWORK
+#include "RhoConditions/TConditions.h"
+#include "RhoConditions/TBeams.h"
+#else
+#include "RhoMath/TDoubleErr.h"
+class TBeams {
+public:
+    TBeams() {}
+    virtual ~TBeams() {}
+    TLorentzVector Total4Momentum() { return TLorentzVector(-0.11,0,5.88,12.108); }
+    TLorentzVectorErr Total4MomentumWErr() { return TLorentzVectorErr(Total4Momentum(), TError(4));}
+    TVector3 BoostCMtoLab() { return Total4Momentum().BoostVector(); }
+    TDoubleErr EnergyCMWErr() { return TDoubleErr(Total4Momentum().T(),1.E-3); } 
+};
+#endif
+
+<b>//-----------------------------------------------------------------------</b>
+<b>// Local Macros, Typedefs, Structures, Unions and Forward Declarations --</b>
+<b>//-----------------------------------------------------------------------</b>
+
+ClassImp(<a href=".././TBVariables.html">TBVariables</a>)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, <a href=".././TBVariables.html">TBVariables</a> *&amp;obj)
+{
+   obj = (<a href=".././TBVariables.html">TBVariables</a> *) buf.ReadObject(<a href=".././TBVariables.html#TBVariables:Class">TBVariables::Class</a>());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+#ifndef BBV_CHECK_SQRT
+#define BBV_CHECK_SQRT(square) CheckSqrt(square, __FILE__, __LINE__)
+#endif
+
+static const char rscid[] = "$Id: TBVariables.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $";
+
+static inline Double_t Sqr(Double_t d) {return d * d;}
+
+<b>//-----------------------------------------------</b>
+<b>//-- Static Data &amp; Function Member Definitions --</b>
+<b>//-----------------------------------------------</b>
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:MomErr"> </a><a href=".././TBVariables.html#TBVariables:MomErr">TBVariables::MomErr</a>(const <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a> &amp; p4) const {
+    const <a href="../ListOfTypes.html#Double_t">Double_t</a> p2 = p4.Vect().Mag2();
+    if (0 == p2){
+	return 0.0;
+    }
+    
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> cov = 0.0;
+    for (<a href="../ListOfTypes.html#int">int</a> row = 0; row &lt; 3; ++row){
+	for (<a href="../ListOfTypes.html#int">int</a> col = 0; col &lt; 3; ++col){
+	    cov += p4.CovMatrix()(row, col) * p4(row) * p4(col);
+	}
+    }
+    cov /= p2;
+    
+    return BBV_CHECK_SQRT(cov);
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:BMass"> </a><a href=".././TBVariables.html#TBVariables:BMass">TBVariables::BMass</a>() {
+    static TDatabasePDG *pdt = TRho::Instance()-&gt;GetPDG();
+    static <a href="../ListOfTypes.html#Double_t">Double_t</a> result = pdt-&gt;GetParticle("BfPlus")-&gt;Mass();
+    return result;
+}
+
+<b>//----------------------------------------</b>
+<b>//-- Public Function Member Definitions --</b>
+<b>//----------------------------------------</b>
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+<a name="TBVariables:TBVariables"> </a><a href=".././TBVariables.html#TBVariables:TBVariables">TBVariables::TBVariables</a>() :
+<a href=".././TBVariables.html#TBVariables:fMHat">fMHat</a>(0.0),
+<a href=".././TBVariables.html#TBVariables:fM_ES">fM_ES</a>(0.0),
+<a href=".././TBVariables.html#TBVariables:fDeltaE">fDeltaE</a>(0.0),
+<a href=".././TBVariables.html#TBVariables:fMHatErr">fMHatErr</a>(0.0),
+<a href=".././TBVariables.html#TBVariables:fM_ESErr">fM_ESErr</a>(0.0),
+<a href=".././TBVariables.html#TBVariables:fDeltaEErr">fDeltaEErr</a>(0.0),
+<a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>(<a href=".././TBVariables.html#TBVariables:NO_BCAND">TBVariables::NO_BCAND</a>),
+<a href=".././TBVariables.html#TBVariables:fUpsilonWidth">fUpsilonWidth</a>(-DBL_MAX),
+<a href=".././TBVariables.html#TBVariables:fQuietMode">fQuietMode</a>(kFALSE)
+{
+    <a href="#TBVariables:SetDefaultUpsilonWidth">SetDefaultUpsilonWidth</a>();
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a name="TBVariables:TBVariables"> </a><a href=".././TBVariables.html#TBVariables:TBVariables">TBVariables::TBVariables</a>(const <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a> &amp; p4Lab,
+			     <a href="../ListOfTypes.html#Bool_t">Bool_t</a> quiet) :
+<a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>(<a href=".././TBVariables.html#TBVariables:NO_BCAND">TBVariables::NO_BCAND</a>),
+<a href=".././TBVariables.html#TBVariables:fUpsilonWidth">fUpsilonWidth</a>(-DBL_MAX),
+<a href=".././TBVariables.html#TBVariables:fQuietMode">fQuietMode</a>(quiet)
+{
+    <a href="#TBVariables:SetDefaultUpsilonWidth">SetDefaultUpsilonWidth</a>();
+    <a href="#TBVariables:SetP4Lab">SetP4Lab</a>(p4Lab);
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+<a name="TBVariables:~TBVariables"> </a><a href=".././TBVariables.html">TBVariables</a>::~<a href=".././TBVariables.html">TBVariables</a>() {} 
+
+<b>//-------------</b>
+<b>// Accessors --</b>
+<b>//-------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:PHat"> </a><a href=".././TBVariables.html#TBVariables:PHat">TBVariables::PHat</a>() const {
+    return <a href=".././TBVariables.html#TBVariables:fP4Hat">fP4Hat</a>.Vect().Mag();
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a>
+<a name="TBVariables:PHatErr"> </a><a href=".././TBVariables.html#TBVariables:PHatErr">TBVariables::PHatErr</a>() const {
+    return <a href="#TBVariables:MomErr">MomErr</a>(<a href=".././TBVariables.html#TBVariables:fP4Hat">fP4Hat</a>);
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:EnergySubstitutedMass"> </a><a href=".././TBVariables.html#TBVariables:EnergySubstitutedMass">TBVariables::EnergySubstitutedMass</a>() const {
+    const <a href="../ListOfTypes.html#Double_t">Double_t</a> p = <a href=".././TBVariables.html#TBVariables:fP4">fP4</a>.Vect().Mag();
+    const <a href="../ListOfTypes.html#Double_t">Double_t</a> m2 = Sqr(<a href=".././TBVariables.html#TBVariables:fEBeam">fEBeam</a>) - Sqr(p);
+    return BBV_CHECK_SQRT(m2);
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:EnergySubstitutedMassErr"> </a><a href=".././TBVariables.html#TBVariables:EnergySubstitutedMassErr">TBVariables::EnergySubstitutedMassErr</a>() const {
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> pContribution = 0.0;
+    const <a href="../ListOfTypes.html#Double_t">Double_t</a> mass = <a href="#TBVariables:EnergySubstitutedMass">EnergySubstitutedMass</a>();
+    
+    if (0 &lt; mass){
+	pContribution = <a href="#TBVariables:MomErr">MomErr</a>(<a href=".././TBVariables.html#TBVariables:fP4">fP4</a>) * <a href=".././TBVariables.html#TBVariables:fP4">fP4</a>.Vect().Mag() / mass;
+    }
+    
+    return BBV_CHECK_SQRT(Sqr(pContribution) + Sqr(<a href="#TBVariables:EBeamErr">EBeamErr</a>()));
+}
+
+<b>//-------------</b>
+<b>// Modifiers --</b>
+<b>//-------------</b>
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TBVariables:SetUpsilonWidth"> </a><a href=".././TBVariables.html#TBVariables:SetUpsilonWidth">TBVariables::SetUpsilonWidth</a>(<a href="../ListOfTypes.html#Double_t">Double_t</a> upsWidth) {
+    const <a href="../ListOfTypes.html#Double_t">Double_t</a> oldWidth = <a href=".././TBVariables.html#TBVariables:fUpsilonWidth">fUpsilonWidth</a>;
+    <a href=".././TBVariables.html#TBVariables:fUpsilonWidth">fUpsilonWidth</a> = upsWidth;
+    
+<b>    // If the the Upsilon width really changed and fit was already</b>
+<b>    // carried out, refit with the new Upsilon width:</b>
+    if (<a href=".././TBVariables.html#TBVariables:fUpsilonWidth">fUpsilonWidth</a> != oldWidth &amp;&amp; <a href=".././TBVariables.html#TBVariables:NO_BCAND">NO_BCAND</a> != <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>) {
+	<a href="#TBVariables:ReFit">ReFit</a>();
+    }
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TBVariables:SetDefaultUpsilonWidth"> </a><a href=".././TBVariables.html#TBVariables:SetDefaultUpsilonWidth">TBVariables::SetDefaultUpsilonWidth</a>() {
+    static TDatabasePDG *pdt = TRho::Instance()-&gt;GetPDG();
+    <a href="#TBVariables:SetUpsilonWidth">SetUpsilonWidth</a>(pdt-&gt;GetParticle("Upsilon(4S)")-&gt;Width());
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href=".././TBVariables.html#TBVariables:Status">TBVariables::Status</a>
+<a name="TBVariables:SetP4Lab"> </a><a href=".././TBVariables.html#TBVariables:SetP4Lab">TBVariables::SetP4Lab</a>(const <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a> &amp; theP4Lab) {
+    <a href=".././TBVariables.html#TBVariables:fP4Lab">fP4Lab</a> = theP4Lab;
+    
+<b>    // Get the beam parameters:</b>
+    
+#ifdef RHOFRAMEWORK
+    TBeams *theBeams = 0;
+    
+    if (TRho::Instance()-&gt;GetConditions()!=0) {
+	TConditions *theConditions = TRho::Instance()-&gt;GetConditions();
+	TRhoTime *theTime = TRho::Instance()-&gt;GetTime();
+	if (theTime!=0) 
+	    theConditions-&gt;At(*theTime);	// Read the beam conditions DB
+	else
+	    theConditions-&gt;At(0);
+	theBeams = theConditions-&gt;GetBeams();
+    } 
+    else {
+	fStatus = NO_BEAMS_INFO;
+	return FitStatus();
+    }
+#else
+    static TBeams *theBeams = new TBeams();;
+#endif
+
+<b>    // Get the boost parameters:</b>
+    const TVector3 boostLabToCM = -(theBeams-&gt;BoostCMtoLab());
+    const TLorentzRotation theBoost(boostLabToCM);  
+    
+<b>    // Boost to the CM:</b>
+    <a href=".././TBVariables.html#TBVariables:fP4">fP4</a> = theP4Lab;
+    <a href=".././TBVariables.html#TBVariables:fP4">fP4</a>.<a href=".././TLorentzVectorErr.html#TLorentzVectorErr:Transform">Transform</a>(theBoost);
+    
+<b>    // Do the rest of the work:</b>
+    return <a href="#TBVariables:ReFit">ReFit</a>();
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href=".././TBVariables.html#TBVariables:Status">TBVariables::Status</a>
+<a name="TBVariables:SetP4CM"> </a><a href=".././TBVariables.html#TBVariables:SetP4CM">TBVariables::SetP4CM</a>(const <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a> &amp; theP4CM) {
+    <a href=".././TBVariables.html#TBVariables:fP4">fP4</a> = theP4CM;
+    
+<b>    // Get the beam parameters:</b>
+    
+#ifdef RHOFRAMEWORK
+    TBeams *theBeams = 0;
+    
+    if (TRho::Instance()-&gt;GetConditions()!=0) {
+	TConditions *theConditions = TRho::Instance()-&gt;GetConditions();
+	TRhoTime *theTime = TRho::Instance()-&gt;GetTime();
+	if (theTime!=0) 
+	    theConditions-&gt;At(*theTime);	// Read the beam conditions DB
+	else
+	    theConditions-&gt;At(0);
+	theBeams = theConditions-&gt;GetBeams();
+    } 
+    else {
+	fStatus = NO_BEAMS_INFO;
+	return FitStatus();
+    }
+#else
+    static TBeams *theBeams = new TBeams();;
+#endif
+    
+<b>    // Get the boost parameters:</b>
+    const TVector3 boostCMToLab = theBeams-&gt;BoostCMtoLab();
+    const TLorentzRotation theBoost(boostCMToLab);  
+    
+<b>    // Boost to the Lab:</b>
+    <a href=".././TBVariables.html#TBVariables:fP4Lab">fP4Lab</a> = theP4CM;
+    <a href=".././TBVariables.html#TBVariables:fP4Lab">fP4Lab</a>.<a href=".././TLorentzVectorErr.html#TLorentzVectorErr:Transform">Transform</a>(theBoost);
+    
+    return <a href="#TBVariables:ReFit">ReFit</a>();
+}
+
+<b>//-------------------</b>
+<b>// Protected Members:</b>
+<b>//-------------------</b>
+
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:CheckSqrt"> </a><a href=".././TBVariables.html#TBVariables:CheckSqrt">TBVariables::CheckSqrt</a>(<a href="../ListOfTypes.html#Double_t">Double_t</a> square, const <a href="../ListOfTypes.html#char">char</a> * file, <a href="../ListOfTypes.html#int">int</a> line) const {
+    if (0 &gt; square){
+	if (!<a href=".././TBVariables.html#TBVariables:fQuietMode">fQuietMode</a>){
+	    cerr &lt;&lt; "<a href=".././TBVariables.html">TBVariables</a>: Trying to take the square root of "
+		&lt;&lt; square &lt;&lt; endl
+		&lt;&lt; "     in " &lt;&lt; file &lt;&lt; ", line " &lt;&lt; line &lt;&lt; endl;
+	}
+<b>	// Cast this into non-const to change mutable <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>:</b>
+	((<a href=".././TBVariables.html">TBVariables</a>&amp;)(*this)).<a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a> = <a href=".././TBVariables.html#TBVariables:SQRT_NEGATIVE">SQRT_NEGATIVE</a>;
+	return -1000.0;
+    }
+    return TMath::Sqrt(square);
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href=".././TBVariables.html#TBVariables:Status">TBVariables::Status</a>
+<a name="TBVariables:ReFit"> </a><a href=".././TBVariables.html#TBVariables:ReFit">TBVariables::ReFit</a>() {
+<b>    // Initialize:</b>
+    <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a> = <a href=".././TBVariables.html#TBVariables:GOOD">GOOD</a>;
+    
+<b>    // Get the beam parameters:</b>
+    
+#ifdef RHOFRAMEWORK
+    TBeams *theBeams = 0;
+    
+    if (TRho::Instance()-&gt;GetConditions()!=0) {
+	TConditions *theConditions = TRho::Instance()-&gt;GetConditions();
+	TRhoTime *theTime = TRho::Instance()-&gt;GetTime();
+	if (theTime!=0) 
+	    theConditions-&gt;At(*theTime);	// Read the beam conditions DB
+	else
+	    theConditions-&gt;At(0);
+	theBeams = theConditions-&gt;GetBeams();
+    } 
+    else {
+	fStatus = NO_BEAMS_INFO;
+	return FitStatus();
+    }
+#else
+    static TBeams *theBeams = new TBeams();
+#endif
+    
+<b>    // Get beams lab 4-momentum</b>
+    const <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a> q0 = theBeams-&gt;Total4MomentumWErr();
+    
+<b>    // Set the <a href=".././TBVariables.html#TBVariables:fEBeam">fEBeam</a>:</b>
+    <a href=".././TDoubleErr.html">TDoubleErr</a> energyCM = theBeams-&gt;EnergyCMWErr();
+    <a href=".././TBVariables.html#TBVariables:fEBeam">fEBeam</a> = energyCM.Value() / 2.0;
+    
+<b>    // Set the <a href=".././TBVariables.html#TBVariables:fEBeamErr">fEBeamErr</a>, incorporating the resonance width </b>
+<b>    // (See BaBar Note 497, Eq. B1):</b>
+    const <a href="../ListOfTypes.html#Double_t">Double_t</a> eBeamErr2 =     
+	1.0 / (4.0 / energyCM.Covariance() + 22.0 / Sqr(<a href="#TBVariables:UpsilonWidth">UpsilonWidth</a>()));
+    
+    <a href=".././TBVariables.html#TBVariables:fEBeamErr">fEBeamErr</a> = BBV_CHECK_SQRT(eBeamErr2);
+    if (<a href=".././TBVariables.html#TBVariables:SQRT_NEGATIVE">SQRT_NEGATIVE</a> == <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>) {
+	return <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>;
+    }
+    
+<b>    // Get the <a href=".././TBVariables.html#TBVariables:fDeltaE">fDeltaE</a> and its error:</b>
+    <a href=".././TBVariables.html#TBVariables:fDeltaE">fDeltaE</a> = <a href=".././TBVariables.html#TBVariables:fP4">fP4</a>.T() - <a href=".././TBVariables.html#TBVariables:fEBeam">fEBeam</a>;
+    <a href=".././TBVariables.html#TBVariables:fDeltaEErr">fDeltaEErr</a> = BBV_CHECK_SQRT(<a href=".././TBVariables.html#TBVariables:fP4">fP4</a>.<a href=".././TLorentzVectorErr.html#TLorentzVectorErr:CovMatrix">CovMatrix</a>()(3,3) + eBeamErr2);
+    if (<a href=".././TBVariables.html#TBVariables:SQRT_NEGATIVE">SQRT_NEGATIVE</a> == <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>) {
+	return <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>;
+    }
+    
+<b>    // Get <a href=".././TBVariables.html#TBVariables:fM_ES">fM_ES</a></b>
+    const TVector3 p0(q0.Vect());
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> E0(q0.T());
+<b>    //  const TVector3 p0(theBeams-&gt;totalMomentum());</b>
+<b>    //  <a href="../ListOfTypes.html#Double_t">Double_t</a> E0 = theBeams-&gt;eMinusEnergy()+theBeams-&gt;ePlusEnergy();</b>
+    const TVector3 p3Lab = <a href=".././TBVariables.html#TBVariables:fP4Lab">fP4Lab</a>.Vect();
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> E_ES = (.5*Sqr(energyCM.Value())+p0.Dot(p3Lab))/E0;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> m_ES2 = Sqr(E_ES) - p3Lab.Mag2();
+    <a href=".././TBVariables.html#TBVariables:fM_ES">fM_ES</a> = BBV_CHECK_SQRT(m_ES2);
+    if (<a href=".././TBVariables.html#TBVariables:SQRT_NEGATIVE">SQRT_NEGATIVE</a> == <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>) {
+	return <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>;
+    }
+    
+<b>    // Get <a href=".././TBVariables.html#TBVariables:fM_ES">fM_ES</a> error:</b>
+<b>    // Derivatives of m_ES squared with respect to E0, p0_i, p3Lab_i</b>
+    TVectorD A0(4), A1(4);
+    for (<a href="../ListOfTypes.html#int">int</a> i=0; i&lt;3; i++) {
+	A0(i) = 2.*(E_ES/E0)*(p3Lab[i] - p0[i]);
+	A1(i) = 2.*((E_ES/E0)*p0[i] - p3Lab[i]);
+    }
+    A0(3) =  2.*E_ES*(1. - E_ES/E0);
+    A1(3) = 0.0;
+    
+<b>    // Multiply momentum error matrices left and right by derivative vectors</b>
+    TMatrixD Err0(q0.CovMatrix());
+    TMatrixD Err1(<a href=".././TBVariables.html#TBVariables:fP4Lab">fP4Lab</a>.<a href=".././TLorentzVectorErr.html#TLorentzVectorErr:CovMatrix">CovMatrix</a>());
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> m_SE2Err2 = 0.0;
+    for (<a href="../ListOfTypes.html#int">int</a> i1=0;i1&lt;4;i1++) {
+	for (<a href="../ListOfTypes.html#int">int</a> i2=0;i2&lt;4;i2++) {
+	    m_SE2Err2 += (Err0(i1,i2)*A0(i2) + Err1(i1,i2)*A1(i2));
+	}
+    }
+
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> m_ES2Err = BBV_CHECK_SQRT(m_SE2Err2);
+    if (<a href=".././TBVariables.html#TBVariables:SQRT_NEGATIVE">SQRT_NEGATIVE</a> == <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>) {
+	return <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>;
+    }
+    if (<a href=".././TBVariables.html#TBVariables:fM_ES">fM_ES</a> &gt; 0.) {
+	<a href=".././TBVariables.html#TBVariables:fM_ESErr">fM_ESErr</a> = m_ES2Err / 2. / <a href=".././TBVariables.html#TBVariables:fM_ES">fM_ES</a>;
+    } else {
+	<a href=".././TBVariables.html#TBVariables:fM_ESErr">fM_ESErr</a> = -1000.;
+    }
+    
+<b>    // Conduct the fit. See BaBar Note 497, Eq. B2.</b>
+    const <a href=".././TError.html">TError</a> &amp; covCM = <a href=".././TBVariables.html#TBVariables:fP4">fP4</a>.<a href=".././TLorentzVectorErr.html#TLorentzVectorErr:CovMatrix">CovMatrix</a>();
+    const <a href="../ListOfTypes.html#Double_t">Double_t</a> Cee = covCM(3,3);
+    const TVector3 Ce(covCM(0,3), covCM(1,3), covCM(2,3));
+    
+    const <a href="../ListOfTypes.html#Double_t">Double_t</a> totalSigma2 = eBeamErr2 + Cee;  
+    const TVector3 CeCorr = Ce * (<a href=".././TBVariables.html#TBVariables:fDeltaE">fDeltaE</a> / totalSigma2);
+    const TVector3 theP3Hat = <a href=".././TBVariables.html#TBVariables:fP4">fP4</a>.Vect() - CeCorr;
+    
+    const <a href="../ListOfTypes.html#Double_t">Double_t</a> theEHat =
+	(eBeamErr2 * <a href=".././TBVariables.html#TBVariables:fP4">fP4</a>.T() + Cee * <a href=".././TBVariables.html#TBVariables:fEBeam">fEBeam</a>) / totalSigma2;
+    
+<b>    // The post-fit 4-momentum:</b>
+    const TLorentzVector theP4Hat(theP3Hat, theEHat);
+    
+<b>    // The post-fit error matrix:</b>
+    <a href=".././TError.html">TError</a> theP4HatErr = covCM;
+    for (<a href="../ListOfTypes.html#int">int</a> row = 0; row &lt; 4; ++row){
+	for (<a href="../ListOfTypes.html#int">int</a> col = row; col &lt; 4; ++col){
+	    theP4HatErr(row, col) -= covCM(3, row) * covCM(3, col) / totalSigma2;
+	}
+    }
+    
+<b>    // Combine into the fitted p4 + error matrix:</b>
+    <a href=".././TBVariables.html#TBVariables:fP4Hat">fP4Hat</a> = <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a>(theP4Hat, theP4HatErr);
+    
+<b>    // Go on to calculate mHat:    </b>
+    const <a href="../ListOfTypes.html#Double_t">Double_t</a> mHat2 = Sqr(theP4Hat.T()) - theP4Hat.Vect().Mag2();
+    <a href=".././TBVariables.html#TBVariables:fMHat">fMHat</a> = 0;
+    <a href=".././TBVariables.html#TBVariables:fMHatErr">fMHatErr</a> = 0;
+    
+    if (mHat2 &lt; 0.0) {
+	<a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a> = <a href=".././TBVariables.html#TBVariables:BAD_BCAND">BAD_BCAND</a>;
+	return <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>;
+    }
+    
+    <a href=".././TBVariables.html#TBVariables:fMHat">fMHat</a> = BBV_CHECK_SQRT(mHat2);
+    if (<a href=".././TBVariables.html#TBVariables:SQRT_NEGATIVE">SQRT_NEGATIVE</a> == <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>) {
+	return <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>;
+    }
+    
+<b>    // And the error on mHat:</b>
+    if (0 &lt; <a href=".././TBVariables.html#TBVariables:fMHat">fMHat</a>){
+<b>	// The momentum part:</b>
+	const <a href="../ListOfTypes.html#Double_t">Double_t</a> mHatErrP = <a href="#TBVariables:MomErr">MomErr</a>(<a href=".././TBVariables.html#TBVariables:fP4Hat">fP4Hat</a>) * <a href="#TBVariables:PHat">PHat</a>() / <a href=".././TBVariables.html#TBVariables:fMHat">fMHat</a>;
+	
+<b>	// The energy part:</b>
+	const <a href="../ListOfTypes.html#Double_t">Double_t</a> mHatErrE2 = Sqr(<a href="#TBVariables:EHat">EHat</a>() / <a href=".././TBVariables.html#TBVariables:fMHat">fMHat</a>) * <a href=".././TBVariables.html#TBVariables:fP4Hat">fP4Hat</a>.<a href=".././TLorentzVectorErr.html#TLorentzVectorErr:CovMatrix">CovMatrix</a>()(3,3);
+	
+<b>	// The energy-momentum cross terms:</b>
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> mHatErrEP2 = 0.0;
+	for (<a href="../ListOfTypes.html#int">int</a> row = 0; row &lt; 3; ++row){
+	    mHatErrEP2 += <a href="#TBVariables:EHat">EHat</a>() * <a href=".././TBVariables.html#TBVariables:fP4Hat">fP4Hat</a>(row) * <a href=".././TBVariables.html#TBVariables:fP4Hat">fP4Hat</a>.<a href=".././TLorentzVectorErr.html#TLorentzVectorErr:CovMatrix">CovMatrix</a>()(3, row);
+	}
+	mHatErrEP2 *= -2.0 / Sqr(<a href=".././TBVariables.html#TBVariables:fMHat">fMHat</a>);
+	
+	const <a href="../ListOfTypes.html#Double_t">Double_t</a> mHatErr2 = Sqr(mHatErrP) + mHatErrE2 + mHatErrEP2;
+	<a href=".././TBVariables.html#TBVariables:fMHatErr">fMHatErr</a> = BBV_CHECK_SQRT(mHatErr2);
+	if (<a href=".././TBVariables.html#TBVariables:SQRT_NEGATIVE">SQRT_NEGATIVE</a> == <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>) {
+	    return <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>;
+	}
+    }
+    
+<b>    // Done:</b>
+    <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a> = <a href=".././TBVariables.html#TBVariables:GOOD">GOOD</a>;
+    return <a href=".././TBVariables.html#TBVariables:fStatus">fStatus</a>;
+}
+
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:MHat"> </a><a href=".././TBVariables.html#TBVariables:MHat">TBVariables::MHat</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fMHat">fMHat</a>;
+}
+			     
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:M_ES"> </a><a href=".././TBVariables.html#TBVariables:M_ES">TBVariables::M_ES</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fM_ES">fM_ES</a>;
+}
+			     
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:DeltaE"> </a><a href=".././TBVariables.html#TBVariables:DeltaE">TBVariables::DeltaE</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fDeltaE">fDeltaE</a>;
+}
+			     
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a>
+<a name="TBVariables:MHatErr"> </a><a href=".././TBVariables.html#TBVariables:MHatErr">TBVariables::MHatErr</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fMHatErr">fMHatErr</a>;
+}
+			     
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a>
+<a name="TBVariables:M_ESErr"> </a><a href=".././TBVariables.html#TBVariables:M_ESErr">TBVariables::M_ESErr</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fM_ESErr">fM_ESErr</a>;
+}
+			     
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a>
+<a name="TBVariables:DeltaEErr"> </a><a href=".././TBVariables.html#TBVariables:DeltaEErr">TBVariables::DeltaEErr</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fDeltaEErr">fDeltaEErr</a>;
+}
+			     
+<b>//--------------------------------------------------------------------</b>
+const <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a> &amp;
+<a name="TBVariables:P4"> </a><a href=".././TBVariables.html#TBVariables:P4">TBVariables::P4</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fP4">fP4</a>;
+}
+
+<b>//--------------------------------------------------------------------</b>
+const <a href=".././TLorentzVectorErr.html">TLorentzVectorErr</a> &amp;
+<a name="TBVariables:P4Hat"> </a><a href=".././TBVariables.html#TBVariables:P4Hat">TBVariables::P4Hat</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fP4Hat">fP4Hat</a>;
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:EHat"> </a><a href=".././TBVariables.html#TBVariables:EHat">TBVariables::EHat</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fP4Hat">fP4Hat</a>.T();
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a>
+<a name="TBVariables:EHatErr"> </a><a href=".././TBVariables.html#TBVariables:EHatErr">TBVariables::EHatErr</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fP4Hat">fP4Hat</a>.<a href=".././TLorentzVectorErr.html#TLorentzVectorErr:CovMatrix">CovMatrix</a>()(3,3);
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:EBeam"> </a><a href=".././TBVariables.html#TBVariables:EBeam">TBVariables::EBeam</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fEBeam">fEBeam</a>;
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a> 
+<a name="TBVariables:EBeamErr"> </a><a href=".././TBVariables.html#TBVariables:EBeamErr">TBVariables::EBeamErr</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fEBeamErr">fEBeamErr</a>;
+}
+
+<b>//--------------------------------------------------------------------</b>
+<a href="../ListOfTypes.html#Double_t">Double_t</a>
+<a name="TBVariables:UpsilonWidth"> </a><a href=".././TBVariables.html#TBVariables:UpsilonWidth">TBVariables::UpsilonWidth</a>() const {
+  return <a href=".././TBVariables.html#TBVariables:fUpsilonWidth">fUpsilonWidth</a>;
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

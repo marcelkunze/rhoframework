@@ -1,0 +1,346 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:54 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TFastCombiner - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: TFastCombiner.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//	Class <a href=".././TFastCombiner.html">TFastCombiner</a> - </b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Gautier Hamel de Monchenault</b>
+<b>//      Fernando Martinez-Vidal     </b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//      Copyright (C) 1999              Saclay &amp; Paris VI</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "RhoTools/TFastCombiner.h"
+#include &lt;assert.h&gt;
+#include &lt;math.h&gt;
+#include "TLorentzVector.h"
+#include "RhoBase/VAbsPidSelector.h"
+#include "RhoTools/TDecayMode.h"
+#include "RhoTools/TOpMakeTree.h"
+
+ClassImp(TFastCombiner)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TFastCombiner *&amp;obj)
+{
+   obj = (TFastCombiner *) buf.ReadObject(TFastCombiner::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TFastCombiner:TFastCombiner"> </a>TFastCombiner::TFastCombiner(TDecayMode&amp; mode, VAbsPidSelector* theSelector)
+: _theDecayMode( &amp;mode ), _theSelector( theSelector ), _sameLists( kFALSE ), 
+  _checkType( kTRUE ), _doWrongChargeOnly( kFALSE ),  _theIterator(0), _theList(0)
+{
+}
+
+<a name="TFastCombiner:TFastCombiner"> </a>TFastCombiner::TFastCombiner( TDecayMode&amp; mode,	
+				 TCandList* list0,
+				 TCandList* list1,
+				 TCandList* list2,
+				 TCandList* list3,
+				 TCandList* list4,
+				 TCandList* list5,
+				 VAbsPidSelector* theSelector)
+				 : _theDecayMode( &amp;mode ), _theSelector( theSelector ), _sameLists( kFALSE ), 
+				   _checkType( kTRUE ), _doWrongChargeOnly( kFALSE ), _theIterator(0), _theList(0)
+{
+    TList input;
+    if (list0!=0) input.Add(list0);
+    if (list1!=0) input.Add(list1);
+    if (list2!=0) input.Add(list2);
+    if (list3!=0) input.Add(list3);
+    if (list4!=0) input.Add(list4);
+    if (list5!=0) input.Add(list5);
+    Combine( input );
+}
+
+<a name="TFastCombiner:TFastCombiner"> </a>TFastCombiner::TFastCombiner( TDecayMode&amp; mode,	
+				 TList&amp; ll,VAbsPidSelector* theSelector)
+				 : _theDecayMode( &amp;mode ), _theSelector( theSelector ), 
+				   _checkType( kTRUE ), _sameLists( kFALSE ), _doWrongChargeOnly( kFALSE ), _theIterator(0)
+{
+    Combine( ll );
+}
+
+<a name="TFastCombiner:~TFastCombiner"> </a>TFastCombiner::~TFastCombiner() 
+{
+    Reset();
+}
+
+void 
+<a name="TFastCombiner:Reset"> </a>TFastCombiner::Reset()
+{
+    delete _theList;
+    _theList = 0;
+    delete _theIterator;
+    _theIterator=0;
+}
+
+void
+<a name="TFastCombiner:Combine"> </a>TFastCombiner::Combine( TList&amp; ll )
+{
+    if (_theList==0) _theList = new TCandList;
+
+    TCandidate* cand0=0;
+    TCandidate* cand1=0;
+    TCandidate* cand2=0;
+    TCandidate* cand3=0;
+    TCandidate* cand4=0;
+    TCandidate* cand5=0;
+    
+    Int_t nLists = ll.GetSize();
+    TCandList* candList0=0;
+    TCandList* candList1=0;
+    TCandList* candList2=0;
+    TCandList* candList3=0;
+    TCandList* candList4=0;
+    TCandList* candList5=0;
+    if( nLists&gt;0 ) {
+	candList0 = (TCandList*) ll.At(0);
+	_sameLists = kTRUE;
+    }
+    assert( candList0!=0 );
+    if( nLists&gt;1 ) {
+	candList1 = (TCandList*) ll.At(1);
+	_sameLists = _sameLists &amp;&amp; candList1==candList0;
+    }
+    if( nLists&gt;2 ) {
+	candList2 = (TCandList*) ll.At(2);
+	_sameLists = _sameLists &amp;&amp; candList2==candList1;
+    }
+    if( nLists&gt;3 ) {
+	candList3 = (TCandList*) ll.At(3);
+	_sameLists = _sameLists &amp;&amp; candList3==candList2;
+    }
+    if( nLists&gt;4 ) {
+	candList4 = (TCandList*) ll.At(4);
+	_sameLists = _sameLists &amp;&amp; candList4==candList3;
+    }
+    if( nLists&gt;5 ) {
+	candList5 = (TCandList*) ll.At(5);
+	_sameLists = _sameLists &amp;&amp; candList5==candList4;
+    }
+    
+    TCandListIterator iter0(*candList0);
+    while ( cand0 = iter0.Next() ) {
+	if (candList1 != 0) {
+	    TCandListIterator iter1(iter0);  
+	    if (candList1 != candList0) iter1 = TCandListIterator(*candList1);
+	    while ( cand1 = iter1.Next() ) {
+		if ( cand1-&gt;Overlaps(*cand0) ) continue;
+		if (candList2 != 0) {
+		    TCandListIterator iter2(iter1);  
+		    if (candList2 != candList1) iter2 = TCandListIterator(*candList2);
+		    while ( cand2 = iter2.Next() ) {
+			if ( cand2-&gt;Overlaps(*cand0) ) continue;
+			if ( cand2-&gt;Overlaps(*cand1) ) continue;
+			if (candList3 != 0) {
+			    TCandListIterator iter3(iter2);  
+			    if (candList3 != candList2) iter3 = TCandListIterator(*candList3);
+			    while ( cand3 = iter3.Next() ) {
+				if ( cand3-&gt;Overlaps(*cand0) ) continue;
+				if ( cand3-&gt;Overlaps(*cand1) ) continue;
+				if ( cand3-&gt;Overlaps(*cand2) ) continue;
+				if (candList4 != 0) {
+				    TCandListIterator iter4(iter3);  
+				    if (candList4 != candList3) iter4 = TCandListIterator(*candList4);
+				    while ( cand4 = iter4.Next() ) {
+					if ( cand4-&gt;Overlaps(*cand0) ) continue;
+					if ( cand4-&gt;Overlaps(*cand1) ) continue;
+					if ( cand4-&gt;Overlaps(*cand2) ) continue;
+					if ( cand4-&gt;Overlaps(*cand3) ) continue;
+					if (candList5 != 0) {
+					    TCandListIterator iter5(iter4);  
+					    if (candList5 != candList4) iter5 = TCandListIterator(*candList5);
+					    while ( cand5 = iter5.Next() ) {
+						if ( cand5-&gt;Overlaps(*cand0) ) continue;
+						if ( cand5-&gt;Overlaps(*cand1) ) continue;
+						if ( cand5-&gt;Overlaps(*cand2) ) continue;
+						if ( cand5-&gt;Overlaps(*cand3) ) continue;
+						if ( cand5-&gt;Overlaps(*cand4) ) continue;
+						Combination_(cand0,cand1,cand2,cand3,cand4,cand5);
+					    }
+					} else {
+					    Combination_(cand0,cand1,cand2,cand3,cand4);
+					}
+				    }
+				} else {
+				    Combination_(cand0,cand1,cand2,cand3);
+				}
+			    }
+			} else {
+			    Combination_(cand0,cand1,cand2);
+			}
+		    }
+		} else {
+		    Combination_(cand0,cand1);
+		}      
+	    }
+	} else {
+	    Combination_(cand0);
+	}
+    }
+
+    _theList-&gt;RemoveClones(); // Remove second order double counting entries
+}
+
+void 
+<a name="TFastCombiner:Combination_"> </a>TFastCombiner::Combination_( TCandidate* cand0, 
+			      TCandidate* cand1,
+			      TCandidate* cand2,
+			      TCandidate* cand3,
+			      TCandidate* cand4,
+			      TCandidate* cand5   )
+{
+    TLorentzVector m = cand0-&gt;P4();
+    double charge = cand0-&gt;Charge();
+    if (cand1!=0) { m+=cand1-&gt;P4(); charge+=cand1-&gt;Charge(); }
+    if (cand2!=0) { m+=cand2-&gt;P4(); charge+=cand2-&gt;Charge(); }
+    if (cand3!=0) { m+=cand3-&gt;P4(); charge+=cand3-&gt;Charge(); }
+    if (cand4!=0) { m+=cand4-&gt;P4(); charge+=cand4-&gt;Charge(); }
+    if (cand5!=0) { m+=cand5-&gt;P4(); charge+=cand5-&gt;Charge(); }
+    
+    if (!CheckChargeAndMass(m,charge,0.0,10.0)) return;
+    
+<b>    //</b>
+    assert( cand0!=0 );
+    TCandList theList;
+    theList.Append( *cand0 );
+    if (cand1!=0) theList.Append( *cand1 );
+    if (cand2!=0) theList.Append( *cand2 );
+    if (cand3!=0) theList.Append( *cand3 );
+    if (cand4!=0) theList.Append( *cand4 );
+    if (cand5!=0) theList.Append( *cand5 );
+ 
+<b>    // Check the daughter types</b>
+    if (<a href=".././TFastCombiner.html#TFastCombiner:_checkType">_checkType</a>) {
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> nOK = 0;
+	TCandListIterator iter(theList);
+	TCandidate *c;
+	while (c=iter.<a href="#TFastCombiner:Next">Next</a>()) {
+	    TIter daug = <a href=".././TFastCombiner.html#TFastCombiner:_theDecayMode">_theDecayMode</a>-&gt;<a href=".././TDecayMode.html#TDecayMode:DaughterIterator">DaughterIterator</a>();		
+	    TParticlePDG* d;
+	    while (d=(TParticlePDG*)daug.<a href="#TFastCombiner:Next">Next</a>()) {
+		const TParticlePDG* cand = c-&gt;PdtEntry();
+		if (d==cand) nOK++;
+	    }
+	}
+
+	if (nOK != <a href=".././TFastCombiner.html#TFastCombiner:_theDecayMode">_theDecayMode</a>-&gt;<a href=".././TDecayMode.html#TDecayMode:NDaughters">NDaughters</a>()) return;
+    }
+
+<b>    // build the candidate</b>
+    TCandListIterator listIter( theList );
+    <a href=".././TOpMakeTree.html">TOpMakeTree</a> comb;
+    TCandidate* tempCand = comb.CreateFromList( listIter );
+
+    if (<a href=".././TFastCombiner.html#TFastCombiner:_theSelector">_theSelector</a>!=0)
+	if (!<a href=".././TFastCombiner.html#TFastCombiner:_theSelector">_theSelector</a>-&gt;Accept(*tempCand)) { return; }
+
+<b>    // check if the charge is correct</b>
+    if (<a href=".././TFastCombiner.html#TFastCombiner:_doWrongChargeOnly">_doWrongChargeOnly</a>) 
+    {
+<b>	// add to the list</b>
+	<a href=".././TFastCombiner.html#TFastCombiner:_theList">_theList</a>-&gt;Append( *tempCand );
+    }
+    else
+    {
+
+	if ( TMath::Abs( tempCand-&gt;Charge() ) == TMath::Abs(<a href=".././TFastCombiner.html#TFastCombiner:_theDecayMode">_theDecayMode</a>-&gt;<a href=".././TDecayMode.html#TDecayMode:Mother">Mother</a>()-&gt;Charge()) ) 
+	{ 
+	    if ( tempCand-&gt;Charge() == <a href=".././TFastCombiner.html#TFastCombiner:_theDecayMode">_theDecayMode</a>-&gt;<a href=".././TDecayMode.html#TDecayMode:Mother">Mother</a>()-&gt;Charge() ) 
+		tempCand-&gt;SetType(<a href=".././TFastCombiner.html#TFastCombiner:_theDecayMode">_theDecayMode</a>-&gt;<a href=".././TDecayMode.html#TDecayMode:Mother">Mother</a>());
+	    else
+		tempCand-&gt;SetType(<a href=".././TFastCombiner.html#TFastCombiner:_theDecayMode">_theDecayMode</a>-&gt;<a href=".././TDecayMode.html#TDecayMode:Mother">Mother</a>(kTRUE));        
+<b>	    // add to the list</b>
+	    <a href=".././TFastCombiner.html#TFastCombiner:_theList">_theList</a>-&gt;Append( *tempCand );
+	}
+    }
+}
+
+
+
+TCandidate*
+<a name="TFastCombiner:Next"> </a><a href=".././TFastCombiner.html#TFastCombiner:Next">TFastCombiner::Next</a>()
+{
+    if( <a href=".././TFastCombiner.html#TFastCombiner:_theIterator">_theIterator</a>==0 ) 
+	<a href=".././TFastCombiner.html#TFastCombiner:_theIterator">_theIterator</a> = new TCandListIterator( *<a href=".././TFastCombiner.html#TFastCombiner:_theList">_theList</a> );
+    return <a href=".././TFastCombiner.html#TFastCombiner:_theIterator">_theIterator</a>-&gt;Next();
+}
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TFastCombiner:Rewind"> </a><a href=".././TFastCombiner.html#TFastCombiner:Rewind">TFastCombiner::Rewind</a>()
+{
+    delete <a href=".././TFastCombiner.html#TFastCombiner:_theIterator">_theIterator</a>;
+    <a href=".././TFastCombiner.html#TFastCombiner:_theIterator">_theIterator</a> = new TCandListIterator( *<a href=".././TFastCombiner.html#TFastCombiner:_theList">_theList</a> );
+}
+
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="TFastCombiner:CheckChargeAndMass"> </a><a href=".././TFastCombiner.html#TFastCombiner:CheckChargeAndMass">TFastCombiner::CheckChargeAndMass</a>(const TLorentzVector&amp; pQ, <a href="../ListOfTypes.html#double">double</a> charge,
+				    <a href="../ListOfTypes.html#double">double</a> lowMass, <a href="../ListOfTypes.html#double">double</a> hiMass)
+{
+<b>    // check charge</b>
+    <a href="../ListOfTypes.html#int">int</a> decayModeCharge = <a href="../ListOfTypes.html#int">int</a>(<a href=".././TFastCombiner.html#TFastCombiner:_theDecayMode">_theDecayMode</a>-&gt;<a href=".././TDecayMode.html#TDecayMode:Mother">Mother</a>()-&gt;Charge());
+    if (<a href=".././TFastCombiner.html#TFastCombiner:_doWrongChargeOnly">_doWrongChargeOnly</a>) 
+    {
+	if (charge == decayModeCharge) return kFALSE;
+    }
+    else
+    {
+	if (TMath::Abs(charge) != TMath::Abs(decayModeCharge)) return kFALSE;
+    }
+    
+<b>    // check mass</b>
+    <a href="../ListOfTypes.html#double">double</a> mass = pQ.M();
+    if (mass&lt;lowMass || mass&gt;hiMass) return kFALSE;
+    
+    return kTRUE;
+}
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

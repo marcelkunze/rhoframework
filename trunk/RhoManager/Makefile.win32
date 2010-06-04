@@ -1,0 +1,198 @@
+# Makefile for WIN32
+PACKAGE  = RhoManager
+COMPILER = cl
+
+ObjSuf        = obj
+SrcSuf        = cxx
+ExeSuf        = .exe
+DllSuf        = dll
+OutPutOpt     = /out:
+ 
+# Win32 system with Microsoft Visual C/C++
+!include <win32.mak>
+CC            = $(COMPILER)
+CXX           = $(COMPILER)
+CXXFLAGS      =  -DANSISTREAM $(cvarsdll) -EHsc -nologo -GR -MDd \
+                -DWIN32 -I.. -I$(ROOTSYS)/include
+
+LD            = $(link)
+LDFLAGS       = $(conlflags)
+LDDEBUG       = -DEBUG -PDB:$*.pdb
+SOFLAGS       = -DLL $(LDDEBUG)
+
+ROOTLIBS      = $(ROOTSYS)\lib\libCint.lib \
+				$(ROOTSYS)\lib\libCore.lib \
+				$(ROOTSYS)\lib\libEG.lib \
+				$(ROOTSYS)\lib\libHist.lib \
+				$(ROOTSYS)\lib\libMatrix.lib \
+				$(ROOTSYS)\lib\libPhysics.lib \
+				$(ROOTSYS)\lib\libTree.lib \
+				$(ROOTSYS)\lib\libTreePlayer.lib \
+				$(ROOTSYS)\lib\libGraf3D.lib \
+                                $(ROOTSYS)\lib\libWin32gdk.lib \
+                                $(ROOTSYS)\lib\libRIO.lib
+
+LIBS          = ../lib/RhoBase.lib \
+				../lib/RhoConditions.lib \
+				../lib/RhoTools.lib \
+				../lib/RhoMath.lib \
+				../lib/RhoHistogram.lib \
+				../lib/PAFSchema.lib \
+				../lib/KangaSchema.lib \
+                                $(ROOTLIBS) $(guilibsdll)
+LIBSALL       = $(ROOTLIBS)
+LIBRARY       = $(PACKAGE).lib
+ 
+ 
+#------------------------------------------------------------------------------
+ 
+HEADERS =	TModule.h \
+			TAnalysis.h \
+			TEventManager.h \
+			TEventWriter.h \
+			TDirectoryManager.h \
+			TPersistenceManager.h \
+			TCandListManager.h \
+			TObjectManager.h \
+			TCacheManager.h \
+			TParameterManager.h \
+			TAssociator.h \
+			TDataBlock.h \
+			TEventBlock.h \
+			TFileInfo.h \
+			TLogInfo.h \
+			TLogReader.h \
+			TRunDB.h \
+			TRunInfo.h \
+			TEventCollection.h \
+			TIndexCollection.h \
+			TRunCollection.h
+
+ 
+OBJECTS	=	$(PACKAGE)Cint.$(ObjSuf) \
+			TModule.$(ObjSuf) \
+			TAnalysis.$(ObjSuf) \
+			TParameterManager.$(ObjSuf) \
+			TCandListManager.$(ObjSuf) \
+			TObjectManager.$(ObjSuf) \
+			TCacheManager.$(ObjSuf) \
+			TEventManager.$(ObjSuf) \
+			TEventWriter.$(ObjSuf) \
+			TDirectoryManager.$(ObjSuf) \
+			TPersistenceManager.$(ObjSuf) \
+			TAssociator.$(ObjSuf) \
+			TDataBlock.$(ObjSuf) \
+			TEventBlock.$(ObjSuf) \
+			TFileInfo.$(ObjSuf) \
+			TLogInfo.$(ObjSuf) \
+			TLogReader.$(ObjSuf) \
+			TRunDB.$(ObjSuf) \
+			TRunInfo.$(ObjSuf) \
+			TEventCollection.$(ObjSuf) \
+			TIndexCollection.$(ObjSuf) \
+			TRunCollection.$(ObjSuf)	
+ 
+SHLIB	=	$(PACKAGE).$(DllSuf)
+ 
+PROGRAMS	= 
+ 
+all: $(SHLIB)
+
+lib: $(OBJECTS)
+	BINDEXPLIB  $(PACKAGE) $(OBJECTS) > $(PACKAGE).def
+	lib /nologo /MACHINE:IX86 $(OBJECTS) /def:$(PACKAGE).def $(OutPutOpt)$(LIBRARY)	
+	copy $(LIBRARY) ..\lib
+ 
+$(SHLIB): $(OBJECTS)
+	BINDEXPLIB  $* $(OBJECTS) > $*.def
+	lib /nologo /MACHINE:IX86 $(OBJECTS) /def:$*.def      $(OutPutOpt)$(LIBRARY)
+	$(LD) $(SOFLAGS) $(OBJECTS) $*.exp $(LIBS) $(OutPutOpt)$(SHLIB)
+	mt.exe -manifest $(SHLIB).manifest -outputresource:$(SHLIB);2
+	copy $(LIBRARY) ..\lib
+	copy $(SHLIB) ..\lib
+	copy $(PACKAGE).pdb ..\lib
+ 
+ 
+clean:
+	@del $(OBJECTS) *.pdb $(PACKAGE)Cint.* $(PACKAGE).lib $(PACKAGE).dll $(PACKAGE).def $(PACKAGE).exp $(PACKAGE).pdb
+ 
+###
+
+$(PACKAGE)Cint.$(SrcSuf): $(HEADERS) $(PACKAGE)_LinkDef.h
+	@echo "Generating dictionary ..."
+	@$(ROOTSYS)\bin\rootcint -f $(PACKAGE)Cint.$(SrcSuf) -c -I.. $(HEADERS) $(PACKAGE)_LinkDef.h
+ 
+.$(SrcSuf).$(ObjSuf):
+	$(CXX) $(CXXFLAGS) -c $<
+ 
+# Dependencies
+
+$(PACKAGE)Cint.$(ObjSuf): $(PACKAGE)Cint.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) -c $(PACKAGE)Cint.$(SrcSuf)
+
+TAnalysis.$(ObjSuf): TAnalysis.$(SrcSuf) TAnalysis.h
+	$(CXX) $(CXXFLAGS) -c TAnalysis.$(SrcSuf)
+
+TModule.$(ObjSuf): TModule.$(SrcSuf) TModule.h
+	$(CXX) $(CXXFLAGS) -c TModule.$(SrcSuf)
+
+TQuery.$(ObjSuf): TQuery.$(SrcSuf) TQuery.h
+	$(CXX) $(CXXFLAGS) -c TQuery.$(SrcSuf)
+
+TEventManager.$(ObjSuf): TEventManager.$(SrcSuf) TEventManager.h
+	$(CXX) $(CXXFLAGS) -c TEventManager.$(SrcSuf)
+
+TEventWriter.$(ObjSuf): TEventWriter.$(SrcSuf) TEventWriter.h
+	$(CXX) $(CXXFLAGS) -c TEventWriter.$(SrcSuf)
+
+TDirectoryManager.$(ObjSuf): TDirectoryManager.$(SrcSuf) TDirectoryManager.h
+	$(CXX) $(CXXFLAGS) -c TDirectoryManager.$(SrcSuf)
+
+TPersistenceManager.$(ObjSuf): TPersistenceManager.$(SrcSuf) TPersistenceManager.h
+	$(CXX) $(CXXFLAGS) -c TPersistenceManager.$(SrcSuf)
+
+TCandListManager.$(ObjSuf): TCandListManager.$(SrcSuf) TCandListManager.h
+	$(CXX) $(CXXFLAGS) -c TCandListManager.$(SrcSuf)
+
+TObjectManager.$(ObjSuf): TObjectManager.$(SrcSuf) TObjectManager.h
+	$(CXX) $(CXXFLAGS) -c TObjectManager.$(SrcSuf)
+
+TCacheManager.$(ObjSuf): TCacheManager.$(SrcSuf) TCacheManager.h
+	$(CXX) $(CXXFLAGS) -c TCacheManager.$(SrcSuf)
+
+TParameterManager.$(ObjSuf): TParameterManager.$(SrcSuf) TParameterManager.h
+	$(CXX) $(CXXFLAGS) -c TParameterManager.$(SrcSuf)
+
+TAssociator.$(ObjSuf): TAssociator.$(SrcSuf) TAssociator.h
+	$(CXX) $(CXXFLAGS) -c TAssociator.$(SrcSuf)
+
+TDataBlock.$(ObjSuf): TDataBlock.$(SrcSuf) TDataBlock.h
+	$(CXX) $(CXXFLAGS) -c TDataBlock.$(SrcSuf)
+
+TEventBlock.$(ObjSuf): TEventBlock.$(SrcSuf) TEventBlock.h
+	$(CXX) $(CXXFLAGS) -c TEventBlock.$(SrcSuf)
+
+TFileInfo.$(ObjSuf): TFileInfo.$(SrcSuf) TFileInfo.h
+	$(CXX) $(CXXFLAGS) -c TFileInfo.$(SrcSuf)
+
+TLogInfo.$(ObjSuf): TLogInfo.$(SrcSuf) TLogInfo.h
+	$(CXX) $(CXXFLAGS) -c TLogInfo.$(SrcSuf)
+
+TLogReader.$(ObjSuf): TLogReader.$(SrcSuf) TLogReader.h
+	$(CXX) $(CXXFLAGS) -c TLogReader.$(SrcSuf)
+
+TRunDB.$(ObjSuf): TRunDB.$(SrcSuf) TRunDB.h
+	$(CXX) $(CXXFLAGS) -c TRunDB.$(SrcSuf)
+
+TRunInfo.$(ObjSuf): TRunInfo.$(SrcSuf) TRunInfo.h
+	$(CXX) $(CXXFLAGS) -c TRunInfo.$(SrcSuf)
+
+TEventCollection.$(ObjSuf): TEventCollection.$(SrcSuf) TEventCollection.h
+	$(CXX) $(CXXFLAGS) -c TEventCollection.$(SrcSuf)
+
+TIndexCollection.$(ObjSuf): TIndexCollection.$(SrcSuf) TIndexCollection.h
+	$(CXX) $(CXXFLAGS) -c TIndexCollection.$(SrcSuf)
+
+TRunCollection.$(ObjSuf): TRunCollection.$(SrcSuf) TRunCollection.h
+	$(CXX) $(CXXFLAGS) -c TRunCollection.$(SrcSuf)
+

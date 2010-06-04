@@ -1,0 +1,70 @@
+### Directory and Executable Names ###########
+EXADIR     = RhoExamples
+OBJDIR     = tmp
+BINDIR     = bin
+
+################################################################################################
+		
+all: SUBS
+
+exam:
+	cd RhoExamples
+	make -f GNUmakefile.Linux
+
+######  Targets ###############################
+
+SUBS:
+	cd ./RhoNNO; make -f GNUmakefile.Linux
+#	cd ./RhoGA; make -f GNUmakefile.Linux
+	cd ./RhoMath; make -f GNUmakefile.Linux
+	cd ./RhoBase; make -f GNUmakefile.Linux
+	cd ./RhoConditions; make -f GNUmakefile.Linux
+	cd ./RhoTools; make -f GNUmakefile.Linux
+	cd ./RhoHistogram; make -f GNUmakefile.Linux
+	cd ./PAFSchema; make -f GNUmakefile.Linux
+	cd ./KangaSchema; make -f GNUmakefile.Linux
+	cd ./RhoManager; make -f GNUmakefile.Linux
+	cd ./RhoSelector; make -f GNUmakefile.Linux
+	cd ./RhoExamples; make -f GNUmakefile.Linux
+	cd ./PAFDisplay; make -f GNUmakefile.Linux
+	  
+
+cleanall:
+	cd ./lib; rm *.a *.so
+	cd ./RhoNNO; make -f GNUmakefile.Linux clean
+	cd ./RhoGA; make -f GNUmakefile.Linux clean
+	cd ./RhoMath; make -f GNUmakefile.Linux clean
+	cd ./RhoBase; make -f GNUmakefile.Linux clean
+	cd ./RhoConditions; make -f GNUmakefile.Linux clean
+	cd ./RhoTools; make -f GNUmakefile.Linux clean
+	cd ./RhoHistogram; make -f GNUmakefile.Linux clean
+	cd ./PAFSchema; make -f GNUmakefile.Linux clean
+	cd ./KangaSchema; make -f GNUmakefile.Linux clean
+	cd ./RhoManager; make -f GNUmakefile.Linux clean
+	cd ./RhoSelector; make -f GNUmakefile.Linux clean
+	cd ./RhoExamples; make -f GNUmakefile.Linux clean
+	cd ./PAFDisplay; make -f GNUmakefile.Linux clean
+
+documentation:
+#	mkdir tmp
+	cd RhoNNO; cp *.cxx ../tmp; cp *.h ../tmp
+	cd RhoMath; cp *.cxx ../tmp; cp *.h ../tmp
+	cd RhoBase; cp *.cxx tmp; cp *.h ../tmp
+	cd RhoConditions; cp *.cxx ../tmp; cp *.h ../tmp
+	cd RhoTools; cp *.cxx ../tmp; cp *.h ../tmp
+	cd RhoHistogram; cp *.cxx ../tmp; cp *.h ../tmp
+	cd RhoManager; cp *.cxx ../tmp; cp *.h ../tmp
+	cd RhoSelector; cp *.cxx ../tmp; cp *.h ../tmp
+	cd PAFSchema; cp *.cxx ../tmp; cp *.h ../tmp
+	cd KangaSchema; cp *.cxx ../tmp; cp *.h ../tmp
+
+	root -b RhoMacros\documentation.C
+
+#######################################
+###     Complete Cleanup            ###
+#######################################
+		
+clean :
+	rm $(BINDIR)/*
+	rm $(EXADIR)/*.o
+

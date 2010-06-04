@@ -1,0 +1,548 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:25 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TSGCS - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//									//</b>
+<b>// <a href=".././TSGCS.html">TSGCS</a>								//</b>
+<b>//									//</b>
+<b>// Implementation of the SUPERVISED-GROWING-CELL-STRUCTURE (SGCS)	//</b>
+<b>// Part of the Neural Network Objects package (NNO)			//</b>
+<b>//									//</b>
+<b>// Author List:								//</b>
+<b>// Johannes Steffens, Bochum University					//</b>
+<b>// M.Kunze, Bochum University						//</b>
+<b>// (C) Copyright Johannes Steffens 1995, Ruhr-University Bochum.	//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include &lt;stdlib.h&gt;
+#include &lt;math.h&gt;
+#include &lt;float.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdarg.h&gt;
+#include "RhoNNO/TSGCS.h"
+#include "RhoNNO/VNeuralNetPlotter.h"
+
+ClassImp(TSGCS)
+
+<b>//cell states</b>
+#define REMOVE 1
+
+<a name="TSGCS:TSGCS"> </a>TSGCS::TSGCS(Int_t innodes,
+	     Int_t cells,
+	     Int_t outnodes,
+	     Int_t maxCells,
+	     Double_t winStep,
+	     Double_t neiStep,
+	     Double_t neuStep,
+	     Double_t aErrCount,
+	     Double_t bSDev,
+	     Int_t connectors,
+	     Long_t insertStep,
+	     Long_t deleteStep,
+	     const char* netFile)
+	     : VSupervisedNet("SGCS",innodes,outnodes,netFile) 
+{
+    fXB.fWinStep	= winStep;
+    fXB.fNeiStep	= neiStep;
+    fXB.fNeuStep	= neuStep;
+    fXB.fErrCount	= aErrCount;
+    fXB.fNeiCount	= bSDev;
+    fXB.fCells	= cells;
+    fXB.fMinCells	= cells;
+    fXB.fMaxCells	= maxCells;
+    fXB.fConnectors	= connectors;
+    fXB.fInsertStep	= insertStep;
+    fXB.fDeleteStep	= deleteStep;
+    fXB.fInsertCount	= 0;
+    fXB.fDeleteCount	= 0;
+    fU = 0;
+    AllocNet();
+    InitNet();
+}
+
+<b>// copy constructor</b>
+<a name="TSGCS:TSGCS"> </a><a href=".././TSGCS.html#TSGCS:TSGCS">TSGCS::TSGCS</a>(const <a href=".././TSGCS.html">TSGCS</a>&amp; sgcs,const <a href="../ListOfTypes.html#char">char</a>* netFile)
+: <a href=".././VSupervisedNet.html">VSupervisedNet</a>("SGCS",sgcs.<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes,sgcs.<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes,netFile) 
+{
+    <a href=".././TSGCS.html#TSGCS:fXB">fXB</a> = sgcs.<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>;
+    <a href=".././TSGCS.html#TSGCS:fU">fU</a>  = 0;
+    <a href="#TSGCS:AllocNet">AllocNet</a>();
+    <a href="#TSGCS:InitNet">InitNet</a>();
+    <a href="#TSGCS:CopyData">CopyData</a>(sgcs);
+}
+
+<a name="TSGCS:~TSGCS"> </a><a href=".././TSGCS.html">TSGCS</a>::~<a href=".././TSGCS.html">TSGCS</a>() 
+{
+    if (<a href=".././VNeuralNet.html#VNeuralNet:fFilename">fFilename</a>!="") if (<a href=".././VNeuralNet.html#VNeuralNet:fShouldSave">fShouldSave</a>) Save();
+    if (<a href=".././TSGCS.html#TSGCS:fU">fU</a>!=0) {
+	<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up = <a href=".././TSGCS.html#TSGCS:fU">fU</a>;
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+	for (I=0;I&lt;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fMaxCells;++I) {
+	    delete[] up-&gt;fVector;
+	    delete[] up-&gt;fWeight;
+	    delete[] up-&gt;fDiff;
+	    delete[] up-&gt;fC;
+	    ++up;
+	}
+	delete[] <a href=".././TSGCS.html#TSGCS:fU">fU</a>;
+    }
+}
+
+<a name="TSGCS:ReadBinary"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TSGCS.html#TSGCS:ReadBinary">TSGCS::ReadBinary</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href=".././TSGCS.html#TSGCS:fU">fU</a> = 0;
+    fread(&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>,sizeof(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>),1,<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>);
+    <a href="#TSGCS:AllocNet">AllocNet</a>();
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) {
+        <a href=".././TNeuralNetCell.html#TNeuralNetCell:ReadUnitBinary">TNeuralNetCell::ReadUnitBinary</a>(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)up,&amp;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>);
+	fread(up-&gt;fWeight,sizeof(<a href="../ListOfTypes.html#Double_t">Double_t</a>),<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes,<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>);
+	for (I=0;I&lt;up-&gt;fNc;++I) up-&gt;fC[I].fPtr=&amp;<a href=".././TSGCS.html#TSGCS:fU">fU</a>[up-&gt;fC[I].fID];
+    }
+}
+
+<a name="TSGCS:ReadText"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TSGCS.html#TSGCS:ReadText">TSGCS::ReadText</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href=".././TSGCS.html#TSGCS:fU">fU</a> = 0;
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"win_step    %len",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fWinStep);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"nei_step    %len",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fNeiStep);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"neu_step    %len",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fNeuStep);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"a_err_count %len",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fErrCount);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"b_s_dev     %len",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fNeiCount);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"cells       %in",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"min_cells   %in",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fMinCells);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"max_cells   %in",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fMaxCells);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"connectors  %in",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fConnectors);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"insert_step %lin",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fInsertStep);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"delete_step %lin",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fDeleteStep);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"ins_count   %lin",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fInsertCount);
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"del_count   %lin",&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fDeleteCount);
+    
+    <a href="#TSGCS:AllocNet">AllocNet</a>();
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) {
+	<a href=".././TNeuralNetCell.html#TNeuralNetCell:ReadUnitText">TNeuralNetCell::ReadUnitText</a>(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)up,&amp;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>);
+	fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"nweights\n");
+	for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes;++I) fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"%le",&amp;up-&gt;fWeight[I]);
+	fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"n");
+	for (I=0;I&lt;up-&gt;fNc;++I) up-&gt;fC[I].fPtr=&amp;<a href=".././TSGCS.html#TSGCS:fU">fU</a>[up-&gt;fC[I].fID];
+    }
+}
+
+<a name="TSGCS:WriteBinary"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TSGCS.html#TSGCS:WriteBinary">TSGCS::WriteBinary</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    fwrite(&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>,sizeof(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>),1,<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>);
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) {
+	<a href=".././TNeuralNetCell.html#TNeuralNetCell:WriteUnitBinary">TNeuralNetCell::WriteUnitBinary</a>(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)up,&amp;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>);
+	fwrite(up-&gt;fWeight,sizeof(<a href="../ListOfTypes.html#Double_t">Double_t</a>),<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes,<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>);
+    }
+}
+
+<a name="TSGCS:WriteText"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TSGCS.html#TSGCS:WriteText">TSGCS::WriteText</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"win_step    %len",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fWinStep);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"nei_step    %len",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fNeiStep);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"neu_step    %len",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fNeuStep);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"a_err_count %len",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fErrCount);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"b_s_dev     %len",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fNeiCount);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"cells       %in",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"min_cells   %in",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fMinCells);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"max_cells   %in",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fMaxCells);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"connectors  %in",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fConnectors);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"insert_step %lin",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fInsertStep);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"delete_step %lin",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fDeleteStep);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"ins_count   %lin",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fInsertCount);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"del_count   %lin",<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fDeleteCount);
+    
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) {
+	<a href=".././TNeuralNetCell.html#TNeuralNetCell:WriteUnitText">TNeuralNetCell::WriteUnitText</a>(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)up,&amp;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>);
+	fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"nweights\n");
+	for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes;++I) fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"%len",up-&gt;fWeight[I]);
+	fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"n");
+    }
+}
+
+<a name="TSGCS:AllocNet"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TSGCS.html#TSGCS:AllocNet">TSGCS::AllocNet</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+    <a href=".././TSGCS.html#TSGCS:fU">fU</a> = new <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>[<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fMaxCells]; TestPointer(<a href=".././TSGCS.html#TSGCS:fU">fU</a>);
+    <a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a> = &amp;<a href=".././TSGCS.html#TSGCS:fU">fU</a>[<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells];
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up = <a href=".././TSGCS.html#TSGCS:fU">fU</a>;
+    for (I=0;I&lt;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fMaxCells;++I) {
+	up-&gt;fVector	= new <a href="../ListOfTypes.html#Double_t">Double_t</a>[<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes];  TestPointer(up-&gt;fVector);
+	up-&gt;fWeight	= new <a href="../ListOfTypes.html#Double_t">Double_t</a>[<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes]; TestPointer(up-&gt;fWeight);
+	up-&gt;fDiff	= new <a href="../ListOfTypes.html#Double_t">Double_t</a>[<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes];  TestPointer(up-&gt;fDiff);
+	up-&gt;fC		= new connector[<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fConnectors]; TestPointer(up-&gt;fC);
+	up-&gt;fNc		= 0;
+	up-&gt;fChi2	= 0;
+	up-&gt;fCount	= 0;
+	up-&gt;<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>	= 0;
+	up-&gt;fID		= I;
+	up-&gt;fState	= 0;
+	++up;
+    }
+}
+
+<a name="TSGCS:InitNet"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TSGCS.html#TSGCS:InitNet">TSGCS::InitNet</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I,J;
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) {
+	for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++J) up-&gt;fVector[J]=Random();
+	for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes;++J) up-&gt;fWeight[J]=Random();
+	up-&gt;fNc=0;
+	for (J=0;J&lt;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells;++J) 
+	    if (&amp;<a href=".././TSGCS.html#TSGCS:fU">fU</a>[J]!=up) up-&gt;fC[up-&gt;fNc++].fPtr = &amp;<a href=".././TSGCS.html#TSGCS:fU">fU</a>[J];
+    }
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) {
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> s_dist;
+	up-&gt;fChi2 = 0.0;
+	for (J=0;J&lt;up-&gt;fNc;++J) {
+	    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* unei=(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)up-&gt;fC[J].fPtr;
+	    s_dist = 0.0;
+	    for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++I) { 
+		<a href="../ListOfTypes.html#Double_t">Double_t</a> diff = up-&gt;fVector[I]-unei-&gt;fVector[I]; 
+		s_dist += diff*diff;
+	    }
+
+	    up-&gt;fChi2 += s_dist;
+	}
+
+	up-&gt;fChi2 /= up-&gt;fNc;
+    }
+}
+
+<a name="TSGCS:CopyData"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TSGCS.html#TSGCS:CopyData">TSGCS::CopyData</a>(const <a href=".././TSGCS.html">TSGCS</a>&amp; sgcs) 
+{
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* thisup = <a href=".././TSGCS.html#TSGCS:fU">fU</a>;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* fromup = sgcs.<a href=".././TSGCS.html#TSGCS:fU">fU</a>;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I,J;
+    
+<b>    //check integrity</b>
+    if (<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes    !=sgcs.<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes)     Errorf("cannot copy data; innodes not identical");
+    if (<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes   !=sgcs.<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes)    Errorf("cannot copy data; outnodes not identical");
+    if (<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fConnectors&lt; sgcs.<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fConnectors) Errorf("cannot copy data; max connectors too low");
+    if (<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fMaxCells  &lt; sgcs.<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells )     Errorf("cannot copy data; not enough cells availiable");
+    
+    <a href=".././TSGCS.html#TSGCS:fXB">fXB</a> = sgcs.<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>;
+    <a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a> = &amp;<a href=".././TSGCS.html#TSGCS:fU">fU</a>[<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells];
+    for (I=0;I&lt;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells;++I) {
+	memcpy(thisup-&gt;fVector,fromup-&gt;fVector,sizeof(<a href="../ListOfTypes.html#Double_t">Double_t</a>)*<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes);
+	memcpy(thisup-&gt;fWeight,fromup-&gt;fWeight,sizeof(<a href="../ListOfTypes.html#Double_t">Double_t</a>)*<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes);
+	thisup-&gt;fNc = fromup-&gt;fNc;
+	for (J=0;J&lt;thisup-&gt;fNc;++J) 
+	    thisup-&gt;fC[J].fPtr = &amp;<a href=".././TSGCS.html#TSGCS:fU">fU</a>[((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)(fromup-&gt;fC[J].fPtr))-&gt;fID];
+	thisup-&gt;fCount = fromup-&gt;fCount;
+	++thisup;
+	++fromup;
+    }
+}
+
+<a name="TSGCS:Recall"> </a><a href="../ListOfTypes.html#Double_t">Double_t</a>* <a href=".././TSGCS.html#TSGCS:Recall">TSGCS::Recall</a>(<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in,<a href="../ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out) 
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I,J;
+<b>    //get distance of all cells: performed in the learnstep before</b>
+<b>    //compute deviation for all cells: dito</b>
+    
+<b>    //make output of all cells and get the winner</b>
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> s_dist;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> sum_out = 0.0;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> min_s_dist = DBL_MAX;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up){
+	<a href="../ListOfTypes.html#Double_t">Double_t</a>* v = up-&gt;fVector;
+	<a href="../ListOfTypes.html#Double_t">Double_t</a>* d = up-&gt;fDiff;
+	<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* i = in;
+	s_dist = 0.0;
+	for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++I) { 
+	    *d = *i++ - *v++; 
+	    s_dist += *d * *d; 
+	    ++d;
+	}
+	up-&gt;<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a> = exp(-s_dist/up-&gt;fChi2);
+	sum_out += up-&gt;<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>;
+	if (s_dist&lt;min_s_dist) {
+	    min_s_dist = s_dist; 
+	    <a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a> = up;
+	}
+    }
+    for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes;++J) <a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>[J] = 0.0;
+    if (sum_out&gt;0) {
+	for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) {
+	    up-&gt;<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a> /= sum_out;
+	    for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes;++J) 
+		<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>[J] += up-&gt;<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a> * up-&gt;fWeight[J];
+	}
+    }
+
+    if (<a href=".././VNeuralNet.html#VNeuralNet:fPlotter">fPlotter</a>) {
+	<a href="../ListOfTypes.html#Bool_t">Bool_t</a> good = kTRUE;
+	if (out!=0) good = out[0]&gt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fThreshold;
+	<a href=".././VNeuralNet.html#VNeuralNet:fPlotter">fPlotter</a>-&gt;<a href=".././VNeuralNetPlotter.html#VNeuralNetPlotter:AddTestSample">AddTestSample</a>(<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>[0],good);
+    }
+
+    return <a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>;
+}
+
+
+<a name="TSGCS:Train"> </a><a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././TSGCS.html#TSGCS:Train">TSGCS::Train</a>(<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in,<a href="../ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>* out) 
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I,J;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> S_Err;
+
+<b>    // Recall</b>
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> s_dist;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> sum_out = 0.0;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> min_s_dist = DBL_MAX;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up){
+	<a href="../ListOfTypes.html#Double_t">Double_t</a>* v = up-&gt;fVector;
+	<a href="../ListOfTypes.html#Double_t">Double_t</a>* d = up-&gt;fDiff;
+	<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* i = in;
+	s_dist = 0.0;
+	for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++I) { 
+	    *d = *i++ - *v++; 
+	    s_dist += *d * *d; 
+	    ++d;
+	}
+	up-&gt;<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a> = exp(-s_dist/up-&gt;fChi2);
+	sum_out += up-&gt;<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>;
+	if (s_dist&lt;min_s_dist) {
+	    min_s_dist = s_dist; 
+	    <a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a> = up;
+	}
+    }
+    for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes;++J) <a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>[J] = 0.0;
+    if (sum_out&gt;0) {
+	for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) {
+	    up-&gt;<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a> /= sum_out;
+	    for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes;++J) 
+		<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>[J] += up-&gt;<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a> * up-&gt;fWeight[J];
+	}
+    }
+
+<b>    // Weights update</b>
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* unei;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a>* vwin = <a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a>-&gt;fVector;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a>* dwin = <a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a>-&gt;fDiff;
+    for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++J) 
+	*vwin++ += *dwin++ * <a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fWinStep;
+
+    <a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a>-&gt;fChi2 = 0.0;
+    for (I=0;I&lt;<a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a>-&gt;fNc;++I) {
+	unei = (<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)<a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a>-&gt;fC[I].fPtr;
+	<a href="../ListOfTypes.html#Double_t">Double_t</a>* v = unei-&gt;fVector;
+	<a href="../ListOfTypes.html#Double_t">Double_t</a>* d = unei-&gt;fDiff;
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> s_dist = 0.0;
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> diff;
+	vwin = <a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a>-&gt;fVector;
+	for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++J) {
+	    *v += *d++ * <a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fNeiStep; 
+	    diff = *vwin++ - *v++; 
+	    s_dist += diff*diff;
+	}
+	<a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a>-&gt;fChi2 += s_dist;
+	unei-&gt;fChi2  += (s_dist-unei-&gt;fChi2) * <a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fNeiCount;
+    }
+    
+    <a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a>-&gt;fChi2 /= <a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a>-&gt;fNc;
+    
+    S_Err = 0.0;
+    for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes;++J) {
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> diff = out[J] - <a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>[J];
+	S_Err += diff * diff;
+	for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) 
+	    up-&gt;fWeight[J] += diff*up-&gt;<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a> * <a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fNeuStep;
+    }
+    <a href=".././TSGCS.html#TSGCS:fUwin">fUwin</a>-&gt;fCount += S_Err;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> m_err_count = 1.0 - <a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fErrCount;
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) { 
+	up-&gt;fCount *= m_err_count; 
+    }
+    
+    if (<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fInsertStep&gt;0) 
+	if (<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fInsertCount++ == <a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fInsertStep) {
+	    <a href="#TSGCS:Insert">Insert</a>(); 
+	    <a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fInsertCount=0;
+	}
+	
+    if (<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fDeleteStep&gt;0) 
+	if (<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fDeleteCount++ == <a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fDeleteStep) {
+	    <a href="#TSGCS:Prune">Prune</a>(); 
+	    <a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fDeleteCount=0;
+	}
+	
+    <a href=".././VNeuralNet.html#VNeuralNet:fShouldSave">fShouldSave</a> = kTRUE;
+    
+    if (<a href=".././VNeuralNet.html#VNeuralNet:fPlotter">fPlotter</a>) <a href=".././VNeuralNet.html#VNeuralNet:fPlotter">fPlotter</a>-&gt;<a href=".././VNeuralNetPlotter.html#VNeuralNetPlotter:AddTrainSample">AddTrainSample</a>(out[0],out[0]&gt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fThreshold);
+
+    return S_Err;
+}
+
+<a name="TSGCS:Insert"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TSGCS.html#TSGCS:Insert">TSGCS::Insert</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I,J;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* umax;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* udst;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* unew;
+    
+    if (<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells == <a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fMaxCells) return 0; //break if there are no cells availiable
+    
+<b>    //find cell with highest err_count</b>
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> err_count = -1;
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) 
+	if (up-&gt;fCount&gt;err_count) {
+	    err_count = up-&gt;fCount; 
+	    umax = up;
+	}
+	
+<b>	//create new cell</b>
+	unew = <a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>++;
+	++<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells;
+	unew-&gt;fNc = 0;
+	unew-&gt;fState = 0;
+	
+<b>	//find cell with highest distance to MaxCount</b>
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> s_dist;
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> max_s_dist=-1;
+	<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* unei;
+	for (I=0;I&lt;umax-&gt;fNc;++I) {
+	    s_dist=0;
+	    unei=(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)umax-&gt;fC[I].fPtr;
+	    for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++J) {
+		<a href="../ListOfTypes.html#Double_t">Double_t</a> diff = umax-&gt;fVector[J] - unei-&gt;fVector[J]; 
+		s_dist += diff*diff;
+	    }
+	    if (s_dist&gt;max_s_dist) {
+		max_s_dist = s_dist; 
+		udst = unei;
+	    }
+	}
+	
+	<a href=".././TNeuralNetCell.html#TNeuralNetCell:ConnectNew">TNeuralNetCell::ConnectNew</a>((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)unew,(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)umax,(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)udst,(<a href=".././TNeuralNetCellParameters.html">TNeuralNetCellParameters</a>*)&amp;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>);
+<b>	//<a href=".././TNeuralNetCell.html#TNeuralNetCell:InitVector">TNeuralNetCell::InitVector</a>((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)unew,&amp;B);</b>
+	<a href=".././TNeuralNetCell.html#TNeuralNetCell:InitVector">TNeuralNetCell::InitVector</a>((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)unew,(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)umax,(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)udst,&amp;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>);
+	<a href=".././TNeuralNetCell.html#TNeuralNetCell:InitCount">TNeuralNetCell::InitCount</a> ((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)unew);
+	<a href=".././TNeuralNetCell.html#TNeuralNetCell:InitWgt">TNeuralNetCell::InitWgt</a>   ((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)unew,&amp;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>);
+	<a href=".././TNeuralNetCell.html#TNeuralNetCell:GetSDev">TNeuralNetCell::GetSDev</a>   ((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)unew,&amp;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>);
+	
+	for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) <a href=".././TNeuralNetCell.html#TNeuralNetCell:CheckConnections">TNeuralNetCell::CheckConnections</a>((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)up);
+	return 1;  //insertion was successful
+}
+
+
+<a name="TSGCS:Remove"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TSGCS.html#TSGCS:Remove">TSGCS::Remove</a>(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* urem) 
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* ulast = --<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;
+    --<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells;
+    while(urem-&gt;fNc)  <a href=".././TNeuralNetCell.html#TNeuralNetCell:Disconnect">TNeuralNetCell::Disconnect</a>((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)urem-&gt;fC[0].fPtr,(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)urem); //disconnect all neighbours of urem from urem
+<b>    //copy ulast into urem</b>
+    memcpy(urem-&gt;fVector,ulast-&gt;fVector,<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes*sizeof(<a href="../ListOfTypes.html#Double_t">Double_t</a>));
+    memcpy(urem-&gt;fWeight,ulast-&gt;fWeight,<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes*sizeof(<a href="../ListOfTypes.html#Double_t">Double_t</a>));
+    memcpy(urem-&gt;fC,ulast-&gt;fC,<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fConnectors*sizeof(connector));
+    urem-&gt;fNc = ulast-&gt;fNc;
+    urem-&gt;fChi2 = ulast-&gt;fChi2;
+    urem-&gt;fCount = ulast-&gt;fCount;
+    urem-&gt;fState = ulast-&gt;fState;
+    while(ulast-&gt;fNc) <a href=".././TNeuralNetCell.html#TNeuralNetCell:Disconnect">TNeuralNetCell::Disconnect</a>((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)ulast-&gt;fC[0].fPtr,(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)ulast); //disconnect all neighbours of ulast from ulast
+<b>    //Connect all former neigbours of ulast to urem</b>
+    for (I=0;I&lt;urem-&gt;fNc;++I) {
+	<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* unei = (<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)urem-&gt;fC[I].fPtr;
+	unei-&gt;fC[unei-&gt;fNc++].fPtr = urem;
+    }
+}
+
+<a name="TSGCS:Prune"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TSGCS.html#TSGCS:Prune">TSGCS::Prune</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I,J;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* umax;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* unei;
+    
+<b>    //find cell with maximal s_dev</b>
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> max_s_dev=-1;
+    for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) {
+	<a href=".././TNeuralNetCell.html#TNeuralNetCell:GetSDev">TNeuralNetCell::GetSDev</a>((<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)up,&amp;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>);
+	if (up-&gt;fChi2&gt;max_s_dev) { 
+	    max_s_dev = up-&gt;fChi2; 
+	    umax = up; 
+	}
+    }
+
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> RemoveCount=1;
+    umax-&gt;fState |= REMOVE;
+    for (I=0;I&lt;umax-&gt;fNc;++I) {
+	unei = (<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)umax-&gt;fC[I].fPtr;
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> xnei = 0;
+	for (J=0;J&lt;unei-&gt;fNc;++J) {
+	    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+	    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* uneinei = (<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)unei-&gt;fC[J].fPtr;
+	    if (uneinei!=umax) {
+		for (I=0;I&lt;umax-&gt;fNc;++I) 
+		    if (uneinei==(<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>*)umax-&gt;fC[I].fPtr) break;
+		    if (I==umax-&gt;fNc) ++xnei;
+	    }
+	}
+
+<b>	//if unei has no neigbour outside, set REMOVE-flag</b>
+	if (xnei==0) {unei-&gt;fState|=REMOVE; ++RemoveCount; }
+    }
+
+    if (<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fCells-RemoveCount&lt;<a href=".././TSGCS.html#TSGCS:fXB">fXB</a>.fMinCells) {
+	for(up=<a href=".././TSGCS.html#TSGCS:fU">fU</a>;up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>;++up) up-&gt;fState&amp;=~REMOVE; //clear REMOVE-flag on all cells if network would be shrinking to zero
+    } else {
+	up = <a href=".././TSGCS.html#TSGCS:fU">fU</a>;
+	while(up&lt;<a href=".././TSGCS.html#TSGCS:fUbound">fUbound</a>) { 
+	    if (up-&gt;fState&amp;REMOVE) 
+		<a href="#TSGCS:Remove">Remove</a>(up); 
+	    else 
+		++up; 
+	}
+    }
+
+    return 1;
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

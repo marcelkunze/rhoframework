@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:10 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TOpMakeTree - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: TOpMakeTree.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//	Class <a href=".././TOperator.html">TOperator</a></b>
+<b>//</b>
+<b>//	Implementation, adds 4vectors at origin</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//	Bob Jacobsen     		Original Author</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1996		Lawrence Berkeley Laboratory</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "RhoTools/TOpMakeTree.h"
+#include &lt;assert.h&gt;
+#include "RhoBase/TFactory.h"
+#include "RhoBase/TCandidate.h"
+#include "RhoTools/TAdd4Vertexer.h"
+#include "RhoTools/TOpAdd4.h"
+#include "RhoBase/TCandListIterator.h"
+
+ClassImp(TOpMakeTree)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TOpMakeTree *&amp;obj)
+{
+   obj = (TOpMakeTree *) buf.ReadObject(TOpMakeTree::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TOpMakeTree:TOpMakeTree"> </a>TOpMakeTree::TOpMakeTree(TAdd4Vertexer&amp; v )
+  : _theVertexer( (TAdd4Vertexer *) v.Clone() )
+{
+}
+
+<a name="TOpMakeTree:TOpMakeTree"> </a>TOpMakeTree::TOpMakeTree(  )
+{
+    _theVertexer = new TAdd4Vertexer();
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TOpMakeTree:~TOpMakeTree"> </a><a href=".././TOpMakeTree.html">TOpMakeTree</a>::~<a href=".././TOpMakeTree.html">TOpMakeTree</a>( )
+{
+  delete <a href=".././TOpMakeTree.html#TOpMakeTree:_theVertexer">_theVertexer</a>;
+}
+
+<b>//--------------</b>
+<b>// Operations --</b>
+<b>//--------------</b>
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TOpMakeTree:PrintOn"> </a><a href=".././TOpMakeTree.html#TOpMakeTree:PrintOn">TOpMakeTree::PrintOn</a>(std::ostream&amp; o) const 
+{
+  o &lt;&lt; "<a href=".././TOpMakeTree.html">TOpMakeTree</a> class ";
+}
+
+std::ostream&amp;  
+operator &lt;&lt; (std::ostream&amp; o, const <a href=".././TOpMakeTree.html">TOpMakeTree</a>&amp; a) 
+{ a.<a href="#TOpMakeTree:PrintOn">PrintOn</a>(o); return o; }
+
+
+<b>//</b>
+<b>//</b>
+TCandidate*
+<a name="TOpMakeTree:CreateFromList"> </a><a href=".././TOpMakeTree.html#TOpMakeTree:CreateFromList">TOpMakeTree::CreateFromList</a>( TCandListIterator&amp; iterDau )
+{
+
+<b>  //</b>
+<b>  // loop on the candidates of the list and create the list </b>
+<b>  // of outgoing candidates</b>
+<b>  //</b>
+  TCandList outGoing;
+  TCandidate* dau=0;
+  while( dau = iterDau.Next() ) 
+    AddToVertexingList( *dau, outGoing );
+  
+<b>  // create the vertex, using the vertexer</b>
+  TCandListIterator iterOutGoing( outGoing );
+  VAbsVertex* theVertex =  <a href=".././TOpMakeTree.html#TOpMakeTree:_theVertexer">_theVertexer</a>-&gt;<a href=".././TAdd4Vertexer.html#TAdd4Vertexer:Compute">Compute</a>( iterOutGoing );
+
+<b>  // protection against null returned values of theVertex</b>
+  if( theVertex==0 )
+    {
+      cerr &lt;&lt; "fancy vertexer failed : use the TOpAdd4Vertexer instead "
+		      &lt;&lt; endl;
+      iterOutGoing.Rewind();
+      <a href=".././TOpAdd4.html">TOpAdd4</a> dummy;
+      return dummy.<a href="#TOpMakeTree:CreateFromList">CreateFromList</a>( iterDau );
+    }
+  assert( theVertex!=0 );
+
+<b>  // create the Base</b>
+  <a href=".././TError.html">TError</a> *err = (<a href=".././TError.html">TError</a> *) &amp;<a href=".././TOpMakeTree.html#TOpMakeTree:_theVertexer">_theVertexer</a>-&gt;<a href=".././TAdd4Vertexer.html#TAdd4Vertexer:P4Err">P4Err</a>();
+  TCandidate* theCandBase = //new TCandidate(<a href=".././TOpMakeTree.html#TOpMakeTree:_theVertexer">_theVertexer</a>-&gt;<a href=".././TAdd4Vertexer.html#TAdd4Vertexer:P4">P4</a>(),*err,iterDau, *theVertex );
+      TFactory::Instance()-&gt;NewCandidate(<a href=".././TOpMakeTree.html#TOpMakeTree:_theVertexer">_theVertexer</a>-&gt;<a href=".././TAdd4Vertexer.html#TAdd4Vertexer:P4">P4</a>(),*err,iterDau, *theVertex );
+
+<b>  // create the candidate</b>
+<b>  //TCandidate* inComing = new TCandidate( theCandBase );</b>
+
+<b>  // return the candidate</b>
+  return theCandBase;
+
+}
+
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

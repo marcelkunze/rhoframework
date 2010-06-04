@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:19 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TPidQuality - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TPidQuality.html">TPidQuality</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Mix-in class for particle identification quality control		//</b>
+<b>//                                                                      //</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, Bochum University, Aug. 99			//</b>
+<b>//                                                                      //</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "RhoSelector/TPidQuality.h"
+#include "RhoHistogram/TTuple.h"
+#include "RhoBase/TRho.h"
+#include "RhoBase/VAbsMicroCandidate.h"
+#include "RhoManager/TPersistenceManager.h"
+#include "RhoBase/TCandidate.h"
+
+ClassImp(TPidQuality)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TPidQuality *&amp;obj)
+{
+   obj = (TPidQuality *) buf.ReadObject(TPidQuality::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TPidQuality:TPidQuality"> </a>TPidQuality::TPidQuality(const char* n)
+{
+    TString name(n);
+
+    TPersistenceManager *persmgr = TRho::Instance()-&gt;GetPersistenceManager();
+    if (persmgr == 0) {
+	cerr &lt;&lt; "TPidQuality: Can not activate QC w/o PersistenceManager for " &lt;&lt; name &lt;&lt; endl;
+    }
+    else {
+<b>	// Make a quality control directory, if needed and cd into it</b>
+
+	TString dir = TString("QC/") + name;
+	persmgr-&gt;SetDir(dir);
+
+<b>	// Add nTuples for the selector (Owner: PersistenceManager)</b>
+
+	<a href=".././TPidQuality.html#TPidQuality:fAccepted">fAccepted</a> = new <a href=".././TTuple.html">TTuple</a>("Accepted",name+" accepted tracks");
+	persmgr-&gt;Add(<a href=".././TPidQuality.html#TPidQuality:fAccepted">fAccepted</a>);
+	<a href=".././TPidQuality.html#TPidQuality:fRejected">fRejected</a> = new <a href=".././TTuple.html">TTuple</a>("Rejected",name+" rejected tracks");
+	persmgr-&gt;Add(<a href=".././TPidQuality.html#TPidQuality:fRejected">fRejected</a>);
+    }
+}
+
+<a name="TPidQuality:~TPidQuality"> </a><a href=".././TPidQuality.html">TPidQuality</a>::~<a href=".././TPidQuality.html">TPidQuality</a>() 
+{
+}
+
+<a name="TPidQuality:Control"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TPidQuality.html#TPidQuality:Control">TPidQuality::Control</a>(TCandidate &amp;c, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision)
+{
+    if (&amp;c == 0) return;
+    <a href="#TPidQuality:Control">Control</a>(c.GetMicroCandidate(),decision);
+}
+
+<a name="TPidQuality:Control"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TPidQuality.html#TPidQuality:Control">TPidQuality::Control</a>(VAbsMicroCandidate &amp;cand, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> decision)
+{
+    if (&amp;cand == 0) return;
+
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> mom  = cand.GetMomentum().Mag();   // Get the momentum
+    if (mom &lt;= 0.0) return;
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> cth  = cand.GetMomentum().Z()/mom; // Get cos(theta)
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> svt  = cand.GetSvtMeanDEdx();      // Get the energy loss
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> dch  = cand.GetDchMeanDEdx();      // Get the energy loss
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> drc  = cand.GetDrcThetaC();        // Get the Cerenkov angle
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> emc  = cand.GetEmcRawEnergy();     // Get the energy deposit in EMC
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> ifr  = cand.GetIfrMeasuredInteractionLengths();     // Get the ifr info
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> hits  = cand.GetDchHits();      	// Get the hits
+
+    <a href=".././TTuple.html">TTuple</a> *tuple;
+    if (decision)
+	tuple = <a href=".././TPidQuality.html#TPidQuality:fAccepted">fAccepted</a>;
+    else
+	tuple = <a href=".././TPidQuality.html#TPidQuality:fRejected">fRejected</a>;
+
+    tuple-&gt;Column("mom",mom,0.0f,"DOUBLE");
+    tuple-&gt;Column("cth",cth,0.0f,"DOUBLE");
+    tuple-&gt;Column("svt",svt,0.0f,"DOUBLE");
+    tuple-&gt;Column("dch",dch,0.0f,"DOUBLE");
+    tuple-&gt;Column("drc",drc,0.0f,"DOUBLE");
+    tuple-&gt;Column("emc",emc,0.0f,"DOUBLE");
+    tuple-&gt;Column("ifr",ifr,0.0f,"DOUBLE");
+    tuple-&gt;Column("hits",hits,0.0f,"DOUBLE");
+    tuple-&gt;DumpData();
+
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

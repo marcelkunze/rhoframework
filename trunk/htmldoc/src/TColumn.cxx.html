@@ -1,0 +1,344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:43 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TColumn - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+#ifndef TCOLUMN_H
+#define TCOLUMN_H
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TColumn.html">TColumn</a>		                                                //</b>
+<b>//                                                                      //</b>
+<b>// Nested class hierarchy to hold information about <a href=".././TTuple.html">TTuple</a> columns.	//</b>
+<b>//									//</b>
+<b>// Author List:								//</b>
+<b>// Marcel Kunze,  RUB, Mar. 99						//</b>
+<b>// Apr.2001 (MK), Inherit from TNamed to support THashList		//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "TNamed.h"
+#include "TString.h"
+#include "TVector.h"
+
+class TTree;
+class TBranch;
+
+#ifndef HTRange_HH
+#define HTRange_HH
+
+template&lt;class T&gt; 
+class HTRange {
+    
+<b>    //--------------------</b>
+<b>    // Declarations     --</b>
+<b>    //--------------------</b>
+    
+<b>    // Typedefs, consts, and enums</b>
+    
+<b>    //--------------------</b>
+<b>    // Instance Members --</b>
+<b>    //--------------------</b>
+    
+public:
+    
+<b>    // Constructors</b>
+    HTRange() : 
+      fDefined(kFALSE), fLower(0), fUpper(0) 
+      {
+      }
+      
+      HTRange(T lower, T upper) : 
+      fDefined(kTRUE), fLower(lower), fUpper(upper) 
+      {
+      }
+      
+<b>      // Copy Constructor</b>
+      HTRange(const HTRange&lt;T&gt;&amp; o) :
+      fDefined(o.fDefined), fLower(o.fLower), fUpper(o.fUpper)
+      {
+      }
+      
+<b>      // Destructor</b>
+      virtual ~HTRange() {}
+      
+<b>      // Operators</b>
+      
+      HTRange&lt;T&gt;&amp; operator= (const HTRange&lt;T&gt; &amp;o) 
+      {
+	  if (&amp;o == this) return *this;
+	  fDefined = o.fDefined ;
+	  fLower = o.fLower ;
+	  fUpper = o.fUpper ;
+	  return *this ;
+      }
+      
+<b>      // Selectors (const)</b>
+      <a href="../ListOfTypes.html#Bool_t">Bool_t</a> operator()() const { return fDefined ; }
+      
+<b>      // get upper/lower limits</b>
+      T lower() const { return fLower ; }
+      T upper() const { return fUpper ; }
+      
+<b>      // Modifiers</b>
+      
+protected:
+    
+<b>    // Helper functions</b>
+    
+private:
+    
+<b>    // Friends</b>
+    
+<b>    // Data members</b>
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> fDefined ;
+    T fLower, fUpper ;
+    
+};
+#endif
+
+
+#ifndef HTAbsValVector_HH
+#define HTAbsValVector_HH
+
+template&lt;class T&gt; 
+class HTAbsValVector {
+    
+public:
+    
+<b>    // This must return the number of the stored elements</b>
+    virtual <a href="../ListOfTypes.html#size_t">size_t</a> length() const = 0 ;
+    
+<b>    // This provides access to the indifidual elements.</b>
+<b>    // Index runs from 0 to length()-1. Here () means that we do not requre </b>
+<b>    // index checking from it, though the <a href="../ListOfTypes.html#real">real</a> classe may do what they like.</b>
+    virtual const T&amp; operator()(<a href="../ListOfTypes.html#size_t">size_t</a> i) const = 0 ;
+    
+};
+#endif
+
+<b>// Parent class (abstract):</b>
+class <a href=".././TColumn.html">TColumn</a> : public TNamed {
+public:
+    <a href=".././TColumn.html">TColumn</a>(const <a href="../ListOfTypes.html#char">char</a>* l) : 
+      TNamed(l,l), <a href=".././TColumn.html#TColumn:fLabel">fLabel</a>(l), <a href=".././TColumn.html#TColumn:fUseDefValue">fUseDefValue</a>(0), <a href=".././TColumn.html#TColumn:fPointer">fPointer</a>(0), <a href=".././TColumn.html#TColumn:fBranch">fBranch</a>(0) {}
+      virtual ~<a href=".././TColumn.html">TColumn</a>() {}
+      const TString &amp;<a href="#TColumn:GetLabel">GetLabel</a>() const { return <a href=".././TColumn.html#TColumn:fLabel">fLabel</a>; }
+      TBranch* <a href="#TColumn:GetBrPointer">GetBrPointer</a>() { return <a href=".././TColumn.html#TColumn:fBranch">fBranch</a>; }
+      <a href="../ListOfTypes.html#void">void</a>* <a href="#TColumn:GetPointer">GetPointer</a>() { return <a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+      <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetPointer">SetPointer</a>(<a href="../ListOfTypes.html#void">void</a>* p) { <a href=".././TColumn.html#TColumn:fPointer">fPointer</a> = p; }
+      <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetUseDefValue">SetUseDefValue</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> b) { <a href=".././TColumn.html#TColumn:fUseDefValue">fUseDefValue</a> = b; }
+      const <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp; <a href="#TColumn:GetUseDefValue">GetUseDefValue</a>() const { return <a href=".././TColumn.html#TColumn:fUseDefValue">fUseDefValue</a>; }
+      virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>() = 0;
+      virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>*, <a href=".././TColumn.html">TColumn</a>* cp=0) = 0;
+protected:
+    TString <a href=".././TColumn.html#TColumn:fLabel">fLabel</a>;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TColumn.html#TColumn:fUseDefValue">fUseDefValue</a>;
+    <a href="../ListOfTypes.html#void">void</a>* <a href=".././TColumn.html#TColumn:fPointer">fPointer</a>;
+    TBranch* <a href=".././TColumn.html#TColumn:fBranch">fBranch</a>;
+};
+
+<b>// Classes for <a href="../ListOfTypes.html#Bool_t">Bool_t</a>:</b>
+class BoolColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    BoolColumn(const <a href="../ListOfTypes.html#char">char</a>*, const <a href="../ListOfTypes.html#Bool_t">Bool_t</a> &amp;, const <a href="../ListOfTypes.html#Bool_t">Bool_t</a> &amp;, TTree*);
+    virtual ~BoolColumn() { delete (<a href="../ListOfTypes.html#Bool_t">Bool_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>() { *(<a href="../ListOfTypes.html#Char_t">Char_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a> = fDefValue; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>* p, <a href=".././TColumn.html">TColumn</a>* cp=0) { 
+	*(<a href="../ListOfTypes.html#Char_t">Char_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a> = *(const <a href="../ListOfTypes.html#Bool_t">Bool_t</a>*)p;
+    }
+private:
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> fDefValue;
+};
+
+class BoolArrColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    BoolArrColumn(const <a href="../ListOfTypes.html#char">char</a>*, const HTAbsValVector&lt;<a href="../ListOfTypes.html#Bool_t">Bool_t</a>&gt; &amp;, const <a href="../ListOfTypes.html#Bool_t">Bool_t</a> &amp;, 
+	TTree*);
+    virtual ~BoolArrColumn() { delete[] (<a href="../ListOfTypes.html#Bool_t">Bool_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>() { 
+	for(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; fMax; ++i) ((<a href="../ListOfTypes.html#Char_t">Char_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>)[i] = fDefValue; 
+    }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>*, <a href=".././TColumn.html">TColumn</a>* cp=0);
+private:
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> fDefValue;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> fMax;
+};
+
+class BoolDynArrColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    BoolDynArrColumn(const <a href="../ListOfTypes.html#char">char</a>*, const HTAbsValVector&lt;<a href="../ListOfTypes.html#Bool_t">Bool_t</a>&gt; &amp;,
+	const <a href="../ListOfTypes.html#Bool_t">Bool_t</a> &amp;, <a href=".././TColumn.html">TColumn</a>*, TTree*);
+    virtual ~BoolDynArrColumn() { delete[] (<a href="../ListOfTypes.html#Bool_t">Bool_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>();
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>*, <a href=".././TColumn.html">TColumn</a>* cp=0);
+private:
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> fDefValue;
+    <a href=".././TColumn.html">TColumn</a>* fIndexPtr;
+};
+
+<b>// Classes for <a href="../ListOfTypes.html#Int_t">Int_t</a>:</b>
+class IntColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    IntColumn(const <a href="../ListOfTypes.html#char">char</a>*, const <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;, const <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;, TTree*);
+    virtual ~IntColumn() { delete (<a href="../ListOfTypes.html#Int_t">Int_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>() { *(<a href="../ListOfTypes.html#Int_t">Int_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a> = fDefValue; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>* p, <a href=".././TColumn.html">TColumn</a>* cp=0) { 
+	*(<a href="../ListOfTypes.html#Int_t">Int_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a> = *(const <a href="../ListOfTypes.html#Int_t">Int_t</a>*)p;
+    }
+private:
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> fDefValue;
+};
+
+class IntArrColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    IntArrColumn(const <a href="../ListOfTypes.html#char">char</a>*, const HTAbsValVector&lt;<a href="../ListOfTypes.html#Int_t">Int_t</a>&gt; &amp;, const <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;, 
+	TTree*);
+    virtual ~IntArrColumn() { delete[] (<a href="../ListOfTypes.html#Int_t">Int_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>() { 
+	for(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; fMax; ++i) ((<a href="../ListOfTypes.html#Int_t">Int_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>)[i] = fDefValue; 
+    }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>*, <a href=".././TColumn.html">TColumn</a>* cp=0);
+private:
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> fDefValue;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> fMax;
+};
+
+class IntDynArrColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    IntDynArrColumn(const <a href="../ListOfTypes.html#char">char</a>*, const HTAbsValVector&lt;<a href="../ListOfTypes.html#Int_t">Int_t</a>&gt; &amp;,
+	const <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;, <a href=".././TColumn.html">TColumn</a>*, TTree*);
+    virtual ~IntDynArrColumn() { delete[] (<a href="../ListOfTypes.html#Int_t">Int_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>();
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>*, <a href=".././TColumn.html">TColumn</a>* cp=0);
+private:
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> fDefValue;
+    <a href=".././TColumn.html">TColumn</a>* fIndexPtr;
+};
+
+<b>// Classes for <a href="../ListOfTypes.html#Float_t">Float_t</a>:</b>
+class FloatColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    FloatColumn(const <a href="../ListOfTypes.html#char">char</a>*, const <a href="../ListOfTypes.html#Float_t">Float_t</a> &amp;, const <a href="../ListOfTypes.html#Float_t">Float_t</a> &amp;, TTree*);
+    virtual ~FloatColumn() { delete (<a href="../ListOfTypes.html#Float_t">Float_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>() { *(<a href="../ListOfTypes.html#Float_t">Float_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a> = fDefValue; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>* p, <a href=".././TColumn.html">TColumn</a>* cp=0) { 
+	*(<a href="../ListOfTypes.html#Float_t">Float_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a> = *(const <a href="../ListOfTypes.html#Float_t">Float_t</a>*)p; 
+    }
+private:
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> fDefValue;
+};
+
+class FloatArrColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    FloatArrColumn(const <a href="../ListOfTypes.html#char">char</a>*, const HTAbsValVector&lt;<a href="../ListOfTypes.html#Float_t">Float_t</a>&gt; &amp;, const <a href="../ListOfTypes.html#Float_t">Float_t</a> &amp;, 
+	TTree*);
+    FloatArrColumn(const <a href="../ListOfTypes.html#char">char</a>*, const TVector &amp;, const <a href="../ListOfTypes.html#Float_t">Float_t</a> &amp;, 
+	TTree*);
+    virtual ~FloatArrColumn() { delete[] (<a href="../ListOfTypes.html#Float_t">Float_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>() { 
+	for(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; fMax; ++i) ((<a href="../ListOfTypes.html#Float_t">Float_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>)[i] = fDefValue; 
+    }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>*, <a href=".././TColumn.html">TColumn</a>* cp=0);
+private:
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> fDefValue;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> fMax;
+};
+
+class FloatDynArrColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    FloatDynArrColumn(const <a href="../ListOfTypes.html#char">char</a>*, const HTAbsValVector&lt;<a href="../ListOfTypes.html#Float_t">Float_t</a>&gt; &amp;,
+	const <a href="../ListOfTypes.html#Float_t">Float_t</a> &amp;, <a href=".././TColumn.html">TColumn</a>*, TTree*);
+    FloatDynArrColumn(const <a href="../ListOfTypes.html#char">char</a>*, const TVector &amp;,
+	const <a href="../ListOfTypes.html#Float_t">Float_t</a> &amp;, <a href=".././TColumn.html">TColumn</a>*, TTree*);
+    virtual ~FloatDynArrColumn() { delete[] (<a href="../ListOfTypes.html#Float_t">Float_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>();
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>*, <a href=".././TColumn.html">TColumn</a>* cp=0);
+private:
+    <a href="../ListOfTypes.html#Float_t">Float_t</a> fDefValue;
+    <a href=".././TColumn.html">TColumn</a>* fIndexPtr;
+};
+
+<b>// Classes for <a href="../ListOfTypes.html#Double_t">Double_t</a>:</b>
+class DoubleColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    DoubleColumn(const <a href="../ListOfTypes.html#char">char</a>*, const <a href="../ListOfTypes.html#Double_t">Double_t</a> &amp;, const <a href="../ListOfTypes.html#Double_t">Double_t</a> &amp;, TTree*);
+    virtual ~DoubleColumn() { delete (<a href="../ListOfTypes.html#Double_t">Double_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>() { *(<a href="../ListOfTypes.html#Double_t">Double_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a> = fDefValue; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>* p, <a href=".././TColumn.html">TColumn</a>* cp=0) { 
+	*(<a href="../ListOfTypes.html#Double_t">Double_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a> = *(const <a href="../ListOfTypes.html#Double_t">Double_t</a>*)p; 
+    }
+private:
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> fDefValue;
+};
+
+class DoubleArrColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    DoubleArrColumn(const <a href="../ListOfTypes.html#char">char</a>*, const HTAbsValVector&lt;<a href="../ListOfTypes.html#Double_t">Double_t</a>&gt; &amp;, 
+	const <a href="../ListOfTypes.html#Double_t">Double_t</a> &amp;, TTree*);
+    virtual ~DoubleArrColumn() { delete[] (<a href="../ListOfTypes.html#Double_t">Double_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>() { 
+	for(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; fMax; ++i) ((<a href="../ListOfTypes.html#Double_t">Double_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>)[i] = fDefValue; 
+    }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>*, <a href=".././TColumn.html">TColumn</a>* cp=0);
+private:
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> fDefValue;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> fMax;
+};
+
+class DoubleDynArrColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    DoubleDynArrColumn(const <a href="../ListOfTypes.html#char">char</a>*, const HTAbsValVector&lt;<a href="../ListOfTypes.html#Double_t">Double_t</a>&gt; &amp;,
+		      const <a href="../ListOfTypes.html#Double_t">Double_t</a> &amp;, <a href=".././TColumn.html">TColumn</a>*, TTree*);
+    virtual ~DoubleDynArrColumn() { delete[] (<a href="../ListOfTypes.html#Double_t">Double_t</a>*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>();
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>*, <a href=".././TColumn.html">TColumn</a>* cp=0);
+private:
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> fDefValue;
+    <a href=".././TColumn.html">TColumn</a>* fIndexPtr;
+};
+
+<b>// String column:</b>
+class StringColumn : public <a href=".././TColumn.html">TColumn</a> {
+public:
+    StringColumn(const TString &amp;, const TString &amp;, 
+	const TString &amp;, TTree*);
+    virtual ~StringColumn() { delete[] (TString*)<a href=".././TColumn.html#TColumn:fPointer">fPointer</a>; }
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetDefValue">SetDefValue</a>();
+    virtual <a href="../ListOfTypes.html#void">void</a> <a href="#TColumn:SetValue">SetValue</a>(const <a href="../ListOfTypes.html#void">void</a>*, <a href=".././TColumn.html">TColumn</a>* cp=0);
+private:
+    TString fDefValue;
+};
+
+#endif
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

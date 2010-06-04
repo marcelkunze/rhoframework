@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:51 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TEventBlock</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TEventBlock</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TEventBlock:description">class description</a> - <a href="src/TEventBlock.cxx.html">source file</a> - <a href="TEventBlock_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TEventBlock" href="TEventBlock.h">TEventBlock</a> : public TObject</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->          <a href="./TEventBlock.html">TEventBlock</a> <!--TAB--><!--BOLD--><a href="#TEventBlock:TEventBlock">TEventBlock</a><!--PLAIN-->()
+<!--TAB6-->          <a href="./TEventBlock.html">TEventBlock</a> <!--TAB--><!--BOLD--><a href="#TEventBlock:TEventBlock">TEventBlock</a><!--PLAIN-->(const <a href="./TEventBlock.html">TEventBlock</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventBlock:~TEventBlock">~TEventBlock</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventBlock:AddNumber">AddNumber</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n, <a href="ListOfTypes.html#UInt_t">UInt_t</a> minorId, <a href="ListOfTypes.html#UInt_t">UInt_t</a> majorId)
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TEventBlock:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventBlock:ClearBuffer">ClearBuffer</a><!--PLAIN-->()
+<!--TAB6-->               <a href="ListOfTypes.html#Int_t">Int_t</a>* <!--TAB--><!--BOLD--><a href="#TEventBlock:GetBuffer">GetBuffer</a><!--PLAIN-->()
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TEventBlock:GetBufLen">GetBufLen</a><!--PLAIN-->()
+<!--TAB6-->          const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TEventBlock:GetFilename">GetFilename</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TEventBlock:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventBlock:SetFilename">SetFilename</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* s)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventBlock:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventBlock:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventBlock:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TEventBlock:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->        <a href="ListOfTypes.html#char">char</a> <!--TAB--><!--BOLD--><a name="TEventBlock:fFileName">fFileName[255]</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fFileName"></a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TEventBlock:fEventNumber">fEventNumber[1000]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fEventNumber"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TEventBlock:fMinorID">fMinorID[1000]</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fMinorID"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TEventBlock:fMajorID">fMajorID[1000]</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fMajorID"></a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TEventBlock:fLength">fLength</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fLength"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TEventBlock:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TEventBlock.html">TEventBlock</a>								
+                                                                      
+ Eventnumber reference class						
+                                                                      
+ Author: Thorsten Brandt, Dresden University, Aug. 99			
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventBlock:ClearBuffer" href="src/TEventBlock.cxx.html#TEventBlock:ClearBuffer">ClearBuffer</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventBlock:AddNumber" href="src/TEventBlock.cxx.html#TEventBlock:AddNumber">AddNumber</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n, <a href="ListOfTypes.html#UInt_t">UInt_t</a> minorId, <a href="ListOfTypes.html#UInt_t">UInt_t</a> majorId)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TEventBlock:SetFilename" href="src/TEventBlock.cxx.html#TEventBlock:SetFilename">SetFilename</a>(const <a href="ListOfTypes.html#char">char</a>* s)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TEventBlock:GetFilename" href="src/TEventBlock.cxx.html#TEventBlock:GetFilename">GetFilename</a>()
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TEventBlock.html">TEventBlock</a> <a name="TEventBlock:TEventBlock" href="TEventBlock.h">TEventBlock</a>()
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Int_t">Int_t</a>* <a name="TEventBlock:GetBuffer" href="TEventBlock.h">GetBuffer</a>()
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TEventBlock:GetBufLen" href="TEventBlock.h">GetBufLen</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TEventBlock:Class" href="TEventBlock.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TEventBlock:IsA" href="TEventBlock.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventBlock:ShowMembers" href="TEventBlock.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventBlock:Streamer" href="TEventBlock.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventBlock:StreamerNVirtual" href="TEventBlock.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TEventBlock.html">TEventBlock</a> <a name="TEventBlock:TEventBlock" href="TEventBlock.h">TEventBlock</a>(const <a href="./TEventBlock.html">TEventBlock</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventBlock:~TEventBlock" href="TEventBlock.h">~TEventBlock</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Thorsten+Brandt">Thorsten Brandt</a>, <a href="http://consult.cern.ch/xwho/people?Dresden+University">Dresden University</a>, <a href="http://consult.cern.ch/xwho/people?Aug.">Aug.</a> 99			//</em><br>
+<em>Last update: Fri Dec 20 16:02:51 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

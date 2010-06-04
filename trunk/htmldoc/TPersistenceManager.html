@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:11 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TPersistenceManager</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TPersistenceManager</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TPersistenceManager:description">class description</a> - <a href="src/TPersistenceManager.cxx.html">source file</a> - <a href="TPersistenceManager_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TPersistenceManager" href="TPersistenceManager.h">TPersistenceManager</a> : public TObject</h2>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->             <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:checkFile">checkFile</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* opt) const
+<!--TAB6-->      <a href="./THistogram.html">THistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:getHistByName">getHistByName</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*)
+<!--TAB6-->      <a href="./THistogram.html">THistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:getHistByTitle">getHistByTitle</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*)
+<!--TAB6-->      const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:makeName">makeName</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, <a href="./THistID.html">THistID</a>) const
+<!--TAB6-->             <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:movedir">movedir</a><!--PLAIN-->(TDirectory* olddir, TDirectory* newdir)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->       <a href="./TPersistenceManager.html">TPersistenceManager</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:TPersistenceManager">TPersistenceManager</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* file = "framework.root", const <a href="ListOfTypes.html#char">char</a>* fmode = "RECREATE")
+<!--TAB6-->       <a href="./TPersistenceManager.html">TPersistenceManager</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:TPersistenceManager">TPersistenceManager</a><!--PLAIN-->(const <a href="./TPersistenceManager.html">TPersistenceManager</a>&amp; h)
+<!--TAB6-->              virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:~TPersistenceManager">~TPersistenceManager</a><!--PLAIN-->()
+<!--TAB6-->                  TObject* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Add">Add</a><!--PLAIN-->(TObject* item)
+<!--TAB6-->            static TClass* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:ClearAll">ClearAll</a><!--PLAIN-->()
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:DumpAllData">DumpAllData</a><!--PLAIN-->()
+<!--TAB6-->         <a href="./TEnergyHistogram.html">TEnergyHistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:EnergyHistogram">EnergyHistogram</a><!--PLAIN-->(const <a href="ListOfTypes.html#Text_t">Text_t</a>* name, const <a href="ListOfTypes.html#Text_t">Text_t</a>* title, <a href="ListOfTypes.html#Int_t">Int_t</a> nbins, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xlow, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xup)
+<!--TAB6-->         <a href="./TEoverPHistogram.html">TEoverPHistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:EoverPHistogram">EoverPHistogram</a><!--PLAIN-->(const <a href="ListOfTypes.html#Text_t">Text_t</a>* name, const <a href="ListOfTypes.html#Text_t">Text_t</a>* title, <a href="ListOfTypes.html#Int_t">Int_t</a> nbinsx, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xlow, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xup, <a href="ListOfTypes.html#Int_t">Int_t</a> nbinsy, <a href="ListOfTypes.html#Axis_t">Axis_t</a> ylow, <a href="ListOfTypes.html#Axis_t">Axis_t</a> yup)
+<!--TAB6-->                  TObject* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Get">Get</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->               const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:GetDir">GetDir</a><!--PLAIN-->() const
+<!--TAB6-->                    <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:GetDirIndex">GetDirIndex</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, <a href="ListOfTypes.html#size_t">size_t</a>&amp;) const
+<!--TAB6-->               const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:GetDirName">GetDirName</a><!--PLAIN-->(<a href="ListOfTypes.html#size_t">size_t</a>) const
+<!--TAB6-->                    <a href="ListOfTypes.html#size_t">size_t</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:GetNumDir">GetNumDir</a><!--PLAIN-->() const
+<!--TAB6-->                    <a href="ListOfTypes.html#size_t">size_t</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:GetNumHist">GetNumHist</a><!--PLAIN-->() const
+<!--TAB6-->                    <a href="ListOfTypes.html#size_t">size_t</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:GetNumHist">GetNumHist</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* path) const
+<!--TAB6-->               <a href="./THistogram.html">THistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Histogram">Histogram</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, <a href="ListOfTypes.html#int">int</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>)
+<!--TAB6-->               <a href="./THistogram.html">THistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Histogram">Histogram</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, <a href="ListOfTypes.html#int">int</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>, <a href="./THistID.html">THistID</a>)
+<!--TAB6-->               <a href="./THistogram.html">THistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Histogram">Histogram</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, <a href="ListOfTypes.html#int">int</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#int">int</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>)
+<!--TAB6-->               <a href="./THistogram.html">THistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Histogram">Histogram</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, <a href="ListOfTypes.html#int">int</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#int">int</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>, <a href="./THistID.html">THistID</a>)
+<!--TAB6-->           virtual TClass* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->           <a href="./TMassHistogram.html">TMassHistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:MassHistogram">MassHistogram</a><!--PLAIN-->(const <a href="ListOfTypes.html#Text_t">Text_t</a>* name, const <a href="ListOfTypes.html#Text_t">Text_t</a>* title, <a href="ListOfTypes.html#Int_t">Int_t</a> nbins, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xlow, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xup)
+<!--TAB6-->       <a href="./TMomentumHistogram.html">TMomentumHistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:MomentumHistogram">MomentumHistogram</a><!--PLAIN-->(const <a href="ListOfTypes.html#Text_t">Text_t</a>* name, const <a href="ListOfTypes.html#Text_t">Text_t</a>* title, <a href="ListOfTypes.html#Int_t">Int_t</a> nbins, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xlow, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xup)
+<!--TAB6-->         <a href="./TMoverPHistogram.html">TMoverPHistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:MoverPHistogram">MoverPHistogram</a><!--PLAIN-->(const <a href="ListOfTypes.html#Text_t">Text_t</a>* name, const <a href="ListOfTypes.html#Text_t">Text_t</a>* title, <a href="ListOfTypes.html#Int_t">Int_t</a> nbinsx, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xlow, <a href="ListOfTypes.html#Axis_t">Axis_t</a> xup, <a href="ListOfTypes.html#Int_t">Int_t</a> nbinsy, <a href="ListOfTypes.html#Axis_t">Axis_t</a> ylow, <a href="ListOfTypes.html#Axis_t">Axis_t</a> yup)
+<!--TAB6-->                   <a href="./TTuple.html">TTuple</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Ntuple">Ntuple</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* nttitle)
+<!--TAB6-->                   <a href="./TTuple.html">TTuple</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Ntuple">Ntuple</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* nttitle, <a href="./THistID.html">THistID</a> hhid)
+<!--TAB6-->      <a href="./TPersistenceManager.html">TPersistenceManager</a>&amp; <!--TAB--><!--BOLD--><a href="#TPersistenceManager:operator=">operator=</a><!--PLAIN-->(const <a href="./TPersistenceManager.html">TPersistenceManager</a>&amp; v)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->               <a href="./THistogram.html">THistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Profile">Profile</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, <a href="ListOfTypes.html#int">int</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>)
+<!--TAB6-->               <a href="./THistogram.html">THistogram</a>* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Profile">Profile</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, <a href="ListOfTypes.html#int">int</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>, <a href="ListOfTypes.html#float">float</a>, <a href="./THistID.html">THistID</a>)
+<!--TAB6-->                  TObject* <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Put">Put</a><!--PLAIN-->(TObject* item)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Remove">Remove</a><!--PLAIN-->(TObject* item)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Remove">Remove</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->                       <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Save">Save</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:SetDir">SetDir</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* path = "/")
+<!--TAB6-->                    <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:SetFileName">SetFileName</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:SetHepTupleMode">SetHepTupleMode</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesNo = kTRUE)
+<!--TAB6-->              virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->                       <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Store">Store</a><!--PLAIN-->()
+<!--TAB6-->              virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPersistenceManager:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TPersistenceManager:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->          TFile* <!--TAB--><!--BOLD--><a name="TPersistenceManager:rtfilep">rtfilep</a><!--PLAIN-->    <!--TAB--><i><a name="Title:rtfilep"></a></i>
+<!--TAB6-->      THashList* <!--TAB--><!--BOLD--><a name="TPersistenceManager:olist">olist</a><!--PLAIN-->      <!--TAB--><i><a name="Title:olist">! List of external objects</a></i>
+<!--TAB6-->      THashList* <!--TAB--><!--BOLD--><a name="TPersistenceManager:hlist">hlist</a><!--PLAIN-->      <!--TAB--><i><a name="Title:hlist">! List of internal histograms</a></i>
+<!--TAB6-->      THashList* <!--TAB--><!--BOLD--><a name="TPersistenceManager:ntlist">ntlist</a><!--PLAIN-->     <!--TAB--><i><a name="Title:ntlist">! List of internal ntuples</a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TPersistenceManager:fHepTuple">fHepTuple</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fHepTuple">! HepTuple mode for names</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TPersistenceManager:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TPersistenceManager.html">TPersistenceManager</a>							
+                                                                      
+ Persistence manager					    		
+                                                                      
+ Author: Marcel Kunze, Bochum University, Feb. 99			
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TPersistenceManager:TPersistenceManager" href="src/TPersistenceManager.cxx.html#TPersistenceManager:TPersistenceManager">TPersistenceManager</a>( const <a href="ListOfTypes.html#char">char</a>* file,const <a href="ListOfTypes.html#char">char</a>* fmode ) :
+<a href="./TPersistenceManager.html#TPersistenceManager:fHepTuple">fHepTuple</a>(kFALSE)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TPersistenceManager:~TPersistenceManager" href="src/TPersistenceManager.cxx.html#TPersistenceManager:~TPersistenceManager">~TPersistenceManager</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TPersistenceManager:SetDir" href="src/TPersistenceManager.cxx.html#TPersistenceManager:SetDir">SetDir</a>( const <a href="ListOfTypes.html#char">char</a> * path ) 
+<br>
+<hr>
+<!--FUNCTION-->const <a href="ListOfTypes.html#char">char</a>* <a name="TPersistenceManager:GetDir" href="src/TPersistenceManager.cxx.html#TPersistenceManager:GetDir">GetDir</a>() const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TPersistenceManager:SetFileName" href="src/TPersistenceManager.cxx.html#TPersistenceManager:SetFileName">SetFileName</a>( const <a href="ListOfTypes.html#char">char</a>* file ) 
+<br>
+<pre> Make sure we are at the top of the current file, then save:
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:movedir" href="src/TPersistenceManager.cxx.html#TPersistenceManager:movedir">movedir</a>( TDirectory* olddir, TDirectory* newdir ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#size_t">size_t</a> <a name="TPersistenceManager:GetNumDir" href="src/TPersistenceManager.cxx.html#TPersistenceManager:GetNumDir">GetNumDir</a>() const 
+<br>
+<hr>
+<!--FUNCTION-->const <a href="ListOfTypes.html#char">char</a>* <a name="TPersistenceManager:GetDirName" href="src/TPersistenceManager.cxx.html#TPersistenceManager:GetDirName">GetDirName</a>( <a href="ListOfTypes.html#size_t">size_t</a> index ) const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TPersistenceManager:GetDirIndex" href="src/TPersistenceManager.cxx.html#TPersistenceManager:GetDirIndex">GetDirIndex</a>( const <a href="ListOfTypes.html#char">char</a>* dirname, 
+					    <a href="ListOfTypes.html#size_t">size_t</a> &amp; index ) const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:PrintOn" href="src/TPersistenceManager.cxx.html#TPersistenceManager:PrintOn">PrintOn</a>(std::ostream &amp; o) const 
+<br>
+<hr>
+<!--FUNCTION-->const <a href="ListOfTypes.html#char">char</a>* <a name="TPersistenceManager:makeName" href="src/TPersistenceManager.cxx.html#TPersistenceManager:makeName">makeName</a>( const <a href="ListOfTypes.html#char">char</a>* prefix, <a href="./THistID.html">THistID</a> hhid ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:checkFile" href="src/TPersistenceManager.cxx.html#TPersistenceManager:checkFile">checkFile</a>( const <a href="ListOfTypes.html#char">char</a>* opt ) const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#size_t">size_t</a> <a name="TPersistenceManager:GetNumHist" href="src/TPersistenceManager.cxx.html#TPersistenceManager:GetNumHist">GetNumHist</a>() const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#size_t">size_t</a> <a name="TPersistenceManager:GetNumHist" href="src/TPersistenceManager.cxx.html#TPersistenceManager:GetNumHist">GetNumHist</a>( const <a href="ListOfTypes.html#char">char</a> *path ) const 
+<br>
+<hr>
+<!--FUNCTION-->TObject* <a name="TPersistenceManager:Add" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Add">Add</a>(TObject* item) 
+<br>
+<hr>
+<!--FUNCTION-->TObject* <a name="TPersistenceManager:Get" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Get">Get</a>(const <a href="ListOfTypes.html#char">char</a> *name) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:Remove" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Remove">Remove</a>(TObject* item) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:Remove" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Remove">Remove</a>(const <a href="ListOfTypes.html#char">char</a> *name) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./THistogram.html">THistogram</a>* <a name="TPersistenceManager:Histogram" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Histogram">Histogram</a>( const <a href="ListOfTypes.html#char">char</a>* htitle, <a href="ListOfTypes.html#int">int</a> nbin, 
+						   <a href="ListOfTypes.html#float">float</a> lowX, <a href="ListOfTypes.html#float">float</a> highX ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./THistogram.html">THistogram</a>* <a name="TPersistenceManager:Histogram" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Histogram">Histogram</a>( const <a href="ListOfTypes.html#char">char</a>* htitle, <a href="ListOfTypes.html#int">int</a> nbin,
+						   <a href="ListOfTypes.html#float">float</a> lowX, <a href="ListOfTypes.html#float">float</a> highX, 
+						   <a href="./THistID.html">THistID</a> hhid ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./TMassHistogram.html">TMassHistogram</a>* <a name="TPersistenceManager:MassHistogram" href="src/TPersistenceManager.cxx.html#TPersistenceManager:MassHistogram">MassHistogram</a>(const <a href="ListOfTypes.html#Text_t">Text_t</a> *hname,const <a href="ListOfTypes.html#Text_t">Text_t</a> *htitle,<a href="ListOfTypes.html#Int_t">Int_t</a> nbin,<a href="ListOfTypes.html#Axis_t">Axis_t</a> lowX,<a href="ListOfTypes.html#Axis_t">Axis_t</a> highX) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./TEnergyHistogram.html">TEnergyHistogram</a>* <a name="TPersistenceManager:EnergyHistogram" href="src/TPersistenceManager.cxx.html#TPersistenceManager:EnergyHistogram">EnergyHistogram</a>(const <a href="ListOfTypes.html#Text_t">Text_t</a> *hname,const <a href="ListOfTypes.html#Text_t">Text_t</a> *htitle,<a href="ListOfTypes.html#Int_t">Int_t</a> nbin,<a href="ListOfTypes.html#Axis_t">Axis_t</a> lowX,<a href="ListOfTypes.html#Axis_t">Axis_t</a> highX) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./TMomentumHistogram.html">TMomentumHistogram</a>* <a name="TPersistenceManager:MomentumHistogram" href="src/TPersistenceManager.cxx.html#TPersistenceManager:MomentumHistogram">MomentumHistogram</a>(const <a href="ListOfTypes.html#Text_t">Text_t</a> *hname,const <a href="ListOfTypes.html#Text_t">Text_t</a> *htitle,<a href="ListOfTypes.html#Int_t">Int_t</a> nbin,<a href="ListOfTypes.html#Axis_t">Axis_t</a> lowX,<a href="ListOfTypes.html#Axis_t">Axis_t</a> highX) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TPersistenceManager:Histogram" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Histogram">Histogram</a>( const <a href="ListOfTypes.html#char">char</a>* htitle, 
+				   <a href="ListOfTypes.html#int">int</a> nbinX, <a href="ListOfTypes.html#float">float</a> lowX, <a href="ListOfTypes.html#float">float</a> highX,
+				   <a href="ListOfTypes.html#int">int</a> nbinY, <a href="ListOfTypes.html#float">float</a> lowY, <a href="ListOfTypes.html#float">float</a> highY ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./THistogram.html">THistogram</a>* <a name="TPersistenceManager:Histogram" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Histogram">Histogram</a>( const <a href="ListOfTypes.html#char">char</a>* htitle, 
+						   <a href="ListOfTypes.html#int">int</a> nbinX, <a href="ListOfTypes.html#float">float</a> lowX, <a href="ListOfTypes.html#float">float</a> highX,
+						   <a href="ListOfTypes.html#int">int</a> nbinY, <a href="ListOfTypes.html#float">float</a> lowY, <a href="ListOfTypes.html#float">float</a> highY,
+						   <a href="./THistID.html">THistID</a> hhid ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./TEoverPHistogram.html">TEoverPHistogram</a>* <a name="TPersistenceManager:EoverPHistogram" href="src/TPersistenceManager.cxx.html#TPersistenceManager:EoverPHistogram">EoverPHistogram</a>(const <a href="ListOfTypes.html#Text_t">Text_t</a> *hname,const <a href="ListOfTypes.html#Text_t">Text_t</a> *htitle,<a href="ListOfTypes.html#Int_t">Int_t</a> nbinX,<a href="ListOfTypes.html#Axis_t">Axis_t</a> lowX,<a href="ListOfTypes.html#Axis_t">Axis_t</a> highX
+	,<a href="ListOfTypes.html#Int_t">Int_t</a> nbinY,<a href="ListOfTypes.html#Axis_t">Axis_t</a> lowY,<a href="ListOfTypes.html#Axis_t">Axis_t</a> highY)
+<br>
+<hr>
+<!--FUNCTION--><a href="./TMoverPHistogram.html">TMoverPHistogram</a>* <a name="TPersistenceManager:MoverPHistogram" href="src/TPersistenceManager.cxx.html#TPersistenceManager:MoverPHistogram">MoverPHistogram</a>(const <a href="ListOfTypes.html#Text_t">Text_t</a> *hname,const <a href="ListOfTypes.html#Text_t">Text_t</a> *htitle,<a href="ListOfTypes.html#Int_t">Int_t</a> nbinX,<a href="ListOfTypes.html#Axis_t">Axis_t</a> lowX,<a href="ListOfTypes.html#Axis_t">Axis_t</a> highX
+	,<a href="ListOfTypes.html#Int_t">Int_t</a> nbinY,<a href="ListOfTypes.html#Axis_t">Axis_t</a> lowY,<a href="ListOfTypes.html#Axis_t">Axis_t</a> highY)
+<br>
+<hr>
+<!--FUNCTION--><a href="./THistogram.html">THistogram</a>* <a name="TPersistenceManager:Profile" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Profile">Profile</a>( const <a href="ListOfTypes.html#char">char</a>* htitle, <a href="ListOfTypes.html#int">int</a> nbin, 
+						 <a href="ListOfTypes.html#float">float</a> lowX, <a href="ListOfTypes.html#float">float</a> highX,
+						 <a href="ListOfTypes.html#float">float</a> lowY, <a href="ListOfTypes.html#float">float</a> highY ) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TPersistenceManager:Profile" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Profile">Profile</a>( const <a href="ListOfTypes.html#char">char</a>* htitle, <a href="ListOfTypes.html#int">int</a> nbin, 
+				 <a href="ListOfTypes.html#float">float</a> lowX, <a href="ListOfTypes.html#float">float</a> highX,
+				 <a href="ListOfTypes.html#float">float</a> lowY, <a href="ListOfTypes.html#float">float</a> highY, <a href="./THistID.html">THistID</a> hhid ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./TTuple.html">TTuple</a>* <a name="TPersistenceManager:Ntuple" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Ntuple">Ntuple</a>( const <a href="ListOfTypes.html#char">char</a>* nttitle ) 
+<br>
+<pre> Map onto two-argument function below:
+</pre><hr>
+<!--FUNCTION--><a href="./TTuple.html">TTuple</a>* <a name="TPersistenceManager:Ntuple" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Ntuple">Ntuple</a>( const <a href="ListOfTypes.html#char">char</a>* nttitle, 
+					    <a href="./THistID.html">THistID</a> hhid ) 
+<br>
+<pre> Try to find ntuple by title in list of managed ntuples:
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:DumpAllData" href="src/TPersistenceManager.cxx.html#TPersistenceManager:DumpAllData">DumpAllData</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:ClearAll" href="src/TPersistenceManager.cxx.html#TPersistenceManager:ClearAll">ClearAll</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#int">int</a> <a name="TPersistenceManager:Save" href="src/TPersistenceManager.cxx.html#TPersistenceManager:Save">Save</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="./THistogram.html">THistogram</a>* <a name="TPersistenceManager:getHistByName" href="src/TPersistenceManager.cxx.html#TPersistenceManager:getHistByName">getHistByName</a>( const <a href="ListOfTypes.html#char">char</a>* title ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./THistogram.html">THistogram</a>* <a name="TPersistenceManager:getHistByTitle" href="src/TPersistenceManager.cxx.html#TPersistenceManager:getHistByTitle">getHistByTitle</a>( const <a href="ListOfTypes.html#char">char</a>* title ) 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:SetHepTupleMode" href="TPersistenceManager.h">SetHepTupleMode</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesNo = kTRUE)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#int">int</a> <a name="TPersistenceManager:Store" href="TPersistenceManager.h">Store</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                    TObject* <a name="TPersistenceManager:Put" href="TPersistenceManager.h">Put</a>(TObject* item)
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TPersistenceManager.html">TPersistenceManager</a> <a name="TPersistenceManager:TPersistenceManager" href="TPersistenceManager.h">TPersistenceManager</a>(const <a href="./TPersistenceManager.html">TPersistenceManager</a>&amp; h)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TPersistenceManager.html">TPersistenceManager</a>&amp; <a name="TPersistenceManager:operator=" href="TPersistenceManager.h">operator=</a>(const <a href="./TPersistenceManager.html">TPersistenceManager</a>&amp; v)
+<!--INLINE FUNCTION--><!--TAB6-->                     TClass* <a name="TPersistenceManager:Class" href="TPersistenceManager.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                     TClass* <a name="TPersistenceManager:IsA" href="TPersistenceManager.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:ShowMembers" href="TPersistenceManager.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:Streamer" href="TPersistenceManager.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="TPersistenceManager:StreamerNVirtual" href="TPersistenceManager.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?Bochum+University">Bochum University</a>, <a href="http://consult.cern.ch/xwho/people?Feb.">Feb.</a> 99			//</em><br>
+<em>Last update: Fri Dec 20 16:03:12 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

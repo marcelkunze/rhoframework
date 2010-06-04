@@ -1,0 +1,669 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:11 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TPersistenceManager - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TPersistenceManager.html">TPersistenceManager</a>							//</b>
+<b>//                                                                      //</b>
+<b>// Persistence manager					    		//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, Bochum University, Feb. 99			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include &lt;stdlib.h&gt;
+#include "RhoManager/TPersistenceManager.h"
+#include "RhoBase/TRho.h"
+
+ClassImp(TPersistenceManager)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+<a name="TPersistenceManager:TPersistenceManager"> </a><a href=".././TPersistenceManager.html#TPersistenceManager:TPersistenceManager">TPersistenceManager::TPersistenceManager</a>( const <a href="../ListOfTypes.html#char">char</a>* file,const <a href="../ListOfTypes.html#char">char</a>* fmode ) :
+<a href=".././TPersistenceManager.html#TPersistenceManager:fHepTuple">fHepTuple</a>(kFALSE)
+{
+    <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a> = new TFile( file, (<a href="../ListOfTypes.html#char">char</a>*)fmode,"Created for you by <a href=".././TPersistenceManager.html">TPersistenceManager</a>" );
+    <a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>   = new THashList();
+    <a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>   = new THashList();
+    <a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>  = new THashList();
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TPersistenceManager:~TPersistenceManager"> </a><a href=".././TPersistenceManager.html">TPersistenceManager</a>::~<a href=".././TPersistenceManager.html">TPersistenceManager</a>() 
+{
+    <a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;Delete(); delete <a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>;// Clear lists and remove objects
+    <a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;Delete(); delete <a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>;
+    <a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;Delete(); delete <a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>;
+    <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a>-&gt;Close();
+    delete <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a>;
+    
+}
+
+<b>//----------------------</b>
+<b>//-- public Functions --</b>
+<b>//----------------------</b>
+
+<b>// Set current directory in memory, create if it does not exist:</b>
+<a name="TPersistenceManager:SetDir"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPersistenceManager.html#TPersistenceManager:SetDir">TPersistenceManager::SetDir</a>( const <a href="../ListOfTypes.html#char">char</a> * path ) 
+{    
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> result= kTRUE;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    gDirectory-&gt;cd( "/" );  
+<b>    // Now try to change or create directory. ROOT will</b>
+<b>    // create only direct subdirectories without "/" in the name. </b>
+<b>    // Go through the path, extract tokens and cd, creating</b>
+<b>    // directories along the way as needed:</b>
+    TString ch( path );
+    <a href="../ListOfTypes.html#int">int</a> i1= 0;
+    <a href="../ListOfTypes.html#int">int</a> i2= 0;
+    if( ch( 0, 1 ) == "/" ) {
+	i1= 1;
+	i2= 1;
+    }
+    while( i2 &lt; ch.Length() ) {
+	while( ch( i2, 1 ) != "/" &amp;&amp; i2 &lt; ch.Length() ) i2++;
+	TString tok( ch( i1, i2-i1 ) );
+	i1= ++i2;
+	TKey* key= gDirectory-&gt;GetKey( &amp;*tok );
+	if( key != 0 ) {
+	    if( !gDirectory-&gt;cd( &amp;*tok ) ) {
+		cout &lt;&lt; "<a href=".././TPersistenceManager.html#TPersistenceManager:setDir">TPersistenceManager::setDir</a>: can't cd to existing " 
+		    &lt;&lt; tok &lt;&lt; " in " &lt;&lt; gDirectory-&gt;GetPath() &lt;&lt; endl;
+		break;
+	    }
+	}
+	else {
+	    TDirectory* newdir= gDirectory-&gt;mkdir( &amp;*tok );
+	    if( newdir != 0 ) {
+		newdir-&gt;cd();
+	    }
+	    else {
+		result= kFALSE;
+		break;
+	    }
+	}
+    }
+    return result;
+    
+}
+
+
+<b>// Return path of current directory (a la pwd):</b>
+<a name="TPersistenceManager:GetDir"> </a>const <a href="../ListOfTypes.html#char">char</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:GetDir">TPersistenceManager::GetDir</a>() const 
+{   
+    return gDirectory-&gt;GetPath();  
+}
+
+<a name="TPersistenceManager:SetFileName"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPersistenceManager.html#TPersistenceManager:SetFileName">TPersistenceManager::SetFileName</a>( const <a href="../ListOfTypes.html#char">char</a>* file ) 
+{   
+<b>    // Make sure we are at the top of the current file, then save:</b>
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a>-&gt;cd();
+    <a href="#TPersistenceManager:Save">Save</a>();
+    
+<b>    // Create the new file and transfer all objects from existing to new</b>
+<b>    // file. Function movedir will call itself recursively for directories.</b>
+    TFile* filep= new TFile( file, "RECREATE", 
+	"Created for you again by <a href=".././TPersistenceManager.html">TPersistenceManager</a>" );
+    <a href="#TPersistenceManager:movedir">movedir</a>( <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a>, filep );
+    
+<b>    // Now we can safely get rid of the old file:</b>
+    delete <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a>;
+    <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a>= filep;
+    
+<b>    // The End:</b>
+    return kTRUE;
+    
+}
+
+
+<b>// Recursively move contents of olddir to newdir:</b>
+<a name="TPersistenceManager:movedir"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TPersistenceManager.html#TPersistenceManager:movedir">TPersistenceManager::movedir</a>( TDirectory* olddir, TDirectory* newdir ) 
+{   
+    TList* list1= olddir-&gt;GetList();
+    TIter iter( list1 );
+    TObject* obj= 0;
+    while( obj= iter.Next() ) {
+	if( obj-&gt;InheritsFrom( "TH1" ) ) {
+<b>	    // TH1::SetDirectory does all the work for us:</b>
+	    ((TH1*)obj)-&gt;SetDirectory( newdir );
+	}
+	else if( strcmp( obj-&gt;ClassName(), "TDirectory" ) == 0 ) {
+<b>	    // Have to do it by hand recursively for TDirectory:</b>
+	    list1-&gt;<a href="#TPersistenceManager:Remove">Remove</a>( obj );
+	    TDirectory* dir= newdir-&gt;mkdir( obj-&gt;GetName() );
+	    <a href="#TPersistenceManager:movedir">movedir</a>( (TDirectory*)obj, dir );
+	}
+    }    
+    return;
+    
+}
+
+<a name="TPersistenceManager:GetNumDir"> </a><a href="../ListOfTypes.html#size_t">size_t</a> <a href=".././TPersistenceManager.html#TPersistenceManager:GetNumDir">TPersistenceManager::GetNumDir</a>() const 
+{ 
+    <a href="#TPersistenceManager:checkFile">checkFile</a>( "w" );
+    TIter iter( gDirectory-&gt;GetList() );
+    TObject* obj;
+    <a href="../ListOfTypes.html#int">int</a> dircount= 0;
+    while( obj= iter.Next() ) {
+	if( !strcmp( obj-&gt;ClassName(), "TDirectory" ) ) dircount++;
+    }
+    return dircount;
+    
+}
+
+<a name="TPersistenceManager:GetDirName"> </a>const <a href="../ListOfTypes.html#char">char</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:GetDirName">TPersistenceManager::GetDirName</a>( <a href="../ListOfTypes.html#size_t">size_t</a> index ) const 
+{
+    <a href="#TPersistenceManager:checkFile">checkFile</a>( "w" );
+    TIter iter( gDirectory-&gt;GetList() );
+    TObject* obj;
+    <a href="../ListOfTypes.html#size_t">size_t</a> dircount= 0;
+    TString dirName( "Not found" );
+    while( obj= iter.Next() ) {
+	if( !strcmp( obj-&gt;ClassName(), "TDirectory" ) ) {
+	    dircount++;
+	    if( index+1 == dircount ) {
+		dirName= obj-&gt;GetName();
+		break;
+	    }
+	}
+    }
+    return dirName;
+    
+}
+
+<a name="TPersistenceManager:GetDirIndex"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TPersistenceManager.html#TPersistenceManager:GetDirIndex">TPersistenceManager::GetDirIndex</a>( const <a href="../ListOfTypes.html#char">char</a>* dirname, 
+					    <a href="../ListOfTypes.html#size_t">size_t</a> &amp; index ) const 
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> result= kTRUE;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>( "w" );
+    TIter iter( gDirectory-&gt;GetList() );
+    TObject* obj;
+    <a href="../ListOfTypes.html#size_t">size_t</a> dircount= 0;
+    while( obj= iter.Next() ) {
+	if( !strcmp( obj-&gt;ClassName(), "TDirectory" ) ) {
+	    dircount++;
+	    if( !strcmp( obj-&gt;GetName(), &amp;*dirname ) ) break;
+	}
+    }
+    if( dircount == 0 ) {
+	result= kFALSE;
+    }
+    else {
+	index= dircount-1;
+    }
+    return result;
+    
+}
+
+<a name="TPersistenceManager:PrintOn"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TPersistenceManager.html#TPersistenceManager:PrintOn">TPersistenceManager::PrintOn</a>(std::ostream &amp; o) const 
+{
+    <a href="../ListOfTypes.html#int">int</a> i;
+
+    o &lt;&lt; endl;
+    o &lt;&lt; "<a href=".././TPersistenceManager.html">TPersistenceManager</a> Directory" &lt;&lt; endl;
+    o &lt;&lt; "---------------------------------" &lt;&lt; endl;
+    o &lt;&lt; "THistograms: " &lt;&lt; <a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;GetSize() &lt;&lt; endl;
+    for (i=0;i&lt;<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;GetSize();i++) {
+	TH1F *h = (TH1F*)<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;At(i);
+	if (h==0)
+	    o &lt;&lt; "Reference to non existent object" &lt;&lt; endl;
+	else
+	    o &lt;&lt; h-&gt;ClassName() &lt;&lt; 't' &lt;&lt; h-&gt;GetName() &lt;&lt; "t(" &lt;&lt; h-&gt;GetTitle() &lt;&lt; ")" &lt;&lt; endl;
+    }
+
+    o &lt;&lt; endl;
+    o &lt;&lt; "TTuples: " &lt;&lt; <a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;GetSize() &lt;&lt; endl;
+    for (i=0;i&lt;<a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;GetSize();i++) {
+	TTree *h = (TTree*)<a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;At(i);
+	if (h==0)
+	    o &lt;&lt; "Reference to non existent object" &lt;&lt; endl;
+	else
+	    o &lt;&lt; h-&gt;ClassName() &lt;&lt; 't' &lt;&lt; h-&gt;GetName() &lt;&lt; "t(" &lt;&lt; h-&gt;GetTitle() &lt;&lt; ")" &lt;&lt; endl;
+    }
+
+    o &lt;&lt; endl;
+    o &lt;&lt; "Other TObjects: " &lt;&lt; <a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;GetSize() &lt;&lt; endl;
+    for (i=0;i&lt;<a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;GetSize();i++) {
+	TObject *h = (TObject*)<a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;At(i);
+	if (h==0)
+	    o &lt;&lt; "Reference to non existent object" &lt;&lt; endl;
+	else
+	    o &lt;&lt; h-&gt;ClassName() &lt;&lt; 't' &lt;&lt; h-&gt;GetName() &lt;&lt; "t(" &lt;&lt; h-&gt;GetTitle() &lt;&lt; ")" &lt;&lt; endl;
+    }
+
+    o &lt;&lt; endl;
+
+    return;
+}
+
+<b>// Construct names (keys) for histos and ntuples. When hhid contains 0,</b>
+<b>// a key using the prefix and a running counter is created:</b>
+<a name="TPersistenceManager:makeName"> </a>const <a href="../ListOfTypes.html#char">char</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:makeName">TPersistenceManager::makeName</a>( const <a href="../ListOfTypes.html#char">char</a>* prefix, <a href=".././THistID.html">THistID</a> hhid ) 
+{
+    TString name( prefix );
+    if( hhid.isIDstringSet() ) {
+	name= hhid.getIDstring();
+    }
+    else if( hhid.isIDnumberSet() ) {
+	if( hhid.getIDnumber() != 0 ) {
+	    name+= TString( hhid.getIDnumber() );
+	}
+	else {
+	    TIter iter( gDirectory-&gt;GetList(), kIterBackward );
+	    TObject* obj= 0;
+	    <a href="../ListOfTypes.html#int">int</a> number= 0;
+	    if( name( 0, 1 ) == "h" ) {
+		while( obj= iter.Next() ) if( obj-&gt;InheritsFrom( "TH1" ) ) break;
+		if( obj != 0 ) {
+		    TString hkey( obj-&gt;GetName() );
+		    TString x(hkey( 3, hkey.Length()-3));
+		    number = atol(x);
+		}
+		<a href="../ListOfTypes.html#char">char</a> tmp[128];
+		sprintf(tmp,"%d0",number+1);
+		name+= TString(tmp);
+	    }
+	    else if( name( 0, 3 ) == "ntp" ) {
+		while( obj= iter.Next() ) {
+		    if( !strcmp( obj-&gt;ClassName(), "TTree" ) &amp;&amp; 
+			!strncmp( obj-&gt;GetName(), "ntp", 3 ) ) break;
+		}
+		if( obj != 0 ) {
+		    TString lastname( obj-&gt;GetName() );
+		    TString x(lastname( 3, lastname.Length()-3 ));
+		    number = atol(x);
+		}
+		<a href="../ListOfTypes.html#char">char</a> tmp[128];
+		sprintf(tmp,"%d0",number+1);
+		name+= TString(tmp);
+	    }
+	    else {
+		cout &lt;&lt; "<a href=".././TPersistenceManager.html#TPersistenceManager:makeName">TPersistenceManager::makeName</a>: prefix " &lt;&lt; prefix 
+		    &lt;&lt; " not recognised (h1d, h2d, hpr, ntp)" &lt;&lt; endl;
+	    }
+	}
+    }
+    return name;
+}
+
+<b>// Check if current file belongs to this manager, if not change</b>
+<b>// directory to ROOT of correct file:</b>
+<a name="TPersistenceManager:checkFile"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TPersistenceManager.html#TPersistenceManager:checkFile">TPersistenceManager::checkFile</a>( const <a href="../ListOfTypes.html#char">char</a>* opt ) const 
+{
+    if( gDirectory-&gt;GetFile() != <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a> ) {
+	if( !strcmp( opt, "" ) ) {
+	    <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a>-&gt;cd();
+	}
+	else {
+	    cout &lt;&lt; "<a href=".././TPersistenceManager.html#TPersistenceManager:checkFile">TPersistenceManager::checkFile</a>: current file "
+		&lt;&lt; gDirectory-&gt;GetFile()-&gt;GetName() 
+		&lt;&lt; " does not belong to this manager ("
+		&lt;&lt; <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a>-&gt;GetName() &lt;&lt; ")" &lt;&lt; endl;
+	}
+    }
+    return; 
+}
+
+
+<a name="TPersistenceManager:GetNumHist"> </a><a href="../ListOfTypes.html#size_t">size_t</a> <a href=".././TPersistenceManager.html#TPersistenceManager:GetNumHist">TPersistenceManager::GetNumHist</a>() const 
+{
+    <a href="#TPersistenceManager:checkFile">checkFile</a>( "w" );
+    TIter iter( gDirectory-&gt;GetList() );
+    TObject* obj;
+    <a href="../ListOfTypes.html#int">int</a> histcount= 0;
+    while( obj= iter.Next() ) {
+	if( obj-&gt;InheritsFrom( "TH1" ) ) histcount++;
+    }
+    return histcount;
+}
+
+<a name="TPersistenceManager:GetNumHist"> </a><a href="../ListOfTypes.html#size_t">size_t</a> <a href=".././TPersistenceManager.html#TPersistenceManager:GetNumHist">TPersistenceManager::GetNumHist</a>( const <a href="../ListOfTypes.html#char">char</a> *path ) const 
+{
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    gDirectory-&gt;cd( path );
+    <a href="../ListOfTypes.html#int">int</a> histcount= <a href="#TPersistenceManager:GetNumHist">GetNumHist</a>();
+    olddir-&gt;cd();
+    return histcount;
+    
+}
+
+<a name="TPersistenceManager:Add"> </a>TObject* <a href=".././TPersistenceManager.html#TPersistenceManager:Add">TPersistenceManager::Add</a>(TObject* item) 
+{
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;<a href="#TPersistenceManager:Add">Add</a>(item);
+    olddir-&gt;cd();
+    return item;
+}
+
+<a name="TPersistenceManager:Get"> </a>TObject* <a href=".././TPersistenceManager.html#TPersistenceManager:Get">TPersistenceManager::Get</a>(const <a href="../ListOfTypes.html#char">char</a> *name) 
+{
+    TObject *item;
+    if ((item=<a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;FindObject(name)) != 0) return item;
+    if ((item=<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;FindObject(name)) != 0) return item;
+    if ((item=<a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;FindObject(name)) != 0) return item;
+    return 0; // Not found
+}
+
+<a name="TPersistenceManager:Remove"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TPersistenceManager.html#TPersistenceManager:Remove">TPersistenceManager::Remove</a>(TObject* item) 
+{   
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;Remove(item);
+    olddir-&gt;cd();
+}
+
+<a name="TPersistenceManager:Remove"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TPersistenceManager.html#TPersistenceManager:Remove">TPersistenceManager::Remove</a>(const <a href="../ListOfTypes.html#char">char</a> *name) 
+{   
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    TObject* item = <a href="#TPersistenceManager:Get">Get</a>(name);
+    if ((item=<a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;FindObject(name)) != 0) <a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;Remove(item);
+    if ((item=<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;FindObject(name)) != 0) <a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;Remove(item);
+    if ((item=<a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;FindObject(name)) != 0) <a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;Remove(item);
+    olddir-&gt;cd();
+}
+
+<b>// 1-D histos:</b>
+<a name="TPersistenceManager:Histogram"> </a><a href=".././THistogram.html">THistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:Histogram">TPersistenceManager::Histogram</a>( const <a href="../ListOfTypes.html#char">char</a>* htitle, <a href="../ListOfTypes.html#int">int</a> nbin, 
+						   <a href="../ListOfTypes.html#float">float</a> lowX, <a href="../ListOfTypes.html#float">float</a> highX ) 
+{
+    return <a href="#TPersistenceManager:Histogram">Histogram</a>( htitle, nbin, lowX, highX, <a href=".././THistID.html">THistID</a>( 0 ) );
+}
+
+<a name="TPersistenceManager:Histogram"> </a><a href=".././THistogram.html">THistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:Histogram">TPersistenceManager::Histogram</a>( const <a href="../ListOfTypes.html#char">char</a>* htitle, <a href="../ListOfTypes.html#int">int</a> nbin,
+						   <a href="../ListOfTypes.html#float">float</a> lowX, <a href="../ListOfTypes.html#float">float</a> highX, 
+						   <a href=".././THistID.html">THistID</a> hhid ) 
+{
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././THistogram.html">THistogram</a>* histp= <a href="#TPersistenceManager:getHistByName">getHistByName</a>( htitle );
+    if( histp == 0 ) {
+	TString hname;
+	if (<a href=".././TPersistenceManager.html#TPersistenceManager:fHepTuple">fHepTuple</a>)
+	    hname = <a href="#TPersistenceManager:makeName">makeName</a>( "h1d", hhid );
+	else
+	    hname = TString(htitle);
+	histp=new <a href=".././THistogram.html">THistogram</a>( &amp;*hname, htitle, nbin, lowX, highX );
+	<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;<a href="#TPersistenceManager:Add">Add</a>(histp);
+    }
+    olddir-&gt;cd();
+    return histp;
+}
+
+<a name="TPersistenceManager:MassHistogram"> </a><a href=".././TMassHistogram.html">TMassHistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:MassHistogram">TPersistenceManager::MassHistogram</a>(const <a href="../ListOfTypes.html#Text_t">Text_t</a> *hname,const <a href="../ListOfTypes.html#Text_t">Text_t</a> *htitle,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbin,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowX,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> highX) 
+{
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././TMassHistogram.html">TMassHistogram</a>* histp= (<a href=".././TMassHistogram.html">TMassHistogram</a>*) <a href="#TPersistenceManager:getHistByName">getHistByName</a>( htitle );
+    if( histp == 0 ) {
+	histp=new <a href=".././TMassHistogram.html">TMassHistogram</a>( &amp;*hname, htitle, nbin, lowX, highX );
+	<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;<a href="#TPersistenceManager:Add">Add</a>(histp);
+    }
+    olddir-&gt;cd();
+    return histp;
+}
+
+<a name="TPersistenceManager:EnergyHistogram"> </a><a href=".././TEnergyHistogram.html">TEnergyHistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:EnergyHistogram">TPersistenceManager::EnergyHistogram</a>(const <a href="../ListOfTypes.html#Text_t">Text_t</a> *hname,const <a href="../ListOfTypes.html#Text_t">Text_t</a> *htitle,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbin,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowX,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> highX) 
+{
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././TEnergyHistogram.html">TEnergyHistogram</a>* histp= (<a href=".././TEnergyHistogram.html">TEnergyHistogram</a>*) <a href="#TPersistenceManager:getHistByName">getHistByName</a>( htitle );
+    if( histp == 0 ) {
+	histp=new <a href=".././TEnergyHistogram.html">TEnergyHistogram</a>( &amp;*hname, htitle, nbin, lowX, highX );
+	<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;<a href="#TPersistenceManager:Add">Add</a>(histp);
+    }
+    olddir-&gt;cd();
+    return histp;
+}
+
+<a name="TPersistenceManager:MomentumHistogram"> </a><a href=".././TMomentumHistogram.html">TMomentumHistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:MomentumHistogram">TPersistenceManager::MomentumHistogram</a>(const <a href="../ListOfTypes.html#Text_t">Text_t</a> *hname,const <a href="../ListOfTypes.html#Text_t">Text_t</a> *htitle,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbin,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowX,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> highX) 
+{
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././TMomentumHistogram.html">TMomentumHistogram</a>* histp= (<a href=".././TMomentumHistogram.html">TMomentumHistogram</a>*) <a href="#TPersistenceManager:getHistByName">getHistByName</a>( htitle );
+    if( histp == 0 ) {
+	histp=new <a href=".././TMomentumHistogram.html">TMomentumHistogram</a>( &amp;*hname, htitle, nbin, lowX, highX );
+	<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;<a href="#TPersistenceManager:Add">Add</a>(histp);
+    }
+    olddir-&gt;cd();
+    return histp;
+}
+
+<b>// 2-D histos:</b>
+<a href=".././THistogram.html">THistogram</a>* 
+<a name="TPersistenceManager:Histogram"> </a><a href=".././TPersistenceManager.html#TPersistenceManager:Histogram">TPersistenceManager::Histogram</a>( const <a href="../ListOfTypes.html#char">char</a>* htitle, 
+				   <a href="../ListOfTypes.html#int">int</a> nbinX, <a href="../ListOfTypes.html#float">float</a> lowX, <a href="../ListOfTypes.html#float">float</a> highX,
+				   <a href="../ListOfTypes.html#int">int</a> nbinY, <a href="../ListOfTypes.html#float">float</a> lowY, <a href="../ListOfTypes.html#float">float</a> highY ) 
+{
+    return <a href="#TPersistenceManager:Histogram">Histogram</a>( htitle, nbinX, lowX, highX, nbinY, lowY, highY,
+	<a href=".././THistID.html">THistID</a>( 0 ) );
+}
+
+<a name="TPersistenceManager:Histogram"> </a><a href=".././THistogram.html">THistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:Histogram">TPersistenceManager::Histogram</a>( const <a href="../ListOfTypes.html#char">char</a>* htitle, 
+						   <a href="../ListOfTypes.html#int">int</a> nbinX, <a href="../ListOfTypes.html#float">float</a> lowX, <a href="../ListOfTypes.html#float">float</a> highX,
+						   <a href="../ListOfTypes.html#int">int</a> nbinY, <a href="../ListOfTypes.html#float">float</a> lowY, <a href="../ListOfTypes.html#float">float</a> highY,
+						   <a href=".././THistID.html">THistID</a> hhid ) 
+{
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././THistogram.html">THistogram</a>* histp= <a href="#TPersistenceManager:getHistByName">getHistByName</a>( htitle );
+    if( histp == 0 ) {
+	TString hname;
+	if (<a href=".././TPersistenceManager.html#TPersistenceManager:fHepTuple">fHepTuple</a>)
+	    hname = <a href="#TPersistenceManager:makeName">makeName</a>( "h2d", hhid );
+	else
+	    hname = TString(htitle);
+	histp=new <a href=".././THistogram.html">THistogram</a>( &amp;*hname, htitle,nbinX, lowX, highX,nbinY, lowY, highY );
+	<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;<a href="#TPersistenceManager:Add">Add</a>(histp);
+    }
+    olddir-&gt;cd();
+    return histp;    
+}
+
+<a name="TPersistenceManager:EoverPHistogram"> </a><a href=".././TEoverPHistogram.html">TEoverPHistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:EoverPHistogram">TPersistenceManager::EoverPHistogram</a>(const <a href="../ListOfTypes.html#Text_t">Text_t</a> *hname,const <a href="../ListOfTypes.html#Text_t">Text_t</a> *htitle,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbinX,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowX,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> highX
+	,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbinY,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowY,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> highY)
+{
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././TEoverPHistogram.html">TEoverPHistogram</a>* histp= (<a href=".././TEoverPHistogram.html">TEoverPHistogram</a>*) <a href="#TPersistenceManager:getHistByName">getHistByName</a>( htitle );
+    if( histp == 0 ) {
+	histp=new <a href=".././TEoverPHistogram.html">TEoverPHistogram</a>( &amp;*hname, htitle,nbinX, lowX, highX,nbinY, lowY, highY );
+	<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;<a href="#TPersistenceManager:Add">Add</a>(histp);
+    }
+    olddir-&gt;cd();
+    return histp;
+}
+
+<a name="TPersistenceManager:MoverPHistogram"> </a><a href=".././TMoverPHistogram.html">TMoverPHistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:MoverPHistogram">TPersistenceManager::MoverPHistogram</a>(const <a href="../ListOfTypes.html#Text_t">Text_t</a> *hname,const <a href="../ListOfTypes.html#Text_t">Text_t</a> *htitle,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbinX,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowX,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> highX
+	,<a href="../ListOfTypes.html#Int_t">Int_t</a> nbinY,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> lowY,<a href="../ListOfTypes.html#Axis_t">Axis_t</a> highY)
+{
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././TMoverPHistogram.html">TMoverPHistogram</a>* histp= (<a href=".././TMoverPHistogram.html">TMoverPHistogram</a>*) <a href="#TPersistenceManager:getHistByName">getHistByName</a>( htitle );
+    if( histp == 0 ) {
+	histp=new <a href=".././TMoverPHistogram.html">TMoverPHistogram</a>( &amp;*hname, htitle,nbinX, lowX, highX,nbinY, lowY, highY );
+	<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;<a href="#TPersistenceManager:Add">Add</a>(histp);
+    }
+    olddir-&gt;cd();
+    return histp;
+}
+
+<b>// Profile histos:</b>
+<a name="TPersistenceManager:Profile"> </a><a href=".././THistogram.html">THistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:Profile">TPersistenceManager::Profile</a>( const <a href="../ListOfTypes.html#char">char</a>* htitle, <a href="../ListOfTypes.html#int">int</a> nbin, 
+						 <a href="../ListOfTypes.html#float">float</a> lowX, <a href="../ListOfTypes.html#float">float</a> highX,
+						 <a href="../ListOfTypes.html#float">float</a> lowY, <a href="../ListOfTypes.html#float">float</a> highY ) 
+{
+    return <a href="#TPersistenceManager:Profile">Profile</a>( htitle, nbin, lowX, highX, lowY, highY, <a href=".././THistID.html">THistID</a>( 0 ) );  
+}
+
+<a href=".././THistogram.html">THistogram</a>* 
+<a name="TPersistenceManager:Profile"> </a><a href=".././TPersistenceManager.html#TPersistenceManager:Profile">TPersistenceManager::Profile</a>( const <a href="../ListOfTypes.html#char">char</a>* htitle, <a href="../ListOfTypes.html#int">int</a> nbin, 
+				 <a href="../ListOfTypes.html#float">float</a> lowX, <a href="../ListOfTypes.html#float">float</a> highX,
+				 <a href="../ListOfTypes.html#float">float</a> lowY, <a href="../ListOfTypes.html#float">float</a> highY, <a href=".././THistID.html">THistID</a> hhid ) 
+{
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././THistogram.html">THistogram</a>* histp= <a href="#TPersistenceManager:getHistByName">getHistByName</a>( htitle );
+    if( histp == 0 ) {
+	TString hname;
+	if (<a href=".././TPersistenceManager.html#TPersistenceManager:fHepTuple">fHepTuple</a>)
+	    hname = <a href="#TPersistenceManager:makeName">makeName</a>( "hpr", hhid );
+	else
+	    hname = TString(htitle);
+	histp=new <a href=".././THistogram.html">THistogram</a>( &amp;*hname, htitle,nbin, lowX, highX,lowY, highY );
+	<a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;<a href="#TPersistenceManager:Add">Add</a>(histp);
+    }
+    olddir-&gt;cd();
+    return histp;
+    
+}
+
+
+<b>// Ntuples:</b>
+<a name="TPersistenceManager:Ntuple"> </a><a href=".././TTuple.html">TTuple</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:Ntuple">TPersistenceManager::Ntuple</a>( const <a href="../ListOfTypes.html#char">char</a>* nttitle ) 
+{
+<b>    // Map onto two-argument function below:</b>
+    return <a href="#TPersistenceManager:Ntuple">Ntuple</a>( nttitle, <a href=".././THistID.html">THistID</a>( 0 ) );
+}
+
+<a name="TPersistenceManager:Ntuple"> </a><a href=".././TTuple.html">TTuple</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:Ntuple">TPersistenceManager::Ntuple</a>( const <a href="../ListOfTypes.html#char">char</a>* nttitle, 
+					    <a href=".././THistID.html">THistID</a> hhid ) 
+{
+<b>    // Try to find ntuple by title in list of managed ntuples:</b>
+    TDirectory* olddir= gDirectory;
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././TTuple.html">TTuple</a>* ntp= 0;
+    for( <a href="../ListOfTypes.html#int">int</a> i= 0; i &lt; <a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;GetSize(); ++i ) {
+	if( ((<a href=".././TTuple.html">TTuple</a>*)<a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;At(i))-&gt;Title() == nttitle ) {
+	    ntp= (<a href=".././TTuple.html">TTuple</a>*)<a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;At(i);
+	    break;
+	}
+    }
+<b>    // If no ntuple is found create one in the current directory:</b>
+    if( ntp == 0 ) {
+	TString ntname;
+	if (<a href=".././TPersistenceManager.html#TPersistenceManager:fHepTuple">fHepTuple</a>)
+	    ntname = <a href="#TPersistenceManager:makeName">makeName</a>( "ntp", hhid );
+	else
+	    ntname = TString(nttitle);
+	ntp=new <a href=".././TTuple.html">TTuple</a>( &amp;*ntname, nttitle );
+	<a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;<a href="#TPersistenceManager:Add">Add</a>( ntp );
+    }
+    olddir-&gt;cd();
+    return ntp;
+    
+}
+
+<a name="TPersistenceManager:DumpAllData"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TPersistenceManager.html#TPersistenceManager:DumpAllData">TPersistenceManager::DumpAllData</a>() 
+{
+    for( <a href="../ListOfTypes.html#int">int</a> i= 0; i &lt; <a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;GetSize(); ++i ) ((<a href=".././TTuple.html">TTuple</a>*)<a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;At(i))-&gt;DumpData();
+    return;
+}
+
+<a name="TPersistenceManager:ClearAll"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TPersistenceManager.html#TPersistenceManager:ClearAll">TPersistenceManager::ClearAll</a>() 
+{
+    <a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;Delete(); // This removes the objects and clears the lists
+    <a href=".././TPersistenceManager.html#TPersistenceManager:hlist">hlist</a>-&gt;Delete();
+    <a href=".././TPersistenceManager.html#TPersistenceManager:ntlist">ntlist</a>-&gt;Delete();
+    return;
+}
+
+<a name="TPersistenceManager:Save"> </a><a href="../ListOfTypes.html#int">int</a> <a href=".././TPersistenceManager.html#TPersistenceManager:Save">TPersistenceManager::Save</a>() 
+{
+    <a href="#TPersistenceManager:checkFile">checkFile</a>();
+    <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a>-&gt;Write( <a href=".././TPersistenceManager.html#TPersistenceManager:rtfilep">rtfilep</a>-&gt;GetName(), TObject::kOverwrite );
+    for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;<a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;GetSize();i++) {
+	<a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;At(i)-&gt;Write();
+    }
+
+    return 0;
+}
+
+<b>// Helper function for automatic histo creation or returning.</b>
+<b>// First check if a hist with this title already exists in </b>
+<b>// the current directory, if so match it to the corresponding</b>
+<b>// <a href=".././THistogram.html">THistogram</a> and return its pointer:</b>
+<a name="TPersistenceManager:getHistByName"> </a><a href=".././THistogram.html">THistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:getHistByName">TPersistenceManager::getHistByName</a>( const <a href="../ListOfTypes.html#char">char</a>* title ) 
+{
+    <a href=".././THistogram.html">THistogram</a>* histp= 0;
+    TIter iter( gDirectory-&gt;GetList() );
+    TObject* obj;
+    while( obj= iter.Next() ) {
+	if( obj-&gt;InheritsFrom( "TH1" ) &amp;&amp; 
+	    !strcmp( obj-&gt;GetName(), title ) ) break;
+    }
+    for( <a href="../ListOfTypes.html#int">int</a> i= 0; i &lt; <a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;GetSize(); ++i ) {
+	if( ((<a href=".././THistogram.html">THistogram</a>*)<a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;At(i))-&gt;PtrIsEqual( obj ) ) {
+	    histp= (<a href=".././THistogram.html">THistogram</a>*)<a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;At(i);
+	    break;
+	}
+    }
+    return histp;
+}
+
+<a name="TPersistenceManager:getHistByTitle"> </a><a href=".././THistogram.html">THistogram</a>* <a href=".././TPersistenceManager.html#TPersistenceManager:getHistByTitle">TPersistenceManager::getHistByTitle</a>( const <a href="../ListOfTypes.html#char">char</a>* title ) 
+{
+    <a href=".././THistogram.html">THistogram</a>* histp= 0;
+    TIter iter( gDirectory-&gt;GetList() );
+    TObject* obj;
+    while( obj= iter.Next() ) {
+	if( obj-&gt;InheritsFrom( "TH1" ) &amp;&amp; 
+	    !strcmp( obj-&gt;GetTitle(), title ) ) break;
+    }
+    for( <a href="../ListOfTypes.html#int">int</a> i= 0; i &lt; <a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;GetSize(); ++i ) {
+	if( ((<a href=".././THistogram.html">THistogram</a>*)<a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;At(i))-&gt;PtrIsEqual( obj ) ) {
+	    histp= (<a href=".././THistogram.html">THistogram</a>*)<a href=".././TPersistenceManager.html#TPersistenceManager:olist">olist</a>-&gt;At(i);
+	    break;
+	}
+    }
+    return histp;
+}
+
+<b>// --------------------</b>
+<b>// non-member functions</b>
+<b>// --------------------</b>
+
+std::ostream&amp;  operator &lt;&lt; (std::ostream&amp; o, const <a href=".././TPersistenceManager.html">TPersistenceManager</a>&amp; a) {a.<a href="#TPersistenceManager:PrintOn">PrintOn</a>(o); return o;}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

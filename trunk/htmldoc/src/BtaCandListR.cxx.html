@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:01:56 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>BtaCandListR - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: BtaCandListR.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//      Stores list of BtaCandPtr for the packing/unpacking of the</b>
+<b>//      lists in the microdb</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Stefan Kluth     </b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999       LBNL</b>
+<b>//</b>
+<b>//------------------------------------------------------------------------</b>
+
+<b>//-----------------------</b>
+<b>// This Class's Header --</b>
+<b>//-----------------------</b>
+#include "KangaSchema/BtaCandListR.h"
+
+
+<b>//-------------</b>
+<b>// C Headers --</b>
+<b>//-------------</b>
+<b>// extern "C" {}</b>
+
+
+<b>//---------------</b>
+<b>// C++ Headers --</b>
+<b>//---------------</b>
+
+
+<b>//-------------------------------</b>
+<b>// Collaborating Class Headers --</b>
+<b>//-------------------------------</b>
+<b>//#include "RooUtils/RooEvtObjLocReg.h"</b>
+#include "KangaSchema/BtaCandPtrR.h"
+<b>//#include "BetaTools/BtaCandList.h"</b>
+<b>//#include "BetaTools/BtaCandPtr.h"</b>
+<b>//#include "ProxyDict/IfdStrKey.h"</b>
+<b>//#include "PDT/Pdt.h"</b>
+<b>//#include "ErrLogger/ErrLog.h"</b>
+
+
+<b>//-----------------------------------------------------------------------</b>
+<b>// Local Macros, Typedefs, Structures, Unions and Forward Declarations --</b>
+<b>//-----------------------------------------------------------------------</b>
+ClassImp(<a href=".././BtaCandListR.html">BtaCandListR</a>)
+
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+<a name="BtaCandListR:BtaCandListR"> </a><a href=".././BtaCandListR.html#BtaCandListR:BtaCandListR">BtaCandListR::BtaCandListR</a>() :
+  RooEvtObj&lt;BtaCandList&gt;(),
+  <a href=".././BtaCandListR.html#BtaCandListR:_key">_key</a>(),
+  <a href=".././BtaCandListR.html#BtaCandListR:_array">_array</a>()
+
+{}
+/*
+<a name="BtaCandListR:BtaCandListR"> </a><a href=".././BtaCandListR.html#BtaCandListR:BtaCandListR">BtaCandListR::BtaCandListR</a>( const BtaCandList* transient,
+			    RooEvtObjLocReg &amp; aRegistry ) : 
+   RooEvtObj&lt;BtaCandList&gt;(),
+   <a href=".././BtaCandListR.html#BtaCandListR:_key">_key</a>( transient-&gt;name() ), 
+   <a href=".././BtaCandListR.html#BtaCandListR:_array">_array</a>( transient-&gt;length() )
+
+{
+
+<b>  // Store the location of this object, and the corresponding BtaCandList</b>
+<b>  // into the registry:</b>
+  registerThis( transient, aRegistry ) ;
+
+  for( unsigned i= 0; i &lt; transient-&gt;length(); i++ ) {
+
+<b>    // Store persistent BtaCandPtr in array:</b>
+    BtaCandPtr* bcp= transient-&gt;_l[i];
+    <a href=".././BtaCandListR.html#BtaCandListR:_array">_array</a>.AddAt( new <a href=".././BtaCandPtrR.html">BtaCandPtrR</a>( bcp, aRegistry ), i );
+
+  }
+
+}
+*/
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+<a name="BtaCandListR:~BtaCandListR"> </a><a href=".././BtaCandListR.html">BtaCandListR</a>::~<a href=".././BtaCandListR.html">BtaCandListR</a>() {
+
+  <a href=".././BtaCandListR.html#BtaCandListR:_array">_array</a>.Delete();
+
+}
+
+
+<b>//--------------</b>
+<b>// Operations --</b>
+<b>//--------------</b>
+/*
+BtaCandList* <a href=".././BtaCandListR.html#BtaCandListR:transient">BtaCandListR::transient</a>( RooEvtObjLocReg &amp; aRegistry ) const {
+
+<b>  // Create transient object:</b>
+  IfdStrKey key( <a href=".././BtaCandListR.html#BtaCandListR:_key">_key</a>.GetString().Data() );
+  BtaCandList* transient= new BtaCandList( &amp;key );
+
+<b>  // And fill it with data:</b>
+  for( unsigned i= 0; i &lt; <a href=".././BtaCandListR.html#BtaCandListR:_array">_array</a>.GetEntriesFast(); i++ ) {
+
+<b>    // Get persistent <a href=".././BtaCandPtrR.html">BtaCandPtrR</a> from array and make corresponding</b>
+<b>    // transient BtaCandPtr object:</b>
+    BtaCandPtr* bcp= 0;
+    <a href=".././BtaCandListR.html">BtaCandListR</a>* self= (<a href=".././BtaCandListR.html">BtaCandListR</a>*) this;
+    const TObject* obj= (self-&gt;<a href=".././BtaCandListR.html#BtaCandListR:_array">_array</a>)[i];
+    if( obj-&gt;<a href="#BtaCandListR:IsA">IsA</a>() == <a href=".././BtaCandPtrR.html#BtaCandPtrR:Class">BtaCandPtrR::Class</a>() ) {
+      const <a href=".././BtaCandPtrR.html">BtaCandPtrR</a>* bcpr= (const <a href=".././BtaCandPtrR.html">BtaCandPtrR</a>*) obj;
+      bcp= bcpr-&gt;transient( aRegistry );
+    }
+    else {
+      ErrMsg(fatal) &lt;&lt; " error, object in TObjArray is not a <a href=".././BtaCandPtrR.html">BtaCandPtrR</a> "
+		    &lt;&lt; obj-&gt;ClassName() &lt;&lt; endl;
+    }
+
+<b>    // Add BtaCandPtr to transient BtaCandList:</b>
+    transient-&gt;append( bcp );
+
+  }
+
+<b>  // Register new transient object in registry:</b>
+  registerThis( transient, aRegistry );
+
+  return transient;
+
+}
+*/
+
+<b>//              -------------------------------------------</b>
+<b>//              -- Protected Function Member Definitions --</b>
+<b>//              -------------------------------------------</b>
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

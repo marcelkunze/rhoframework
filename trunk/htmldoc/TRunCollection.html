@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:24 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TRunCollection</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TRunCollection</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TRunCollection:description">class description</a> - <a href="src/TRunCollection.cxx.html">source file</a> - <a href="TRunCollection_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TRunCollection" href="TRunCollection.h">TRunCollection</a> : public VAbsCollection</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->           <a href="./TRunCollection.html">TRunCollection</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:TRunCollection">TRunCollection</a><!--PLAIN-->()
+<!--TAB6-->           <a href="./TRunCollection.html">TRunCollection</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:TRunCollection">TRunCollection</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->           <a href="./TRunCollection.html">TRunCollection</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:TRunCollection">TRunCollection</a><!--PLAIN-->(const <a href="./TRunCollection.html">TRunCollection</a>&amp;)
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:~TRunCollection">~TRunCollection</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:AddRun">AddRun</a><!--PLAIN-->(<a href="./TRunInfo.html">TRunInfo</a>* run)
+<!--TAB6-->           static TClass* <!--TAB--><!--BOLD--><a href="#TRunCollection:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:Finish">Finish</a><!--PLAIN-->()
+<!--TAB6-->      virtual const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TRunCollection:GetFileName">GetFileName</a><!--PLAIN-->() const
+<!--TAB6-->           virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:InitRead">InitRead</a><!--PLAIN-->()
+<!--TAB6-->          virtual TClass* <!--TAB--><!--BOLD--><a href="#TRunCollection:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:NextIndex">NextIndex</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a>&amp; changeFile)
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:Rewind">Rewind</a><!--PLAIN-->()
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunCollection:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TRunCollection:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->       TObjArray* <!--TAB--><!--BOLD--><a name="TRunCollection:fEntryList">fEntryList</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fEntryList"></a></i>
+<!--TAB6-->          TString <!--TAB--><!--BOLD--><a name="TRunCollection:fFileName">fFileName</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fFileName">! Not stored in root file</a></i>
+<!--TAB6-->      <a href="./TDataBlock.html">TDataBlock</a>* <!--TAB--><!--BOLD--><a name="TRunCollection:fCurrentBlock">fCurrentBlock</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fCurrentBlock">! Not stored in root file</a></i>
+<!--TAB6-->            <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TRunCollection:fCurrentBlockNo">fCurrentBlockNo</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fCurrentBlockNo">! Not stored in root file</a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TRunCollection:fStored">fStored</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fStored">! Not stored in root file</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TRunCollection:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TRunCollection.html">TRunCollection</a>		                                        
+                                                                      
+ Run collection class							
+									
+ Author List:								
+ Thorsten Brandt, Dresden University, Aug. 99				
+ Marcel Kunze,  RUB, Nov. 99						
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TRunCollection:TRunCollection" href="src/TRunCollection.cxx.html#TRunCollection:TRunCollection">TRunCollection</a>() :
+  <a href="./TRunCollection.html#TRunCollection:fEntryList">fEntryList</a>(0), <a href="./TRunCollection.html#TRunCollection:fCurrentBlock">fCurrentBlock</a>(0),<a href="./TRunCollection.html#TRunCollection:fCurrentBlockNo">fCurrentBlockNo</a>(0)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunCollection:~TRunCollection" href="src/TRunCollection.cxx.html#TRunCollection:~TRunCollection">~TRunCollection</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunCollection:TRunCollection" href="src/TRunCollection.cxx.html#TRunCollection:TRunCollection">TRunCollection</a>(const <a href="ListOfTypes.html#char">char</a> *name) :
+ <a href="./TRunCollection.html#TRunCollection:fEntryList">fEntryList</a>(0), <a href="./TRunCollection.html#TRunCollection:fCurrentBlock">fCurrentBlock</a>(0),<a href="./TRunCollection.html#TRunCollection:fCurrentBlockNo">fCurrentBlockNo</a>(0),<a href="./TRunCollection.html#TRunCollection:fStored">fStored</a>(kFALSE)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunCollection:Rewind" href="src/TRunCollection.cxx.html#TRunCollection:Rewind">Rewind</a>() 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunCollection:NextIndex" href="src/TRunCollection.cxx.html#TRunCollection:NextIndex">NextIndex</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> &amp;changeFile) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunCollection:GetFileName" href="src/TRunCollection.cxx.html#TRunCollection:GetFileName">GetFileName</a>() const 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunCollection:AddRun" href="src/TRunCollection.cxx.html#TRunCollection:AddRun">AddRun</a>(<a href="./TRunInfo.html">TRunInfo</a> *run)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunCollection:Finish" href="src/TRunCollection.cxx.html#TRunCollection:Finish">Finish</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunCollection:InitRead" href="src/TRunCollection.cxx.html#TRunCollection:InitRead">InitRead</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunCollection:PrintOn" href="src/TRunCollection.cxx.html#TRunCollection:PrintOn">PrintOn</a>(std::ostream &amp;o) const
+<br>
+<pre><a href="./TRunCollection.html#TRunCollection:fEntryList">fEntryList</a>-&gt;Sort();
+</pre><br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="TRunCollection:Class" href="TRunCollection.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="TRunCollection:IsA" href="TRunCollection.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="TRunCollection:ShowMembers" href="TRunCollection.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="TRunCollection:Streamer" href="TRunCollection.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="TRunCollection:StreamerNVirtual" href="TRunCollection.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TRunCollection.html">TRunCollection</a> <a name="TRunCollection:TRunCollection" href="TRunCollection.h">TRunCollection</a>(const <a href="./TRunCollection.html">TRunCollection</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:24 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

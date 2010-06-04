@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:24 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TRhoTime</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TRhoTime</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TRhoTime:description">class description</a> - <a href="src/TRhoTime.cxx.html">source file</a> - <a href="TRhoTime_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TRhoTime" href="TRhoTime.h">TRhoTime</a> : public TObject</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      static unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:buildFrom">buildFrom</a><!--PLAIN-->(const <a href="./TRhoDate.html">TRhoDate</a>&amp;, unsigned <a href="ListOfTypes.html#long">long</a> h, unsigned <a href="ListOfTypes.html#long">long</a> m, unsigned <a href="ListOfTypes.html#long">long</a> s)
+<!--TAB6-->      static unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:currentTime">currentTime</a><!--PLAIN-->()
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      static <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:assertDate">assertDate</a><!--PLAIN-->(const <a href="./TRhoDate.html">TRhoDate</a>&amp;)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:TRhoTime">TRhoTime</a><!--PLAIN-->()
+<!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:TRhoTime">TRhoTime</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> s)
+<!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:TRhoTime">TRhoTime</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> h, unsigned <a href="ListOfTypes.html#long">long</a> m, unsigned <a href="ListOfTypes.html#long">long</a> s = 0)
+<!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:TRhoTime">TRhoTime</a><!--PLAIN-->(const <a href="./TRhoDate.html">TRhoDate</a>&amp;, unsigned <a href="ListOfTypes.html#long">long</a> h = 0, unsigned <a href="ListOfTypes.html#long">long</a> m = 0, unsigned <a href="ListOfTypes.html#long">long</a> s = 0)
+<!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:Max">Max</a><!--PLAIN-->(const <a href="./TRhoTime.html">TRhoTime</a>&amp; t) const
+<!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:Min">Min</a><!--PLAIN-->(const <a href="./TRhoTime.html">TRhoTime</a>&amp; t) const
+<!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:operator++">operator++</a><!--PLAIN-->()
+<!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:operator--">operator--</a><!--PLAIN-->()
+<!--TAB6-->      static <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:Now">Now</a><!--PLAIN-->()
+<!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:TRhoTime">TRhoTime</a><!--PLAIN-->(const <a href="./TRhoTime.html">TRhoTime</a>&amp;)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:~TRhoTime">~TRhoTime</a><!--PLAIN-->()
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:Between">Between</a><!--PLAIN-->(const <a href="./TRhoTime.html">TRhoTime</a>&amp; a, const <a href="./TRhoTime.html">TRhoTime</a>&amp; b) const
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TRhoTime:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                  <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:CompareTo">CompareTo</a><!--PLAIN-->(const <a href="./TRhoTime.html">TRhoTime</a>*) const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:Extract">Extract</a><!--PLAIN-->(tm* tmbuf) const
+<!--TAB6-->         unsigned <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:Hour">Hour</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TRhoTime:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:IsValid">IsValid</a><!--PLAIN-->() const
+<!--TAB6-->         unsigned <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:Minute">Minute</a><!--PLAIN-->() const
+<!--TAB6-->            <a href="./TRhoTime.html">TRhoTime</a>&amp; <!--TAB--><!--BOLD--><a href="#TRhoTime:operator+=">operator+=</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> s)
+<!--TAB6-->            <a href="./TRhoTime.html">TRhoTime</a>&amp; <!--TAB--><!--BOLD--><a href="#TRhoTime:operator-=">operator-=</a><!--PLAIN-->(unsigned <a href="ListOfTypes.html#long">long</a> s)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->         unsigned <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:Second">Second</a><!--PLAIN-->() const
+<!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:Seconds">Seconds</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRhoTime:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TRhoTime:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      unsigned <a href="ListOfTypes.html#long">long</a> <!--TAB--><!--BOLD--><a name="TRhoTime:sec">sec</a><!--PLAIN-->  <!--TAB--><i><a name="Title:sec">Seconds since 1/1/1901.</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TRhoTime:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TRhoTime.html">TRhoTime</a>		    						
+                                                                      
+ Date and time class							
+                                                                      
+ Author: Marcel Kunze, RUB, Feb. 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TRhoTime:TRhoTime" href="src/TRhoTime.cxx.html#TRhoTime:TRhoTime">TRhoTime</a>(unsigned <a href="ListOfTypes.html#long">long</a> h,unsigned <a href="ListOfTypes.html#long">long</a> m,unsigned <a href="ListOfTypes.html#long">long</a> s)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#int">int</a> <a name="TRhoTime:CompareTo" href="src/TRhoTime.cxx.html#TRhoTime:CompareTo">CompareTo</a>(const <a href="./TRhoTime.html">TRhoTime</a>* t) const
+<br>
+<hr>
+<!--FUNCTION-->unsigned <a name="TRhoTime:Hour" href="src/TRhoTime.cxx.html#TRhoTime:Hour">Hour</a>() const 
+<br>
+<hr>
+<!--FUNCTION--><a href="./TRhoTime.html">TRhoTime</a> <a name="TRhoTime:Max" href="src/TRhoTime.cxx.html#TRhoTime:Max">Max</a>(const <a href="./TRhoTime.html">TRhoTime</a>&amp; t) const 
+<br>
+<hr>
+<!--FUNCTION--><a href="./TRhoTime.html">TRhoTime</a> <a name="TRhoTime:Min" href="src/TRhoTime.cxx.html#TRhoTime:Min">Min</a>(const <a href="./TRhoTime.html">TRhoTime</a>&amp; t) const 
+<br>
+<hr>
+<!--FUNCTION-->unsigned <a name="TRhoTime:Minute" href="src/TRhoTime.cxx.html#TRhoTime:Minute">Minute</a>() const 
+<br>
+<hr>
+<!--FUNCTION-->unsigned <a name="TRhoTime:Second" href="src/TRhoTime.cxx.html#TRhoTime:Second">Second</a>() const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TRhoTime:Extract" href="src/TRhoTime.cxx.html#TRhoTime:Extract">Extract</a>(struct tm* tmbuf) const
+<br>
+<hr>
+<!--FUNCTION--><a href="./TRhoTime.html">TRhoTime</a> <a name="TRhoTime:Now" href="src/TRhoTime.cxx.html#TRhoTime:Now">Now</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TRhoTime:PrintOn" href="src/TRhoTime.cxx.html#TRhoTime:PrintOn">PrintOn</a>(std::ostream&amp; o) const
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRhoTime:assertDate" href="src/TRhoTime.cxx.html#TRhoTime:assertDate">assertDate</a>(const <a href="./TRhoDate.html">TRhoDate</a>&amp; date)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRhoTime:buildFrom" href="src/TRhoTime.cxx.html#TRhoTime:buildFrom">buildFrom</a>(
+                   const <a href="./TRhoDate.html">TRhoDate</a>&amp; date,
+                   unsigned <a href="ListOfTypes.html#long">long</a> h, unsigned <a href="ListOfTypes.html#long">long</a> m, unsigned <a href="ListOfTypes.html#long">long</a> s)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRhoTime:currentTime" href="src/TRhoTime.cxx.html#TRhoTime:currentTime">currentTime</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRhoTime:TRhoTime" href="src/TRhoTime.cxx.html#TRhoTime:TRhoTime">TRhoTime</a>(const <a href="./TRhoDate.html">TRhoDate</a>&amp; date, unsigned <a href="ListOfTypes.html#long">long</a> h, unsigned <a href="ListOfTypes.html#long">long</a> m, unsigned <a href="ListOfTypes.html#long">long</a> s) <br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <a name="TRhoTime:TRhoTime" href="TRhoTime.h">TRhoTime</a>(unsigned <a href="ListOfTypes.html#long">long</a> h, unsigned <a href="ListOfTypes.html#long">long</a> m, unsigned <a href="ListOfTypes.html#long">long</a> s = 0)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <a name="TRhoTime:TRhoTime" href="TRhoTime.h">TRhoTime</a>(const <a href="./TRhoDate.html">TRhoDate</a>&amp;, unsigned <a href="ListOfTypes.html#long">long</a> h = 0, unsigned <a href="ListOfTypes.html#long">long</a> m = 0, unsigned <a href="ListOfTypes.html#long">long</a> s = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TRhoTime:Between" href="TRhoTime.h">Between</a>(const <a href="./TRhoTime.html">TRhoTime</a>&amp; a, const <a href="./TRhoTime.html">TRhoTime</a>&amp; b) const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TRhoTime:IsValid" href="TRhoTime.h">IsValid</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        unsigned <a href="ListOfTypes.html#long">long</a> <a name="TRhoTime:Seconds" href="TRhoTime.h">Seconds</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <a name="TRhoTime:operator++" href="TRhoTime.h">operator++</a>()
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <a name="TRhoTime:operator--" href="TRhoTime.h">operator--</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TRhoTime.html">TRhoTime</a>&amp; <a name="TRhoTime:operator+=" href="TRhoTime.h">operator+=</a>(unsigned <a href="ListOfTypes.html#long">long</a> s)
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TRhoTime.html">TRhoTime</a>&amp; <a name="TRhoTime:operator-=" href="TRhoTime.h">operator-=</a>(unsigned <a href="ListOfTypes.html#long">long</a> s)
+<!--INLINE FUNCTION--><!--TAB6-->              TClass* <a name="TRhoTime:Class" href="TRhoTime.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->              TClass* <a name="TRhoTime:IsA" href="TRhoTime.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TRhoTime:ShowMembers" href="TRhoTime.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TRhoTime:Streamer" href="TRhoTime.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TRhoTime:StreamerNVirtual" href="TRhoTime.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <a name="TRhoTime:TRhoTime" href="TRhoTime.h">TRhoTime</a>(const <a href="./TRhoTime.html">TRhoTime</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TRhoTime:~TRhoTime" href="TRhoTime.h">~TRhoTime</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?Feb.">Feb.</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:03:24 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

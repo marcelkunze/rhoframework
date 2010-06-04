@@ -1,0 +1,338 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:51 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TEventManager</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TEventManager</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TEventManager:description">class description</a> - <a href="src/TEventManager.cxx.html">source file</a> - <a href="TEventManager_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TEventManager" href="TEventManager.h">TEventManager</a> : public TObject</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      TString <!--TAB--><!--BOLD--><a href="#TEventManager:FullyQualified">FullyQualified</a><!--PLAIN-->(TString)
+<!--TAB6-->         <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:SetInputFile">SetInputFile</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* filename)
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:CreateVAbsTruthList">CreateVAbsTruthList</a><!--PLAIN-->()
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->            <a href="./TEventManager.html">TEventManager</a> <!--TAB--><!--BOLD--><a href="#TEventManager:TEventManager">TEventManager</a><!--PLAIN-->()
+<!--TAB6-->            <a href="./TEventManager.html">TEventManager</a> <!--TAB--><!--BOLD--><a href="#TEventManager:TEventManager">TEventManager</a><!--PLAIN-->(const <a href="./TEventManager.html">TEventManager</a>&amp;)
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:~TEventManager">~TEventManager</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:AddEventToCollection">AddEventToCollection</a><!--PLAIN-->(VAbsCollection* theColl)
+<!--TAB6-->                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:Aod">Aod</a><!--PLAIN-->() const
+<!--TAB6-->           static TClass* <!--TAB--><!--BOLD--><a href="#TEventManager:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:DisableAod">DisableAod</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:DisableMap">DisableMap</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:DisableMct">DisableMct</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:DisableTag">DisableTag</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:EnableAod">EnableAod</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:EnableMap">EnableMap</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:EnableMct">EnableMct</a><!--PLAIN-->()
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:EnableTag">EnableTag</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:EvalBitFormula">EvalBitFormula</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:EvalTagFormula">EvalTagFormula</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:Fill">Fill</a><!--PLAIN-->(TCandList*)
+<!--TAB6-->                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:FillCharged">FillCharged</a><!--PLAIN-->(TCandList*)
+<!--TAB6-->                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:FillCompositeList">FillCompositeList</a><!--PLAIN-->(TCandList* l, const <a href="ListOfTypes.html#char">char</a>* listname)
+<!--TAB6-->                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:FillFromList">FillFromList</a><!--PLAIN-->(TCandList* l, const <a href="ListOfTypes.html#char">char</a>* listname)
+<!--TAB6-->                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:FillMcTruthList">FillMcTruthList</a><!--PLAIN-->(TCandList*, <a href="./TAssociator.html">TAssociator</a>* assoc = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:FillNeutral">FillNeutral</a><!--PLAIN-->(TCandList*)
+<!--TAB6-->                 VAbsBit&amp; <!--TAB--><!--BOLD--><a href="#TEventManager:GetBit">GetBit</a><!--PLAIN-->() const
+<!--TAB6-->              const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TEventManager:GetCurrentFilename">GetCurrentFilename</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetCurrentIndex">GetCurrentIndex</a><!--PLAIN-->()
+<!--TAB6-->       <a href="./TDirectoryManager.html">TDirectoryManager</a>* <!--TAB--><!--BOLD--><a href="#TEventManager:GetDirectoryManager">GetDirectoryManager</a><!--PLAIN-->()
+<!--TAB6-->                <a href="./EidInfoR.html">EidInfoR</a>&amp; <!--TAB--><!--BOLD--><a href="#TEventManager:GetEidInfo">GetEidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                    <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetEvent">GetEvent</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a>)
+<!--TAB6-->              TEventInfo* <!--TAB--><!--BOLD--><a href="#TEventManager:GetEventInfo">GetEventInfo</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetEventNumber">GetEventNumber</a><!--PLAIN-->() const
+<!--TAB6-->            <a href="./PAFEventBase.html">PAFEventBase</a>&amp; <!--TAB--><!--BOLD--><a href="#TEventManager:GetHeader">GetHeader</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="./PAFListBase.html">PAFListBase</a>&amp; <!--TAB--><!--BOLD--><a href="#TEventManager:GetListBase">GetListBase</a><!--PLAIN-->() const
+<!--TAB6-->              const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TEventManager:GetListName">GetListName</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetMajorID">GetMajorID</a><!--PLAIN-->() const
+<!--TAB6-->               VAbsTruth&amp; <!--TAB--><!--BOLD--><a href="#TEventManager:GetMcTruth">GetMcTruth</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->      VAbsMicroCandidate&amp; <!--TAB--><!--BOLD--><a href="#TEventManager:GetMicroCandidate">GetMicroCandidate</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n) const
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetMinorID">GetMinorID</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetNumberOfCandidates">GetNumberOfCandidates</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetNumberOfChargedTracks">GetNumberOfChargedTracks</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetNumberOfEventsProcessed">GetNumberOfEventsProcessed</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetNumberOfLists">GetNumberOfLists</a><!--PLAIN-->()
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetNumberOfMcTruthTracks">GetNumberOfMcTruthTracks</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetNumberOfNeutralTracks">GetNumberOfNeutralTracks</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetNumberOfTracks">GetNumberOfTracks</a><!--PLAIN-->() const
+<!--TAB6-->                PAFProxy* <!--TAB--><!--BOLD--><a href="#TEventManager:GetProxyDict">GetProxyDict</a><!--PLAIN-->()
+<!--TAB6-->              VAbsReader* <!--TAB--><!--BOLD--><a href="#TEventManager:GetReader">GetReader</a><!--PLAIN-->()
+<!--TAB6-->                   <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetRunNumber">GetRunNumber</a><!--PLAIN-->() const
+<!--TAB6-->                 VAbsTag&amp; <!--TAB--><!--BOLD--><a href="#TEventManager:GetTag">GetTag</a><!--PLAIN-->() const
+<!--TAB6-->                 <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#TEventManager:GetTime">GetTime</a><!--PLAIN-->() const
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:InitRead">InitRead</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* s)
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:InitRead">InitRead</a><!--PLAIN-->(<a href="./TDirectoryManager.html">TDirectoryManager</a>*)
+<!--TAB6-->          virtual TClass* <!--TAB--><!--BOLD--><a href="#TEventManager:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:Map">Map</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:Mct">Mct</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:Next">Next</a><!--PLAIN-->()
+<!--TAB6-->                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:NextIter">NextIter</a><!--PLAIN-->()
+<!--TAB6-->      VAbsMicroCandidate&amp; <!--TAB--><!--BOLD--><a href="#TEventManager:operator[]">operator[]</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>) const
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:SetBitFormula">SetBitFormula</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* expr)
+<!--TAB6-->                PAFProxy* <!--TAB--><!--BOLD--><a href="#TEventManager:SetProxyDict">SetProxyDict</a><!--PLAIN-->(PAFProxy* dict)
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:SetTagFormula">SetTagFormula</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* expr)
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TEventManager:Tag">Tag</a><!--PLAIN-->() const
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:UseCollection">UseCollection</a><!--PLAIN-->(VAbsCollection* collection)
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:UseCollection">UseCollection</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* filename)
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventManager:WriteEvent">WriteEvent</a><!--PLAIN-->(VAbsWriter* fWriter, TCandList* list = 0)
+</pre>
+
+<h3><!--TAB2-->  <a name="TEventManager:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->             VAbsReader* <!--TAB--><!--BOLD--><a name="TEventManager:fReader">fReader</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fReader">!Concrete implementation</a></i>
+<!--TAB6-->      <a href="./TDirectoryManager.html">TDirectoryManager</a>* <!--TAB--><!--BOLD--><a name="TEventManager:fDirMgr">fDirMgr</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fDirMgr">!The actual directory manager</a></i>
+<!--TAB6-->                 TString <!--TAB--><!--BOLD--><a name="TEventManager:fFile">fFile</a><!--PLAIN-->              <!--TAB--><i><a name="Title:fFile">!Name of database file</a></i>
+<!--TAB6-->                  <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TEventManager:fKanga">fKanga</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fKanga">!File type</a></i>
+<!--TAB6-->                  <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TEventManager:fActiveCollection">fActiveCollection</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fActiveCollection"></a></i>
+<!--TAB6-->                  <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TEventManager:fChange">fChange</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fChange">!Flags need to open the next file</a></i>
+<!--TAB6-->                  TFile* <!--TAB--><!--BOLD--><a name="TEventManager:fCollectionFile">fCollectionFile</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fCollectionFile">!File the Collection is stored				      </a></i>
+<!--TAB6-->         VAbsCollection* <!--TAB--><!--BOLD--><a name="TEventManager:fCollection">fCollection</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fCollection">!Holds Object describing collection</a></i>
+<!--TAB6-->               PAFProxy* <!--TAB--><!--BOLD--><a name="TEventManager:fDictionary">fDictionary</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fDictionary">! ProxyDict for option 7;</a></i>
+<!--TAB6-->                 TString <!--TAB--><!--BOLD--><a name="TEventManager:fTagExpr">fTagExpr</a><!--PLAIN-->           <!--TAB--><i><a name="Title:fTagExpr">Dynamic tag formula				     </a></i>
+<!--TAB6-->                 TString <!--TAB--><!--BOLD--><a name="TEventManager:fBitExpr">fBitExpr</a><!--PLAIN-->           <!--TAB--><i><a name="Title:fBitExpr">Dynamic tag formula				     </a></i>
+<!--TAB6-->                   <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TEventManager:fCounter">fCounter</a><!--PLAIN-->           <!--TAB--><i><a name="Title:fCounter"></a></i>
+<!--TAB6-->                   <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TEventManager:fTotal">fTotal</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fTotal">!Event counters</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TEventManager:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TEventManager.html">TEventManager</a>							
+                                                                      
+ Event manager					   		
+                                                                      
+ Author: Marcel Kunze, Bochum University, March 99			
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+#define DEBUG
+</pre><hr>
+<!--FUNCTION--> <a name="TEventManager:TEventManager" href="src/TEventManager.cxx.html#TEventManager:TEventManager">TEventManager</a>() : 
+<a href="./TEventManager.html#TEventManager:fReader">fReader</a>(0),
+<a href="./TEventManager.html#TEventManager:fDirMgr">fDirMgr</a>( 0 ),
+<a href="./TEventManager.html#TEventManager:fDictionary">fDictionary</a>(0),
+<a href="./TEventManager.html#TEventManager:fCounter">fCounter</a>(-1),
+<a href="./TEventManager.html#TEventManager:fTotal">fTotal</a>(0),
+<a href="./TEventManager.html#TEventManager:fActiveCollection">fActiveCollection</a>( kFALSE ),
+<a href="./TEventManager.html#TEventManager:fChange">fChange</a>( kFALSE ),
+<a href="./TEventManager.html#TEventManager:fCollection">fCollection</a>(0),
+<a href="./TEventManager.html#TEventManager:fCollectionFile">fCollectionFile</a>(0),
+<a href="./TEventManager.html#TEventManager:fKanga">fKanga</a>(kFALSE)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TEventManager:~TEventManager" href="src/TEventManager.cxx.html#TEventManager:~TEventManager">~TEventManager</a>( ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="./TRhoTime.html">TRhoTime</a> <a name="TEventManager:GetTime" href="src/TEventManager.cxx.html#TEventManager:GetTime">GetTime</a>() const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TEventManager:Fill" href="src/TEventManager.cxx.html#TEventManager:Fill">Fill</a>(TCandList *l) 
+<br>
+<pre> Generate charged candidates and fill them into a list
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TEventManager:FillCharged" href="src/TEventManager.cxx.html#TEventManager:FillCharged">FillCharged</a>(TCandList *l) 
+<br>
+<pre> Generate charged candidates and fill them into a list
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TEventManager:FillNeutral" href="src/TEventManager.cxx.html#TEventManager:FillNeutral">FillNeutral</a>(TCandList *l) 
+<br>
+<pre> Generate neutral candidates and fill them into a list
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TEventManager:FillCompositeList" href="src/TEventManager.cxx.html#TEventManager:FillCompositeList">FillCompositeList</a>(TCandList *l,const <a href="ListOfTypes.html#char">char</a>* listname)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TEventManager:FillFromList" href="src/TEventManager.cxx.html#TEventManager:FillFromList">FillFromList</a>(TCandList *l,const <a href="ListOfTypes.html#char">char</a>* listname)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TEventManager:FillMcTruthList" href="src/TEventManager.cxx.html#TEventManager:FillMcTruthList">FillMcTruthList</a>(TCandList *l, <a href="./TAssociator.html">TAssociator</a> *assoc)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventManager:InitRead" href="src/TEventManager.cxx.html#TEventManager:InitRead">InitRead</a>(const <a href="ListOfTypes.html#char">char</a>* dir) 
+<br>
+<pre> Open a single database location
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventManager:InitRead" href="src/TEventManager.cxx.html#TEventManager:InitRead">InitRead</a>(<a href="./TDirectoryManager.html">TDirectoryManager</a> *dm) 
+<br>
+<pre> Work with sets of database files using a directory manager
+ This method is for compatibility; new: UseCollection
+</pre><hr>
+<!--FUNCTION--> <a name="TEventManager:AddEventToCollection" href="src/TEventManager.cxx.html#TEventManager:AddEventToCollection">AddEventToCollection</a>(VAbsCollection *theColl) 
+<br>
+<pre> Add the event to the collection. Kanga files carry the suffix.
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventManager:PrintOn" href="src/TEventManager.cxx.html#TEventManager:PrintOn">PrintOn</a>(std::ostream&amp; o) const 
+<br>
+<pre> Dump the contents of the current event
+</pre><hr>
+<!--FUNCTION--> <a name="TEventManager:GetCurrentIndex" href="src/TEventManager.cxx.html#TEventManager:GetCurrentIndex">GetCurrentIndex</a>() 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TEventManager:GetCurrentFilename" href="src/TEventManager.cxx.html#TEventManager:GetCurrentFilename">GetCurrentFilename</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetNumberOfEventsProcessed" href="src/TEventManager.cxx.html#TEventManager:GetNumberOfEventsProcessed">GetNumberOfEventsProcessed</a>() const <br>
+<pre> Return the number of events currently processed
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetNumberOfTracks" href="src/TEventManager.cxx.html#TEventManager:GetNumberOfTracks">GetNumberOfTracks</a>() const <br>
+<pre> Return the total number of tracks in the event
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetNumberOfChargedTracks" href="src/TEventManager.cxx.html#TEventManager:GetNumberOfChargedTracks">GetNumberOfChargedTracks</a>() const <br>
+<pre> Return the number of charged tracks in the event
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetNumberOfNeutralTracks" href="src/TEventManager.cxx.html#TEventManager:GetNumberOfNeutralTracks">GetNumberOfNeutralTracks</a>() const <br>
+<pre> Return the number of neutral tracks in the event
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetRunNumber" href="src/TEventManager.cxx.html#TEventManager:GetRunNumber">GetRunNumber</a>() const <br>
+<pre> Return the actual run number
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetEventNumber" href="src/TEventManager.cxx.html#TEventManager:GetEventNumber">GetEventNumber</a>() const <br>
+<pre> Return the actual event number
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetMajorID" href="src/TEventManager.cxx.html#TEventManager:GetMajorID">GetMajorID</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetMinorID" href="src/TEventManager.cxx.html#TEventManager:GetMinorID">GetMinorID</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="./PAFEventBase.html">PAFEventBase</a> <a name="TEventManager:GetHeader" href="src/TEventManager.cxx.html#TEventManager:GetHeader">GetHeader</a>() const <br>
+<pre> Return a handle to the event header
+</pre><hr>
+<!--FUNCTION-->VAbsTag <a name="TEventManager:GetTag" href="src/TEventManager.cxx.html#TEventManager:GetTag">GetTag</a>() const <br>
+<pre> Return a handle to the TAG
+</pre><hr>
+<!--FUNCTION-->VAbsBit <a name="TEventManager:GetBit" href="src/TEventManager.cxx.html#TEventManager:GetBit">GetBit</a>() const <br>
+<pre> Return a handle to the BIT
+</pre><hr>
+<!--FUNCTION--><a href="./EidInfoR.html">EidInfoR</a> <a name="TEventManager:GetEidInfo" href="src/TEventManager.cxx.html#TEventManager:GetEidInfo">GetEidInfo</a>() const <br>
+<pre> Return a handle to the EidInfo
+</pre><hr>
+<!--FUNCTION--><a href="./PAFListBase.html">PAFListBase</a> <a name="TEventManager:GetListBase" href="src/TEventManager.cxx.html#TEventManager:GetListBase">GetListBase</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TEventManager:Next" href="src/TEventManager.cxx.html#TEventManager:Next">Next</a>()
+<br>
+<pre> Get the next event either from a file or a collection
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TEventManager:GetEvent" href="src/TEventManager.cxx.html#TEventManager:GetEvent">GetEvent</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> n)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventManager:UseCollection" href="src/TEventManager.cxx.html#TEventManager:UseCollection">UseCollection</a>(VAbsCollection *c)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventManager:UseCollection" href="src/TEventManager.cxx.html#TEventManager:UseCollection">UseCollection</a>(const <a href="ListOfTypes.html#char">char</a>* filename)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventManager:SetInputFile" href="src/TEventManager.cxx.html#TEventManager:SetInputFile">SetInputFile</a>(const <a href="ListOfTypes.html#char">char</a> *filename)
+<br>
+<hr>
+<!--FUNCTION-->TString <a name="TEventManager:FullyQualified" href="src/TEventManager.cxx.html#TEventManager:FullyQualified">FullyQualified</a>(TString s)
+<br>
+<pre> Check that we have a fully qualified Unix or Windows filename
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventManager:SetTagFormula" href="src/TEventManager.cxx.html#TEventManager:SetTagFormula">SetTagFormula</a>(const <a href="ListOfTypes.html#char">char</a>* tagExpr)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventManager:SetBitFormula" href="src/TEventManager.cxx.html#TEventManager:SetBitFormula">SetBitFormula</a>(const <a href="ListOfTypes.html#char">char</a>* tagExpr)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TEventManager:EvalBitFormula" href="src/TEventManager.cxx.html#TEventManager:EvalBitFormula">EvalBitFormula</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TEventManager:EvalTagFormula" href="src/TEventManager.cxx.html#TEventManager:EvalTagFormula">EvalTagFormula</a>()
+<br>
+<hr>
+<!--FUNCTION-->VAbsMicroCandidate <a name="TEventManager:GetMicroCandidate" href="src/TEventManager.cxx.html#TEventManager:GetMicroCandidate">GetMicroCandidate</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n) const
+<br>
+<hr>
+<!--FUNCTION-->VAbsTruth <a name="TEventManager:GetMcTruth" href="src/TEventManager.cxx.html#TEventManager:GetMcTruth">GetMcTruth</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetNumberOfMcTruthTracks" href="src/TEventManager.cxx.html#TEventManager:GetNumberOfMcTruthTracks">GetNumberOfMcTruthTracks</a>() const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetNumberOfLists" href="src/TEventManager.cxx.html#TEventManager:GetNumberOfLists">GetNumberOfLists</a>()
+<br>
+<hr>
+<!--FUNCTION-->const <a href="ListOfTypes.html#char">char</a>* <a name="TEventManager:GetListName" href="src/TEventManager.cxx.html#TEventManager:GetListName">GetListName</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<br>
+<hr>
+<!--FUNCTION-->TEventInfo* <a name="TEventManager:GetEventInfo" href="src/TEventManager.cxx.html#TEventManager:GetEventInfo">GetEventInfo</a>() const
+<br>
+<pre> Assemble an event info
+ Check the event number and return cache
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventManager:WriteEvent" href="src/TEventManager.cxx.html#TEventManager:WriteEvent">WriteEvent</a>(VAbsWriter *writer, TCandList *list)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TEventManager:GetNumberOfCandidates" href="TEventManager.h">GetNumberOfCandidates</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  PAFProxy* <a name="TEventManager:SetProxyDict" href="TEventManager.h">SetProxyDict</a>(PAFProxy* dict)
+<!--INLINE FUNCTION--><!--TAB6-->                  PAFProxy* <a name="TEventManager:GetProxyDict" href="TEventManager.h">GetProxyDict</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TEventManager:NextIter" href="TEventManager.h">NextIter</a>()
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TDirectoryManager.html">TDirectoryManager</a>* <a name="TEventManager:GetDirectoryManager" href="TEventManager.h">GetDirectoryManager</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                VAbsReader* <a name="TEventManager:GetReader" href="TEventManager.h">GetReader</a>()
+<!--INLINE FUNCTION--><!--TAB6-->        VAbsMicroCandidate&amp; <a name="TEventManager:operator[]" href="TEventManager.h">operator[]</a>(<a href="ListOfTypes.html#Int_t">Int_t</a>) const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TEventManager:Tag" href="TEventManager.h">Tag</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TEventManager:Aod" href="TEventManager.h">Aod</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TEventManager:Mct" href="TEventManager.h">Mct</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TEventManager:Map" href="TEventManager.h">Map</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:EnableTag" href="TEventManager.h">EnableTag</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:EnableAod" href="TEventManager.h">EnableAod</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:EnableMct" href="TEventManager.h">EnableMct</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:EnableMap" href="TEventManager.h">EnableMap</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:DisableTag" href="TEventManager.h">DisableTag</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:DisableAod" href="TEventManager.h">DisableAod</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:DisableMct" href="TEventManager.h">DisableMct</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:DisableMap" href="TEventManager.h">DisableMap</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:CreateVAbsTruthList" href="TEventManager.h">CreateVAbsTruthList</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                    TClass* <a name="TEventManager:Class" href="TEventManager.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                    TClass* <a name="TEventManager:IsA" href="TEventManager.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:ShowMembers" href="TEventManager.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:Streamer" href="TEventManager.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TEventManager:StreamerNVirtual" href="TEventManager.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="./TEventManager.html">TEventManager</a> <a name="TEventManager:TEventManager" href="TEventManager.h">TEventManager</a>(const <a href="./TEventManager.html">TEventManager</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?Bochum+University">Bochum University</a>, <a href="http://consult.cern.ch/xwho/people?March">March</a> 99			//</em><br>
+<em>Last update: Fri Dec 20 16:02:52 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

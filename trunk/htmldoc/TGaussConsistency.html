@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:59 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TGaussConsistency</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TGaussConsistency</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TGaussConsistency:description">class description</a> - <a href="src/TGaussConsistency.cxx.html">source file</a> - <a href="TGaussConsistency_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TGaussConsistency" href="TGaussConsistency.h">TGaussConsistency</a> : public <a href="./TConsistency.html">TConsistency</a></h2>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TGaussConsistency:Calc">Calc</a><!--PLAIN-->()
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      <a href="./TGaussConsistency.html">TGaussConsistency</a> <!--TAB--><!--BOLD--><a href="#TGaussConsistency:TGaussConsistency">TGaussConsistency</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> delta, <a href="ListOfTypes.html#Double_t">Double_t</a> sigma)
+<!--TAB6-->      <a href="./TGaussConsistency.html">TGaussConsistency</a> <!--TAB--><!--BOLD--><a href="#TGaussConsistency:TGaussConsistency">TGaussConsistency</a><!--PLAIN-->(const <a href="./TGaussConsistency.html">TGaussConsistency</a>&amp;)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TGaussConsistency:~TGaussConsistency">~TGaussConsistency</a><!--PLAIN-->()
+<!--TAB6-->         static TClass* <!--TAB--><!--BOLD--><a href="#TGaussConsistency:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->        virtual TClass* <!--TAB--><!--BOLD--><a href="#TGaussConsistency:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TGaussConsistency:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TGaussConsistency:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TGaussConsistency:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TGaussConsistency:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TGaussConsistency:fDelta">fDelta</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fDelta"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TGaussConsistency:fSigma">fSigma</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fSigma"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TGaussConsistency:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TAsymGaussConsistency.html">TAsymGaussConsistency</a>		    				
+                                                                      
+ Gaussian consistency							
+                                                                      
+ Author: Marcel Kunze, RUB, Nov. 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TGaussConsistency:TGaussConsistency" href="src/TGaussConsistency.cxx.html#TGaussConsistency:TGaussConsistency">TGaussConsistency</a>( <a href="ListOfTypes.html#Double_t">Double_t</a> delta, <a href="ListOfTypes.html#Double_t">Double_t</a> sigma) :
+<a href="./TGaussConsistency.html#TGaussConsistency:fDelta">fDelta</a>(delta), <a href="./TGaussConsistency.html#TGaussConsistency:fSigma">fSigma</a>(sigma) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TGaussConsistency:Calc" href="src/TGaussConsistency.cxx.html#TGaussConsistency:Calc">Calc</a>() 
+<br>
+<pre> Gautier 01/28/99 : add protection against unphysical values of arg
+</pre><br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                  TClass* <a name="TGaussConsistency:Class" href="TGaussConsistency.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                  TClass* <a name="TGaussConsistency:IsA" href="TGaussConsistency.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <a name="TGaussConsistency:ShowMembers" href="TGaussConsistency.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <a name="TGaussConsistency:Streamer" href="TGaussConsistency.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <a name="TGaussConsistency:StreamerNVirtual" href="TGaussConsistency.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TGaussConsistency.html">TGaussConsistency</a> <a name="TGaussConsistency:TGaussConsistency" href="TGaussConsistency.h">TGaussConsistency</a>(const <a href="./TGaussConsistency.html">TGaussConsistency</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <a name="TGaussConsistency:~TGaussConsistency" href="TGaussConsistency.h">~TGaussConsistency</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?Nov.">Nov.</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:02:59 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

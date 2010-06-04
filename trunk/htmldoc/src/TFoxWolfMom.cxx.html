@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:56 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TFoxWolfMom - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: <a href=".././TFoxWolfMom.html">TFoxWolfMom</a>.cc</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//</b>
+<b>//      FoxWolfMom        calculate Fox Wolfram Moments to a given order</b>
+<b>//                        (default order is 4 since performance has not </b>
+<b>//                        been checked for higher orders)</b>
+<b>//                          </b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Theresa Champion                      Original author</b>
+<b>//</b>
+<b>//      Gautier  8/26/00  add protection against null energy</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+#include &lt;assert.h&gt;
+
+<b>//-----------------------</b>
+<b>// This Class's Header --</b>
+<b>//-----------------------</b>
+#include "RhoTools/TFoxWolfMom.h"  
+
+<b>//-------------------------------</b>
+<b>// Collaborating Class Headers --</b>
+<b>//-------------------------------</b>
+#include "RhoBase/TRho.h"
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandListIterator.h"
+#include "TVector.h"   
+#include "TLorentzVector.h"   
+#include "TIterator.h"
+
+#include "RhoTools/TBooster.h"
+#include "RhoBase/TCandidate.h"
+#include "RhoBase/TEventInfo.h"
+
+ClassImp(TFoxWolfMom)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TFoxWolfMom *&amp;obj)
+{
+   obj = (TFoxWolfMom *) buf.ReadObject(TFoxWolfMom::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+struct TFoxWolfMomData{
+  int maxorder;
+  TVector* Xarray;
+  TVector* FWarray;
+  TVector* FWnorm;
+  TVector* sumarray;
+
+  TCandList *boostedList;
+
+<b>  // "new" variables</b>
+  TVector *xArray;
+  TVector *fwArray;
+  TVector *sumArray;
+  <a href="../ListOfTypes.html#double">double</a> fwZero;
+};
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+
+<a name="TFoxWolfMom:TFoxWolfMom"> </a><a href=".././TFoxWolfMom.html#TFoxWolfMom:TFoxWolfMom">TFoxWolfMom::TFoxWolfMom</a>( TCandList* tracklist, 
+			      const TEventInfo* evtinfo, <a href="../ListOfTypes.html#int">int</a> maxorder)
+{
+
+  if (tracklist-&gt;GetNumberOfCandidates()&lt;1) {
+    cerr &lt;&lt; "<a href=".././TFoxWolfMom.html">TFoxWolfMom</a> asked to be calculated from a zero length list"
+		  &lt;&lt; endl;
+  }
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a> = new TFoxWolfMomData;
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;boostedList= 0;
+
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;maxorder = maxorder;
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;Xarray = new TVector(maxorder+1);
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;FWarray = new TVector(maxorder+1);
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;FWnorm = new TVector(maxorder+1);
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;sumarray = new TVector(maxorder+1);
+
+  TCandidate theUps( evtinfo-&gt;CmFrame(), 0.0 );
+  <a href=".././TBooster.html">TBooster</a> theBooster( &amp;theUps );
+
+  <a href="../ListOfTypes.html#double">double</a> dummy(0.0);
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray = new TVector(maxorder+1);
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwArray = new TVector(maxorder+1);
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;sumArray = new TVector(maxorder+1);
+
+
+  this-&gt;<a href="#TFoxWolfMom:BoostTracks">BoostTracks</a>(*tracklist, theBooster);
+  this-&gt;<a href="#TFoxWolfMom:Compute">Compute</a>(maxorder);
+
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TFoxWolfMom:~TFoxWolfMom"> </a><a href=".././TFoxWolfMom.html">TFoxWolfMom</a>::~<a href=".././TFoxWolfMom.html">TFoxWolfMom</a>()
+{
+
+  delete <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;boostedList;
+
+  delete <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray;
+  delete <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwArray;
+  delete <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;sumArray;
+
+  delete <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;Xarray;
+  delete <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;FWarray;
+  delete <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;FWnorm;
+  delete <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;sumarray;
+  delete <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>;
+
+}
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TFoxWolfMom:BoostTracks"> </a><a href=".././TFoxWolfMom.html#TFoxWolfMom:BoostTracks">TFoxWolfMom::BoostTracks</a>(TCandList &amp;list, 
+			   const <a href=".././TBooster.html">TBooster</a> &amp;booster){
+  
+  <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;boostedList = new TCandList;  
+  booster.BoostTo( list, *<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;boostedList );
+
+}
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TFoxWolfMom:Compute"> </a><a href=".././TFoxWolfMom.html#TFoxWolfMom:Compute">TFoxWolfMom::Compute</a>(<a href="../ListOfTypes.html#int">int</a> maxorder){
+  if (maxorder&gt;0){
+      
+    const TCandidate* track1;
+    const TCandidate* track2;
+    <a href="../ListOfTypes.html#double">double</a> sumEnergy = 0.;
+    <a href="../ListOfTypes.html#double">double</a> pmag = 0.;
+    <a href="../ListOfTypes.html#double">double</a> p1Mag;
+    <a href="../ListOfTypes.html#double">double</a> p2Mag;
+    assert(<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;maxorder+1 == <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray-&gt;GetNoElements());
+
+    TCandListIterator iter1(*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;boostedList);
+    while ( track1 = iter1.Next() ) {
+
+      sumEnergy += track1-&gt;Energy();
+      p1Mag = track1-&gt;P();
+	
+<b>      // loop over track2</b>
+      TCandListIterator iter2(iter1);
+      while ( track2 = iter2.Next() ) {
+	p2Mag = track2-&gt;P();
+	pmag =  p1Mag*p2Mag;
+	<a href="../ListOfTypes.html#double">double</a> x =  track1-&gt;P3().Dot(track2-&gt;P3())/pmag;
+<b>	//  was: cos ( track1cms.angle(Hep3Vector(track2cms)) );</b>
+	  
+<b>	// compute xArray values for Legendre polynomials</b>
+	(*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray)(0) = 1.0;
+	(*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray)(1) = x;
+
+<b>	// Use () for safe array access.</b>
+<b>	// Use [] when array index is calculated.</b>
+	for(<a href="../ListOfTypes.html#int">int</a> i=2; i&lt;=<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;maxorder; i++){
+	  (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray)(i) = ( (2*(i+1)-3)*x* 
+					 (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray)(i-1) - 
+					 (i-1)*(*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray)(i-2) )/i;
+	}
+	  
+<b>	// add contribution to Fox Wolfram Moments for this pair of tracks</b>
+	for(<a href="../ListOfTypes.html#int">int</a> j=0; j&lt;=<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;maxorder; j++){
+	  (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;sumArray)(j) += 2.0 * pmag * (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray)(j) ;
+	}
+	  
+      } // end loop over track2
+
+<b>      // Add contribution from the diagonal.  </b>
+<b>      // Note that P_l(1) is 1.</b>
+      for(<a href="../ListOfTypes.html#int">int</a> j=0; j&lt;=<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;maxorder; j++){
+	(*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;sumArray)(j) += p1Mag *p1Mag;
+      }
+
+    } // end loop over track1
+      
+<b>    // compute total Fox Wolfram Moments</b>
+    <a href="../ListOfTypes.html#double">double</a> sumESquared = sumEnergy*sumEnergy;
+    for(<a href="../ListOfTypes.html#int">int</a> i=0; i&lt;=<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;maxorder; i++){
+      if( sumESquared==0. ) 
+	{  
+	  (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwArray)(i) = 1.;
+	} else {
+	  (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwArray)(i) = (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;sumArray)(i)/sumESquared;
+	}
+    }
+    <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwZero =(*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwArray)(0);
+    
+<b>    // Set up old (deprecated) variables</b>
+    for (<a href="../ListOfTypes.html#int">int</a> n=0; n&lt;=<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;maxorder; n++){
+      (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;Xarray)(n) = (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray)(n);
+      (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;FWarray)(n) = (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwArray)(n);
+      (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;sumarray)(n) = (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;sumArray)(n);
+    }
+
+  } else {
+    cerr &lt;&lt; "Cannot compute FW moments for order " &lt;&lt; maxorder
+		  &lt;&lt; endl;
+  }
+
+  
+}
+
+const TVector &amp;
+<a name="TFoxWolfMom:SumArray"> </a><a href=".././TFoxWolfMom.html#TFoxWolfMom:SumArray">TFoxWolfMom::SumArray</a>() const{
+  return *(<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;sumArray);
+
+}
+
+const TVector &amp; 
+<a name="TFoxWolfMom:FWArray"> </a><a href=".././TFoxWolfMom.html#TFoxWolfMom:FWArray">TFoxWolfMom::FWArray</a>() const{
+  return *<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;FWarray;
+}
+
+const TVector &amp; 
+<a name="TFoxWolfMom:Legendre"> </a><a href=".././TFoxWolfMom.html#TFoxWolfMom:Legendre">TFoxWolfMom::Legendre</a>() const{
+  return *<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;Xarray;
+}
+
+<a href="../ListOfTypes.html#double">double</a>
+<a name="TFoxWolfMom:Legendre"> </a><a href=".././TFoxWolfMom.html#TFoxWolfMom:Legendre">TFoxWolfMom::Legendre</a>(<a href="../ListOfTypes.html#int">int</a> order) const{
+  return (*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;xArray)(order);
+}
+
+
+<a href="../ListOfTypes.html#double">double</a>
+<a name="TFoxWolfMom:FWzero"> </a><a href=".././TFoxWolfMom.html#TFoxWolfMom:FWzero">TFoxWolfMom::FWzero</a>() const{
+  return <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwZero;
+}
+
+<a href="../ListOfTypes.html#double">double</a>
+<a name="TFoxWolfMom:FWnorm"> </a><a href=".././TFoxWolfMom.html#TFoxWolfMom:FWnorm">TFoxWolfMom::FWnorm</a>(<a href="../ListOfTypes.html#int">int</a> order) const{
+  if(order &lt;= <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;maxorder){ 
+    if ((*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwArray)(0)!=0.)
+      return ((*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwArray)(order)/(*<a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;fwArray)(0));
+    else {
+      cerr &lt;&lt; "Zeroth FW moment was zero.  Returning zero for "
+		    &lt;&lt; order &lt;&lt; "th moment" &lt;&lt; endl;
+      return 0;
+    }
+  }
+  cerr &lt;&lt; "FW moments were constructed up to order " 
+		&lt;&lt; <a href=".././TFoxWolfMom.html#TFoxWolfMom:_privateData">_privateData</a>-&gt;maxorder &lt;&lt; " but order " 
+		&lt;&lt; order &lt;&lt; " has been requested."
+		&lt;&lt; endl &lt;&lt; "Returning 0." &lt;&lt; endl;
+  return 0;
+  
+}
+
+
+<b>//----------------</b>
+<b>// Accessor     --</b>
+<b>//----------------</b>
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

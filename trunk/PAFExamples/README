@@ -1,0 +1,17 @@
+PAFExamples README file
+   Marcel Kunze, Mar 2k
+
+This package holds example programs for the PAF:
+ - PAFAnalysis.cc hunts for the golden channel (JPsiKs)
+ - gammagamma.cc shows how to use the new event selectors to skim data
+ - twoprong.cc is a simple twoprong filter based on the TAG
+ - dimuon.cc is a filter based on the AOD
+ - hadronic.cc is more advanced and selects and analyzes hadronic events
+ - y4sfit.cc skims the data from the scan run using selectors and fits the Y(4S)
+ - MuMuAnalysis.cc is a rewrite of Chris Hearty's unbiased muon selection
+ - incBDstarPi.cc is an example for inclusive skim of the D*Pi channel
+
+Make sure to have set the PAF environment correctly:
+'source pafboot' out of the PAF directory or set the PAF variables in your .cshrc
+see http://www.slac.stanford.edu/~marcel/PAF.Beta.html
+

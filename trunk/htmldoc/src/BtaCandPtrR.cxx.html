@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:01:57 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>BtaCandPtrR - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: BtaCandPtrR.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//      Stores list of indices for the packing/unpacking of the</b>
+<b>//      lists in the microdb</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Stefan Kluth     </b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999       LBNL</b>
+<b>//</b>
+<b>//------------------------------------------------------------------------</b>
+
+<b>//-----------------------</b>
+<b>// This Class's Header --</b>
+<b>//-----------------------</b>
+#include "KangaSchema/BtaCandPtrR.h"
+
+
+<b>//-------------</b>
+<b>// C Headers --</b>
+<b>//-------------</b>
+/*
+extern "C" 
+{
+#include &lt;math.h&gt;
+#include &lt;limits.h&gt;
+}
+*/
+<b>//---------------</b>
+<b>// C++ Headers --</b>
+<b>//---------------</b>
+
+
+<b>//-------------------------------</b>
+<b>// Collaborating Class Headers --</b>
+<b>//-------------------------------</b>
+<b>//#include "RooUtils/RooEvtObjLocReg.h"</b>
+<b>//#include "BetaTools/BtaCandPtr.h"</b>
+<b>//#include "PDT/Pdt.h"</b>
+<b>//#include "ErrLogger/ErrLog.h"</b>
+
+
+<b>//-----------------------------------------------------------------------</b>
+<b>// Local Macros, Typedefs, Structures, Unions and Forward Declarations --</b>
+<b>//-----------------------------------------------------------------------</b>
+ClassImp(<a href=".././BtaCandPtrR.html">BtaCandPtrR</a>)
+
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+<a name="BtaCandPtrR:BtaCandPtrR"> </a><a href=".././BtaCandPtrR.html#BtaCandPtrR:BtaCandPtrR">BtaCandPtrR::BtaCandPtrR</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> size) :
+  RooEvtObj&lt;BtaCandPtr&gt;(),
+  <a href=".././BtaCandPtrR.html#BtaCandPtrR:_lundId">_lundId</a>( 0 ),
+  <a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>(size)
+
+{}
+/*
+<a name="BtaCandPtrR:BtaCandPtrR"> </a><a href=".././BtaCandPtrR.html#BtaCandPtrR:BtaCandPtrR">BtaCandPtrR::BtaCandPtrR</a>( const BtaCandPtr* transient,
+			  RooEvtObjLocReg &amp; aRegistry ) : 
+  RooEvtObj&lt;BtaCandPtr&gt;(),
+  <a href=".././BtaCandPtrR.html#BtaCandPtrR:_lundId">_lundId</a>( transient-&gt;lundId() ),
+  <a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>( transient-&gt;<a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.length() )
+  
+{
+
+<b>  // Set the <a href="../ListOfTypes.html#Bool_t">Bool_t</a> variable:</b>
+  if( transient-&gt;<a href=".././BtaCandPtrR.html#BtaCandPtrR:_oneToMany">_oneToMany</a> ) <a href=".././BtaCandPtrR.html#BtaCandPtrR:_oneToMany">_oneToMany</a>= kTRUE;
+  else <a href=".././BtaCandPtrR.html#BtaCandPtrR:_oneToMany">_oneToMany</a>= kFALSE;
+
+<b>  // Set Lund ID:</b>
+  <a href="../ListOfTypes.html#Int_t">Int_t</a> lundId= transient-&gt;lundId();
+  if( abs( lundId ) &gt; SHRT_MAX ) {
+    ErrMsg(fatal) &lt;&lt; "lundId " &lt;&lt; lundId &lt;&lt; " is too large " &lt;&lt; endmsg;
+  }
+  <a href=".././BtaCandPtrR.html#BtaCandPtrR:_lundId">_lundId</a>= lundId;
+
+<b>  // Store indices:</b>
+  for( unsigned i= 0; i &lt; transient-&gt;<a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.length(); i++ ) {
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> index= transient-&gt;<a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>[i];
+    if( index &gt; SHRT_MAX ) {
+      ErrMsg(fatal) &lt;&lt; " Index " &lt;&lt; index &lt;&lt; " too large" &lt;&lt; endmsg;
+    }
+    <a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>[i]= index;
+  }
+  
+}
+*/
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+<a name="BtaCandPtrR:~BtaCandPtrR"> </a><a href=".././BtaCandPtrR.html">BtaCandPtrR</a>::~<a href=".././BtaCandPtrR.html">BtaCandPtrR</a>() {}
+
+
+<b>//--------------</b>
+<b>// Operations --</b>
+<b>//--------------</b>
+/*
+BtaCandPtr* <a href=".././BtaCandPtrR.html#BtaCandPtrR:transient">BtaCandPtrR::transient</a>( RooEvtObjLocReg &amp; aRegistry ) const {
+
+<b>  // Set PDT ID:</b>
+  PdtLund::LundType lundId= (PdtLund::LundType) <a href=".././BtaCandPtrR.html#BtaCandPtrR:_lundId">_lundId</a>;
+  PdtEntry* pdt= 0;
+  if( lundId != PdtLund::null ) pdt= Pdt::lookup( lundId );
+
+<b>  // Create new transient:</b>
+  BtaCandPtr* transient= new BtaCandPtr( pdt );
+
+<b>  // Set <a href="../ListOfTypes.html#Bool_t">Bool_t</a> variable:</b>
+  if( <a href=".././BtaCandPtrR.html#BtaCandPtrR:_oneToMany">_oneToMany</a> ) transient-&gt;setOneToMany();
+
+<b>  // Set index array:</b>
+  <a href=".././BtaCandPtrR.html">BtaCandPtrR</a>* self= (<a href=".././BtaCandPtrR.html">BtaCandPtrR</a>*) this;
+  for( <a href="../ListOfTypes.html#Int_t">Int_t</a> i= 0; i &lt; <a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.GetSize(); i++ ) {
+    transient-&gt;<a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.append( (self-&gt;<a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>)[i] );
+  }
+
+<b>  // The End:</b>
+  return transient;
+
+}
+*/
+
+<b>//              -------------------------------------------</b>
+<b>//              -- Protected Function Member Definitions --</b>
+<b>//              -------------------------------------------</b>
+
+<b>//</b>
+<b>// Constructor</b>
+<b>//</b>
+/*
+<a name="BtaCandPtrR:BtaCandPtrR"> </a><a href=".././BtaCandPtrR.html#BtaCandPtrR:BtaCandPtrR">BtaCandPtrR::BtaCandPtrR</a>( const PdtEntry* pdt )
+  : <a href=".././BtaCandPtrR.html#BtaCandPtrR:_oneToMany">_oneToMany</a>(kFALSE) 
+  , <a href=".././BtaCandPtrR.html#BtaCandPtrR:_lundId">_lundId</a>(PdtLund::null)
+{
+  if ( pdt != 0 ) <a href=".././BtaCandPtrR.html#BtaCandPtrR:_lundId">_lundId</a> = pdt-&gt;lundId();
+}
+*/ 
+
+<a href="../ListOfTypes.html#UInt_t">UInt_t</a>
+<a name="BtaCandPtrR:GetNumberOfDaughters"> </a><a href=".././BtaCandPtrR.html#BtaCandPtrR:GetNumberOfDaughters">BtaCandPtrR::GetNumberOfDaughters</a>(  )
+{
+  return <a href=".././BtaCandPtrR.html#BtaCandPtrR:_oneToMany">_oneToMany</a>? <a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.GetSize()-1:<a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.GetSize();
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="BtaCandPtrR:SetMother"> </a><a href=".././BtaCandPtrR.html#BtaCandPtrR:SetMother">BtaCandPtrR::SetMother</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> im)
+{
+  if(!<a href=".././BtaCandPtrR.html#BtaCandPtrR:_oneToMany">_oneToMany</a> || ( <a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.GetSize() != 0)) return kFALSE;
+  <a href="#BtaCandPtrR:AddDaughter">AddDaughter</a>(im);
+  return kTRUE;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="BtaCandPtrR:GetMother"> </a><a href=".././BtaCandPtrR.html#BtaCandPtrR:GetMother">BtaCandPtrR::GetMother</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;im)
+{
+  if(!<a href=".././BtaCandPtrR.html#BtaCandPtrR:_oneToMany">_oneToMany</a> || ( <a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.GetSize() == 0)) return kFALSE;
+  im = <a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.At(0);
+  return kTRUE;
+}
+
+<a href="../ListOfTypes.html#Int_t">Int_t</a>
+<a href=".././BtaCandPtrR.html#BtaCandPtrR:operator">BtaCandPtrR::operator</a>()( <a href="../ListOfTypes.html#Int_t">Int_t</a> i )
+{
+  if (i&lt;<a href="#BtaCandPtrR:GetNumberOfDaughters">GetNumberOfDaughters</a>())
+    return <a href=".././BtaCandPtrR.html#BtaCandPtrR:_oneToMany">_oneToMany</a>?  <a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.At(i+1):<a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.At(i);
+  else
+    return 0;
+}
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="BtaCandPtrR:AddDaughter"> </a><a href=".././BtaCandPtrR.html#BtaCandPtrR:AddDaughter">BtaCandPtrR::AddDaughter</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> ind){<a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.AddAt(ind,<a href=".././BtaCandPtrR.html#BtaCandPtrR:_indices">_indices</a>.GetSize());}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

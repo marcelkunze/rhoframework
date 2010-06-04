@@ -1,0 +1,111 @@
+### Directory and Executable Names ###########
+OBJDIR     = ..\tmp
+BINDIR     = ..\bin
+LIBDIR     = ..\lib
+
+SKIM       = Skim$(ExeSuf)
+HADRONIC   = hadronic$(ExeSuf)
+DIMUON     = dimuon$(ExeSuf)
+GG         = gammagamma$(ExeSuf)
+TWOPRONG   = twoprong$(ExeSuf)
+Y4SFIT     = y4sfit$(ExeSuf)
+MUONS      = MuMuAnalysis$(ExeSuf)
+DSTARPI    = incBDstarPi$(ExeSuf)
+
+################################################################################################
+		
+SKIMO	    = Skim.$(ObjSuf)
+ANALYSISO	= analysis.$(ObjSuf)
+HADO		= hadronic.$(ObjSuf)
+DIMUONO		= dimuon.$(ObjSuf)
+GGO			= gammagamma.$(ObjSuf)
+TWOPRONGO	= twoprong.$(ObjSuf)
+Y4SFITO	    = y4sfit.$(ObjSuf)
+Y4SO	    = y4s.$(ObjSuf)
+MUONSO		= MuMuAnalysis.$(ObjSuf)
+DSTARPIO    = incBDstarPi.$(ObjSuf)
+
+all:	 Skim hadronic dimuon MuMuAnalysis gammagamma twoprong y4sfit incBDstarPi
+
+######  Targets ###############################
+          
+Skim: $(SKIMO)
+	$(LD) $(LDFLAGS) $(SKIMO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(SKIM)
+	@echo ---------------------------------- 
+	@echo "$(SKIM) done"
+	@echo ----------------------------------
+hadronic:	$(HADO)
+	$(LD) $(LDFLAGS) $(HADO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(HADRONIC)
+	@echo ---------------------------------- 
+	@echo "$(HADRONIC) done"
+	@echo ----------------------------------
+dimuon:	$(DIMUONO)
+	$(LD) $(LDFLAGS) $(DIMUONO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(DIMUON)
+	@echo ---------------------------------- 
+	@echo "$(DIMUON) done"
+	@echo ----------------------------------
+gammagamma:	$(GGO)
+	$(LD) $(LDFLAGS) $(GGO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(GG)
+	@echo ---------------------------------- 
+	@echo "$(GG) done"
+	@echo ----------------------------------
+twoprong:	$(TWOPRONGO)
+	$(LD) $(LDFLAGS) $(TWOPRONGO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(TWOPRONG)
+	@echo ---------------------------------- 
+	@echo "$(TWOPRONG) done"
+	@echo ----------------------------------
+y4sfit:	$(Y4SFITO) $(Y4SO)
+	$(LD) $(LDFLAGS) $(Y4SFITO) $(Y4SO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(Y4SFIT)
+	@echo ---------------------------------- 
+	@echo "$(Y4SFIT) done"
+	@echo ----------------------------------
+MuMuAnalysis:	$(MUONSO)
+	$(LD) $(LDFLAGS) $(MUONSO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(MUONS)
+	@echo ---------------------------------- 
+	@echo "$(DIMUON) done"
+	@echo ----------------------------------
+incBDstarPi:	$(DSTARPIO)
+	$(LD) $(LDFLAGS) $(DSTARPIO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(DSTARPI)
+	@echo ---------------------------------- 
+	@echo "$(DSTARPI) done"
+	@echo ----------------------------------
+
+#######################################
+###     Complete Cleanup            ###
+#######################################
+                
+clean :
+	del *.$(ObjSuf)
+
+#######  Rules ################################
+ 
+.$(SrcSuf).$(ObjSuf):
+        $(CXX) $(CXXFLAGS) -c -I. $<
+        @echo ------------------------------------------
+
+$(SKIMO): Skim.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c Skim.$(SrcSuf)
+
+$(HADO): hadronic.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c hadronic.$(SrcSuf)
+
+$(DIMUONO): dimuon.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c dimuon.$(SrcSuf)
+
+$(GGO): gammagamma.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c gammagamma.$(SrcSuf)
+
+$(TWOPRONGO): twoprong.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c twoprong.$(SrcSuf)
+
+$(Y4SFITO): y4sfit.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c y4sfit.$(SrcSuf)
+
+$(Y4SO): y4s.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c y4s.$(SrcSuf)
+
+$(MUONSO): MuMuAnalysis.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c MuMuAnalysis.$(SrcSuf)
+
+$(DSTARPIO): incBDstarPi.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c incBDstarPi.$(SrcSuf)

@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:38 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TBtaFitParamsR</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TBtaFitParamsR</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TBtaFitParamsR:description">class description</a> - <a href="src/TBtaFitParamsR.cxx.html">source file</a> - <a href="TBtaFitParamsR_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TBtaFitParamsR" href="TBtaFitParamsR.h">TBtaFitParamsR</a> </h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->       <a href="./TBtaFitParamsR.html">TBtaFitParamsR</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:TBtaFitParamsR">TBtaFitParamsR</a><!--PLAIN-->(const <a href="./TBtaFitParamsR.html">TBtaFitParamsR</a>&amp;)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:ComPackedCovariance">ComPackedCovariance</a><!--PLAIN-->(const TVectorD&amp; eigenValues, const TVectorD&amp; angles)
+<!--TAB6-->          TFitParams* <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetTFitParams">GetTFitParams</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> <a href="./TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>, <a href="ListOfTypes.html#Float_t">Float_t</a>* <a href="./TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>, <a href="ListOfTypes.html#Float_t">Float_t</a>* <a href="./TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>)
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:indexCorr">indexCorr</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> i, <a href="ListOfTypes.html#Int_t">Int_t</a> j) const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:Load">Load</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:LoadRotation">LoadRotation</a><!--PLAIN-->()
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:nCorr">nCorr</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:nOct">nOct</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:nParm">nParm</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:nShort">nShort</a><!--PLAIN-->() const
+<!--TAB6-->      <a href="./TBtaFitParamsR.html">TBtaFitParamsR</a>&amp; <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:operator=">operator=</a><!--PLAIN-->(const <a href="./TBtaFitParamsR.html">TBtaFitParamsR</a>&amp;)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->       <a href="./TBtaFitParamsR.html">TBtaFitParamsR</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:TBtaFitParamsR">TBtaFitParamsR</a><!--PLAIN-->()
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:~TBtaFitParamsR">~TBtaFitParamsR</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetCov">GetCov</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetCov">GetCov</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>* cov) const
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetCov7">GetCov7</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetCov7">GetCov7</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>* cov7) const
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetP">GetP</a><!--PLAIN-->()
+<!--TAB6-->       TLorentzVector <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetP4">GetP4</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetP4">GetP4</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>* p4) const
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetParams">GetParams</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetParams">GetParams</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>* p) const
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetPos">GetPos</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetPos">GetPos</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>* pos) const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:GetQ">GetQ</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:Reset">Reset</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:SetCov">SetCov</a><!--PLAIN-->(const <a href="ListOfTypes.html#Float_t">Float_t</a>* cov)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:SetCov7">SetCov7</a><!--PLAIN-->(const <a href="ListOfTypes.html#Float_t">Float_t</a>* cov7)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:SetP4">SetP4</a><!--PLAIN-->(const <a href="ListOfTypes.html#Float_t">Float_t</a>* p4)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:SetParams">SetParams</a><!--PLAIN-->(const <a href="ListOfTypes.html#Float_t">Float_t</a>* p)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:SetPos">SetPos</a><!--PLAIN-->(const <a href="ListOfTypes.html#Float_t">Float_t</a>* pos)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:SetQ">SetQ</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> q)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBtaFitParamsR:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TBtaFitParamsR:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->        <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="TBtaFitParamsR:_q">_q</a><!--PLAIN-->          <!--TAB--><i><a name="Title:_q"></a></i>
+<!--TAB6-->        <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="TBtaFitParamsR:_qold">_qold</a><!--PLAIN-->       <!--TAB--><i><a name="Title:_qold"></a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="TBtaFitParamsR:_pos">_pos[3]</a><!--PLAIN-->     <!--TAB--><i><a name="Title:_pos"></a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="TBtaFitParamsR:_p4">_p4[4]</a><!--PLAIN-->      <!--TAB--><i><a name="Title:_p4"></a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="TBtaFitParamsR:_params">_params[5]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_params">Helix parameters</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#UShort_t">UShort_t</a> <!--TAB--><!--BOLD--><a name="TBtaFitParamsR:_diag">_diag[15]</a><!--PLAIN-->   <!--TAB--><i><a name="Title:_diag"></a></i>
+<!--TAB6-->        <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="TBtaFitParamsR:_corr">_corr[10]</a><!--PLAIN-->   <!--TAB--><i><a name="Title:_corr"></a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="TBtaFitParamsR:_cov7">_cov7[28]</a><!--PLAIN-->   <!--TAB--><i><a name="Title:_cov7"></a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="TBtaFitParamsR:_cov">_cov[15]</a><!--PLAIN-->    <!--TAB--><i><a name="Title:_cov"></a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="TBtaFitParamsR:fCov">fCov[28]</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fCov">!</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TBtaFitParamsR:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--> <a name="TBtaFitParamsR:TBtaFitParamsR" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:TBtaFitParamsR">TBtaFitParamsR</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TBtaFitParamsR:~TBtaFitParamsR" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:~TBtaFitParamsR">~TBtaFitParamsR</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:Reset" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:Reset">Reset</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TBtaFitParamsR:GetQ" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetQ">GetQ</a>() const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:GetPos" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetPos">GetPos</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> pos[3]) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:GetP4" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetP4">GetP4</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> p4[4]) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:GetCov7" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetCov7">GetCov7</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> cov7[28]) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:GetParams" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetParams">GetParams</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> p[5]) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:GetCov" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetCov">GetCov</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> cov[15]) const
+<br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="TBtaFitParamsR:GetPos" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetPos">GetPos</a>()
+<br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="TBtaFitParamsR:GetP" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetP">GetP</a>()
+<br>
+<hr>
+<!--FUNCTION-->TLorentzVector <a name="TBtaFitParamsR:GetP4" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetP4">GetP4</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TBtaFitParamsR:GetCov7" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetCov7">GetCov7</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:SetQ" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:SetQ">SetQ</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> q) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:SetPos" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:SetPos">SetPos</a>(const <a href="ListOfTypes.html#Float_t">Float_t</a> pos[3])
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:SetP4" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:SetP4">SetP4</a>(const <a href="ListOfTypes.html#Float_t">Float_t</a> p4[4]) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:SetCov7" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:SetCov7">SetCov7</a>(const <a href="ListOfTypes.html#Float_t">Float_t</a> cov7[28])
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:SetParams" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:SetParams">SetParams</a>(const <a href="ListOfTypes.html#Float_t">Float_t</a> p[5]) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TBtaFitParamsR:GetParams" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetParams">GetParams</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:SetCov" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:SetCov">SetCov</a>(const <a href="ListOfTypes.html#Float_t">Float_t</a> cov[15])
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TBtaFitParamsR:GetCov" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetCov">GetCov</a>()
+<br>
+<pre> Unpack the data (charged only)
+</pre><hr>
+<!--FUNCTION-->TFitParams* <a name="TBtaFitParamsR:GetTFitParams" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:GetTFitParams">GetTFitParams</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> <a href="./TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>, <a href="ListOfTypes.html#Float_t">Float_t</a> *<a href="./TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>, <a href="ListOfTypes.html#Float_t">Float_t</a> *<a href="./TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TBtaFitParamsR:Load" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:Load">Load</a>() <br>
+<hr>
+<!--FUNCTION--> <a name="TBtaFitParamsR:LoadRotation" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:LoadRotation">LoadRotation</a>() <br>
+<hr>
+<!--FUNCTION--> <a name="TBtaFitParamsR:indexCorr" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:indexCorr">indexCorr</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> j1,<a href="ListOfTypes.html#Int_t">Int_t</a> j2) const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:ComPackedCovariance" href="src/TBtaFitParamsR.cxx.html#TBtaFitParamsR:ComPackedCovariance">ComPackedCovariance</a>(const TVectorD&amp; eigenValues,const TVectorD&amp; angles)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TBtaFitParamsR.html">TBtaFitParamsR</a> <a name="TBtaFitParamsR:TBtaFitParamsR" href="TBtaFitParamsR.h">TBtaFitParamsR</a>(const <a href="./TBtaFitParamsR.html">TBtaFitParamsR</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TBtaFitParamsR.html">TBtaFitParamsR</a>&amp; <a name="TBtaFitParamsR:operator=" href="TBtaFitParamsR.h">operator=</a>(const <a href="./TBtaFitParamsR.html">TBtaFitParamsR</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TBtaFitParamsR:nParm" href="TBtaFitParamsR.h">nParm</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TBtaFitParamsR:nCorr" href="TBtaFitParamsR.h">nCorr</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TBtaFitParamsR:nOct" href="TBtaFitParamsR.h">nOct</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TBtaFitParamsR:nShort" href="TBtaFitParamsR.h">nShort</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                TClass* <a name="TBtaFitParamsR:Class" href="TBtaFitParamsR.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                TClass* <a name="TBtaFitParamsR:IsA" href="TBtaFitParamsR.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:ShowMembers" href="TBtaFitParamsR.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:Streamer" href="TBtaFitParamsR.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <a name="TBtaFitParamsR:StreamerNVirtual" href="TBtaFitParamsR.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:39 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

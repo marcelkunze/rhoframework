@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:29 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>StdHepR - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: StdHepR.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Gautier Hamel de Monchenault</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999       Saclay</b>
+<b>//</b>
+<b>//------------------------------------------------------------------------</b>
+
+<b>//-----------------------</b>
+<b>// This Class's Header --</b>
+<b>//-----------------------</b>
+#include "KangaSchema/StdHepR.h"
+
+
+<b>//-------------</b>
+<b>// C Headers --</b>
+<b>//-------------</b>
+#include &lt;math.h&gt;
+
+<b>//---------------</b>
+<b>// C++ Headers --</b>
+<b>//---------------</b>
+
+
+<b>//-------------------------------</b>
+<b>// Collaborating Class Headers --</b>
+<b>//-------------------------------</b>
+<b>//#include "CLHEP/Alist/AList.h"</b>
+#include "KangaSchema/StdHepTrkR.h"
+<b>//#include "StdHepData/StdHep.h"</b>
+<b>//#include "StdHepData/StdHepTrk.h"</b>
+<b>//#include "ErrLogger/ErrLog.h"</b>
+
+
+<b>//-----------------------------------------------------------------------</b>
+<b>// Local Macros, Typedefs, Structures, Unions and Forward Declarations --</b>
+<b>//-----------------------------------------------------------------------</b>
+ClassImp(<a href=".././StdHepR.html">StdHepR</a>)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+<a name="StdHepR:StdHepR"> </a><a href=".././StdHepR.html#StdHepR:StdHepR">StdHepR::StdHepR</a>() : 
+  RooClonesClassObj&lt;StdHep&gt;(),
+  <a href=".././StdHepR.html#StdHepR:_eventNumber">_eventNumber</a>( 0 )
+{
+
+<b>  // Initialise TClonesArray:</b>
+  <a href="#StdHepR:initialiseArray">initialiseArray</a>();
+
+}
+/*
+<a name="StdHepR:StdHepR"> </a><a href=".././StdHepR.html#StdHepR:StdHepR">StdHepR::StdHepR</a>( const StdHep* transient,  RooEvtObjLocReg &amp; reg  ) :  
+  RooClonesClassObj&lt;StdHep&gt;(),
+  <a href=".././StdHepR.html#StdHepR:_eventNumber">_eventNumber</a>( transient-&gt;eventNumber() )
+{
+
+<b>  // Initialise TClonesArray:</b>
+  <a href="#StdHepR:initialiseArray">initialiseArray</a>();
+
+<b>  // Set number of entries for TClonesArray:</b>
+  <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_nent">_nent</a>= transient-&gt;noOfTracks();
+
+<b>  // Get the list of StdHepTrk's and store the persistent objects</b>
+<b>  // in the TClonesArray:</b>
+  const HepAList&lt;StdHepTrk&gt;* trackList= transient-&gt;getListOfTracks();
+  for( unsigned i= 0; i &lt; <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_nent">_nent</a>; i++ ) {
+    const StdHepTrk* aStdHepTrk= (*trackList)[i];
+    new( (*<a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a>)[i] ) <a href=".././StdHepTrkR.html">StdHepTrkR</a>( aStdHepTrk, reg );
+  }
+
+<b>  // Register this object and its corresponding transient:</b>
+  registerThis( transient, reg );
+
+}
+*/
+<a name="StdHepR:initialiseArray"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././StdHepR.html#StdHepR:initialiseArray">StdHepR::initialiseArray</a>() {
+
+<b>  // Initialise TClonesArray:</b>
+  if( <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_theArray">_theArray</a> == 0 ) {
+    <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a>= new TClonesArray( "<a href=".././StdHepTrkR.html">StdHepTrkR</a>", 100 );
+  }
+  else {
+    <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a>= <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_theArray">_theArray</a>;
+    <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_ownArray">_ownArray</a>= kFALSE;
+  }
+
+  <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a>-&gt;BypassStreamer(kFALSE);
+
+}
+
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+<a name="StdHepR:~StdHepR"> </a><a href=".././StdHepR.html">StdHepR</a>::~<a href=".././StdHepR.html">StdHepR</a>() {
+
+  <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a>-&gt;Clear();
+  if( <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_ownArray">_ownArray</a> ) delete <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a>;
+
+}
+/*
+<b>//--------------</b>
+<b>// Operations --</b>
+<b>//--------------</b>
+StdHep* <a href=".././StdHepR.html#StdHepR:transient">StdHepR::transient</a>( RooEvtObjLocReg &amp; reg ) const {
+
+<b>  // Create the transient object:</b>
+  StdHep* theStdHep= new StdHep( <a href=".././StdHepR.html#StdHepR:_eventNumber">_eventNumber</a> );
+
+<b>  // Fill the list of the transient:</b>
+  for( unsigned i= 0; i &lt; <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_nent">_nent</a>; i++ ) {
+    TObject* obj= <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a>-&gt;At( i );
+    if( obj != 0 ) {
+      if( obj-&gt;<a href="#StdHepR:IsA">IsA</a>() == <a href=".././StdHepTrkR.html#StdHepTrkR:Class">StdHepTrkR::Class</a>() ) {
+	const <a href=".././StdHepTrkR.html">StdHepTrkR</a>* theStdHepTrkR= (const <a href=".././StdHepTrkR.html">StdHepTrkR</a>*) obj;
+	StdHepTrk* stdTrk= theStdHepTrkR-&gt;transient( reg );
+<b>	// Set event number for every transient StdHepTrk (what</b>
+<b>	// a waste!):</b>
+	stdTrk-&gt;setEvent( <a href=".././StdHepR.html#StdHepR:_eventNumber">_eventNumber</a> );
+	theStdHep-&gt;addTrack( stdTrk );
+      }
+      else {
+	ErrMsg(fatal) &lt;&lt; " Wrong persistent type: " &lt;&lt; obj-&gt;ClassName()
+		      &lt;&lt; endmsg;
+      }
+    }
+    else {
+      ErrMsg(fatal) &lt;&lt; " <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a> returned 0 pointer" &lt;&lt; endmsg;
+    }
+
+  }
+
+<b>  // Register this object and its corresponding transient:</b>
+  registerThis( theStdHep, reg );
+
+<b>  // The End:</b>
+  return theStdHep;
+
+}
+*/
+
+<b>// Printing:</b>
+<a name="StdHepR:print"> </a><a href="../ListOfTypes.html#void">void</a>  <a href=".././StdHepR.html#StdHepR:print">StdHepR::print</a>( std::ostream &amp; ost ) const {
+
+  return;
+
+}
+<a name="StdHepR:Print"> </a><a href="../ListOfTypes.html#void">void</a>  <a href=".././StdHepR.html#StdHepR:Print">StdHepR::Print</a>( <a href="../ListOfTypes.html#Option_t">Option_t</a>* option ) const {
+
+  cout &lt;&lt; ClassName() &lt;&lt; endl;
+  <a href="#StdHepR:print">print</a>( cout );
+  return;
+
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

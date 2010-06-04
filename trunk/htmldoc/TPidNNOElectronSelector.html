@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:14 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TPidNNOElectronSelector</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TPidNNOElectronSelector</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TPidNNOElectronSelector:description">class description</a> - <a href="src/TPidNNOElectronSelector.cxx.html">source file</a> - <a href="TPidNNOElectronSelector_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TPidNNOElectronSelector" href="TPidNNOSelector.h">TPidNNOElectronSelector</a> : public <a href="./TPidNNOSelector.html">TPidNNOSelector</a></h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      <a href="./TPidNNOElectronSelector.html">TPidNNOElectronSelector</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:TPidNNOElectronSelector">TPidNNOElectronSelector</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name = "<a href="./TPidNNOElectronSelector.html">TPidNNOElectronSelector</a>", <a href="ListOfTypes.html#Bool_t">Bool_t</a> b1 = kTRUE, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b2 = kTRUE, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b3 = kTRUE, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b4 = kTRUE, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b5 = kTRUE, <a href="ListOfTypes.html#Bool_t">Bool_t</a> qc = kFALSE)
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:~TPidNNOElectronSelector">~TPidNNOElectronSelector</a><!--PLAIN-->()
+<!--TAB6-->               virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:Accept">Accept</a><!--PLAIN-->(TCandidate&amp;)
+<!--TAB6-->               virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:Accept">Accept</a><!--PLAIN-->(VAbsMicroCandidate&amp;)
+<!--TAB6-->              static <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:AlphaError">AlphaError</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> cut)
+<!--TAB6-->              static <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:BetaError">BetaError</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> cut)
+<!--TAB6-->               static TClass* <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                       <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:Consistency">Consistency</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> output)
+<!--TAB6-->                       <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:Efficiency">Efficiency</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> cut)
+<!--TAB6-->              virtual TClass* <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                       <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:Misid">Misid</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> cut)
+<!--TAB6-->                       <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:Purity">Purity</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> cut)
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->              static <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:SignificanceLevel">SignificanceLevel</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> output)
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOElectronSelector:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TPidNNOElectronSelector:Data Members">Data Members</a></h3>
+<pre>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TPidNNOElectronSelector:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TPidNNOSelector.html">TPidNNOSelector</a>							
+                                                                      
+ Selector class for artificial neural networks for particle           
+ identification				                        
+                                                                      
+ Author List:                                                         
+ Marcel Kunze,  RUB, Feb. 99                                          
+ Copyright (C) 1999-2001, Ruhr-University Bochum.                     
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TPidNNOElectronSelector:TPidNNOElectronSelector" href="src/TPidNNOElectronSelector.cxx.html#TPidNNOElectronSelector:TPidNNOElectronSelector">TPidNNOElectronSelector</a>(const <a href="ListOfTypes.html#char">char</a>* name, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b1, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b2, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b3, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b4, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b5, <a href="ListOfTypes.html#Bool_t">Bool_t</a> qc ) :
+<a href="./TPidNNOSelector.html">TPidNNOSelector</a>(name,qc)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TPidNNOElectronSelector:Accept" href="src/TPidNNOElectronSelector.cxx.html#TPidNNOElectronSelector:Accept">Accept</a>(TCandidate&amp; b) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TPidNNOElectronSelector:Accept" href="src/TPidNNOElectronSelector.cxx.html#TPidNNOElectronSelector:Accept">Accept</a>(VAbsMicroCandidate&amp; b) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TPidNNOElectronSelector:AlphaError" href="src/TPidNNOElectronSelector.cxx.html#TPidNNOElectronSelector:AlphaError">AlphaError</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> cut) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TPidNNOElectronSelector:BetaError" href="src/TPidNNOElectronSelector.cxx.html#TPidNNOElectronSelector:BetaError">BetaError</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> cut) <br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TPidNNOElectronSelector:SignificanceLevel" href="TPidNNOSelector.h">SignificanceLevel</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> output)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#double">double</a> <a name="TPidNNOElectronSelector:Consistency" href="TPidNNOSelector.h">Consistency</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> output)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#double">double</a> <a name="TPidNNOElectronSelector:Efficiency" href="TPidNNOSelector.h">Efficiency</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> cut)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#double">double</a> <a name="TPidNNOElectronSelector:Purity" href="TPidNNOSelector.h">Purity</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> cut)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#double">double</a> <a name="TPidNNOElectronSelector:Misid" href="TPidNNOSelector.h">Misid</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> cut)
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TPidNNOElectronSelector:Class" href="TPidNNOSelector.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TPidNNOElectronSelector:IsA" href="TPidNNOSelector.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOElectronSelector:ShowMembers" href="TPidNNOSelector.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOElectronSelector:Streamer" href="TPidNNOSelector.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOElectronSelector:StreamerNVirtual" href="TPidNNOSelector.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOElectronSelector:~TPidNNOElectronSelector" href="TPidNNOSelector.h">~TPidNNOElectronSelector</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:14 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

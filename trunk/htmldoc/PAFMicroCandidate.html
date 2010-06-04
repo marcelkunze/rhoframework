@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:16 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFMicroCandidate</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>PAFMicroCandidate</h1>
+<hr width=300>
+<!--SDL--><em><a href="#PAFMicroCandidate:description">class description</a> - <a href="src/PAFMicroCandidate.cxx.html">source file</a> - <a href="PAFMicroCandidate_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="PAFMicroCandidate" href="PAFMicroCandidate.h">PAFMicroCandidate</a> : public VAbsMicroCandidate</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                 <a href="./PAFMicroCandidate.html">PAFMicroCandidate</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:PAFMicroCandidate">PAFMicroCandidate</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="./PAFMicroCandidate.html">PAFMicroCandidate</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:PAFMicroCandidate">PAFMicroCandidate</a><!--PLAIN-->(<a href="./PAFAodBase.html">PAFAodBase</a>*, <a href="./PAFAodCluster.html">PAFAodCluster</a>*, <a href="./PAFAodTrack.html">PAFAodTrack</a>*)
+<!--TAB6-->                 <a href="./PAFMicroCandidate.html">PAFMicroCandidate</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:PAFMicroCandidate">PAFMicroCandidate</a><!--PLAIN-->(const <a href="./PAFMicroCandidate.html">PAFMicroCandidate</a>&amp;)
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:~PAFMicroCandidate">~PAFMicroCandidate</a><!--PLAIN-->()
+<!--TAB6-->                    static TClass* <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:DchOk">DchOk</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:DrcOk">DrcOk</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:EmcOk">EmcOk</a><!--PLAIN-->() const
+<!--TAB6-->         virtual const <a href="./PAFAodBase.html">PAFAodBase</a>&amp; <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetAodBase">GetAodBase</a><!--PLAIN-->() const
+<!--TAB6-->      virtual const <a href="./PAFAodCluster.html">PAFAodCluster</a>&amp; <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetAodCluster">GetAodCluster</a><!--PLAIN-->() const
+<!--TAB6-->        virtual const <a href="./PAFAodTrack.html">PAFAodTrack</a>&amp; <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetAodTrack">GetAodTrack</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetCharge">GetCharge</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetChargedPidHypo">GetChargedPidHypo</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetChiSquared">GetChiSquared</a><!--PLAIN-->() const
+<!--TAB6-->            virtual const <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetCov">GetCov</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDchDeltaMomentum">GetDchDeltaMomentum</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDchHits">GetDchHits</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDchInnerLayer">GetDchInnerLayer</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDchMeanDEdx">GetDchMeanDEdx</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDchOuterLayer">GetDchOuterLayer</a><!--PLAIN-->() const
+<!--TAB6-->              virtual VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDchPidInfo">GetDchPidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDchSamples">GetDchSamples</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDegreesOfFreedom">GetDegreesOfFreedom</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcDeltaMomentum">GetDrcDeltaMomentum</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcExitBar">GetDrcExitBar</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcInBar">GetDrcInBar</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcNumberOfBackgroundPhotons">GetDrcNumberOfBackgroundPhotons</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcNumberOfExpectedPhotons">GetDrcNumberOfExpectedPhotons</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n) const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcNumberOfPhotons">GetDrcNumberOfPhotons</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcPhiAtEmc">GetDrcPhiAtEmc</a><!--PLAIN-->() const
+<!--TAB6-->              virtual VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcPidInfo">GetDrcPidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcThetaAtEmc">GetDrcThetaAtEmc</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcThetaC">GetDrcThetaC</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcThetaCError">GetDrcThetaCError</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetDrcXPos">GetDrcXPos</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcCalEnergy">GetEmcCalEnergy</a><!--PLAIN-->() const
+<!--TAB6-->                  virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcCentroid">GetEmcCentroid</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcConsistencyBits">GetEmcConsistencyBits</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcConsistencyLikelihood">GetEmcConsistencyLikelihood</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcConsistencyValue">GetEmcConsistencyValue</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcCovarianceEnergy">GetEmcCovarianceEnergy</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcCovariancePhi">GetEmcCovariancePhi</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcCovarianceRho">GetEmcCovarianceRho</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcCovarianceTheta">GetEmcCovarianceTheta</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcLateralShape">GetEmcLateralShape</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcNumberOfBumps">GetEmcNumberOfBumps</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcNumberOfCrystals">GetEmcNumberOfCrystals</a><!--PLAIN-->() const
+<!--TAB6-->              virtual VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcPidInfo">GetEmcPidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcRawEnergy">GetEmcRawEnergy</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcS1S9">GetEmcS1S9</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcS9S25">GetEmcS9S25</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcSecondMoment">GetEmcSecondMoment</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcStatus">GetEmcStatus</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcZernikeMoment20">GetEmcZernikeMoment20</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcZernikeMoment31">GetEmcZernikeMoment31</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEmcZernikeMoment42">GetEmcZernikeMoment42</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetEnergy">GetEnergy</a><!--PLAIN-->() const
+<!--TAB6-->            virtual const <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetErrorP7">GetErrorP7</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetFitStatus">GetFitStatus</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrClusterFit">GetIfrClusterFit</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrClusters">GetIfrClusters</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrEmcMatch">GetIfrEmcMatch</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrExpectedInteractionLengths">GetIfrExpectedInteractionLengths</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrFirstHit">GetIfrFirstHit</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrHitLayers">GetIfrHitLayers</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrInteractionLengthsBeforeIron">GetIfrInteractionLengthsBeforeIron</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrLastBarrel">GetIfrLastBarrel</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrLastHit">GetIfrLastHit</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrMeasuredInteractionLengths">GetIfrMeasuredInteractionLengths</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrNumberOfStrips">GetIfrNumberOfStrips</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrNumberOfStrips">GetIfrNumberOfStrips</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> layer) const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrPattern">GetIfrPattern</a><!--PLAIN-->() const
+<!--TAB6-->              virtual VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrPidInfo">GetIfrPidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrRpcMuonProbability">GetIfrRpcMuonProbability</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetIfrTrackMatch">GetIfrTrackMatch</a><!--PLAIN-->() const
+<!--TAB6-->            virtual TLorentzVector <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetLorentzVector">GetLorentzVector</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetMcConsistency">GetMcConsistency</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetMcIndex">GetMcIndex</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetMcPid">GetMcPid</a><!--PLAIN-->() const
+<!--TAB6-->                  virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetMomentum">GetMomentum</a><!--PLAIN-->() const
+<!--TAB6-->            virtual const <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetMomentumError">GetMomentumError</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetNeutralPidHypo">GetNeutralPidHypo</a><!--PLAIN-->() const
+<!--TAB6-->            virtual const <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetParams">GetParams</a><!--PLAIN-->() const
+<!--TAB6-->                  virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetPosition">GetPosition</a><!--PLAIN-->() const
+<!--TAB6-->            virtual const <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetPositionError">GetPositionError</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetProbability">GetProbability</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetSvtHitPattern">GetSvtHitPattern</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetSvtHits">GetSvtHits</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetSvtMeanDEdx">GetSvtMeanDEdx</a><!--PLAIN-->() const
+<!--TAB6-->              virtual VAbsPidInfo&amp; <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetSvtPidInfo">GetSvtPidInfo</a><!--PLAIN-->() const
+<!--TAB6-->                     virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetSvtSamples">GetSvtSamples</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetTrackLength">GetTrackLength</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:GetTrackStartFoundRange">GetTrackStartFoundRange</a><!--PLAIN-->() const
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:IfrOk">IfrOk</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual TClass* <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:SetAodBase">SetAodBase</a><!--PLAIN-->(<a href="./PAFAodBase.html">PAFAodBase</a>&amp; a)
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:SetAodCluster">SetAodCluster</a><!--PLAIN-->(<a href="./PAFAodCluster.html">PAFAodCluster</a>&amp; a)
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:SetAodTrack">SetAodTrack</a><!--PLAIN-->(<a href="./PAFAodTrack.html">PAFAodTrack</a>&amp; a)
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:SetMcConsistency">SetMcConsistency</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a> cons)
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:SetMcIndex">SetMcIndex</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> index)
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:SetMcPid">SetMcPid</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> pid)
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:SetPosition">SetPosition</a><!--PLAIN-->(TVector3 x)
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->                      virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                              <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                    virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFMicroCandidate:SvtOk">SvtOk</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="PAFMicroCandidate:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->         <a href="./PAFAodBase.html">PAFAodBase</a>* <!--TAB--><!--BOLD--><a name="PAFMicroCandidate:fAodBase">fAodBase</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fAodBase">!Do not stream</a></i>
+<!--TAB6-->      <a href="./PAFAodCluster.html">PAFAodCluster</a>* <!--TAB--><!--BOLD--><a name="PAFMicroCandidate:fAodCluster">fAodCluster</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fAodCluster">!Do not stream</a></i>
+<!--TAB6-->        <a href="./PAFAodTrack.html">PAFAodTrack</a>* <!--TAB--><!--BOLD--><a name="PAFMicroCandidate:fAodTrack">fAodTrack</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fAodTrack">!Do not stream</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="PAFMicroCandidate:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./PAFMicroCandidate.html">PAFMicroCandidate</a>							
+                                                                      
+ Implementation of the PAF Micro candidate	    			
+                                                                      
+ Author: Marcel Kunze, RUB, Mar 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="PAFMicroCandidate:PAFMicroCandidate" href="src/PAFMicroCandidate.cxx.html#PAFMicroCandidate:PAFMicroCandidate">PAFMicroCandidate</a>(<a href="./PAFAodBase.html">PAFAodBase</a> *a,<a href="./PAFAodCluster.html">PAFAodCluster</a> *b,<a href="./PAFAodTrack.html">PAFAodTrack</a> *c) :
+<a href="./PAFMicroCandidate.html#PAFMicroCandidate:fAodBase">fAodBase</a>(a),<a href="./PAFMicroCandidate.html#PAFMicroCandidate:fAodCluster">fAodCluster</a>(b),<a href="./PAFMicroCandidate.html#PAFMicroCandidate:fAodTrack">fAodTrack</a>(c)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="./PAFMicroCandidate.html">PAFMicroCandidate</a> <a name="PAFMicroCandidate:PAFMicroCandidate" href="PAFMicroCandidate.h">PAFMicroCandidate</a>(<a href="./PAFAodBase.html">PAFAodBase</a>*, <a href="./PAFAodCluster.html">PAFAodCluster</a>*, <a href="./PAFAodTrack.html">PAFAodTrack</a>*)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:SetAodBase" href="PAFMicroCandidate.h">SetAodBase</a>(<a href="./PAFAodBase.html">PAFAodBase</a>&amp; a)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:SetAodCluster" href="PAFMicroCandidate.h">SetAodCluster</a>(<a href="./PAFAodCluster.html">PAFAodCluster</a>&amp; a)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:SetAodTrack" href="PAFMicroCandidate.h">SetAodTrack</a>(<a href="./PAFAodTrack.html">PAFAodTrack</a>&amp; a)
+<!--INLINE FUNCTION--><!--TAB6-->           const <a href="./PAFAodBase.html">PAFAodBase</a>&amp; <a name="PAFMicroCandidate:GetAodBase" href="PAFMicroCandidate.h">GetAodBase</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        const <a href="./PAFAodCluster.html">PAFAodCluster</a>&amp; <a name="PAFMicroCandidate:GetAodCluster" href="PAFMicroCandidate.h">GetAodCluster</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->          const <a href="./PAFAodTrack.html">PAFAodTrack</a>&amp; <a name="PAFMicroCandidate:GetAodTrack" href="PAFMicroCandidate.h">GetAodTrack</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetCharge" href="PAFMicroCandidate.h">GetCharge</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                    TVector3 <a name="PAFMicroCandidate:GetPosition" href="PAFMicroCandidate.h">GetPosition</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                    TVector3 <a name="PAFMicroCandidate:GetMomentum" href="PAFMicroCandidate.h">GetMomentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              TLorentzVector <a name="PAFMicroCandidate:GetLorentzVector" href="PAFMicroCandidate.h">GetLorentzVector</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEnergy" href="PAFMicroCandidate.h">GetEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              const <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="PAFMicroCandidate:GetParams" href="PAFMicroCandidate.h">GetParams</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              const <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="PAFMicroCandidate:GetPositionError" href="PAFMicroCandidate.h">GetPositionError</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              const <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="PAFMicroCandidate:GetMomentumError" href="PAFMicroCandidate.h">GetMomentumError</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              const <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="PAFMicroCandidate:GetErrorP7" href="PAFMicroCandidate.h">GetErrorP7</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              const <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="PAFMicroCandidate:GetCov" href="PAFMicroCandidate.h">GetCov</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetMcPid" href="PAFMicroCandidate.h">GetMcPid</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetMcIndex" href="PAFMicroCandidate.h">GetMcIndex</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetMcConsistency" href="PAFMicroCandidate.h">GetMcConsistency</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="PAFMicroCandidate:EmcOk" href="PAFMicroCandidate.h">EmcOk</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="PAFMicroCandidate:IfrOk" href="PAFMicroCandidate.h">IfrOk</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetEmcStatus" href="PAFMicroCandidate.h">GetEmcStatus</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetEmcNumberOfCrystals" href="PAFMicroCandidate.h">GetEmcNumberOfCrystals</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetEmcNumberOfBumps" href="PAFMicroCandidate.h">GetEmcNumberOfBumps</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcRawEnergy" href="PAFMicroCandidate.h">GetEmcRawEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcCalEnergy" href="PAFMicroCandidate.h">GetEmcCalEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcCovarianceEnergy" href="PAFMicroCandidate.h">GetEmcCovarianceEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcCovarianceTheta" href="PAFMicroCandidate.h">GetEmcCovarianceTheta</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcCovariancePhi" href="PAFMicroCandidate.h">GetEmcCovariancePhi</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcCovarianceRho" href="PAFMicroCandidate.h">GetEmcCovarianceRho</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcS9S25" href="PAFMicroCandidate.h">GetEmcS9S25</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcS1S9" href="PAFMicroCandidate.h">GetEmcS1S9</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcLateralShape" href="PAFMicroCandidate.h">GetEmcLateralShape</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcSecondMoment" href="PAFMicroCandidate.h">GetEmcSecondMoment</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcZernikeMoment20" href="PAFMicroCandidate.h">GetEmcZernikeMoment20</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcZernikeMoment31" href="PAFMicroCandidate.h">GetEmcZernikeMoment31</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcZernikeMoment42" href="PAFMicroCandidate.h">GetEmcZernikeMoment42</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                    TVector3 <a name="PAFMicroCandidate:GetEmcCentroid" href="PAFMicroCandidate.h">GetEmcCentroid</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcConsistencyValue" href="PAFMicroCandidate.h">GetEmcConsistencyValue</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetEmcConsistencyLikelihood" href="PAFMicroCandidate.h">GetEmcConsistencyLikelihood</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetEmcConsistencyBits" href="PAFMicroCandidate.h">GetEmcConsistencyBits</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetNeutralPidHypo" href="PAFMicroCandidate.h">GetNeutralPidHypo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetIfrPattern" href="PAFMicroCandidate.h">GetIfrPattern</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetIfrHitLayers" href="PAFMicroCandidate.h">GetIfrHitLayers</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetIfrNumberOfStrips" href="PAFMicroCandidate.h">GetIfrNumberOfStrips</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetIfrNumberOfStrips" href="PAFMicroCandidate.h">GetIfrNumberOfStrips</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> layer) const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetIfrFirstHit" href="PAFMicroCandidate.h">GetIfrFirstHit</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetIfrLastHit" href="PAFMicroCandidate.h">GetIfrLastHit</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetIfrClusters" href="PAFMicroCandidate.h">GetIfrClusters</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetIfrMeasuredInteractionLengths" href="PAFMicroCandidate.h">GetIfrMeasuredInteractionLengths</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetIfrExpectedInteractionLengths" href="PAFMicroCandidate.h">GetIfrExpectedInteractionLengths</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetIfrInteractionLengthsBeforeIron" href="PAFMicroCandidate.h">GetIfrInteractionLengthsBeforeIron</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetIfrTrackMatch" href="PAFMicroCandidate.h">GetIfrTrackMatch</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetIfrEmcMatch" href="PAFMicroCandidate.h">GetIfrEmcMatch</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetIfrClusterFit" href="PAFMicroCandidate.h">GetIfrClusterFit</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetIfrRpcMuonProbability" href="PAFMicroCandidate.h">GetIfrRpcMuonProbability</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetIfrLastBarrel" href="PAFMicroCandidate.h">GetIfrLastBarrel</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="PAFMicroCandidate:SvtOk" href="PAFMicroCandidate.h">SvtOk</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="PAFMicroCandidate:DchOk" href="PAFMicroCandidate.h">DchOk</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="PAFMicroCandidate:DrcOk" href="PAFMicroCandidate.h">DrcOk</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetTrackLength" href="PAFMicroCandidate.h">GetTrackLength</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetTrackStartFoundRange" href="PAFMicroCandidate.h">GetTrackStartFoundRange</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetSvtHitPattern" href="PAFMicroCandidate.h">GetSvtHitPattern</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetSvtHits" href="PAFMicroCandidate.h">GetSvtHits</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetDchInnerLayer" href="PAFMicroCandidate.h">GetDchInnerLayer</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetDchOuterLayer" href="PAFMicroCandidate.h">GetDchOuterLayer</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetDchHits" href="PAFMicroCandidate.h">GetDchHits</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetChargedPidHypo" href="PAFMicroCandidate.h">GetChargedPidHypo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetDegreesOfFreedom" href="PAFMicroCandidate.h">GetDegreesOfFreedom</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetFitStatus" href="PAFMicroCandidate.h">GetFitStatus</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetProbability" href="PAFMicroCandidate.h">GetProbability</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetChiSquared" href="PAFMicroCandidate.h">GetChiSquared</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetDrcThetaC" href="PAFMicroCandidate.h">GetDrcThetaC</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetDrcThetaCError" href="PAFMicroCandidate.h">GetDrcThetaCError</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetDrcNumberOfPhotons" href="PAFMicroCandidate.h">GetDrcNumberOfPhotons</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetDrcNumberOfBackgroundPhotons" href="PAFMicroCandidate.h">GetDrcNumberOfBackgroundPhotons</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetDrcNumberOfExpectedPhotons" href="PAFMicroCandidate.h">GetDrcNumberOfExpectedPhotons</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n) const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetDchDeltaMomentum" href="PAFMicroCandidate.h">GetDchDeltaMomentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetDrcDeltaMomentum" href="PAFMicroCandidate.h">GetDrcDeltaMomentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetDrcInBar" href="PAFMicroCandidate.h">GetDrcInBar</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetDrcExitBar" href="PAFMicroCandidate.h">GetDrcExitBar</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetDrcXPos" href="PAFMicroCandidate.h">GetDrcXPos</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetDrcPhiAtEmc" href="PAFMicroCandidate.h">GetDrcPhiAtEmc</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetDrcThetaAtEmc" href="PAFMicroCandidate.h">GetDrcThetaAtEmc</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetDchMeanDEdx" href="PAFMicroCandidate.h">GetDchMeanDEdx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFMicroCandidate:GetSvtMeanDEdx" href="PAFMicroCandidate.h">GetSvtMeanDEdx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetDchSamples" href="PAFMicroCandidate.h">GetDchSamples</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMicroCandidate:GetSvtSamples" href="PAFMicroCandidate.h">GetSvtSamples</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                VAbsPidInfo&amp; <a name="PAFMicroCandidate:GetDrcPidInfo" href="PAFMicroCandidate.h">GetDrcPidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                VAbsPidInfo&amp; <a name="PAFMicroCandidate:GetDchPidInfo" href="PAFMicroCandidate.h">GetDchPidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                VAbsPidInfo&amp; <a name="PAFMicroCandidate:GetSvtPidInfo" href="PAFMicroCandidate.h">GetSvtPidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                VAbsPidInfo&amp; <a name="PAFMicroCandidate:GetEmcPidInfo" href="PAFMicroCandidate.h">GetEmcPidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                VAbsPidInfo&amp; <a name="PAFMicroCandidate:GetIfrPidInfo" href="PAFMicroCandidate.h">GetIfrPidInfo</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:SetPosition" href="PAFMicroCandidate.h">SetPosition</a>(TVector3 x)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:SetMcPid" href="PAFMicroCandidate.h">SetMcPid</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> pid)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:SetMcIndex" href="PAFMicroCandidate.h">SetMcIndex</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> index)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:SetMcConsistency" href="PAFMicroCandidate.h">SetMcConsistency</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> cons)
+<!--INLINE FUNCTION--><!--TAB6-->                     TClass* <a name="PAFMicroCandidate:Class" href="PAFMicroCandidate.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                     TClass* <a name="PAFMicroCandidate:IsA" href="PAFMicroCandidate.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:ShowMembers" href="PAFMicroCandidate.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:Streamer" href="PAFMicroCandidate.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:StreamerNVirtual" href="PAFMicroCandidate.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="./PAFMicroCandidate.html">PAFMicroCandidate</a> <a name="PAFMicroCandidate:PAFMicroCandidate" href="PAFMicroCandidate.h">PAFMicroCandidate</a>(const <a href="./PAFMicroCandidate.html">PAFMicroCandidate</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="PAFMicroCandidate:~PAFMicroCandidate" href="PAFMicroCandidate.h">~PAFMicroCandidate</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?Mar">Mar</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:02:16 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:27 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TSimpleNeuralNetPlotter</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TSimpleNeuralNetPlotter</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TSimpleNeuralNetPlotter:description">class description</a> - <a href="src/TSimpleNeuralNetPlotter.cxx.html">source file</a> - <a href="TSimpleNeuralNetPlotter_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TSimpleNeuralNetPlotter" href="VNeuralNetPlotter.h">TSimpleNeuralNetPlotter</a> : public <a href="./VNeuralNetPlotter.html">VNeuralNetPlotter</a></h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      <a href="./TSimpleNeuralNetPlotter.html">TSimpleNeuralNetPlotter</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:TSimpleNeuralNetPlotter">TSimpleNeuralNetPlotter</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->      <a href="./TSimpleNeuralNetPlotter.html">TSimpleNeuralNetPlotter</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:TSimpleNeuralNetPlotter">TSimpleNeuralNetPlotter</a><!--PLAIN-->(const <a href="./TSimpleNeuralNetPlotter.html">TSimpleNeuralNetPlotter</a>&amp;)
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:~TSimpleNeuralNetPlotter">~TSimpleNeuralNetPlotter</a><!--PLAIN-->()
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:AddTestGraph">AddTestGraph</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> tst)
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:AddTestSample">AddTestSample</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> tst, <a href="ListOfTypes.html#Bool_t">Bool_t</a> good = kTRUE)
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:AddTrainGraph">AddTrainGraph</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> trn)
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:AddTrainSample">AddTrainSample</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> trn, <a href="ListOfTypes.html#Bool_t">Bool_t</a> good = kTRUE)
+<!--TAB6-->               static TClass* <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:Initialize">Initialize</a><!--PLAIN-->()
+<!--TAB6-->              virtual TClass* <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:Reset">Reset</a><!--PLAIN-->()
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:ShowPlots">ShowPlots</a><!--PLAIN-->()
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                         <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TSimpleNeuralNetPlotter:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TSimpleNeuralNetPlotter:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->         <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fPlots">fPlots</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fPlots">!Show plots</a></i>
+<!--TAB6-->        TString <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fTrnPlot">fTrnPlot</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fTrnPlot">!</a></i>
+<!--TAB6-->        TString <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fTstPlot">fTstPlot</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fTstPlot">!</a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fIndex">fIndex</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fIndex">!the index number</a></i>
+<!--TAB6-->          TH1D* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fTrnHistTrue">fTrnHistTrue</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fTrnHistTrue">!Training histogram</a></i>
+<!--TAB6-->          TH1D* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fTrnHistFalse">fTrnHistFalse</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fTrnHistFalse">!Training histogram</a></i>
+<!--TAB6-->          TH1D* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fTstHistTrue">fTstHistTrue</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fTstHistTrue">!Test histogram</a></i>
+<!--TAB6-->          TH1D* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fTstHistFalse">fTstHistFalse</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fTstHistFalse">!Test histogram</a></i>
+<!--TAB6-->        TGraph* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fTrnCurve">fTrnCurve</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fTrnCurve">!Error plot</a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fNtrn">fNtrn</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fNtrn">!Number of points</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fXtrn">fXtrn</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fXtrn">!</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fYtrn">fYtrn</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fYtrn">!</a></i>
+<!--TAB6-->        TGraph* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fTstCurve">fTstCurve</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fTstCurve">!Test plot</a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fNtst">fNtst</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fNtst">!Number of points</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fXtst">fXtst</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fXtst">!</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fYtst">fYtst</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fYtst">!</a></i>
+<!--TAB6-->       TCanvas* <!--TAB--><!--BOLD--><a name="TSimpleNeuralNetPlotter:fCanvas">fCanvas</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fCanvas">!Drawing</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TSimpleNeuralNetPlotter:description">Class Description</a></h2>
+<pre>									
+ <a href="./VNeuralNetPlotter.html">VNeuralNetPlotter</a>							
+ <a href="./TSimpleNeuralNetPlotter.html">TSimpleNeuralNetPlotter</a>						
+									
+ Base classes for network plotters					
+ Part of the Neural Network Objects package (NNO)			
+									
+ Author List:								
+ M.Kunze, Bochum University						
+ (C) Copyright Marcel Kunze 2001, Ruhr-University Bochum.		
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TSimpleNeuralNetPlotter:TSimpleNeuralNetPlotter" href="src/TSimpleNeuralNetPlotter.cxx.html#TSimpleNeuralNetPlotter:TSimpleNeuralNetPlotter">TSimpleNeuralNetPlotter</a>(const <a href="ListOfTypes.html#char">char</a> *name) 
+  : <a href="./VNeuralNetPlotter.html">VNeuralNetPlotter</a>(name), 
+    <a href="./TSimpleNeuralNetPlotter.html#TSimpleNeuralNetPlotter:fCanvas">fCanvas</a>(0), <a href="./TSimpleNeuralNetPlotter.html#TSimpleNeuralNetPlotter:fTrnCurve">fTrnCurve</a>(0), <a href="./TSimpleNeuralNetPlotter.html#TSimpleNeuralNetPlotter:fNtrn">fNtrn</a>(0), <a href="./TSimpleNeuralNetPlotter.html#TSimpleNeuralNetPlotter:fTstCurve">fTstCurve</a>(0), <a href="./TSimpleNeuralNetPlotter.html#TSimpleNeuralNetPlotter:fNtst">fNtst</a>(0)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TSimpleNeuralNetPlotter:~TSimpleNeuralNetPlotter" href="src/TSimpleNeuralNetPlotter.cxx.html#TSimpleNeuralNetPlotter:~TSimpleNeuralNetPlotter">~TSimpleNeuralNetPlotter</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSimpleNeuralNetPlotter:Initialize" href="src/TSimpleNeuralNetPlotter.cxx.html#TSimpleNeuralNetPlotter:Initialize">Initialize</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSimpleNeuralNetPlotter:AddTrainSample" href="src/TSimpleNeuralNetPlotter.cxx.html#TSimpleNeuralNetPlotter:AddTrainSample">AddTrainSample</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> trn, <a href="ListOfTypes.html#Bool_t">Bool_t</a> good)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSimpleNeuralNetPlotter:AddTestSample" href="src/TSimpleNeuralNetPlotter.cxx.html#TSimpleNeuralNetPlotter:AddTestSample">AddTestSample</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> tst, <a href="ListOfTypes.html#Bool_t">Bool_t</a> good)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSimpleNeuralNetPlotter:AddTrainGraph" href="src/TSimpleNeuralNetPlotter.cxx.html#TSimpleNeuralNetPlotter:AddTrainGraph">AddTrainGraph</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> trn) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSimpleNeuralNetPlotter:AddTestGraph" href="src/TSimpleNeuralNetPlotter.cxx.html#TSimpleNeuralNetPlotter:AddTestGraph">AddTestGraph</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> tst) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSimpleNeuralNetPlotter:ShowPlots" href="src/TSimpleNeuralNetPlotter.cxx.html#TSimpleNeuralNetPlotter:ShowPlots">ShowPlots</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TSimpleNeuralNetPlotter:Reset" href="src/TSimpleNeuralNetPlotter.cxx.html#TSimpleNeuralNetPlotter:Reset">Reset</a>() 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                        TClass* <a name="TSimpleNeuralNetPlotter:Class" href="VNeuralNetPlotter.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                        TClass* <a name="TSimpleNeuralNetPlotter:IsA" href="VNeuralNetPlotter.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                           <a href="ListOfTypes.html#void">void</a> <a name="TSimpleNeuralNetPlotter:ShowMembers" href="VNeuralNetPlotter.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                           <a href="ListOfTypes.html#void">void</a> <a name="TSimpleNeuralNetPlotter:Streamer" href="VNeuralNetPlotter.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                           <a href="ListOfTypes.html#void">void</a> <a name="TSimpleNeuralNetPlotter:StreamerNVirtual" href="VNeuralNetPlotter.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TSimpleNeuralNetPlotter.html">TSimpleNeuralNetPlotter</a> <a name="TSimpleNeuralNetPlotter:TSimpleNeuralNetPlotter" href="VNeuralNetPlotter.h">TSimpleNeuralNetPlotter</a>(const <a href="./TSimpleNeuralNetPlotter.html">TSimpleNeuralNetPlotter</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:27 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

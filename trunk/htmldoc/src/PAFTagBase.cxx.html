@@ -1,0 +1,1331 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:18 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFTagBase - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././PAFTagBase.html">PAFTagBase</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Definition of the TAG database					//</b>
+<b>//                                                                      //</b>
+<b>// Author: Sascha Berger and Marcel Kunze, RUB, March 1999		//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "RhoBase/VAbsBit.h"
+#include "PAFSchema/PAFTagBase.h"
+
+#include "TBranchObject.h"
+#include "TBranch.h"
+#include "TTree.h"
+#include "THashList.h"
+
+ClassImp(PAFTagBase)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+PAFTagBase::PAFTagBase() :
+_cmf1(0),
+_cmf2(0),
+_cmf3(0),
+_cmf4(0),
+//####################Analysis bits####################################################
+_analysisbits(0),
+_analysisbits1(0),
+// ################ Beam Information################################################
+_cmsEnergy(0),
+_xBeamSpot(0),
+_yBeamSpot(0),
+_zBeamSpot(0),
+_xBeamErr(0),
+_yBeamErr(0),
+_zBeamErr(0),
+// ################ Tracking Information################################################
+_pTotalCosTh(0),
+_pTotalMag(0),
+_pTotalPhi(0),
+_eTotal(0),
+_pTotalMass(0),
+_p1CosTheta(0),
+_p1Phi(0),
+_p1Mag(0),
+_p2CosTheta(0),
+_p2Phi(0),
+_p2Mag(0),
+_nTracks(0),
+_nGoodTrkLoose(0),
+_nGoodTrkTight(0),
+_p1EmcCandEnergy(0),
+_p2EmcCandEnergy(0),
+_p1PidHypo(0),
+_p2PidHypo(0),
+_totChargeLoose(0),
+_totChargeTight(0),
+//#####################Lepton information############################################
+_leptLoose1hypo(0),
+_leptLoose1Charge(0),
+_leptLoose1p(0),
+_leptLoose2hypo(0),
+_leptLoose2Charge(0),
+_leptLoose2p(0),
+_leptTight1hypo(0),
+_leptTight1p(0),
+_leptTight2hypo(0),
+_leptTight2Charge(0),
+_leptTight2p(0),
+<b>//#####################Calorimeter information############################################</b>
+<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralCosTh">_eNeutralCosTh</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralPhi">_eNeutralPhi</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralMag">_eNeutralMag</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_e1CosTheta">_e1CosTheta</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_e1Phi">_e1Phi</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_e1Mag">_e1Mag</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_e2CosTheta">_e2CosTheta</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_e2Phi">_e2Phi</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_e2Mag">_e2Mag</a>(0),
+<b>//#####################Vertex and event shape#############################################</b>
+<a href=".././PAFTagBase.html#PAFTagBase:_xPrimaryVtx">_xPrimaryVtx</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_yPrimaryVtx">_yPrimaryVtx</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_zPrimaryVtx">_zPrimaryVtx</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_probPrimaryVtx">_probPrimaryVtx</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosTh">_thrustCosTh</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhi">_thrustPhi</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustMag">_thrustMag</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_R2">_R2</a>(0),
+<b>//####################Particle numbers####################################################</b>
+<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsLoose">_nLeptonsLoose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsTight">_nLeptonsTight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_neLoose">_neLoose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_neTight">_neTight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_nmuLoose">_nmuLoose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_nmuTight">_nmuTight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_npiLoose">_npiLoose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_npiTight">_npiTight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_nKLoose">_nKLoose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_nKTight">_nKTight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_npLoose">_npLoose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_npTight">_npTight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_ngammaLoose">_ngammaLoose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_ngammaTight">_ngammaTight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedLoose">_npi0MergedLoose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedTight">_npi0MergedTight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_npi0Loose">_npi0Loose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_npi0Tight">_npi0Tight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_nKsLoose">_nKsLoose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_nKsTight">_nKsTight</a>(0),
+<b>//######################### Trigger and Skim information ###################################</b>
+<a href=".././PAFTagBase.html#PAFTagBase:_bbqqDiscr">_bbqqDiscr</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_BGFR2">_BGFR2</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaDircTrk">_BunchT0DeltaDircTrk</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaFF">_BunchT0DeltaFF</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FinderErr">_BunchT0FinderErr</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FitterErr">_BunchT0FitterErr</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_eCharShow">_eCharShow</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1cm">_elecLoose1cm</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1l">_elecLoose1l</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2cm">_elecLoose2cm</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2l">_elecLoose2l</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1cm">_elecTight1cm</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1l">_elecTight1l</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2cm">_elecTight2cm</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2l">_elecTight2l</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_eNeutShow">_eNeutShow</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatOprValue">_L3OutBhabhaFlatOprValue</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatValue">_L3OutBhabhaFlatValue</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1cm">_muonLoose1cm</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1l">_muonLoose1l</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2cm">_muonLoose2cm</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2l">_muonLoose2l</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1cm">_muonTight1cm</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1l">_muonTight1l</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2cm">_muonTight2cm</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2l">_muonTight2l</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_pTotalScalar">_pTotalScalar</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_R2All">_R2All</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_sphericityAll">_sphericityAll</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_TagLooseProton_maxCmsP">_TagLooseProton_maxCmsP</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_TagTightProton_maxCmsP">_TagTightProton_maxCmsP</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosThAll">_thrustCosThAll</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustMagAll">_thrustMagAll</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhiAll">_thrustPhiAll</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_D3PS">_D3PS</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_Dmeson0">_Dmeson0</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_Dsmeson0">_Dsmeson0</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_Dstar0">_Dstar0</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_Dstar1">_Dstar1</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_LumiBhabhaWeight">_LumiBhabhaWeight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCands">_nNeutralCands</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndLoose">_nNeutralCndLoose</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndTight">_nNeutralCndTight</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPeppTwoBody_maxCmsPmaxCosT">_TagEtaPeppTwoBody_maxCmsPmaxCosT</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPrhogTwoBody_maxCmsPmaxCosT">_TagEtaPrhogTwoBody_maxCmsPmaxCosT</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaTwoBody_maxCmsPmaxCosT">_TagEtaTwoBody_maxCmsPmaxCosT</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagKstpTwoBody_maxCmsPmaxCosT">_TagKstpTwoBody_maxCmsPmaxCosT</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_TagKstTwoBody_maxCmsPmaxCosT">_TagKstTwoBody_maxCmsPmaxCosT</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagKTwoBody_maxCmsPmaxCosT">_TagKTwoBody_maxCmsPmaxCosT</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagK_S0TwoBody_maxCmsPmaxCosT">_TagK_S0TwoBody_maxCmsPmaxCosT</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagOmegaTwoBody_maxCmsPmaxCosT">_TagOmegaTwoBody_maxCmsPmaxCosT</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_TagPhiTwoBody_maxCmsPmaxCosT">_TagPhiTwoBody_maxCmsPmaxCosT</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagPi0TwoBody_maxCmsPmaxCosT">_TagPi0TwoBody_maxCmsPmaxCosT</a>(0),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagRhopTwoBody_maxCmsPmaxCosT">_TagRhopTwoBody_maxCmsPmaxCosT</a>(0), 
+<a href=".././PAFTagBase.html#PAFTagBase:_TagRhoTwoBody_maxCmsPmaxCosT">_TagRhoTwoBody_maxCmsPmaxCosT</a>(0)
+{
+  <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[0] = new TBranch();  <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[0]-&gt;ResetBit(kDoNotProcess);
+  for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=1; i&lt;NELEM_TAGBASE; i++) {
+    <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[i]=<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[0];
+  }
+
+  <a href=".././PAFTagBase.html#PAFTagBase:fBranchTable">fBranchTable</a>  = new THashList();
+}
+
+<a href=".././PAFTagBase.html#PAFTagBase:PAFTagBase">PAFTagBase::PAFTagBase</a>( const <a href=".././PAFTagBase.html">PAFTagBase</a>&amp; t) :
+//####################Analysis bits####################################################
+<a href=".././PAFTagBase.html#PAFTagBase:_analysisbits">_analysisbits</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_analysisbits">_analysisbits</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_analysisbits1">_analysisbits1</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_analysisbits1">_analysisbits1</a>),
+// ################ Beam Information################################################
+<a href=".././PAFTagBase.html#PAFTagBase:_cmf1">_cmf1</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_cmf1">_cmf1</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_cmf2">_cmf2</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_cmf2">_cmf2</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_cmf3">_cmf3</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_cmf3">_cmf3</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_cmf4">_cmf4</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_cmf4">_cmf4</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_cmsEnergy">_cmsEnergy</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_cmsEnergy">_cmsEnergy</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_xBeamSpot">_xBeamSpot</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_xBeamSpot">_xBeamSpot</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_yBeamSpot">_yBeamSpot</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_yBeamSpot">_yBeamSpot</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_zBeamSpot">_zBeamSpot</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_zBeamSpot">_zBeamSpot</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_xBeamErr">_xBeamErr</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_xBeamErr">_xBeamErr</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_yBeamErr">_yBeamErr</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_yBeamErr">_yBeamErr</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_zBeamErr">_zBeamErr</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_zBeamErr">_zBeamErr</a>),
+// ################ Tracking Information################################################
+<a href=".././PAFTagBase.html#PAFTagBase:_pTotalCosTh">_pTotalCosTh</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalCosTh">_pTotalCosTh</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_pTotalMag">_pTotalMag</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalMag">_pTotalMag</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_pTotalPhi">_pTotalPhi</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalPhi">_pTotalPhi</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_eTotal">_eTotal</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_eTotal">_eTotal</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_pTotalMass">_pTotalMass</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalMass">_pTotalMass</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_p1CosTheta">_p1CosTheta</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_p1CosTheta">_p1CosTheta</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_p1Phi">_p1Phi</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_p1Phi">_p1Phi</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_p1Mag">_p1Mag</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_p1Mag">_p1Mag</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_p2CosTheta">_p2CosTheta</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_p2CosTheta">_p2CosTheta</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_p2Phi">_p2Phi</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_p2Phi">_p2Phi</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_p2Mag">_p2Mag</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_p2Mag">_p2Mag</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nTracks">_nTracks</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nTracks">_nTracks</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkLoose">_nGoodTrkLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkLoose">_nGoodTrkLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkTight">_nGoodTrkTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkTight">_nGoodTrkTight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_p1EmcCandEnergy">_p1EmcCandEnergy</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_p1EmcCandEnergy">_p1EmcCandEnergy</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_p1PidHypo">_p1PidHypo</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_p1PidHypo">_p1PidHypo</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_p2PidHypo">_p2PidHypo</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_p2PidHypo">_p2PidHypo</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_totChargeLoose">_totChargeLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_totChargeLoose">_totChargeLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_totChargeTight">_totChargeTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_totChargeTight">_totChargeTight</a>),
+<b>//#####################Lepton information############################################</b>
+<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1hypo">_leptLoose1hypo</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1hypo">_leptLoose1hypo</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1Charge">_leptLoose1Charge</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1Charge">_leptLoose1Charge</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1p">_leptLoose1p</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1p">_leptLoose1p</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2hypo">_leptLoose2hypo</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2hypo">_leptLoose2hypo</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2Charge">_leptLoose2Charge</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2Charge">_leptLoose2Charge</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2p">_leptLoose2p</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2p">_leptLoose2p</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1hypo">_leptTight1hypo</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1hypo">_leptTight1hypo</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1Charge">_leptTight1Charge</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1Charge">_leptTight1Charge</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1p">_leptTight1p</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1p">_leptTight1p</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2hypo">_leptTight2hypo</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2hypo">_leptTight2hypo</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2Charge">_leptTight2Charge</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2Charge">_leptTight2Charge</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2p">_leptTight2p</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2p">_leptTight2p</a>),
+<b>//#####################Calorimeter information############################################</b>
+<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralCosTh">_eNeutralCosTh</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralCosTh">_eNeutralCosTh</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralPhi">_eNeutralPhi</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralPhi">_eNeutralPhi</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralMag">_eNeutralMag</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralMag">_eNeutralMag</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_e1CosTheta">_e1CosTheta</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_e1CosTheta">_e1CosTheta</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_e1Phi">_e1Phi</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_e1Phi">_e1Phi</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_e1Mag">_e1Mag</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_e1Mag">_e1Mag</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_e2CosTheta">_e2CosTheta</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_e2CosTheta">_e2CosTheta</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_e2Phi">_e2Phi</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_e2Phi">_e2Phi</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_e2Mag">_e2Mag</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_e2Mag">_e2Mag</a>),
+<b>//#####################Vertex and event shape#############################################</b>
+<a href=".././PAFTagBase.html#PAFTagBase:_xPrimaryVtx">_xPrimaryVtx</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_xPrimaryVtx">_xPrimaryVtx</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_yPrimaryVtx">_yPrimaryVtx</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_yPrimaryVtx">_yPrimaryVtx</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_zPrimaryVtx">_zPrimaryVtx</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_zPrimaryVtx">_zPrimaryVtx</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_probPrimaryVtx">_probPrimaryVtx</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_probPrimaryVtx">_probPrimaryVtx</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosTh">_thrustCosTh</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosTh">_thrustCosTh</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhi">_thrustPhi</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhi">_thrustPhi</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustMag">_thrustMag</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustMag">_thrustMag</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_R2">_R2</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_R2">_R2</a>),
+<b>//####################Particle numbers####################################################</b>
+<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsLoose">_nLeptonsLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsLoose">_nLeptonsLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsTight">_nLeptonsTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsTight">_nLeptonsTight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_neLoose">_neLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_neLoose">_neLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_neTight">_neTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_neTight">_neTight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nmuLoose">_nmuLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nmuLoose">_nmuLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nmuTight">_nmuTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nmuTight">_nmuTight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_npiLoose">_npiLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_npiLoose">_npiLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_npiTight">_npiTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_npiTight">_npiTight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nKLoose">_nKLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nKLoose">_nKLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nKTight">_nKTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nKTight">_nKTight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_npLoose">_npLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_npLoose">_npLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_npTight">_npTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_npTight">_npTight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_ngammaLoose">_ngammaLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_ngammaLoose">_ngammaLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_ngammaTight">_ngammaTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_ngammaTight">_ngammaTight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedLoose">_npi0MergedLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedLoose">_npi0MergedLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedTight">_npi0MergedTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedTight">_npi0MergedTight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_npi0Loose">_npi0Loose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_npi0Loose">_npi0Loose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_npi0Tight">_npi0Tight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_npi0Tight">_npi0Tight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nKsLoose">_nKsLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nKsLoose">_nKsLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nKsTight">_nKsTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nKsTight">_nKsTight</a>),
+<b>//######################### Trigger and Skim information ###################################</b>
+<a href=".././PAFTagBase.html#PAFTagBase:_bbqqDiscr">_bbqqDiscr</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_bbqqDiscr">_bbqqDiscr</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_BGFR2">_BGFR2</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_BGFR2">_BGFR2</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaDircTrk">_BunchT0DeltaDircTrk</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaDircTrk">_BunchT0DeltaDircTrk</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaFF">_BunchT0DeltaFF</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaFF">_BunchT0DeltaFF</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FinderErr">_BunchT0FinderErr</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FinderErr">_BunchT0FinderErr</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FitterErr">_BunchT0FitterErr</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FitterErr">_BunchT0FitterErr</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_eCharShow">_eCharShow</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_eCharShow">_eCharShow</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1cm">_elecLoose1cm</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1cm">_elecLoose1cm</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1l">_elecLoose1l</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1l">_elecLoose1l</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2cm">_elecLoose2cm</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2cm">_elecLoose2cm</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2l">_elecLoose2l</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2l">_elecLoose2l</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1cm">_elecTight1cm</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1cm">_elecTight1cm</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1l">_elecTight1l</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1l">_elecTight1l</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2cm">_elecTight2cm</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2cm">_elecTight2cm</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2l">_elecTight2l</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2l">_elecTight2l</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_eNeutShow">_eNeutShow</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutShow">_eNeutShow</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatOprValue">_L3OutBhabhaFlatOprValue</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatOprValue">_L3OutBhabhaFlatOprValue</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatValue">_L3OutBhabhaFlatValue</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatValue">_L3OutBhabhaFlatValue</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1cm">_muonLoose1cm</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1cm">_muonLoose1cm</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1l">_muonLoose1l</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1l">_muonLoose1l</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2cm">_muonLoose2cm</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2cm">_muonLoose2cm</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2l">_muonLoose2l</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2l">_muonLoose2l</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1cm">_muonTight1cm</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1cm">_muonTight1cm</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1l">_muonTight1l</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1l">_muonTight1l</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2cm">_muonTight2cm</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2cm">_muonTight2cm</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2l">_muonTight2l</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2l">_muonTight2l</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_pTotalScalar">_pTotalScalar</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalScalar">_pTotalScalar</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_R2All">_R2All</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_R2All">_R2All</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_sphericityAll">_sphericityAll</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_sphericityAll">_sphericityAll</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_TagLooseProton_maxCmsP">_TagLooseProton_maxCmsP</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagLooseProton_maxCmsP">_TagLooseProton_maxCmsP</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_TagTightProton_maxCmsP">_TagTightProton_maxCmsP</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagTightProton_maxCmsP">_TagTightProton_maxCmsP</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosThAll">_thrustCosThAll</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosThAll">_thrustCosThAll</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustMagAll">_thrustMagAll</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustMagAll">_thrustMagAll</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhiAll">_thrustPhiAll</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhiAll">_thrustPhiAll</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_D3PS">_D3PS</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_D3PS">_D3PS</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_Dmeson0">_Dmeson0</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_Dmeson0">_Dmeson0</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_Dsmeson0">_Dsmeson0</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_Dsmeson0">_Dsmeson0</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_Dstar0">_Dstar0</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_Dstar0">_Dstar0</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_Dstar1">_Dstar1</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_Dstar1">_Dstar1</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_LumiBhabhaWeight">_LumiBhabhaWeight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_LumiBhabhaWeight">_LumiBhabhaWeight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCands">_nNeutralCands</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCands">_nNeutralCands</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndLoose">_nNeutralCndLoose</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndLoose">_nNeutralCndLoose</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndTight">_nNeutralCndTight</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndTight">_nNeutralCndTight</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPeppTwoBody_maxCmsPmaxCosT">_TagEtaPeppTwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPeppTwoBody_maxCmsPmaxCosT">_TagEtaPeppTwoBody_maxCmsPmaxCosT</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPrhogTwoBody_maxCmsPmaxCosT">_TagEtaPrhogTwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPrhogTwoBody_maxCmsPmaxCosT">_TagEtaPrhogTwoBody_maxCmsPmaxCosT</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaTwoBody_maxCmsPmaxCosT">_TagEtaTwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaTwoBody_maxCmsPmaxCosT">_TagEtaTwoBody_maxCmsPmaxCosT</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagKstpTwoBody_maxCmsPmaxCosT">_TagKstpTwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagKstpTwoBody_maxCmsPmaxCosT">_TagKstpTwoBody_maxCmsPmaxCosT</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_TagKstTwoBody_maxCmsPmaxCosT">_TagKstTwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagKstTwoBody_maxCmsPmaxCosT">_TagKstTwoBody_maxCmsPmaxCosT</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagKTwoBody_maxCmsPmaxCosT">_TagKTwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagKTwoBody_maxCmsPmaxCosT">_TagKTwoBody_maxCmsPmaxCosT</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagK_S0TwoBody_maxCmsPmaxCosT">_TagK_S0TwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagK_S0TwoBody_maxCmsPmaxCosT">_TagK_S0TwoBody_maxCmsPmaxCosT</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagOmegaTwoBody_maxCmsPmaxCosT">_TagOmegaTwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagOmegaTwoBody_maxCmsPmaxCosT">_TagOmegaTwoBody_maxCmsPmaxCosT</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_TagPhiTwoBody_maxCmsPmaxCosT">_TagPhiTwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagPhiTwoBody_maxCmsPmaxCosT">_TagPhiTwoBody_maxCmsPmaxCosT</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagPi0TwoBody_maxCmsPmaxCosT">_TagPi0TwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagPi0TwoBody_maxCmsPmaxCosT">_TagPi0TwoBody_maxCmsPmaxCosT</a>),
+<a href=".././PAFTagBase.html#PAFTagBase:_TagRhopTwoBody_maxCmsPmaxCosT">_TagRhopTwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagRhopTwoBody_maxCmsPmaxCosT">_TagRhopTwoBody_maxCmsPmaxCosT</a>), 
+<a href=".././PAFTagBase.html#PAFTagBase:_TagRhoTwoBody_maxCmsPmaxCosT">_TagRhoTwoBody_maxCmsPmaxCosT</a>(t.<a href=".././PAFTagBase.html#PAFTagBase:_TagRhoTwoBody_maxCmsPmaxCosT">_TagRhoTwoBody_maxCmsPmaxCosT</a>)
+{}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+<a name="PAFTagBase:~PAFTagBase"> </a><a href=".././PAFTagBase.html">PAFTagBase</a>::~<a href=".././PAFTagBase.html">PAFTagBase</a>() 
+{ 
+    delete <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[0];
+    delete <a href=".././PAFTagBase.html#PAFTagBase:fBranchTable">fBranchTable</a>;
+}
+
+<b>//----------------------</b>
+<b>//-- public Functions --</b>
+<b>//----------------------</b>
+<b>//fill &amp; get operations</b>
+
+<a name="PAFTagBase:SetCMFrame"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetCMFrame">PAFTagBase::SetCMFrame</a>( TLorentzVector e ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_cmf1">_cmf1</a> = e.X();
+    <a href=".././PAFTagBase.html#PAFTagBase:_cmf2">_cmf2</a> = e.Y();
+    <a href=".././PAFTagBase.html#PAFTagBase:_cmf3">_cmf3</a> = e.Z();
+    <a href=".././PAFTagBase.html#PAFTagBase:_cmf4">_cmf4</a> = e.T();
+}
+
+<a name="PAFTagBase:SetCMSEnergy"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetCMSEnergy">PAFTagBase::SetCMSEnergy</a>( <a href="../ListOfTypes.html#Float_t">Float_t</a> e ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_cmsEnergy">_cmsEnergy</a> = e;
+}
+
+<a name="PAFTagBase:SetBeamSpot"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetBeamSpot">PAFTagBase::SetBeamSpot</a>( TVector3 v ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_xBeamSpot">_xBeamSpot</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.X();
+    <a href=".././PAFTagBase.html#PAFTagBase:_yBeamSpot">_yBeamSpot</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Y();
+    <a href=".././PAFTagBase.html#PAFTagBase:_zBeamSpot">_zBeamSpot</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Z();
+}
+
+<a name="PAFTagBase:SetBeamError"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetBeamError">PAFTagBase::SetBeamError</a>( TVector3 v ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_xBeamErr">_xBeamErr</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.X();
+    <a href=".././PAFTagBase.html#PAFTagBase:_yBeamErr">_yBeamErr</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Y();
+    <a href=".././PAFTagBase.html#PAFTagBase:_zBeamErr">_zBeamErr</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Z();
+}
+
+<a name="PAFTagBase:SetTotalMomentum"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetTotalMomentum">PAFTagBase::SetTotalMomentum</a>( TVector3 v ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_pTotalCosTh">_pTotalCosTh</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.X();
+    <a href=".././PAFTagBase.html#PAFTagBase:_pTotalPhi">_pTotalPhi</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Y();
+    <a href=".././PAFTagBase.html#PAFTagBase:_pTotalMag">_pTotalMag</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Z();
+}
+
+<a name="PAFTagBase:SetTotalEnergy"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetTotalEnergy">PAFTagBase::SetTotalEnergy</a>( <a href="../ListOfTypes.html#Float_t">Float_t</a> e ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_eTotal">_eTotal</a> = e;
+}
+
+<a name="PAFTagBase:SetTotalMass"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetTotalMass">PAFTagBase::SetTotalMass</a>( <a href="../ListOfTypes.html#Float_t">Float_t</a> m ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_pTotalMass">_pTotalMass</a> = m;
+}
+
+<a name="PAFTagBase:SetPrimaryTrackMomentum"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryTrackMomentum">PAFTagBase::SetPrimaryTrackMomentum</a>( TVector3 v ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_p1CosTheta">_p1CosTheta</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.X();
+    <a href=".././PAFTagBase.html#PAFTagBase:_p1Phi">_p1Phi</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Y();
+    <a href=".././PAFTagBase.html#PAFTagBase:_p1Mag">_p1Mag</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Z();
+}
+
+<a name="PAFTagBase:SetSecondaryTrackMomentum"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSecondaryTrackMomentum">PAFTagBase::SetSecondaryTrackMomentum</a>( TVector3 v ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_p2CosTheta">_p2CosTheta</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.X();
+    <a href=".././PAFTagBase.html#PAFTagBase:_p2Phi">_p2Phi</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Y();
+    <a href=".././PAFTagBase.html#PAFTagBase:_p2Mag">_p2Mag</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Z();
+}
+
+<a name="PAFTagBase:SetPrimaryTrackShowerEnergy"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryTrackShowerEnergy">PAFTagBase::SetPrimaryTrackShowerEnergy</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_p1EmcCandEnergy">_p1EmcCandEnergy</a> = f; 
+}
+
+<a name="PAFTagBase:SetSecondaryTrackShowerEnergy"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSecondaryTrackShowerEnergy">PAFTagBase::SetSecondaryTrackShowerEnergy</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_p2EmcCandEnergy">_p2EmcCandEnergy</a> = f; 
+}
+
+<a name="PAFTagBase:SetNumberOfTracks"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetNumberOfTracks">PAFTagBase::SetNumberOfTracks</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { 
+    <a href=".././PAFTagBase.html#PAFTagBase:_nTracks">_nTracks</a> = b; 
+}
+
+<a name="PAFTagBase:SetNumberOfGoodTracksLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetNumberOfGoodTracksLoose">PAFTagBase::SetNumberOfGoodTracksLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { 
+    <a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkLoose">_nGoodTrkLoose</a> = b; 
+}
+
+<a name="PAFTagBase:SetNumberOfGoodTracksTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetNumberOfGoodTracksTight">PAFTagBase::SetNumberOfGoodTracksTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { 
+    <a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkTight">_nGoodTrkTight</a> = b; 
+}
+
+<a name="PAFTagBase:SetPrimaryTrackHypothesis"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryTrackHypothesis">PAFTagBase::SetPrimaryTrackHypothesis</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { 
+    <a href=".././PAFTagBase.html#PAFTagBase:_p1PidHypo">_p1PidHypo</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b; 
+}
+
+<a name="PAFTagBase:SetSecondaryTrackHypothesis"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSecondaryTrackHypothesis">PAFTagBase::SetSecondaryTrackHypothesis</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { 
+    <a href=".././PAFTagBase.html#PAFTagBase:_p2PidHypo">_p2PidHypo</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b; 
+}
+
+<a name="PAFTagBase:SetTotalChargeLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetTotalChargeLoose">PAFTagBase::SetTotalChargeLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { 
+    <a href=".././PAFTagBase.html#PAFTagBase:_totChargeLoose">_totChargeLoose</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b; 
+}
+
+<a name="PAFTagBase:SetTotalChargeTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetTotalChargeTight">PAFTagBase::SetTotalChargeTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { 
+    <a href=".././PAFTagBase.html#PAFTagBase:_totChargeTight">_totChargeTight</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b; 
+}
+
+<a name="PAFTagBase:GetCMFrame"> </a>TLorentzVector <a href=".././PAFTagBase.html#PAFTagBase:GetCMFrame">PAFTagBase::GetCMFrame</a>()  const {
+    if (<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[4],<a href=".././PAFTagBase.html#PAFTagBase:_cmf4">_cmf4</a>)&gt;10.)
+    return TLorentzVector(<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[1],<a href=".././PAFTagBase.html#PAFTagBase:_cmf1">_cmf1</a>),
+			  <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[2],<a href=".././PAFTagBase.html#PAFTagBase:_cmf2">_cmf2</a>),
+			  <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[3],<a href=".././PAFTagBase.html#PAFTagBase:_cmf3">_cmf3</a>),
+			  <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[4],<a href=".././PAFTagBase.html#PAFTagBase:_cmf4">_cmf4</a>) );
+    else
+    return TLorentzVector(-0.12,0.,5.87,12.1);
+}
+
+<a name="PAFTagBase:GetCMSEnergy"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetCMSEnergy">PAFTagBase::GetCMSEnergy</a>()  const {
+    return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[76],<a href=".././PAFTagBase.html#PAFTagBase:_cmsEnergy">_cmsEnergy</a>); 
+}
+
+<a name="PAFTagBase:GetBeamSpot"> </a>TVector3 <a href=".././PAFTagBase.html#PAFTagBase:GetBeamSpot">PAFTagBase::GetBeamSpot</a>() const {
+    return TVector3(<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[77],<a href=".././PAFTagBase.html#PAFTagBase:_xBeamSpot">_xBeamSpot</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[78],<a href=".././PAFTagBase.html#PAFTagBase:_yBeamSpot">_yBeamSpot</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[79],<a href=".././PAFTagBase.html#PAFTagBase:_zBeamSpot">_zBeamSpot</a>) );
+}
+
+<a name="PAFTagBase:GetBeamError"> </a>TVector3 <a href=".././PAFTagBase.html#PAFTagBase:GetBeamError">PAFTagBase::GetBeamError</a>() const {
+    return TVector3(<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[80],<a href=".././PAFTagBase.html#PAFTagBase:_xBeamErr">_xBeamErr</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[81],<a href=".././PAFTagBase.html#PAFTagBase:_yBeamErr">_yBeamErr</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[82],<a href=".././PAFTagBase.html#PAFTagBase:_zBeamErr">_zBeamErr</a>) );
+}
+
+<a name="PAFTagBase:GetTotalMomentum"> </a>TVector3 <a href=".././PAFTagBase.html#PAFTagBase:GetTotalMomentum">PAFTagBase::GetTotalMomentum</a>() const {
+    return TVector3(<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[5],<a href=".././PAFTagBase.html#PAFTagBase:_pTotalCosTh">_pTotalCosTh</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[6],<a href=".././PAFTagBase.html#PAFTagBase:_pTotalPhi">_pTotalPhi</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[7],<a href=".././PAFTagBase.html#PAFTagBase:_pTotalMag">_pTotalMag</a>) );
+}
+
+<a name="PAFTagBase:GetTotalEnergy"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetTotalEnergy">PAFTagBase::GetTotalEnergy</a>()  const {
+    return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[8],<a href=".././PAFTagBase.html#PAFTagBase:_eTotal">_eTotal</a>); 
+}
+
+<a name="PAFTagBase:GetTotalMass"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetTotalMass">PAFTagBase::GetTotalMass</a>()  const {
+    return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[9],<a href=".././PAFTagBase.html#PAFTagBase:_pTotalMass">_pTotalMass</a>); 
+}
+
+<a name="PAFTagBase:GetPrimaryTrackMomentum"> </a>TVector3 <a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryTrackMomentum">PAFTagBase::GetPrimaryTrackMomentum</a>() const {
+    return TVector3(<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[10],<a href=".././PAFTagBase.html#PAFTagBase:_p1CosTheta">_p1CosTheta</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[11],<a href=".././PAFTagBase.html#PAFTagBase:_p1Phi">_p1Phi</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[12],<a href=".././PAFTagBase.html#PAFTagBase:_p1Mag">_p1Mag</a>));
+}
+
+<a name="PAFTagBase:GetSecondaryTrackMomentum"> </a>TVector3 <a href=".././PAFTagBase.html#PAFTagBase:GetSecondaryTrackMomentum">PAFTagBase::GetSecondaryTrackMomentum</a>() const {
+  return TVector3(<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[13],<a href=".././PAFTagBase.html#PAFTagBase:_p2CosTheta">_p2CosTheta</a>),
+		  <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[14],<a href=".././PAFTagBase.html#PAFTagBase:_p2Phi">_p2Phi</a>),
+		  <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[15],<a href=".././PAFTagBase.html#PAFTagBase:_p2Mag">_p2Mag</a>));
+}
+
+<a name="PAFTagBase:GetPrimaryTrackShowerEnergy"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryTrackShowerEnergy">PAFTagBase::GetPrimaryTrackShowerEnergy</a>()  const {
+    return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[16],<a href=".././PAFTagBase.html#PAFTagBase:_p1EmcCandEnergy">_p1EmcCandEnergy</a>); 
+}
+
+<a name="PAFTagBase:GetSecondaryTrackShowerEnergy"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetSecondaryTrackShowerEnergy">PAFTagBase::GetSecondaryTrackShowerEnergy</a>()  const {
+    return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[17],<a href=".././PAFTagBase.html#PAFTagBase:_p2EmcCandEnergy">_p2EmcCandEnergy</a>); 
+}
+
+<a name="PAFTagBase:GetNumberOfTracks"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetNumberOfTracks">PAFTagBase::GetNumberOfTracks</a>()  const {
+  return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[18],<a href=".././PAFTagBase.html#PAFTagBase:_nTracks">_nTracks</a>); 
+<b>  //return <a href=".././PAFTagBase.html#PAFTagBase:_nTracks">_nTracks</a>;</b>
+}
+
+<a name="PAFTagBase:GetNumberOfGoodTracksLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetNumberOfGoodTracksLoose">PAFTagBase::GetNumberOfGoodTracksLoose</a>()  const {
+    return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[19],<a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkLoose">_nGoodTrkLoose</a>); 
+}
+
+<a name="PAFTagBase:GetNumberOfGoodTracksTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetNumberOfGoodTracksTight">PAFTagBase::GetNumberOfGoodTracksTight</a>()  const {
+    return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[20],<a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkTight">_nGoodTrkTight</a>); 
+}
+
+<a name="PAFTagBase:GetPrimaryTrackHypothesis"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryTrackHypothesis">PAFTagBase::GetPrimaryTrackHypothesis</a>()  const {
+    return <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[21],<a href=".././PAFTagBase.html#PAFTagBase:_p1PidHypo">_p1PidHypo</a>); 
+}
+
+<a name="PAFTagBase:GetSecondaryTrackHypothesis"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetSecondaryTrackHypothesis">PAFTagBase::GetSecondaryTrackHypothesis</a>()  const {
+    return <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[22],<a href=".././PAFTagBase.html#PAFTagBase:_p2PidHypo">_p2PidHypo</a>); 
+}
+
+<a name="PAFTagBase:GetTotalChargeLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetTotalChargeLoose">PAFTagBase::GetTotalChargeLoose</a>()  const { 
+    return  <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[23],<a href=".././PAFTagBase.html#PAFTagBase:_totChargeLoose">_totChargeLoose</a>); 
+}
+
+<a name="PAFTagBase:GetTotalChargeTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetTotalChargeTight">PAFTagBase::GetTotalChargeTight</a>()  const { 
+    return  <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[24],<a href=".././PAFTagBase.html#PAFTagBase:_totChargeTight">_totChargeTight</a>); 
+}
+
+<b>//##################### Lepton information #############################</b>
+
+<a name="PAFTagBase:SetPrimaryLeptonHypothesisLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryLeptonHypothesisLoose">PAFTagBase::SetPrimaryLeptonHypothesisLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1hypo">_leptLoose1hypo</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b;
+}
+
+<a name="PAFTagBase:SetPrimaryLeptonChargeLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryLeptonChargeLoose">PAFTagBase::SetPrimaryLeptonChargeLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1Charge">_leptLoose1Charge</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b;
+}
+
+<a name="PAFTagBase:SetPrimaryLeptonMomentumLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryLeptonMomentumLoose">PAFTagBase::SetPrimaryLeptonMomentumLoose</a>( <a href="../ListOfTypes.html#Float_t">Float_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1p">_leptLoose1p</a> = b;
+}
+
+<a name="PAFTagBase:SetSecondaryLeptonHypothesisLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSecondaryLeptonHypothesisLoose">PAFTagBase::SetSecondaryLeptonHypothesisLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2hypo">_leptLoose2hypo</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b;
+}
+
+<a name="PAFTagBase:SetSecondaryLeptonChargeLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSecondaryLeptonChargeLoose">PAFTagBase::SetSecondaryLeptonChargeLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2Charge">_leptLoose2Charge</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b;
+}
+
+<a name="PAFTagBase:SetSecondaryLeptonMomentumLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSecondaryLeptonMomentumLoose">PAFTagBase::SetSecondaryLeptonMomentumLoose</a>( <a href="../ListOfTypes.html#Float_t">Float_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2p">_leptLoose2p</a> = b;
+}
+
+<a name="PAFTagBase:SetPrimaryLeptonHypothesisTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryLeptonHypothesisTight">PAFTagBase::SetPrimaryLeptonHypothesisTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight1hypo">_leptTight1hypo</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b;
+}
+
+<a name="PAFTagBase:SetPrimaryLeptonChargeTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryLeptonChargeTight">PAFTagBase::SetPrimaryLeptonChargeTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight1Charge">_leptTight1Charge</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b;
+}
+
+<a name="PAFTagBase:SetPrimaryLeptonMomentumTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryLeptonMomentumTight">PAFTagBase::SetPrimaryLeptonMomentumTight</a>( <a href="../ListOfTypes.html#Float_t">Float_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight1p">_leptTight1p</a> = b;
+}
+
+<a name="PAFTagBase:SetSecondaryLeptonHypothesisTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSecondaryLeptonHypothesisTight">PAFTagBase::SetSecondaryLeptonHypothesisTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight2hypo">_leptTight2hypo</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b;
+}
+
+<a name="PAFTagBase:SetSecondaryLeptonChargeTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSecondaryLeptonChargeTight">PAFTagBase::SetSecondaryLeptonChargeTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight2Charge">_leptTight2Charge</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) b;
+}
+
+<a name="PAFTagBase:SetSecondaryLeptonMomentumTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSecondaryLeptonMomentumTight">PAFTagBase::SetSecondaryLeptonMomentumTight</a>( <a href="../ListOfTypes.html#Float_t">Float_t</a> b ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight2p">_leptTight2p</a> = b;
+}
+
+<a name="PAFTagBase:GetPrimaryLeptonHypothesisLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryLeptonHypothesisLoose">PAFTagBase::GetPrimaryLeptonHypothesisLoose</a>()  const {
+    return  <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[25],<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1hypo">_leptLoose1hypo</a>);
+}
+
+<a name="PAFTagBase:GetPrimaryLeptonChargeLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryLeptonChargeLoose">PAFTagBase::GetPrimaryLeptonChargeLoose</a>()  const {
+    return  <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[27],<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1Charge">_leptLoose1Charge</a>);
+}
+
+<a name="PAFTagBase:GetPrimaryLeptonMomentumLoose"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryLeptonMomentumLoose">PAFTagBase::GetPrimaryLeptonMomentumLoose</a>()  const {
+    return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[33],<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1p">_leptLoose1p</a>);
+}
+
+<a name="PAFTagBase:GetSecondaryLeptonHypothesisLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetSecondaryLeptonHypothesisLoose">PAFTagBase::GetSecondaryLeptonHypothesisLoose</a>()  const {
+    return <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[26],<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2hypo">_leptLoose2hypo</a>);
+}
+
+<a name="PAFTagBase:GetSecondaryLeptonChargeLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetSecondaryLeptonChargeLoose">PAFTagBase::GetSecondaryLeptonChargeLoose</a>()  const {
+    return <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[28],<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2Charge">_leptLoose2Charge</a>);
+}
+
+<a name="PAFTagBase:GetSecondaryLeptonMomentumLoose"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetSecondaryLeptonMomentumLoose">PAFTagBase::GetSecondaryLeptonMomentumLoose</a>()  const {
+    return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[34],<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2p">_leptLoose2p</a>);
+}
+
+<a name="PAFTagBase:GetPrimaryLeptonHypothesisTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryLeptonHypothesisTight">PAFTagBase::GetPrimaryLeptonHypothesisTight</a>()  const {
+    return  <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[29],<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1hypo">_leptTight1hypo</a>);
+}
+
+<a name="PAFTagBase:GetPrimaryLeptonChargeTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryLeptonChargeTight">PAFTagBase::GetPrimaryLeptonChargeTight</a>()  const {
+    return  <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[31],<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1Charge">_leptTight1Charge</a>);
+}
+
+<a name="PAFTagBase:GetPrimaryLeptonMomentumTight"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryLeptonMomentumTight">PAFTagBase::GetPrimaryLeptonMomentumTight</a>()  const {
+    return  <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[35],<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1p">_leptTight1p</a>);
+}
+
+<a name="PAFTagBase:GetSecondaryLeptonHypothesisTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetSecondaryLeptonHypothesisTight">PAFTagBase::GetSecondaryLeptonHypothesisTight</a>()  const {
+    return  <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[30],<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2hypo">_leptTight2hypo</a>);
+}
+
+<a name="PAFTagBase:GetSecondaryLeptonChargeTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetSecondaryLeptonChargeTight">PAFTagBase::GetSecondaryLeptonChargeTight</a>()  const {
+    return  <a href="#PAFTagBase:GetChar">GetChar</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[32],<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2Charge">_leptTight2Charge</a>);
+}
+
+<a name="PAFTagBase:GetSecondaryLeptonMomentumTight"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetSecondaryLeptonMomentumTight">PAFTagBase::GetSecondaryLeptonMomentumTight</a>()  const {
+    return  <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[36],<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2p">_leptTight2p</a>);
+}
+
+<b>//##################### Calorimeter information #############################</b>
+
+<a name="PAFTagBase:SetTotalNeutralEnergy"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetTotalNeutralEnergy">PAFTagBase::SetTotalNeutralEnergy</a>( TVector3 v ) { 
+    <a href=".././PAFTagBase.html#PAFTagBase:_eNeutralCosTh">_eNeutralCosTh</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.X(); 
+    <a href=".././PAFTagBase.html#PAFTagBase:_eNeutralPhi">_eNeutralPhi</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Y();
+    <a href=".././PAFTagBase.html#PAFTagBase:_eNeutralMag">_eNeutralMag</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Z();
+}
+
+<a name="PAFTagBase:SetHighestEnergyShower"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetHighestEnergyShower">PAFTagBase::SetHighestEnergyShower</a>( TVector3 v ) { 
+    <a href=".././PAFTagBase.html#PAFTagBase:_e1CosTheta">_e1CosTheta</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.X(); 
+    <a href=".././PAFTagBase.html#PAFTagBase:_e1Phi">_e1Phi</a>        = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Y(); 
+    <a href=".././PAFTagBase.html#PAFTagBase:_e1Mag">_e1Mag</a>        = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Z(); 
+}
+
+<a name="PAFTagBase:SetSecondHighestEnergyShower"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSecondHighestEnergyShower">PAFTagBase::SetSecondHighestEnergyShower</a>( TVector3 v ){ 
+    <a href=".././PAFTagBase.html#PAFTagBase:_e2CosTheta">_e2CosTheta</a>  = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.X();
+    <a href=".././PAFTagBase.html#PAFTagBase:_e2Phi">_e2Phi</a>       = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Y();
+    <a href=".././PAFTagBase.html#PAFTagBase:_e2Mag">_e2Mag</a>       = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Z();
+} 
+
+<a name="PAFTagBase:GetTotalNeutralEnergy"> </a>TVector3 <a href=".././PAFTagBase.html#PAFTagBase:GetTotalNeutralEnergy">PAFTagBase::GetTotalNeutralEnergy</a>() const{ 
+  return TVector3(<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[37],<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralCosTh">_eNeutralCosTh</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[38],<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralPhi">_eNeutralPhi</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[39],<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralMag">_eNeutralMag</a>));
+}
+
+<a name="PAFTagBase:GetHighestEnergyShower"> </a>TVector3 <a href=".././PAFTagBase.html#PAFTagBase:GetHighestEnergyShower">PAFTagBase::GetHighestEnergyShower</a>() const{
+    return TVector3(<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[40],<a href=".././PAFTagBase.html#PAFTagBase:_e1CosTheta">_e1CosTheta</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[41],<a href=".././PAFTagBase.html#PAFTagBase:_e1Phi">_e1Phi</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[42],<a href=".././PAFTagBase.html#PAFTagBase:_e1Mag">_e1Mag</a>) );
+}
+
+<a name="PAFTagBase:GetSecondHighestEnergyShower"> </a>TVector3 <a href=".././PAFTagBase.html#PAFTagBase:GetSecondHighestEnergyShower">PAFTagBase::GetSecondHighestEnergyShower</a>() const{
+  return TVector3(<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[43],<a href=".././PAFTagBase.html#PAFTagBase:_e2CosTheta">_e2CosTheta</a>),
+		  <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[44],<a href=".././PAFTagBase.html#PAFTagBase:_e2Phi">_e2Phi</a>),
+		  <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[45],<a href=".././PAFTagBase.html#PAFTagBase:_e2Mag">_e2Mag</a>) );
+}
+
+<b>//######################## Vertex and shape ####################################</b>
+
+<a name="PAFTagBase:SetPrimaryVertex"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryVertex">PAFTagBase::SetPrimaryVertex</a>( TVector3 v, <a href="../ListOfTypes.html#Float_t">Float_t</a> p ) { 
+    <a href=".././PAFTagBase.html#PAFTagBase:_xPrimaryVtx">_xPrimaryVtx</a>    = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.X();
+    <a href=".././PAFTagBase.html#PAFTagBase:_yPrimaryVtx">_yPrimaryVtx</a>    = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Y();
+    <a href=".././PAFTagBase.html#PAFTagBase:_zPrimaryVtx">_zPrimaryVtx</a>    = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Z();
+    <a href=".././PAFTagBase.html#PAFTagBase:_probPrimaryVtx">_probPrimaryVtx</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) p;
+}
+
+<a name="PAFTagBase:SetPrimaryVertexProbability"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPrimaryVertexProbability">PAFTagBase::SetPrimaryVertexProbability</a>( <a href="../ListOfTypes.html#Float_t">Float_t</a> p) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_probPrimaryVtx">_probPrimaryVtx</a> = p;
+}
+
+<a name="PAFTagBase:SetThrust"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetThrust">PAFTagBase::SetThrust</a>( TVector3 v ) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_thrustCosTh">_thrustCosTh</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.X();
+    <a href=".././PAFTagBase.html#PAFTagBase:_thrustPhi">_thrustPhi</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Y();
+    <a href=".././PAFTagBase.html#PAFTagBase:_thrustMag">_thrustMag</a>   = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) v.Z();
+}
+
+<a name="PAFTagBase:SetR2"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetR2">PAFTagBase::SetR2</a> ( <a href="../ListOfTypes.html#Float_t">Float_t</a> r) {
+    <a href=".././PAFTagBase.html#PAFTagBase:_R2">_R2</a> = r;
+}
+
+<a name="PAFTagBase:GetPrimaryVertex"> </a>TVector3 <a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryVertex">PAFTagBase::GetPrimaryVertex</a>() const{
+    return TVector3(<a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[46],<a href=".././PAFTagBase.html#PAFTagBase:_xPrimaryVtx">_xPrimaryVtx</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[47],<a href=".././PAFTagBase.html#PAFTagBase:_yPrimaryVtx">_yPrimaryVtx</a>),
+		    <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[48],<a href=".././PAFTagBase.html#PAFTagBase:_zPrimaryVtx">_zPrimaryVtx</a>)); 
+}
+
+<a name="PAFTagBase:GetPrimaryVertexProbability"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPrimaryVertexProbability">PAFTagBase::GetPrimaryVertexProbability</a>() const {
+    return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[49],<a href=".././PAFTagBase.html#PAFTagBase:_probPrimaryVtx">_probPrimaryVtx</a>);
+}
+
+<a name="PAFTagBase:GetThrust"> </a>TVector3 <a href=".././PAFTagBase.html#PAFTagBase:GetThrust">PAFTagBase::GetThrust</a>() const{
+    return  TVector3( (<a href="../ListOfTypes.html#Double_t">Double_t</a>) <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[51],<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosTh">_thrustCosTh</a>) ,
+		      (<a href="../ListOfTypes.html#Double_t">Double_t</a>) <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[52],<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhi">_thrustPhi</a>),
+		      (<a href="../ListOfTypes.html#Double_t">Double_t</a>) <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[53],<a href=".././PAFTagBase.html#PAFTagBase:_thrustMag">_thrustMag</a>) );
+}
+
+<a name="PAFTagBase:GetR2"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetR2">PAFTagBase::GetR2</a> () const {
+    return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[50],<a href=".././PAFTagBase.html#PAFTagBase:_R2">_R2</a>);
+}
+
+<b>//######################### Particle numbers ###################################</b>
+
+<a name="PAFTagBase:SetLeptonsLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetLeptonsLoose">PAFTagBase::SetLeptonsLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsLoose">_nLeptonsLoose</a>=b; }
+<a name="PAFTagBase:SetElectronsLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetElectronsLoose">PAFTagBase::SetElectronsLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_neLoose">_neLoose</a>=b; }
+<a name="PAFTagBase:SetMuonsLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMuonsLoose">PAFTagBase::SetMuonsLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_nmuLoose">_nmuLoose</a>=b; }
+<a name="PAFTagBase:SetPionsLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPionsLoose">PAFTagBase::SetPionsLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_npiLoose">_npiLoose</a>=b; }
+<a name="PAFTagBase:SetKaonsLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetKaonsLoose">PAFTagBase::SetKaonsLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_nKLoose">_nKLoose</a>=b; }
+<a name="PAFTagBase:SetProtonsLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetProtonsLoose">PAFTagBase::SetProtonsLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_npLoose">_npLoose</a>=b; }
+<a name="PAFTagBase:SetGammasLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetGammasLoose">PAFTagBase::SetGammasLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_ngammaLoose">_ngammaLoose</a>=b; }
+<a name="PAFTagBase:SetMergedPi0Loose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMergedPi0Loose">PAFTagBase::SetMergedPi0Loose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedLoose">_npi0MergedLoose</a>=b; }
+<a name="PAFTagBase:SetPi0Loose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPi0Loose">PAFTagBase::SetPi0Loose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_npi0Loose">_npi0Loose</a>=b; }
+<a name="PAFTagBase:SetKsLoose"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetKsLoose">PAFTagBase::SetKsLoose</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_nKsLoose">_nKsLoose</a>=b; }
+
+<a name="PAFTagBase:SetLeptonsTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetLeptonsTight">PAFTagBase::SetLeptonsTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsTight">_nLeptonsTight</a>=b; }
+<a name="PAFTagBase:SetElectronsTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetElectronsTight">PAFTagBase::SetElectronsTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_neTight">_neTight</a>=b; }
+<a name="PAFTagBase:SetMuonsTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMuonsTight">PAFTagBase::SetMuonsTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_nmuTight">_nmuTight</a>=b; }
+<a name="PAFTagBase:SetPionsTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPionsTight">PAFTagBase::SetPionsTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_npiTight">_npiTight</a>=b; }
+<a name="PAFTagBase:SetKaonsTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetKaonsTight">PAFTagBase::SetKaonsTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_nKTight">_nKTight</a>=b; }
+<a name="PAFTagBase:SetProtonsTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetProtonsTight">PAFTagBase::SetProtonsTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_npTight">_npTight</a>=b; }
+<a name="PAFTagBase:SetGammasTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetGammasTight">PAFTagBase::SetGammasTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_ngammaTight">_ngammaTight</a>=b; }
+<a name="PAFTagBase:SetMergedPi0Tight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMergedPi0Tight">PAFTagBase::SetMergedPi0Tight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedTight">_npi0MergedTight</a>=b; }
+<a name="PAFTagBase:SetPi0Tight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPi0Tight">PAFTagBase::SetPi0Tight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_npi0Tight">_npi0Tight</a>=b; }
+<a name="PAFTagBase:SetKsTight"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetKsTight">PAFTagBase::SetKsTight</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> b ) { <a href=".././PAFTagBase.html#PAFTagBase:_nKsTight">_nKsTight</a>=b; }
+
+<a name="PAFTagBase:GetLeptonsLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetLeptonsLoose">PAFTagBase::GetLeptonsLoose</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[54],<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsLoose">_nLeptonsLoose</a>); }
+<a name="PAFTagBase:GetElectronsLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetElectronsLoose">PAFTagBase::GetElectronsLoose</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[56],<a href=".././PAFTagBase.html#PAFTagBase:_neLoose">_neLoose</a>); }
+<a name="PAFTagBase:GetMuonsLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMuonsLoose">PAFTagBase::GetMuonsLoose</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[58],<a href=".././PAFTagBase.html#PAFTagBase:_nmuLoose">_nmuLoose</a>); }
+<a name="PAFTagBase:GetPionsLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPionsLoose">PAFTagBase::GetPionsLoose</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[60],<a href=".././PAFTagBase.html#PAFTagBase:_npiLoose">_npiLoose</a>); }
+<a name="PAFTagBase:GetKaonsLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetKaonsLoose">PAFTagBase::GetKaonsLoose</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[62],<a href=".././PAFTagBase.html#PAFTagBase:_nKLoose">_nKLoose</a>); }
+<a name="PAFTagBase:GetProtonsLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetProtonsLoose">PAFTagBase::GetProtonsLoose</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[64],<a href=".././PAFTagBase.html#PAFTagBase:_npLoose">_npLoose</a>); }
+<a name="PAFTagBase:GetGammasLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetGammasLoose">PAFTagBase::GetGammasLoose</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[66],<a href=".././PAFTagBase.html#PAFTagBase:_ngammaLoose">_ngammaLoose</a>); }
+<a name="PAFTagBase:GetMergedPi0Loose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMergedPi0Loose">PAFTagBase::GetMergedPi0Loose</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[68],<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedLoose">_npi0MergedLoose</a>); }
+<a name="PAFTagBase:GetPi0Loose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPi0Loose">PAFTagBase::GetPi0Loose</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[70],<a href=".././PAFTagBase.html#PAFTagBase:_npi0Loose">_npi0Loose</a>); }
+<a name="PAFTagBase:GetKsLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetKsLoose">PAFTagBase::GetKsLoose</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[72],<a href=".././PAFTagBase.html#PAFTagBase:_nKsLoose">_nKsLoose</a>); }
+
+<a name="PAFTagBase:GetLeptonsTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetLeptonsTight">PAFTagBase::GetLeptonsTight</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[55],<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsTight">_nLeptonsTight</a>); }
+<a name="PAFTagBase:GetElectronsTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetElectronsTight">PAFTagBase::GetElectronsTight</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[57],<a href=".././PAFTagBase.html#PAFTagBase:_neTight">_neTight</a>); }
+<a name="PAFTagBase:GetMuonsTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMuonsTight">PAFTagBase::GetMuonsTight</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[59],<a href=".././PAFTagBase.html#PAFTagBase:_nmuTight">_nmuTight</a>); }
+<a name="PAFTagBase:GetPionsTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPionsTight">PAFTagBase::GetPionsTight</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[61],<a href=".././PAFTagBase.html#PAFTagBase:_npiTight">_npiTight</a>); }
+<a name="PAFTagBase:GetKaonsTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetKaonsTight">PAFTagBase::GetKaonsTight</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[63],<a href=".././PAFTagBase.html#PAFTagBase:_nKTight">_nKTight</a>); }
+<a name="PAFTagBase:GetProtonsTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetProtonsTight">PAFTagBase::GetProtonsTight</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[65],<a href=".././PAFTagBase.html#PAFTagBase:_npTight">_npTight</a>); }
+<a name="PAFTagBase:GetGammasTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetGammasTight">PAFTagBase::GetGammasTight</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[67],<a href=".././PAFTagBase.html#PAFTagBase:_ngammaTight">_ngammaTight</a>); }
+<a name="PAFTagBase:GetMergedPi0Tight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMergedPi0Tight">PAFTagBase::GetMergedPi0Tight</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[69],<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedTight">_npi0MergedTight</a>); }
+<a name="PAFTagBase:GetPi0Tight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPi0Tight">PAFTagBase::GetPi0Tight</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[71],<a href=".././PAFTagBase.html#PAFTagBase:_npi0Tight">_npi0Tight</a>); }
+<a name="PAFTagBase:GetKsTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetKsTight">PAFTagBase::GetKsTight</a>()  const { return <a href="#PAFTagBase:GetByte">GetByte</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[73],<a href=".././PAFTagBase.html#PAFTagBase:_nKsTight">_nKsTight</a>); }
+
+<b>//######################### Trigger and Skim information ###################################</b>
+
+<a name="PAFTagBase:SetBbqqDiscr"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetBbqqDiscr">PAFTagBase::SetBbqqDiscr</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_bbqqDiscr">_bbqqDiscr</a> = f; } 
+<a name="PAFTagBase:SetBGFR2"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetBGFR2">PAFTagBase::SetBGFR2</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_BGFR2">_BGFR2</a> = f; }
+<a name="PAFTagBase:SetBunchT0DeltaDircTrk"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetBunchT0DeltaDircTrk">PAFTagBase::SetBunchT0DeltaDircTrk</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaDircTrk">_BunchT0DeltaDircTrk</a> = f; }
+<a name="PAFTagBase:SetBunchT0DeltaFF"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetBunchT0DeltaFF">PAFTagBase::SetBunchT0DeltaFF</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaFF">_BunchT0DeltaFF</a> = f; } 
+<a name="PAFTagBase:SetBunchT0FinderErr"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetBunchT0FinderErr">PAFTagBase::SetBunchT0FinderErr</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FinderErr">_BunchT0FinderErr</a> = f; } 
+<a name="PAFTagBase:SetBunchT0FitterErr"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetBunchT0FitterErr">PAFTagBase::SetBunchT0FitterErr</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FitterErr">_BunchT0FitterErr</a> = f; }
+<a name="PAFTagBase:SetECharShow"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetECharShow">PAFTagBase::SetECharShow</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_eCharShow">_eCharShow</a> = f; } 
+<a name="PAFTagBase:SetElecLoose1cm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetElecLoose1cm">PAFTagBase::SetElecLoose1cm</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1cm">_elecLoose1cm</a> = f; }
+<a name="PAFTagBase:SetElecLoose1l"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetElecLoose1l">PAFTagBase::SetElecLoose1l</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1l">_elecLoose1l</a> = f; }
+<a name="PAFTagBase:SetElecLoose2cm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetElecLoose2cm">PAFTagBase::SetElecLoose2cm</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2cm">_elecLoose2cm</a> = f; } 
+<a name="PAFTagBase:SetElecLoose2l"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetElecLoose2l">PAFTagBase::SetElecLoose2l</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2l">_elecLoose2l</a> = f; } 
+<a name="PAFTagBase:SetElecTight1cm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetElecTight1cm">PAFTagBase::SetElecTight1cm</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_elecTight1cm">_elecTight1cm</a> = f; }
+<a name="PAFTagBase:SetElecTight1l"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetElecTight1l">PAFTagBase::SetElecTight1l</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_elecTight1l">_elecTight1l</a> = f; } 
+<a name="PAFTagBase:SetElecTight2cm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetElecTight2cm">PAFTagBase::SetElecTight2cm</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_elecTight2cm">_elecTight2cm</a> = f; } 
+<a name="PAFTagBase:SetElecTight2l"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetElecTight2l">PAFTagBase::SetElecTight2l</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_elecTight2l">_elecTight2l</a> = f; }
+<a name="PAFTagBase:SetENeutShow"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetENeutShow">PAFTagBase::SetENeutShow</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_eNeutShow">_eNeutShow</a> = f; }
+<a name="PAFTagBase:SetL3OutBhabhaFlatOprValue"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetL3OutBhabhaFlatOprValue">PAFTagBase::SetL3OutBhabhaFlatOprValue</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatOprValue">_L3OutBhabhaFlatOprValue</a> = f; } 
+<a name="PAFTagBase:SetL3OutBhabhaFlatValue"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetL3OutBhabhaFlatValue">PAFTagBase::SetL3OutBhabhaFlatValue</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatValue">_L3OutBhabhaFlatValue</a> = f; }
+<a name="PAFTagBase:SetMuonLoose1cm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMuonLoose1cm">PAFTagBase::SetMuonLoose1cm</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1cm">_muonLoose1cm</a> = f; } 
+<a name="PAFTagBase:SetMuonLoose1l"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMuonLoose1l">PAFTagBase::SetMuonLoose1l</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1l">_muonLoose1l</a> = f; } 
+<a name="PAFTagBase:SetMuonLoose2cm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMuonLoose2cm">PAFTagBase::SetMuonLoose2cm</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2cm">_muonLoose2cm</a> = f; } 
+<a name="PAFTagBase:SetMuonLoose2l"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMuonLoose2l">PAFTagBase::SetMuonLoose2l</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2l">_muonLoose2l</a> = f; } 
+<a name="PAFTagBase:SetMuonTight1cm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMuonTight1cm">PAFTagBase::SetMuonTight1cm</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_muonTight1cm">_muonTight1cm</a> = f; } 
+<a name="PAFTagBase:SetMuonTight1l"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMuonTight1l">PAFTagBase::SetMuonTight1l</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_muonTight1l">_muonTight1l</a> = f; } 
+<a name="PAFTagBase:SetMuonTight2cm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMuonTight2cm">PAFTagBase::SetMuonTight2cm</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_muonTight2cm">_muonTight2cm</a> = f; } 
+<a name="PAFTagBase:SetMuonTight2l"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetMuonTight2l">PAFTagBase::SetMuonTight2l</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_muonTight2l">_muonTight2l</a> = f; }
+<a name="PAFTagBase:SetPTotalScalar"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetPTotalScalar">PAFTagBase::SetPTotalScalar</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_pTotalScalar">_pTotalScalar</a> = f; }
+<a name="PAFTagBase:SetR2All"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetR2All">PAFTagBase::SetR2All</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_R2All">_R2All</a> = f; }
+<a name="PAFTagBase:SetSphericityAll"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetSphericityAll">PAFTagBase::SetSphericityAll</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_sphericityAll">_sphericityAll</a> = f; } 
+<a name="PAFTagBase:SetTagLooseProton_maxCmsP"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetTagLooseProton_maxCmsP">PAFTagBase::SetTagLooseProton_maxCmsP</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_TagLooseProton_maxCmsP">_TagLooseProton_maxCmsP</a> = f; } 
+<a name="PAFTagBase:SetTagTightProton_maxCmsP"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetTagTightProton_maxCmsP">PAFTagBase::SetTagTightProton_maxCmsP</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_TagTightProton_maxCmsP">_TagTightProton_maxCmsP</a> = f; }
+<a name="PAFTagBase:SetThrustCosThAll"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetThrustCosThAll">PAFTagBase::SetThrustCosThAll</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_thrustCosThAll">_thrustCosThAll</a> = f; } 
+<a name="PAFTagBase:SetThrustMagAll"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetThrustMagAll">PAFTagBase::SetThrustMagAll</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_thrustMagAll">_thrustMagAll</a> = f; } 
+<a name="PAFTagBase:SetThrustPhiAll"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetThrustPhiAll">PAFTagBase::SetThrustPhiAll</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) { <a href=".././PAFTagBase.html#PAFTagBase:_thrustPhiAll">_thrustPhiAll</a> = f; }
+
+<a name="PAFTagBase:GetBbqqDiscr"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetBbqqDiscr">PAFTagBase::GetBbqqDiscr</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[83],<a href=".././PAFTagBase.html#PAFTagBase:_bbqqDiscr">_bbqqDiscr</a>); }
+<a name="PAFTagBase:GetBGFR2"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetBGFR2">PAFTagBase::GetBGFR2</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[84],<a href=".././PAFTagBase.html#PAFTagBase:_BGFR2">_BGFR2</a>); }
+<a name="PAFTagBase:GetBunchT0DeltaDircTrk"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetBunchT0DeltaDircTrk">PAFTagBase::GetBunchT0DeltaDircTrk</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[85],<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaDircTrk">_BunchT0DeltaDircTrk</a>); }
+<a name="PAFTagBase:GetBunchT0DeltaFF"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetBunchT0DeltaFF">PAFTagBase::GetBunchT0DeltaFF</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[86],<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaFF">_BunchT0DeltaFF</a>); } 
+<a name="PAFTagBase:GetBunchT0FinderErr"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetBunchT0FinderErr">PAFTagBase::GetBunchT0FinderErr</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[87],<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FinderErr">_BunchT0FinderErr</a>); } 
+<a name="PAFTagBase:GetBunchT0FitterErr"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetBunchT0FitterErr">PAFTagBase::GetBunchT0FitterErr</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[88],<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FitterErr">_BunchT0FitterErr</a>); }
+<a name="PAFTagBase:GetECharShow"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetECharShow">PAFTagBase::GetECharShow</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[89],<a href=".././PAFTagBase.html#PAFTagBase:_eCharShow">_eCharShow</a>); } 
+<a name="PAFTagBase:GetElecLoose1cm"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetElecLoose1cm">PAFTagBase::GetElecLoose1cm</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[90],<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1cm">_elecLoose1cm</a>); }
+<a name="PAFTagBase:GetElecLoose1l"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetElecLoose1l">PAFTagBase::GetElecLoose1l</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[91],<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1l">_elecLoose1l</a>); }
+<a name="PAFTagBase:GetElecLoose2cm"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetElecLoose2cm">PAFTagBase::GetElecLoose2cm</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[92],<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2cm">_elecLoose2cm</a>); } 
+<a name="PAFTagBase:GetElecLoose2l"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetElecLoose2l">PAFTagBase::GetElecLoose2l</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[93],<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2l">_elecLoose2l</a>); } 
+<a name="PAFTagBase:GetElecTight1cm"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetElecTight1cm">PAFTagBase::GetElecTight1cm</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[94],<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1cm">_elecTight1cm</a>); }
+<a name="PAFTagBase:GetElecTight1l"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetElecTight1l">PAFTagBase::GetElecTight1l</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[95],<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1l">_elecTight1l</a>); } 
+<a name="PAFTagBase:GetElecTight2cm"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetElecTight2cm">PAFTagBase::GetElecTight2cm</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[96],<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2cm">_elecTight2cm</a>); } 
+<a name="PAFTagBase:GetElecTight2l"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetElecTight2l">PAFTagBase::GetElecTight2l</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[97],<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2l">_elecTight2l</a>); }
+<a name="PAFTagBase:GetENeutShow"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetENeutShow">PAFTagBase::GetENeutShow</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[98],<a href=".././PAFTagBase.html#PAFTagBase:_eNeutShow">_eNeutShow</a>); }
+<a name="PAFTagBase:GetL3OutBhabhaFlatOprValue"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetL3OutBhabhaFlatOprValue">PAFTagBase::GetL3OutBhabhaFlatOprValue</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[99],<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatOprValue">_L3OutBhabhaFlatOprValue</a>); } 
+<a name="PAFTagBase:GetL3OutBhabhaFlatValue"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetL3OutBhabhaFlatValue">PAFTagBase::GetL3OutBhabhaFlatValue</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[100],<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatValue">_L3OutBhabhaFlatValue</a>); }
+<a name="PAFTagBase:GetMuonLoose1cm"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMuonLoose1cm">PAFTagBase::GetMuonLoose1cm</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[101],<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1cm">_muonLoose1cm</a>); } 
+<a name="PAFTagBase:GetMuonLoose1l"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMuonLoose1l">PAFTagBase::GetMuonLoose1l</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[102],<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1l">_muonLoose1l</a>); } 
+<a name="PAFTagBase:GetMuonLoose2cm"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMuonLoose2cm">PAFTagBase::GetMuonLoose2cm</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[103],<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2cm">_muonLoose2cm</a>); } 
+<a name="PAFTagBase:GetMuonLoose2l"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMuonLoose2l">PAFTagBase::GetMuonLoose2l</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[104],<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2l">_muonLoose2l</a>); } 
+<a name="PAFTagBase:GetMuonTight1cm"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMuonTight1cm">PAFTagBase::GetMuonTight1cm</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[105],<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1cm">_muonTight1cm</a>); } 
+<a name="PAFTagBase:GetMuonTight1l"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMuonTight1l">PAFTagBase::GetMuonTight1l</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[106],<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1l">_muonTight1l</a>); } 
+<a name="PAFTagBase:GetMuonTight2cm"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMuonTight2cm">PAFTagBase::GetMuonTight2cm</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[107],<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2cm">_muonTight2cm</a>); } 
+<a name="PAFTagBase:GetMuonTight2l"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetMuonTight2l">PAFTagBase::GetMuonTight2l</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[108],<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2l">_muonTight2l</a>); }
+<a name="PAFTagBase:GetPTotalScalar"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetPTotalScalar">PAFTagBase::GetPTotalScalar</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[109],<a href=".././PAFTagBase.html#PAFTagBase:_pTotalScalar">_pTotalScalar</a>); }
+<a name="PAFTagBase:GetR2All"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetR2All">PAFTagBase::GetR2All</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[110],<a href=".././PAFTagBase.html#PAFTagBase:_R2All">_R2All</a>); }
+<a name="PAFTagBase:GetSphericityAll"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetSphericityAll">PAFTagBase::GetSphericityAll</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[111],<a href=".././PAFTagBase.html#PAFTagBase:_sphericityAll">_sphericityAll</a>); } 
+<a name="PAFTagBase:GetTagLooseProton_maxCmsP"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetTagLooseProton_maxCmsP">PAFTagBase::GetTagLooseProton_maxCmsP</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[112],<a href=".././PAFTagBase.html#PAFTagBase:_TagLooseProton_maxCmsP">_TagLooseProton_maxCmsP</a>); } 
+<a name="PAFTagBase:GetTagTightProton_maxCmsP"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetTagTightProton_maxCmsP">PAFTagBase::GetTagTightProton_maxCmsP</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[113],<a href=".././PAFTagBase.html#PAFTagBase:_TagTightProton_maxCmsP">_TagTightProton_maxCmsP</a>); }
+<a name="PAFTagBase:GetThrustCosThAll"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetThrustCosThAll">PAFTagBase::GetThrustCosThAll</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[114],<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosThAll">_thrustCosThAll</a>); } 
+<a name="PAFTagBase:GetThrustMagAll"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetThrustMagAll">PAFTagBase::GetThrustMagAll</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[115],<a href=".././PAFTagBase.html#PAFTagBase:_thrustMagAll">_thrustMagAll</a>); } 
+<a name="PAFTagBase:GetThrustPhiAll"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetThrustPhiAll">PAFTagBase::GetThrustPhiAll</a>() const { return <a href="#PAFTagBase:GetFloat">GetFloat</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[116],<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhiAll">_thrustPhiAll</a>); } 
+
+<a name="PAFTagBase:SetD3PS"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetD3PS">PAFTagBase::SetD3PS</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_D3PS">_D3PS</a> = i; }
+<a name="PAFTagBase:SetDmeson0"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetDmeson0">PAFTagBase::SetDmeson0</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_Dmeson0">_Dmeson0</a> = i; } 
+<a name="PAFTagBase:SetDsmeson0"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetDsmeson0">PAFTagBase::SetDsmeson0</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_Dsmeson0">_Dsmeson0</a> = i; } 
+<a name="PAFTagBase:SetDstar0"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetDstar0">PAFTagBase::SetDstar0</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_Dstar0">_Dstar0</a> = i; }
+<a name="PAFTagBase:SetDstar1"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetDstar1">PAFTagBase::SetDstar1</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_Dstar1">_Dstar1</a> = i; } 
+<a name="PAFTagBase:SetLumiBhabhaWeight"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetLumiBhabhaWeight">PAFTagBase::SetLumiBhabhaWeight</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_LumiBhabhaWeight">_LumiBhabhaWeight</a> = i; }
+<a name="PAFTagBase:SetNumberOfNeutralCands"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetNumberOfNeutralCands">PAFTagBase::SetNumberOfNeutralCands</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCands">_nNeutralCands</a> = i; }
+<a name="PAFTagBase:SetNumberOfNeutralCndLoose"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetNumberOfNeutralCndLoose">PAFTagBase::SetNumberOfNeutralCndLoose</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndLoose">_nNeutralCndLoose</a> = i; }
+<a name="PAFTagBase:SetNumberOfNeutralCndTight"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetNumberOfNeutralCndTight">PAFTagBase::SetNumberOfNeutralCndTight</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndTight">_nNeutralCndTight</a> = i; }
+<a name="PAFTagBase:SetTagEtaPeppTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagEtaPeppTwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagEtaPeppTwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPeppTwoBody_maxCmsPmaxCosT">_TagEtaPeppTwoBody_maxCmsPmaxCosT</a> = i; }
+<a name="PAFTagBase:SetTagEtaPrhogTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagEtaPrhogTwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagEtaPrhogTwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPrhogTwoBody_maxCmsPmaxCosT">_TagEtaPrhogTwoBody_maxCmsPmaxCosT</a> = i; }
+<a name="PAFTagBase:SetTagEtaTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagEtaTwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagEtaTwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagEtaTwoBody_maxCmsPmaxCosT">_TagEtaTwoBody_maxCmsPmaxCosT</a> = i; }
+<a name="PAFTagBase:SetTagKstpTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagKstpTwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagKstpTwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagKstpTwoBody_maxCmsPmaxCosT">_TagKstpTwoBody_maxCmsPmaxCosT</a> = i; } 
+<a name="PAFTagBase:SetTagKstTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagKstTwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagKstTwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagKstTwoBody_maxCmsPmaxCosT">_TagKstTwoBody_maxCmsPmaxCosT</a> = i; }
+<a name="PAFTagBase:SetTagKTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagKTwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagKTwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagKTwoBody_maxCmsPmaxCosT">_TagKTwoBody_maxCmsPmaxCosT</a> = i; }
+<a name="PAFTagBase:SetTagK_S0TwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagK_S0TwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagK_S0TwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagK_S0TwoBody_maxCmsPmaxCosT">_TagK_S0TwoBody_maxCmsPmaxCosT</a> = i; }
+<a name="PAFTagBase:SetTagOmegaTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagOmegaTwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagOmegaTwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagOmegaTwoBody_maxCmsPmaxCosT">_TagOmegaTwoBody_maxCmsPmaxCosT</a> = i; } 
+<a name="PAFTagBase:SetTagPhiTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagPhiTwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagPhiTwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagPhiTwoBody_maxCmsPmaxCosT">_TagPhiTwoBody_maxCmsPmaxCosT</a> = i; }
+<a name="PAFTagBase:SetTagPi0TwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagPi0TwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagPi0TwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagPi0TwoBody_maxCmsPmaxCosT">_TagPi0TwoBody_maxCmsPmaxCosT</a> = i; }
+<a name="PAFTagBase:SetTagRhopTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagRhopTwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagRhopTwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagRhopTwoBody_maxCmsPmaxCosT">_TagRhopTwoBody_maxCmsPmaxCosT</a> = i; } 
+<a name="PAFTagBase:SetTagRhoTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#void">void</a>	<a href=".././PAFTagBase.html#PAFTagBase:SetTagRhoTwoBody_maxCmsPmaxCosT">PAFTagBase::SetTagRhoTwoBody_maxCmsPmaxCosT</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i)  { <a href=".././PAFTagBase.html#PAFTagBase:_TagRhoTwoBody_maxCmsPmaxCosT">_TagRhoTwoBody_maxCmsPmaxCosT</a> = i; }
+
+<a name="PAFTagBase:GetD3PS"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetD3PS">PAFTagBase::GetD3PS</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[117],<a href=".././PAFTagBase.html#PAFTagBase:_D3PS">_D3PS</a>); } 
+<a name="PAFTagBase:GetDmeson0"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetDmeson0">PAFTagBase::GetDmeson0</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[118],<a href=".././PAFTagBase.html#PAFTagBase:_Dmeson0">_Dmeson0</a>); } 
+<a name="PAFTagBase:GetDsmeson0"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetDsmeson0">PAFTagBase::GetDsmeson0</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[119],<a href=".././PAFTagBase.html#PAFTagBase:_Dsmeson0">_Dsmeson0</a>); } 
+<a name="PAFTagBase:GetDstar0"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetDstar0">PAFTagBase::GetDstar0</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[120],<a href=".././PAFTagBase.html#PAFTagBase:_Dstar0">_Dstar0</a>); } 
+<a name="PAFTagBase:GetDstar1"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetDstar1">PAFTagBase::GetDstar1</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[121],<a href=".././PAFTagBase.html#PAFTagBase:_Dstar1">_Dstar1</a>); } 
+<a name="PAFTagBase:GetLumiBhabhaWeight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetLumiBhabhaWeight">PAFTagBase::GetLumiBhabhaWeight</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[122],<a href=".././PAFTagBase.html#PAFTagBase:_LumiBhabhaWeight">_LumiBhabhaWeight</a>); } 
+<a name="PAFTagBase:GetNumberOfNeutralCands"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetNumberOfNeutralCands">PAFTagBase::GetNumberOfNeutralCands</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[123],<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCands">_nNeutralCands</a>); } 
+<a name="PAFTagBase:GetNumberOfNeutralCndLoose"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetNumberOfNeutralCndLoose">PAFTagBase::GetNumberOfNeutralCndLoose</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[124],<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndLoose">_nNeutralCndLoose</a>); } 
+<a name="PAFTagBase:GetNumberOfNeutralCndTight"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetNumberOfNeutralCndTight">PAFTagBase::GetNumberOfNeutralCndTight</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[125],<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndTight">_nNeutralCndTight</a>); } 
+<a name="PAFTagBase:GetTagEtaPeppTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagEtaPeppTwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagEtaPeppTwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[126],<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPeppTwoBody_maxCmsPmaxCosT">_TagEtaPeppTwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagEtaPrhogTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagEtaPrhogTwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagEtaPrhogTwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[127],<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPrhogTwoBody_maxCmsPmaxCosT">_TagEtaPrhogTwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagEtaTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagEtaTwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagEtaTwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[128],<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaTwoBody_maxCmsPmaxCosT">_TagEtaTwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagKstpTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagKstpTwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagKstpTwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[129],<a href=".././PAFTagBase.html#PAFTagBase:_TagKstpTwoBody_maxCmsPmaxCosT">_TagKstpTwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagKstTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagKstTwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagKstTwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[130],<a href=".././PAFTagBase.html#PAFTagBase:_TagKstTwoBody_maxCmsPmaxCosT">_TagKstTwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagKTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagKTwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagKTwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[131],<a href=".././PAFTagBase.html#PAFTagBase:_TagKTwoBody_maxCmsPmaxCosT">_TagKTwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagK_S0TwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagK_S0TwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagK_S0TwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[132],<a href=".././PAFTagBase.html#PAFTagBase:_TagK_S0TwoBody_maxCmsPmaxCosT">_TagK_S0TwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagOmegaTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagOmegaTwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagOmegaTwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[133],<a href=".././PAFTagBase.html#PAFTagBase:_TagOmegaTwoBody_maxCmsPmaxCosT">_TagOmegaTwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagPhiTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagPhiTwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagPhiTwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[134],<a href=".././PAFTagBase.html#PAFTagBase:_TagPhiTwoBody_maxCmsPmaxCosT">_TagPhiTwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagPi0TwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagPi0TwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagPi0TwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[135],<a href=".././PAFTagBase.html#PAFTagBase:_TagPi0TwoBody_maxCmsPmaxCosT">_TagPi0TwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagRhopTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagRhopTwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagRhopTwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[136],<a href=".././PAFTagBase.html#PAFTagBase:_TagRhopTwoBody_maxCmsPmaxCosT">_TagRhopTwoBody_maxCmsPmaxCosT</a>); } 
+<a name="PAFTagBase:GetTagRhoTwoBody_maxCmsPmaxCosT"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>	<a href=".././PAFTagBase.html#PAFTagBase:GetTagRhoTwoBody_maxCmsPmaxCosT">PAFTagBase::GetTagRhoTwoBody_maxCmsPmaxCosT</a>() const { return <a href="#PAFTagBase:GetInt">GetInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[137],<a href=".././PAFTagBase.html#PAFTagBase:_TagRhoTwoBody_maxCmsPmaxCosT">_TagRhoTwoBody_maxCmsPmaxCosT</a>); } 
+
+<b>//######################### Analysis bits ###################################</b>
+
+<a name="PAFTagBase:SetAnalysisBits"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetAnalysisBits">PAFTagBase::SetAnalysisBits</a>(<a href="../ListOfTypes.html#UInt_t">UInt_t</a> b, <a href="../ListOfTypes.html#UInt_t">UInt_t</a> b1) { <a href=".././PAFTagBase.html#PAFTagBase:_analysisbits">_analysisbits</a> = b; <a href=".././PAFTagBase.html#PAFTagBase:_analysisbits1">_analysisbits1</a> = b1; }
+<a name="PAFTagBase:GetAnalysisBits"> </a><a href="../ListOfTypes.html#UInt_t">UInt_t</a>  <a href=".././PAFTagBase.html#PAFTagBase:GetAnalysisBits">PAFTagBase::GetAnalysisBits</a>() const { return <a href="#PAFTagBase:GetUInt">GetUInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[74],<a href=".././PAFTagBase.html#PAFTagBase:_analysisbits">_analysisbits</a>); }
+<a name="PAFTagBase:GetAnalysisBits1"> </a><a href="../ListOfTypes.html#UInt_t">UInt_t</a>  <a href=".././PAFTagBase.html#PAFTagBase:GetAnalysisBits1">PAFTagBase::GetAnalysisBits1</a>() const { return <a href="#PAFTagBase:GetUInt">GetUInt</a>(<a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[75],<a href=".././PAFTagBase.html#PAFTagBase:_analysisbits1">_analysisbits1</a>); }
+
+<b>// Copy operator </b>
+
+<a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:operator">PAFTagBase::operator</a> =( <a href=".././PAFTagBase.html">PAFTagBase</a>&amp; t ) {
+<b>    //####################Analysis bits####################################################</b>
+    <a href=".././PAFTagBase.html#PAFTagBase:_analysisbits">_analysisbits</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_analysisbits">_analysisbits</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_analysisbits1">_analysisbits1</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_analysisbits1">_analysisbits1</a>;
+<b>    // ################ Beam Information################################################</b>
+    <a href=".././PAFTagBase.html#PAFTagBase:_cmf1">_cmf1</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_cmf1">_cmf1</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_cmf2">_cmf2</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_cmf1">_cmf1</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_cmf3">_cmf3</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_cmf1">_cmf1</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_cmf4">_cmf4</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_cmf1">_cmf1</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_cmsEnergy">_cmsEnergy</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_cmsEnergy">_cmsEnergy</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_xBeamSpot">_xBeamSpot</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_xBeamSpot">_xBeamSpot</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_yBeamSpot">_yBeamSpot</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_yBeamSpot">_yBeamSpot</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_zBeamSpot">_zBeamSpot</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_zBeamSpot">_zBeamSpot</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_xBeamErr">_xBeamErr</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_xBeamErr">_xBeamErr</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_yBeamErr">_yBeamErr</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_yBeamErr">_yBeamErr</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_zBeamErr">_zBeamErr</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_zBeamErr">_zBeamErr</a>;
+<b>    // ################ Tracking Information################################################</b>
+    <a href=".././PAFTagBase.html#PAFTagBase:_pTotalCosTh">_pTotalCosTh</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalCosTh">_pTotalCosTh</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_pTotalMag">_pTotalMag</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalMag">_pTotalMag</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_pTotalPhi">_pTotalPhi</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalPhi">_pTotalPhi</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_eTotal">_eTotal</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_eTotal">_eTotal</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_pTotalMass">_pTotalMass</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalMass">_pTotalMass</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_p1CosTheta">_p1CosTheta</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_p1CosTheta">_p1CosTheta</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_p1Phi">_p1Phi</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_p1Phi">_p1Phi</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_p1Mag">_p1Mag</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_p1Mag">_p1Mag</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_p2CosTheta">_p2CosTheta</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_p2CosTheta">_p2CosTheta</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_p2Phi">_p2Phi</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_p2Phi">_p2Phi</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_p2Mag">_p2Mag</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_p2Mag">_p2Mag</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nTracks">_nTracks</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nTracks">_nTracks</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkLoose">_nGoodTrkLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkLoose">_nGoodTrkLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkTight">_nGoodTrkTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkTight">_nGoodTrkTight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_p1EmcCandEnergy">_p1EmcCandEnergy</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_p1EmcCandEnergy">_p1EmcCandEnergy</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_p2EmcCandEnergy">_p2EmcCandEnergy</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_p2EmcCandEnergy">_p2EmcCandEnergy</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_p1PidHypo">_p1PidHypo</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_p1PidHypo">_p1PidHypo</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_p2PidHypo">_p2PidHypo</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_p2PidHypo">_p2PidHypo</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_totChargeLoose">_totChargeLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_totChargeLoose">_totChargeLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_totChargeTight">_totChargeTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_totChargeTight">_totChargeTight</a>;
+<b>    //#####################Lepton information############################################</b>
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1hypo">_leptLoose1hypo</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1hypo">_leptLoose1hypo</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1Charge">_leptLoose1Charge</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1Charge">_leptLoose1Charge</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1p">_leptLoose1p</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1p">_leptLoose1p</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2hypo">_leptLoose2hypo</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2hypo">_leptLoose2hypo</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2Charge">_leptLoose2Charge</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2Charge">_leptLoose2Charge</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2p">_leptLoose2p</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2p">_leptLoose2p</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight1hypo">_leptTight1hypo</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1hypo">_leptTight1hypo</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight1Charge">_leptTight1Charge</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1Charge">_leptTight1Charge</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight1p">_leptTight1p</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1p">_leptTight1p</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight2hypo">_leptTight2hypo</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2hypo">_leptTight2hypo</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight2Charge">_leptTight2Charge</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2Charge">_leptTight2Charge</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_leptTight2p">_leptTight2p</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2p">_leptTight2p</a>;
+<b>    //#####################Calorimeter information############################################</b>
+    <a href=".././PAFTagBase.html#PAFTagBase:_eNeutralCosTh">_eNeutralCosTh</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralCosTh">_eNeutralCosTh</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_eNeutralPhi">_eNeutralPhi</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralPhi">_eNeutralPhi</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_eNeutralMag">_eNeutralMag</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralMag">_eNeutralMag</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_e1CosTheta">_e1CosTheta</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_e1CosTheta">_e1CosTheta</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_e1Phi">_e1Phi</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_e1Phi">_e1Phi</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_e1Mag">_e1Mag</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_e1Mag">_e1Mag</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_e2CosTheta">_e2CosTheta</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_e2CosTheta">_e2CosTheta</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_e2Phi">_e2Phi</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_e2Phi">_e2Phi</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_e2Mag">_e2Mag</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_e2Mag">_e2Mag</a>;
+<b>    //#####################Vertex and event shape#############################################</b>
+    <a href=".././PAFTagBase.html#PAFTagBase:_xPrimaryVtx">_xPrimaryVtx</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_xPrimaryVtx">_xPrimaryVtx</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_yPrimaryVtx">_yPrimaryVtx</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_yPrimaryVtx">_yPrimaryVtx</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_zPrimaryVtx">_zPrimaryVtx</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_zPrimaryVtx">_zPrimaryVtx</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_probPrimaryVtx">_probPrimaryVtx</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_probPrimaryVtx">_probPrimaryVtx</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_thrustCosTh">_thrustCosTh</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosTh">_thrustCosTh</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_thrustPhi">_thrustPhi</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhi">_thrustPhi</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_thrustMag">_thrustMag</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustMag">_thrustMag</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_R2">_R2</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_R2">_R2</a>;
+<b>    //####################Particle numbers####################################################</b>
+    <a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsLoose">_nLeptonsLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsLoose">_nLeptonsLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsTight">_nLeptonsTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsTight">_nLeptonsTight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_neLoose">_neLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_neLoose">_neLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nmuLoose">_nmuLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nmuLoose">_nmuLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_npiLoose">_npiLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_npiLoose">_npiLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nKLoose">_nKLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nKLoose">_nKLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_npLoose">_npLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_npLoose">_npLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_ngammaLoose">_ngammaLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_ngammaLoose">_ngammaLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedLoose">_npi0MergedLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedLoose">_npi0MergedLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_npi0Loose">_npi0Loose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_npi0Loose">_npi0Loose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nKsLoose">_nKsLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nKsLoose">_nKsLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_neTight">_neTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_neTight">_neTight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nmuTight">_nmuTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nmuTight">_nmuTight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_npiTight">_npiTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_npiTight">_npiTight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nKTight">_nKTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nKTight">_nKTight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_npTight">_npTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_npTight">_npTight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_ngammaTight">_ngammaTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_ngammaTight">_ngammaTight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedTight">_npi0MergedTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedTight">_npi0MergedTight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_npi0Tight">_npi0Tight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_npi0Tight">_npi0Tight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nKsTight">_nKsTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nKsTight">_nKsTight</a>;
+<b>//######################### Trigger and Skim information ###################################</b>
+    <a href=".././PAFTagBase.html#PAFTagBase:_bbqqDiscr">_bbqqDiscr</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_bbqqDiscr">_bbqqDiscr</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_BGFR2">_BGFR2</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_BGFR2">_BGFR2</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaDircTrk">_BunchT0DeltaDircTrk</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaDircTrk">_BunchT0DeltaDircTrk</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaFF">_BunchT0DeltaFF</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaFF">_BunchT0DeltaFF</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FinderErr">_BunchT0FinderErr</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FinderErr">_BunchT0FinderErr</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FitterErr">_BunchT0FitterErr</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FitterErr">_BunchT0FitterErr</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_eCharShow">_eCharShow</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_eCharShow">_eCharShow</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1cm">_elecLoose1cm</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1cm">_elecLoose1cm</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1l">_elecLoose1l</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1l">_elecLoose1l</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2cm">_elecLoose2cm</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2cm">_elecLoose2cm</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2l">_elecLoose2l</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2l">_elecLoose2l</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_elecTight1cm">_elecTight1cm</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1cm">_elecTight1cm</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_elecTight1l">_elecTight1l</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1l">_elecTight1l</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_elecTight2cm">_elecTight2cm</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2cm">_elecTight2cm</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_elecTight2l">_elecTight2l</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2l">_elecTight2l</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_eNeutShow">_eNeutShow</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutShow">_eNeutShow</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatOprValue">_L3OutBhabhaFlatOprValue</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatOprValue">_L3OutBhabhaFlatOprValue</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatValue">_L3OutBhabhaFlatValue</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatValue">_L3OutBhabhaFlatValue</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1cm">_muonLoose1cm</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1cm">_muonLoose1cm</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1l">_muonLoose1l</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1l">_muonLoose1l</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2cm">_muonLoose2cm</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2cm">_muonLoose2cm</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2l">_muonLoose2l</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2l">_muonLoose2l</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_muonTight1cm">_muonTight1cm</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1cm">_muonTight1cm</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_muonTight1l">_muonTight1l</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1l">_muonTight1l</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_muonTight2cm">_muonTight2cm</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2cm">_muonTight2cm</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_muonTight2l">_muonTight2l</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2l">_muonTight2l</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_pTotalScalar">_pTotalScalar</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalScalar">_pTotalScalar</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_R2All">_R2All</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_R2All">_R2All</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_sphericityAll">_sphericityAll</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_sphericityAll">_sphericityAll</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagLooseProton_maxCmsP">_TagLooseProton_maxCmsP</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagLooseProton_maxCmsP">_TagLooseProton_maxCmsP</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagTightProton_maxCmsP">_TagTightProton_maxCmsP</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagTightProton_maxCmsP">_TagTightProton_maxCmsP</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_thrustCosThAll">_thrustCosThAll</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosThAll">_thrustCosThAll</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_thrustMagAll">_thrustMagAll</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustMagAll">_thrustMagAll</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_thrustPhiAll">_thrustPhiAll</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhiAll">_thrustPhiAll</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_D3PS">_D3PS</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_D3PS">_D3PS</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_Dmeson0">_Dmeson0</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_Dmeson0">_Dmeson0</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_Dsmeson0">_Dsmeson0</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_Dsmeson0">_Dsmeson0</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_Dstar0">_Dstar0</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_Dstar0">_Dstar0</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_Dstar1">_Dstar1</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_Dstar1">_Dstar1</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_LumiBhabhaWeight">_LumiBhabhaWeight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_LumiBhabhaWeight">_LumiBhabhaWeight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCands">_nNeutralCands</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCands">_nNeutralCands</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndLoose">_nNeutralCndLoose</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndLoose">_nNeutralCndLoose</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndTight">_nNeutralCndTight</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndTight">_nNeutralCndTight</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPeppTwoBody_maxCmsPmaxCosT">_TagEtaPeppTwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPeppTwoBody_maxCmsPmaxCosT">_TagEtaPeppTwoBody_maxCmsPmaxCosT</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPrhogTwoBody_maxCmsPmaxCosT">_TagEtaPrhogTwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPrhogTwoBody_maxCmsPmaxCosT">_TagEtaPrhogTwoBody_maxCmsPmaxCosT</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagEtaTwoBody_maxCmsPmaxCosT">_TagEtaTwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaTwoBody_maxCmsPmaxCosT">_TagEtaTwoBody_maxCmsPmaxCosT</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagKstpTwoBody_maxCmsPmaxCosT">_TagKstpTwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagKstpTwoBody_maxCmsPmaxCosT">_TagKstpTwoBody_maxCmsPmaxCosT</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagKstTwoBody_maxCmsPmaxCosT">_TagKstTwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagKstTwoBody_maxCmsPmaxCosT">_TagKstTwoBody_maxCmsPmaxCosT</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagKTwoBody_maxCmsPmaxCosT">_TagKTwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagKTwoBody_maxCmsPmaxCosT">_TagKTwoBody_maxCmsPmaxCosT</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagK_S0TwoBody_maxCmsPmaxCosT">_TagK_S0TwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagK_S0TwoBody_maxCmsPmaxCosT">_TagK_S0TwoBody_maxCmsPmaxCosT</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagOmegaTwoBody_maxCmsPmaxCosT">_TagOmegaTwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagOmegaTwoBody_maxCmsPmaxCosT">_TagOmegaTwoBody_maxCmsPmaxCosT</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagPhiTwoBody_maxCmsPmaxCosT">_TagPhiTwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagPhiTwoBody_maxCmsPmaxCosT">_TagPhiTwoBody_maxCmsPmaxCosT</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagPi0TwoBody_maxCmsPmaxCosT">_TagPi0TwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagPi0TwoBody_maxCmsPmaxCosT">_TagPi0TwoBody_maxCmsPmaxCosT</a>;
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagRhopTwoBody_maxCmsPmaxCosT">_TagRhopTwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagRhopTwoBody_maxCmsPmaxCosT">_TagRhopTwoBody_maxCmsPmaxCosT</a>; 
+    <a href=".././PAFTagBase.html#PAFTagBase:_TagRhoTwoBody_maxCmsPmaxCosT">_TagRhoTwoBody_maxCmsPmaxCosT</a>=t.<a href=".././PAFTagBase.html#PAFTagBase:_TagRhoTwoBody_maxCmsPmaxCosT">_TagRhoTwoBody_maxCmsPmaxCosT</a>;
+}
+
+std::ostream&amp;  operator &lt;&lt; (std::ostream&amp; o, const <a href=".././PAFTagBase.html">PAFTagBase</a>&amp; a) { a.PrintOn(o); return o; }
+
+
+<a name="PAFTagBase:Init"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:Init">PAFTagBase::Init</a>(TBranchObject *objBranch)
+{
+  TString branchName(objBranch-&gt;GetName());
+  TBranch *subBranch;
+  TObjArray *list = objBranch-&gt;GetListOfBranches();
+  <a href="../ListOfTypes.html#Int_t">Int_t</a> listLen = list-&gt;GetEntries();
+  <a href=".././PAFTagBase.html#PAFTagBase:fBranchTable">fBranchTable</a>-&gt;Clear("nodelete");
+  for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;listLen; i++) {
+    subBranch = (TBranch*) (*list)[i];
+    TString t(subBranch-&gt;GetName());
+    if (t.Index("_tag")&lt;0) continue;
+    <a href=".././PAFTagBase.html#PAFTagBase:fBranchTable">fBranchTable</a>-&gt;Add((TObject*)subBranch); // Add the branch to the table
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_cmf1">_cmf1</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[1] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_cmf2">_cmf2</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[2] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_cmf3">_cmf3</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[3] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_cmf4">_cmf4</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[4] = subBranch; } 
+<b>    // total, highest &amp; 2nd highest momentum</b>
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalCosTh">_pTotalCosTh</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[5] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalPhi">_pTotalPhi</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[6] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalMag">_pTotalMag</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[7] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_eTotal">_eTotal</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[8] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalMass">_pTotalMass</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[9] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_p1CosTheta">_p1CosTheta</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[10] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_p1Phi">_p1Phi</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[11] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_p1Mag">_p1Mag</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[12] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_p2CosTheta">_p2CosTheta</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[13] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_p2Phi">_p2Phi</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[14] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_p2Mag">_p2Mag</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[15] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_p1EmcCandEnergy">_p1EmcCandEnergy</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[16] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_p2EmcCandEnergy">_p2EmcCandEnergy</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[17] = subBranch; }
+<b>    // # of Tracks</b>
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nTracks">_nTracks</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[18] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkLoose">_nGoodTrkLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[19] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nGoodTrkTight">_nGoodTrkTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[20] = subBranch; }
+<b>    // pid</b>
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_p1PidHypo">_p1PidHypo</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[21] = subBranch; }   
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_p2PidHypo">_p2PidHypo</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[22] = subBranch; }   
+<b>    // charge</b>
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_totChargeLoose">_totChargeLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[23] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_totChargeTight">_totChargeTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[24] = subBranch; }
+<b>    // Lepton</b>
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1hypo">_leptLoose1hypo</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[25] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2hypo">_leptLoose2hypo</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[26] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1Charge">_leptLoose1Charge</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[27] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2Charge">_leptLoose2Charge</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[28] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1hypo">_leptTight1hypo</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[29] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2hypo">_leptTight2hypo</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[30] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1Charge">_leptTight1Charge</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[31] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2Charge">_leptTight2Charge</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[32] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose1p">_leptLoose1p</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[33] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptLoose2p">_leptLoose2p</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[34] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight1p">_leptTight1p</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[35] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_leptTight2p">_leptTight2p</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[36] = subBranch; }
+<b>    // Calorimeter</b>
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralCosTh">_eNeutralCosTh</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[37] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralPhi">_eNeutralPhi</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[38] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutralMag">_eNeutralMag</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[39] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_e1CosTheta">_e1CosTheta</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[40] = subBranch;}
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_e1Phi">_e1Phi</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[41] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_e1Mag">_e1Mag</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[42] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_e2CosTheta">_e2CosTheta</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[43] = subBranch;}
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_e2Phi">_e2Phi</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[44] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_e2Mag">_e2Mag</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[45] = subBranch; }
+<b>    // Vertex, Event Shape</b>
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_xPrimaryVtx">_xPrimaryVtx</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[46] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_yPrimaryVtx">_yPrimaryVtx</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[47] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_zPrimaryVtx">_zPrimaryVtx</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[48] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_probPrimaryVtx">_probPrimaryVtx</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[49] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_R2">_R2</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[50] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosTh">_thrustCosTh</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[51] = subBranch;}
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhi">_thrustPhi</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[52] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_thrustMag">_thrustMag</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[53] = subBranch; }
+<b>    // particle Numbers</b>
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsLoose">_nLeptonsLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[54] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nLeptonsTight">_nLeptonsTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[55] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_neLoose">_neLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[56] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_neTight">_neTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[57] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nmuLoose">_nmuLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[58] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nmuTight">_nmuTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[59] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_npiLoose">_npiLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[60] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_npiTight">_npiTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[61] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nKLoose">_nKLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[62] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nKTight">_nKTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[63] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_npLoose">_npLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[64] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_npTight">_npTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[65] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_ngammaLoose">_ngammaLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[66] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_ngammaTight">_ngammaTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[67] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedLoose">_npi0MergedLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[68] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_npi0MergedTight">_npi0MergedTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[69] = subBranch; } 
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_npi0Loose">_npi0Loose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[70] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_npi0Tight">_npi0Tight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[71] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nKsLoose">_nKsLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[72] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nKsTight">_nKsTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[73] = subBranch; }
+<b>    // Analysis Bits</b>
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_analysisbits">_analysisbits</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[74] = subBranch; }
+    if (t == "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_analysisbits1">_analysisbits1</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[75] = subBranch; }
+<b>    // Beam Information</b>
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_cmsEnergy">_cmsEnergy</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[76] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_xBeamSpot">_xBeamSpot</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[77] = subBranch; }    
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_yBeamSpot">_yBeamSpot</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[78] = subBranch; }    
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_zBeamSpot">_zBeamSpot</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[79] = subBranch; }  
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_xBeamErr">_xBeamErr</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[80] = subBranch; }    
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_yBeamErr">_yBeamErr</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[81] = subBranch; }    
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_zBeamErr">_zBeamErr</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[82] = subBranch; }
+<b>    // Trigger and Skim information</b>
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_bbqqDiscr">_bbqqDiscr</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[83] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_BGFR2">_BGFR2</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[84] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaDircTrk">_BunchT0DeltaDircTrk</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[85] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0DeltaFF">_BunchT0DeltaFF</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[86] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FinderErr">_BunchT0FinderErr</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[87] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_BunchT0FitterErr">_BunchT0FitterErr</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[88] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_eCharShow">_eCharShow</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[89] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1cm">_elecLoose1cm</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[90] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose1l">_elecLoose1l</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[91] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2cm">_elecLoose2cm</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[92] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_elecLoose2l">_elecLoose2l</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[93] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1cm">_elecTight1cm</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[94] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight1l">_elecTight1l</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[95] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2cm">_elecTight2cm</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[96] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_elecTight2l">_elecTight2l</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[97] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_eNeutShow">_eNeutShow</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[98] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatOprValue">_L3OutBhabhaFlatOprValue</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[99] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_L3OutBhabhaFlatValue">_L3OutBhabhaFlatValue</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[100] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1cm">_muonLoose1cm</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[101] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose1l">_muonLoose1l</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[102] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2cm">_muonLoose2cm</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[103] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_muonLoose2l">_muonLoose2l</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[104] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1cm">_muonTight1cm</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[105] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight1l">_muonTight1l</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[106] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2cm">_muonTight2cm</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[107] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_muonTight2l">_muonTight2l</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[108] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_pTotalScalar">_pTotalScalar</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[109] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_R2All">_R2All</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[110] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_sphericityAll">_sphericityAll</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[111] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagLooseProton_maxCmsP">_TagLooseProton_maxCmsP</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[112] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagTightProton_maxCmsP">_TagTightProton_maxCmsP</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[113] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_thrustCosThAll">_thrustCosThAll</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[114] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_thrustMagAll">_thrustMagAll</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[115] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_thrustPhiAll">_thrustPhiAll</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[116] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_D3PS">_D3PS</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[117] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_Dmeson0">_Dmeson0</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[118] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_Dsmeson0">_Dsmeson0</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[119] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_Dstar0">_Dstar0</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[120] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_Dstar1">_Dstar1</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[121] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_LumiBhabhaWeight">_LumiBhabhaWeight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[122] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCands">_nNeutralCands</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[123] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndLoose">_nNeutralCndLoose</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[124] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_nNeutralCndTight">_nNeutralCndTight</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[125] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPeppTwoBody_maxCmsPmaxCosT">_TagEtaPeppTwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[126] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaPrhogTwoBody_maxCmsPmaxCosT">_TagEtaPrhogTwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[127] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagEtaTwoBody_maxCmsPmaxCosT">_TagEtaTwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[128] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagKstpTwoBody_maxCmsPmaxCosT">_TagKstpTwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[129] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagKstTwoBody_maxCmsPmaxCosT">_TagKstTwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[130] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagKTwoBody_maxCmsPmaxCosT">_TagKTwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[131] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagK_S0TwoBody_maxCmsPmaxCosT">_TagK_S0TwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[132] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagOmegaTwoBody_maxCmsPmaxCosT">_TagOmegaTwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[133] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagPhiTwoBody_maxCmsPmaxCosT">_TagPhiTwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[134] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagPi0TwoBody_maxCmsPmaxCosT">_TagPi0TwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[135] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagRhopTwoBody_maxCmsPmaxCosT">_TagRhopTwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[136] = subBranch; }
+    if (t== "_tag.<a href=".././PAFTagBase.html#PAFTagBase:_TagRhoTwoBody_maxCmsPmaxCosT">_TagRhoTwoBody_maxCmsPmaxCosT</a>") { <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[137] = subBranch; }
+  }
+<b>  // test dump</b>
+<b>  //for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;NELEM_TAGBASE; i++) {</b>
+<b>  //  cout &lt;&lt; "AodTag - Branch #" &lt;&lt; i &lt;&lt; " has Address " &lt;&lt; <a href=".././PAFTagBase.html#PAFTagBase:fBranches">fBranches</a>[i] &lt;&lt; endl;</b>
+<b>  //}</b>
+}
+
+
+ 
+<a name="PAFTagBase:GetFloat"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetFloat">PAFTagBase::GetFloat</a>(TBranch *theBranch, const <a href="../ListOfTypes.html#Float_t">Float_t</a> &amp;value) const
+{
+  theBranch-&gt;GetEntry(<a href=".././PAFTagBase.html#PAFTagBase:fEventNumber">fEventNumber</a>);
+  return value;
+}
+
+
+<a name="PAFTagBase:GetShort"> </a><a href="../ListOfTypes.html#Short_t">Short_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetShort">PAFTagBase::GetShort</a>(TBranch *theBranch, const <a href="../ListOfTypes.html#Short_t">Short_t</a> &amp;value) const
+{
+  theBranch-&gt;GetEntry(<a href=".././PAFTagBase.html#PAFTagBase:fEventNumber">fEventNumber</a>);
+  return value;
+}
+
+
+<a name="PAFTagBase:GetUInt"> </a><a href="../ListOfTypes.html#UInt_t">UInt_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetUInt">PAFTagBase::GetUInt</a>(TBranch *theBranch, const <a href="../ListOfTypes.html#UInt_t">UInt_t</a> &amp;value) const
+{
+  theBranch-&gt;GetEntry(<a href=".././PAFTagBase.html#PAFTagBase:fEventNumber">fEventNumber</a>);
+  return value;
+}
+
+
+<a name="PAFTagBase:GetChar"> </a><a href="../ListOfTypes.html#Char_t">Char_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetChar">PAFTagBase::GetChar</a>(TBranch *theBranch, const <a href="../ListOfTypes.html#Char_t">Char_t</a> &amp;value) const
+{
+  theBranch-&gt;GetEntry(<a href=".././PAFTagBase.html#PAFTagBase:fEventNumber">fEventNumber</a>);
+  return value;
+}
+
+
+<a name="PAFTagBase:GetByte"> </a><a href="../ListOfTypes.html#Byte_t">Byte_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetByte">PAFTagBase::GetByte</a>(TBranch *theBranch, const <a href="../ListOfTypes.html#Byte_t">Byte_t</a> &amp;value) const
+{
+  theBranch-&gt;GetEntry(<a href=".././PAFTagBase.html#PAFTagBase:fEventNumber">fEventNumber</a>);
+  return value;
+}
+
+<a name="PAFTagBase:GetInt"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFTagBase.html#PAFTagBase:GetInt">PAFTagBase::GetInt</a>(TBranch *theBranch, const <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;value) const
+{
+  theBranch-&gt;GetEntry(<a href=".././PAFTagBase.html#PAFTagBase:fEventNumber">fEventNumber</a>);
+  return value;
+}
+
+<a name="PAFTagBase:SetEventNumber"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFTagBase.html#PAFTagBase:SetEventNumber">PAFTagBase::SetEventNumber</a>(<a href="../ListOfTypes.html#UInt_t">UInt_t</a> i)
+{
+  <a href=".././PAFTagBase.html#PAFTagBase:fEventNumber">fEventNumber</a> = i;
+}
+
+<b>// Here come the BABAR style accessors</b>
+
+<a name="PAFTagBase:getInt"> </a><a href="../ListOfTypes.html#char">char</a> <a href=".././PAFTagBase.html#PAFTagBase:getInt">PAFTagBase::getInt</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;anInt,const <a href="../ListOfTypes.html#char">char</a>* key) const
+{
+    anInt = 0;
+    static const TString prefix("_tag._");
+    TString theKey = prefix + key;
+    TBranch* branch = (TBranch*) <a href=".././PAFTagBase.html#PAFTagBase:fBranchTable">fBranchTable</a>-&gt;FindObject(theKey);
+    if (branch != 0) {
+	branch-&gt;GetEntry(<a href=".././PAFTagBase.html#PAFTagBase:fEventNumber">fEventNumber</a>);
+	anInt = *((<a href="../ListOfTypes.html#Int_t">Int_t</a> *) branch-&gt;GetAddress());
+	return kTRUE;
+    }
+    else {
+	cout &lt;&lt; "TAG: Unknown integer key " &lt;&lt; key &lt;&lt; endl;
+	return kFALSE;
+    }
+}
+
+<a name="PAFTagBase:getFloat"> </a><a href="../ListOfTypes.html#char">char</a> <a href=".././PAFTagBase.html#PAFTagBase:getFloat">PAFTagBase::getFloat</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> &amp;aFloat,const <a href="../ListOfTypes.html#char">char</a>* key) const
+{
+    aFloat = 0.0;
+    static const TString prefix("_tag._");
+    TString theKey = prefix + key;
+    TBranch* branch = (TBranch*) <a href=".././PAFTagBase.html#PAFTagBase:fBranchTable">fBranchTable</a>-&gt;FindObject(theKey);
+    if (branch != 0) {
+	branch-&gt;GetEntry(<a href=".././PAFTagBase.html#PAFTagBase:fEventNumber">fEventNumber</a>);
+	aFloat = *((<a href="../ListOfTypes.html#Float_t">Float_t</a> *) branch-&gt;GetAddress());
+	return kTRUE;
+    }
+    else {
+	cout &lt;&lt; "TAG: Unknown <a href="../ListOfTypes.html#float">float</a> key " &lt;&lt; key &lt;&lt; endl;
+	return kFALSE;
+    }
+}
+
+
+<a name="PAFTagBase:getBool"> </a><a href="../ListOfTypes.html#char">char</a> <a href=".././PAFTagBase.html#PAFTagBase:getBool">PAFTagBase::getBool</a>(<a href="../ListOfTypes.html#char">char</a> &amp;aBool,const <a href="../ListOfTypes.html#char">char</a>* key) const
+{
+    cerr &lt;&lt; "<a href=".././PAFTagBase.html#PAFTagBase:getBool">PAFTagBase::getBool</a>: Function not supported in PAF files." &lt;&lt; endl;
+    return kFALSE;
+<b>    //aBool = kFALSE;</b>
+<b>    //VAbsBit &amp;bit = TPico::Instance()-&gt;GetEventManager()-&gt;GetBit();</b>
+<b>    //return bit.<a href="#PAFTagBase:getBool">getBool</a>(aBool,key);</b>
+}
+
+<a name="PAFTagBase:putBool"> </a><a href="../ListOfTypes.html#char">char</a> <a href=".././PAFTagBase.html#PAFTagBase:putBool">PAFTagBase::putBool</a>( <a href="../ListOfTypes.html#char">char</a> aBool, const <a href="../ListOfTypes.html#char">char</a>* key)
+{
+    cerr &lt;&lt; "<a href=".././PAFTagBase.html#PAFTagBase:putBool">PAFTagBase::putBool</a>: Function not supported in PAF files." &lt;&lt; endl;
+    return kFALSE;
+<b>    //VAbsBit &amp;bit = TPico::Instance()-&gt;GetEventManager()-&gt;GetBit();</b>
+<b>    //return bit.<a href="#PAFTagBase:putBool">putBool</a>(aBool,key);</b>
+}
+
+<a name="PAFTagBase:putInt"> </a><a href="../ListOfTypes.html#char">char</a> <a href=".././PAFTagBase.html#PAFTagBase:putInt">PAFTagBase::putInt</a>( <a href="../ListOfTypes.html#Int_t">Int_t</a> aInt, const <a href="../ListOfTypes.html#char">char</a>* key) 
+{
+    cerr &lt;&lt; "<a href=".././PAFTagBase.html#PAFTagBase:putInt">PAFTagBase::putInt</a>: Function not supported in PAF files." &lt;&lt; endl;
+    return kFALSE;
+<b>    //VAbsBit &amp;bit = TPico::Instance()-&gt;GetEventManager()-&gt;GetBit();</b>
+<b>    //return bit.<a href="#PAFTagBase:putInt">putInt</a>(aInt,key);</b>
+}
+
+<a name="PAFTagBase:putFloat"> </a><a href="../ListOfTypes.html#char">char</a> <a href=".././PAFTagBase.html#PAFTagBase:putFloat">PAFTagBase::putFloat</a>( <a href="../ListOfTypes.html#Float_t">Float_t</a> aFloat, const <a href="../ListOfTypes.html#char">char</a>* key) 
+{
+    cerr &lt;&lt; "<a href=".././PAFTagBase.html#PAFTagBase:putFloat">PAFTagBase::putFloat</a>: Function not supported in PAF files." &lt;&lt; endl;
+    return kFALSE;
+<b>    //VAbsBit &amp;bit = TPico::Instance()-&gt;GetEventManager()-&gt;GetBit();</b>
+<b>    //return bit.<a href="#PAFTagBase:putFloat">putFloat</a>(aFloat,key);</b>
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

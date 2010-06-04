@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:15 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFMcBase</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>PAFMcBase</h1>
+<hr width=300>
+<!--SDL--><em><a href="#PAFMcBase:description">class description</a> - <a href="src/PAFMcBase.cxx.html">source file</a> - <a href="PAFMcBase_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="PAFMcBase" href="PAFMcBase.h">PAFMcBase</a> : public TObject</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->            <a href="./PAFMcBase.html">PAFMcBase</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:PAFMcBase">PAFMcBase</a><!--PLAIN-->()
+<!--TAB6-->            <a href="./PAFMcBase.html">PAFMcBase</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:PAFMcBase">PAFMcBase</a><!--PLAIN-->(const <a href="ListOfTypes.html#Int_t">Int_t</a> status, const <a href="ListOfTypes.html#Int_t">Int_t</a> pdtid, const <a href="ListOfTypes.html#Int_t">Int_t</a> mother, const <a href="ListOfTypes.html#Int_t">Int_t</a> firstd, const <a href="ListOfTypes.html#Int_t">Int_t</a> lastd, const TLorentzVector&amp; momentum, const TVector3&amp; startvertex, const <a href="ListOfTypes.html#Double_t">Double_t</a> lifetime, const <a href="ListOfTypes.html#Int_t">Int_t</a> aodindex, const <a href="ListOfTypes.html#Double_t">Double_t</a> aodcons = 0.0)
+<!--TAB6-->            <a href="./PAFMcBase.html">PAFMcBase</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:PAFMcBase">PAFMcBase</a><!--PLAIN-->(const <a href="./PAFMcBase.html">PAFMcBase</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:~PAFMcBase">~PAFMcBase</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#PAFMcBase:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetAodMatchConsistency">GetAodMatchConsistency</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetAodMatchIndex">GetAodMatchIndex</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetEnergy">GetEnergy</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetFirstDaughter">GetFirstDaughter</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetLastDaughter">GetLastDaughter</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetLifeTime">GetLifeTime</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetMass">GetMass</a><!--PLAIN-->() const
+<!--TAB6-->       TLorentzVector <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetMomentum">GetMomentum</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetMother">GetMother</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetPdtID">GetPdtID</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetPx">GetPx</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetPy">GetPy</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetPz">GetPz</a><!--PLAIN-->() const
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetStartVertex">GetStartVertex</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetStartVx">GetStartVx</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetStartVy">GetStartVy</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetStartVz">GetStartVz</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:GetStatus">GetStatus</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#PAFMcBase:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetAodMatchConsistency">SetAodMatchConsistency</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetAodMatchIndex">SetAodMatchIndex</a><!--PLAIN-->(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetEnergy">SetEnergy</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetFirstDaughter">SetFirstDaughter</a><!--PLAIN-->(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetLastDaughter">SetLastDaughter</a><!--PLAIN-->(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetLifeTime">SetLifeTime</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetMass">SetMass</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetMomentum">SetMomentum</a><!--PLAIN-->(const TLorentzVector&amp; p)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetMomentum">SetMomentum</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> x, const <a href="ListOfTypes.html#Double_t">Double_t</a> y, const <a href="ListOfTypes.html#Double_t">Double_t</a> z, const <a href="ListOfTypes.html#Double_t">Double_t</a> e)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetMother">SetMother</a><!--PLAIN-->(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetPdtID">SetPdtID</a><!--PLAIN-->(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetPx">SetPx</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetPy">SetPy</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetPz">SetPz</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetStartVertex">SetStartVertex</a><!--PLAIN-->(const TVector3&amp; v)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetStartVertex">SetStartVertex</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> x, const <a href="ListOfTypes.html#Double_t">Double_t</a> y, const <a href="ListOfTypes.html#Double_t">Double_t</a> z)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetStartVx">SetStartVx</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetStartVy">SetStartVy</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetStartVz">SetStartVz</a><!--PLAIN-->(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:SetStatus">SetStatus</a><!--PLAIN-->(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcBase:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="PAFMcBase:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->         <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fStatus">fStatus</a><!--PLAIN-->               <!--TAB--><i><a name="Title:fStatus">status / stop code </a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fPdtID">fPdtID</a><!--PLAIN-->                <!--TAB--><i><a name="Title:fPdtID">The particle id; pdt</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fMother">fMother</a><!--PLAIN-->               <!--TAB--><i><a name="Title:fMother">The position (index) of the mother particle in list </a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fFirstDaughter">fFirstDaughter</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fFirstDaughter">Position (index) of the first daughter... in list </a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fLastDaughter">fLastDaughter</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fLastDaughter">Position (index) of the first daughter... in list </a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fPx">fPx</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:fPx">x component of 4-Momentum</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fPy">fPy</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:fPy">y component of 4-Momentum</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fPz">fPz</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:fPz">z component of 4-Momentum</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fEnergy">fEnergy</a><!--PLAIN-->               <!--TAB--><i><a name="Title:fEnergy">Energy component of 4-Momentum</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fMass">fMass</a><!--PLAIN-->                 <!--TAB--><i><a name="Title:fMass">Mass (redundant, but easy/fast)</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fStartVx">fStartVx</a><!--PLAIN-->              <!--TAB--><i><a name="Title:fStartVx">Vertex information </a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fStartVy">fStartVy</a><!--PLAIN-->              <!--TAB--><i><a name="Title:fStartVy">Vertex information </a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fStartVz">fStartVz</a><!--PLAIN-->              <!--TAB--><i><a name="Title:fStartVz">Vertex information </a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fLifeTime">fLifeTime</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fLifeTime">Particles actual lifetime</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fAodMatchIndex">fAodMatchIndex</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fAodMatchIndex">index of the best matching reco object in the AOD</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="PAFMcBase:fAodMatchConsistency">fAodMatchConsistency</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fAodMatchConsistency">consistency of the best matching reco object in the AOD</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="PAFMcBase:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./PAFMcBase.html">PAFMcBase</a>								
+                                                                      
+ Monte Carlo truth persistent class in PAF(Pico Analysis Framework)	
+									
+ Author List:								
+ Rolf Dubitzky - Thu Oct 14 1999					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="PAFMcBase:PAFMcBase" href="src/PAFMcBase.cxx.html#PAFMcBase:PAFMcBase">PAFMcBase</a>() :
+<a href="./PAFMcBase.html#PAFMcBase:fStatus">fStatus</a>(0),              // status code 
+<a href="./PAFMcBase.html#PAFMcBase:fPdtID">fPdtID</a>(0),               // The particle id 
+<a href="./PAFMcBase.html#PAFMcBase:fMother">fMother</a>(-1),             // The position (index) of the mother in list 
+<a href="./PAFMcBase.html#PAFMcBase:fFirstDaughter">fFirstDaughter</a>(-2),      // Position (index) of the first daughter... in list 
+<a href="./PAFMcBase.html#PAFMcBase:fLastDaughter">fLastDaughter</a>(-2),       // Position (index) of the last daughter... in list 
+<a href="./PAFMcBase.html#PAFMcBase:fPx">fPx</a>(0),                  // 4-Momentum
+<a href="./PAFMcBase.html#PAFMcBase:fPy">fPy</a>(0),                  // 4-Momentum
+<a href="./PAFMcBase.html#PAFMcBase:fPz">fPz</a>(0),                  // 4-Momentum
+<a href="./PAFMcBase.html#PAFMcBase:fEnergy">fEnergy</a>(0),              // 4-Momentum
+<a href="./PAFMcBase.html#PAFMcBase:fMass">fMass</a>(0),
+<a href="./PAFMcBase.html#PAFMcBase:fStartVx">fStartVx</a>(0),             // Vertex information 
+<a href="./PAFMcBase.html#PAFMcBase:fStartVy">fStartVy</a>(0),             // Vertex information 
+<a href="./PAFMcBase.html#PAFMcBase:fStartVz">fStartVz</a>(0),             // Vertex information 
+<a href="./PAFMcBase.html#PAFMcBase:fLifeTime">fLifeTime</a>(0),            // actual lifetime
+<a href="./PAFMcBase.html#PAFMcBase:fAodMatchIndex">fAodMatchIndex</a>(-1),       // Pointer to the best matching reco object
+<a href="./PAFMcBase.html#PAFMcBase:fAodMatchConsistency">fAodMatchConsistency</a>(0)  // Consistency of the best matching reco object
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFMcBase:PAFMcBase" href="src/PAFMcBase.cxx.html#PAFMcBase:PAFMcBase">PAFMcBase</a>(const <a href="ListOfTypes.html#Int_t">Int_t</a> status, const <a href="ListOfTypes.html#Int_t">Int_t</a> pdtid,
+                     const <a href="ListOfTypes.html#Int_t">Int_t</a> mother, const <a href="ListOfTypes.html#Int_t">Int_t</a> firstd, const <a href="ListOfTypes.html#Int_t">Int_t</a> lastd, 
+                     const TLorentzVector&amp; momentum, const TVector3&amp; startvertex,
+                     const <a href="ListOfTypes.html#Double_t">Double_t</a> lifetime, const <a href="ListOfTypes.html#Int_t">Int_t</a> aodindex, const <a href="ListOfTypes.html#Double_t">Double_t</a> aodcons) :
+//  in this constructor no default values are privided! 
+//  Think about every value every time :-)
+<a href="./PAFMcBase.html#PAFMcBase:fStatus">fStatus</a>(status),
+<a href="./PAFMcBase.html#PAFMcBase:fPdtID">fPdtID</a>(pdtid),                   
+<a href="./PAFMcBase.html#PAFMcBase:fMother">fMother</a>(mother),                  
+<a href="./PAFMcBase.html#PAFMcBase:fFirstDaughter">fFirstDaughter</a>(firstd),           
+<a href="./PAFMcBase.html#PAFMcBase:fLastDaughter">fLastDaughter</a>(lastd),        
+<a href="./PAFMcBase.html#PAFMcBase:fMass">fMass</a>( momentum.Mag() ),
+<a href="./PAFMcBase.html#PAFMcBase:fLifeTime">fLifeTime</a>(lifetime),               
+<a href="./PAFMcBase.html#PAFMcBase:fAodMatchIndex">fAodMatchIndex</a>(aodindex),             
+<a href="./PAFMcBase.html#PAFMcBase:fAodMatchConsistency">fAodMatchConsistency</a>(aodcons)             
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:PrintOn" href="src/PAFMcBase.cxx.html#PAFMcBase:PrintOn">PrintOn</a>(std::ostream&amp; o) const 
+<br>
+<pre>    const <a href="ListOfTypes.html#char">char</a>* pdtname(0);
+    const Pdt *pdt = Pdt::Instance();
+    PdtEntry* pdtentry = pdt-&gt;lookup( static_cast&lt;const PdtLund::LundType&gt;( <a href="./PAFMcBase.html#PAFMcBase:fPdtID">fPdtID</a> ) ); // RD!! a pitty for OSF, the const is nessecary (a Sun Bug)
+    if (pdtentry) pdtname = pdtentry-&gt;name();
+</pre><br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./PAFMcBase.html">PAFMcBase</a> <a name="PAFMcBase:PAFMcBase" href="PAFMcBase.h">PAFMcBase</a>(const <a href="./PAFMcBase.html">PAFMcBase</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMcBase:GetStatus" href="PAFMcBase.h">GetStatus</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMcBase:GetPdtID" href="PAFMcBase.h">GetPdtID</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMcBase:GetMother" href="PAFMcBase.h">GetMother</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMcBase:GetFirstDaughter" href="PAFMcBase.h">GetFirstDaughter</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMcBase:GetLastDaughter" href="PAFMcBase.h">GetLastDaughter</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcBase:GetPx" href="PAFMcBase.h">GetPx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcBase:GetPy" href="PAFMcBase.h">GetPy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcBase:GetPz" href="PAFMcBase.h">GetPz</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcBase:GetEnergy" href="PAFMcBase.h">GetEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcBase:GetMass" href="PAFMcBase.h">GetMass</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        TLorentzVector <a name="PAFMcBase:GetMomentum" href="PAFMcBase.h">GetMomentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcBase:GetStartVx" href="PAFMcBase.h">GetStartVx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcBase:GetStartVy" href="PAFMcBase.h">GetStartVy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcBase:GetStartVz" href="PAFMcBase.h">GetStartVz</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              TVector3 <a name="PAFMcBase:GetStartVertex" href="PAFMcBase.h">GetStartVertex</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcBase:GetLifeTime" href="PAFMcBase.h">GetLifeTime</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMcBase:GetAodMatchIndex" href="PAFMcBase.h">GetAodMatchIndex</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcBase:GetAodMatchConsistency" href="PAFMcBase.h">GetAodMatchConsistency</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetStatus" href="PAFMcBase.h">SetStatus</a>(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetPdtID" href="PAFMcBase.h">SetPdtID</a>(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetMother" href="PAFMcBase.h">SetMother</a>(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetFirstDaughter" href="PAFMcBase.h">SetFirstDaughter</a>(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetLastDaughter" href="PAFMcBase.h">SetLastDaughter</a>(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetPx" href="PAFMcBase.h">SetPx</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetPy" href="PAFMcBase.h">SetPy</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetPz" href="PAFMcBase.h">SetPz</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetEnergy" href="PAFMcBase.h">SetEnergy</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetMass" href="PAFMcBase.h">SetMass</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetStartVx" href="PAFMcBase.h">SetStartVx</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetStartVy" href="PAFMcBase.h">SetStartVy</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetStartVz" href="PAFMcBase.h">SetStartVz</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetLifeTime" href="PAFMcBase.h">SetLifeTime</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetAodMatchIndex" href="PAFMcBase.h">SetAodMatchIndex</a>(const <a href="ListOfTypes.html#Int_t">Int_t</a> i)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetAodMatchConsistency" href="PAFMcBase.h">SetAodMatchConsistency</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> f)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetMomentum" href="PAFMcBase.h">SetMomentum</a>(const TLorentzVector&amp; p)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetMomentum" href="PAFMcBase.h">SetMomentum</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> x, const <a href="ListOfTypes.html#Double_t">Double_t</a> y, const <a href="ListOfTypes.html#Double_t">Double_t</a> z, const <a href="ListOfTypes.html#Double_t">Double_t</a> e)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetStartVertex" href="PAFMcBase.h">SetStartVertex</a>(const TVector3&amp; v)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:SetStartVertex" href="PAFMcBase.h">SetStartVertex</a>(const <a href="ListOfTypes.html#Double_t">Double_t</a> x, const <a href="ListOfTypes.html#Double_t">Double_t</a> y, const <a href="ListOfTypes.html#Double_t">Double_t</a> z)
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="PAFMcBase:Class" href="PAFMcBase.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="PAFMcBase:IsA" href="PAFMcBase.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:ShowMembers" href="PAFMcBase.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:Streamer" href="PAFMcBase.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:StreamerNVirtual" href="PAFMcBase.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcBase:~PAFMcBase" href="PAFMcBase.h">~PAFMcBase</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:16 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:10 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFAodCluster - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././PAFAodCluster.html">PAFAodCluster</a>							//</b>
+<b>//                                                                      //</b>
+<b>// Definition of the Analysis Object Data database			//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, Bochum University, March 1999			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "PAFSchema/PAFAodCluster.h"
+#include "RhoBase/TSmartPointer.h"
+
+#include "TTree.h"
+#include "TVector3.h"
+#include "TBranchClones.h"
+
+ClassImp(PAFAodCluster)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="PAFAodCluster:PAFAodCluster"> </a>PAFAodCluster::PAFAodCluster() :
+_EMCcrystals(0),
+_EMCbumps(0), 
+_EMCenergy(0), 
+_EMClateralshape(0),
+_EMC20(0),
+_EMC31(0), 
+_EMC42(0),
+_EMCsecmom(0), 
+_EMCconsistency(0),
+_EMCcalenergy(0),
+_EMCstatus(0),
+_EMCpidhypo(0), 
+_EMCcx(0),
+_EMCcy(0),
+_EMCcz(0),
+_EMCcovenergy(0),
+_EMCcovtheta(0),
+_EMCcovphi(0), 
+_EMCcovrho(0),
+_IFRlayers(0),
+_IFRstrips(0),
+_IFRpattern(0), 
+_IFRclusters(0),
+_IFRfirsthit(0),
+_IFRlasthit(0),
+_IFRiron(0),
+_IFRtrk(0),
+_IFRemc(0),
+_IFRtrkmatch(0),
+_IFRemcmatch(0),
+_IFRrpcMuProb(-1.0),
+_IFRclusfitChi2(0),
+_cpattern(0),
+_EMCPidInfo(),
+_IFRPidInfo(),
+_EMCs9s25(0),
+_EMCs1s9(0),
+_EMClikelihood(0),
+_EMCbits(0),
+_IFRlastbar(0)
+{
+    Int_t i;    
+    for (i=0;i&lt;20;i++) _IFRlaystrips[i] = 0;    
+    for (i=0; i&lt;NELEM_AODCLUSTER; i++) {
+	fBranches[i]=0;
+    }
+}
+
+<a name="PAFAodCluster:PAFAodCluster"> </a>PAFAodCluster::PAFAodCluster(PAFAodCluster &amp;other)
+{
+<b>    // set branch pointers of copy </b>
+    <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[0]=NULL;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> i;
+    for (i=1; i&lt;NELEM_AODCLUSTER; i++) {
+	if (other.<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[i]!=other.<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[0]) {
+	    <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[i]=other.<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[i];
+	} else {
+	    <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[i] = <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[0];
+	}
+    }
+<b>    // copy Data</b>
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcrystals">_EMCcrystals</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcrystals">_EMCcrystals</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCbumps">_EMCbumps</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCbumps">_EMCbumps</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCenergy">_EMCenergy</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCenergy">_EMCenergy</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMClateralshape">_EMClateralshape</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMClateralshape">_EMClateralshape</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMC20">_EMC20</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMC20">_EMC20</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMC31">_EMC31</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMC31">_EMC31</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMC42">_EMC42</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMC42">_EMC42</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCsecmom">_EMCsecmom</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCsecmom">_EMCsecmom</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCconsistency">_EMCconsistency</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCconsistency">_EMCconsistency</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcalenergy">_EMCcalenergy</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcalenergy">_EMCcalenergy</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCstatus">_EMCstatus</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCstatus">_EMCstatus</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCpidhypo">_EMCpidhypo</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCpidhypo">_EMCpidhypo</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcx">_EMCcx</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcx">_EMCcx</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcy">_EMCcy</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcy">_EMCcy</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcz">_EMCcz</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcz">_EMCcz</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovenergy">_EMCcovenergy</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovenergy">_EMCcovenergy</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovtheta">_EMCcovtheta</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovtheta">_EMCcovtheta</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovphi">_EMCcovphi</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovphi">_EMCcovphi</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovrho">_EMCcovrho</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovrho">_EMCcovrho</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlayers">_IFRlayers</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlayers">_IFRlayers</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRstrips">_IFRstrips</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRstrips">_IFRstrips</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRpattern">_IFRpattern</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRpattern">_IFRpattern</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRclusters">_IFRclusters</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRclusters">_IFRclusters</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRfirsthit">_IFRfirsthit</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRfirsthit">_IFRfirsthit</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlasthit">_IFRlasthit</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlasthit">_IFRlasthit</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRiron">_IFRiron</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRiron">_IFRiron</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRtrk">_IFRtrk</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRtrk">_IFRtrk</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRemc">_IFRemc</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRemc">_IFRemc</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRtrkmatch">_IFRtrkmatch</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRtrkmatch">_IFRtrkmatch</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRemcmatch">_IFRemcmatch</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRemcmatch">_IFRemcmatch</a>;
+    for (i=0; i&lt;20; i++) {
+	<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlaystrips">_IFRlaystrips</a>[i] = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlaystrips">_IFRlaystrips</a>[i];
+    }
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRrpcMuProb">_IFRrpcMuProb</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRrpcMuProb">_IFRrpcMuProb</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRclusfitChi2">_IFRclusfitChi2</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRclusfitChi2">_IFRclusfitChi2</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_cpattern">_cpattern</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_cpattern">_cpattern</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCPidInfo">_EMCPidInfo</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCPidInfo">_EMCPidInfo</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRPidInfo">_IFRPidInfo</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRPidInfo">_IFRPidInfo</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCs9s25">_EMCs9s25</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCs9s25">_EMCs9s25</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCs1s9">_EMCs1s9</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCs1s9">_EMCs1s9</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMClikelihood">_EMClikelihood</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMClikelihood">_EMClikelihood</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCbits">_EMCbits</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCbits">_EMCbits</a>;
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlastbar">_IFRlastbar</a> = other.<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlastbar">_IFRlastbar</a>;
+}
+
+<a name="PAFAodCluster:~PAFAodCluster"> </a><a href=".././PAFAodCluster.html">PAFAodCluster</a>::~<a href=".././PAFAodCluster.html">PAFAodCluster</a>()  
+{ 
+    for (<a href="../ListOfTypes.html#int">int</a> i=0; i&lt;NELEM_AODCLUSTER; i++) delete <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[i];
+}
+
+<b>//Detector status ( = subsystem with hits) __________</b>
+
+
+<a name="PAFAodCluster:EmcOk"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:EmcOk">PAFAodCluster::EmcOk</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[34]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[34]-&gt;CheckBranch();
+    return ((<a href=".././PAFAodCluster.html#PAFAodCluster:_cpattern">_cpattern</a>&amp;8)==8);
+}
+
+<a name="PAFAodCluster:IfrOk"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:IfrOk">PAFAodCluster::IfrOk</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[34]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[34]-&gt;CheckBranch();
+    return ((<a href=".././PAFAodCluster.html#PAFAodCluster:_cpattern">_cpattern</a>&amp;16)==16);
+}
+
+<a name="PAFAodCluster:SetClusterStatus"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetClusterStatus">PAFAodCluster::SetClusterStatus</a>(<a href="../ListOfTypes.html#Bool_t">Bool_t</a> emc, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> ifr) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_cpattern">_cpattern</a>=0;
+    if (emc) { <a href=".././PAFAodCluster.html#PAFAodCluster:_cpattern">_cpattern</a> |=8; }
+    if (ifr) { <a href=".././PAFAodCluster.html#PAFAodCluster:_cpattern">_cpattern</a> |=16; }
+}
+
+
+<b>//BtaCalQual___________________________________________________________</b>
+<a name="PAFAodCluster:SetEmcNumberOfCrystals"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcNumberOfCrystals">PAFAodCluster::SetEmcNumberOfCrystals</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcrystals">_EMCcrystals</a>=(<a href="../ListOfTypes.html#Short_t">Short_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetEmcNumberOfBumps"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcNumberOfBumps">PAFAodCluster::SetEmcNumberOfBumps</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCbumps">_EMCbumps</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetEmcRawEnergy"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcRawEnergy">PAFAodCluster::SetEmcRawEnergy</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCenergy">_EMCenergy</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcCalEnergy"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcCalEnergy">PAFAodCluster::SetEmcCalEnergy</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcalenergy">_EMCcalenergy</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcCovarianceEnergy"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcCovarianceEnergy">PAFAodCluster::SetEmcCovarianceEnergy</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovenergy">_EMCcovenergy</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcCovarianceTheta"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcCovarianceTheta">PAFAodCluster::SetEmcCovarianceTheta</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovtheta">_EMCcovtheta</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcCovariancePhi"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcCovariancePhi">PAFAodCluster::SetEmcCovariancePhi</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovphi">_EMCcovphi</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcCovarianceRho"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcCovarianceRho">PAFAodCluster::SetEmcCovarianceRho</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovrho">_EMCcovrho</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcS9S25"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcS9S25">PAFAodCluster::SetEmcS9S25</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCs9s25">_EMCs9s25</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcS1S9"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcS1S9">PAFAodCluster::SetEmcS1S9</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCs1s9">_EMCs1s9</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcLateralShape"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcLateralShape">PAFAodCluster::SetEmcLateralShape</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMClateralshape">_EMClateralshape</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcZernikeMoment20"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcZernikeMoment20">PAFAodCluster::SetEmcZernikeMoment20</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMC20">_EMC20</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcZernikeMoment31"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcZernikeMoment31">PAFAodCluster::SetEmcZernikeMoment31</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMC31">_EMC31</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcStatus"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcStatus">PAFAodCluster::SetEmcStatus</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> s)  {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCstatus">_EMCstatus</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>) (s&amp;255);
+}
+
+<a name="PAFAodCluster:SetEmcZernikeMoment42"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcZernikeMoment42">PAFAodCluster::SetEmcZernikeMoment42</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMC42">_EMC42</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcSecondMoment"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcSecondMoment">PAFAodCluster::SetEmcSecondMoment</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCsecmom">_EMCsecmom</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcCentroid"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcCentroid">PAFAodCluster::SetEmcCentroid</a>(TVector3 t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcx">_EMCcx</a>=(<a href="../ListOfTypes.html#Float_t">Float_t</a>)t.X(); <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcy">_EMCcy</a>=(<a href="../ListOfTypes.html#Float_t">Float_t</a>)t.Y(); <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcz">_EMCcz</a>=(<a href="../ListOfTypes.html#Float_t">Float_t</a>)t.Z();
+}
+
+<a name="PAFAodCluster:SetEmcConsistencyValue"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcConsistencyValue">PAFAodCluster::SetEmcConsistencyValue</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCconsistency">_EMCconsistency</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcConsistencyLikelihood"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcConsistencyLikelihood">PAFAodCluster::SetEmcConsistencyLikelihood</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMClikelihood">_EMClikelihood</a>=t;
+}
+
+<a name="PAFAodCluster:SetEmcConsistencyBits"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcConsistencyBits">PAFAodCluster::SetEmcConsistencyBits</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCbits">_EMCbits</a>=(<a href="../ListOfTypes.html#Char_t">Char_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetNeutralPidHypo"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetNeutralPidHypo">PAFAodCluster::SetNeutralPidHypo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCpidhypo">_EMCpidhypo</a>=(<a href="../ListOfTypes.html#Char_t">Char_t</a>)t;
+}
+
+
+<a name="PAFAodCluster:GetEmcNumberOfCrystals"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcNumberOfCrystals">PAFAodCluster::GetEmcNumberOfCrystals</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[1]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[1]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcrystals">_EMCcrystals</a>;
+}
+
+<a name="PAFAodCluster:GetEmcNumberOfBumps"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcNumberOfBumps">PAFAodCluster::GetEmcNumberOfBumps</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[2]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[2]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCbumps">_EMCbumps</a>;
+}
+
+
+<a name="PAFAodCluster:GetEmcRawEnergy"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcRawEnergy">PAFAodCluster::GetEmcRawEnergy</a>() const  {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[3]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[3]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCenergy">_EMCenergy</a>;
+}
+
+<a name="PAFAodCluster:GetEmcCalEnergy"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcCalEnergy">PAFAodCluster::GetEmcCalEnergy</a>() const  {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[10]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[10]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcalenergy">_EMCcalenergy</a>;
+}
+
+<a name="PAFAodCluster:GetEmcCovarianceEnergy"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcCovarianceEnergy">PAFAodCluster::GetEmcCovarianceEnergy</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[16]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[16]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovenergy">_EMCcovenergy</a>;
+}
+
+<a name="PAFAodCluster:GetEmcCovarianceTheta"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcCovarianceTheta">PAFAodCluster::GetEmcCovarianceTheta</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[17]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[17]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovtheta">_EMCcovtheta</a>;
+}
+
+<a name="PAFAodCluster:GetEmcCovariancePhi"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcCovariancePhi">PAFAodCluster::GetEmcCovariancePhi</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[18]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[18]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovphi">_EMCcovphi</a>;
+}
+
+<a name="PAFAodCluster:GetEmcCovarianceRho"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcCovarianceRho">PAFAodCluster::GetEmcCovarianceRho</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[19]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[19]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovrho">_EMCcovrho</a>;
+}
+
+<a name="PAFAodCluster:GetEmcS9S25"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcS9S25">PAFAodCluster::GetEmcS9S25</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[43]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[43]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCs9s25">_EMCs9s25</a>;
+}
+
+<a name="PAFAodCluster:GetEmcS1S9"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcS1S9">PAFAodCluster::GetEmcS1S9</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[44]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[44]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCs1s9">_EMCs1s9</a>;
+}
+
+<a name="PAFAodCluster:GetEmcLateralShape"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcLateralShape">PAFAodCluster::GetEmcLateralShape</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[4]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[4]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMClateralshape">_EMClateralshape</a>;
+}
+
+<a name="PAFAodCluster:GetEmcZernikeMoment20"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcZernikeMoment20">PAFAodCluster::GetEmcZernikeMoment20</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[5]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[5]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMC20">_EMC20</a>;
+}
+
+<a name="PAFAodCluster:GetEmcZernikeMoment31"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcZernikeMoment31">PAFAodCluster::GetEmcZernikeMoment31</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[6]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[6]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMC31">_EMC31</a>;
+}
+
+<a name="PAFAodCluster:GetEmcZernikeMoment42"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcZernikeMoment42">PAFAodCluster::GetEmcZernikeMoment42</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[7]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[7]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMC42">_EMC42</a>;
+}
+
+<a name="PAFAodCluster:GetEmcStatus"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcStatus">PAFAodCluster::GetEmcStatus</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[11]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[11]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCstatus">_EMCstatus</a>;
+}
+
+<a name="PAFAodCluster:GetEmcSecondMoment"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcSecondMoment">PAFAodCluster::GetEmcSecondMoment</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[8]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[8]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCsecmom">_EMCsecmom</a>;
+}
+
+<a name="PAFAodCluster:GetEmcConsistencyValue"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcConsistencyValue">PAFAodCluster::GetEmcConsistencyValue</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[9]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[9]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCconsistency">_EMCconsistency</a>;
+}
+
+<a name="PAFAodCluster:GetEmcConsistencyLikelihood"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcConsistencyLikelihood">PAFAodCluster::GetEmcConsistencyLikelihood</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[45]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[45]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMClikelihood">_EMClikelihood</a>;
+}
+
+<a name="PAFAodCluster:GetEmcConsistencyBits"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcConsistencyBits">PAFAodCluster::GetEmcConsistencyBits</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[46]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[46]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCbits">_EMCbits</a>;
+}
+
+<a name="PAFAodCluster:GetNeutralPidHypo"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetNeutralPidHypo">PAFAodCluster::GetNeutralPidHypo</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[12]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[12]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCpidhypo">_EMCpidhypo</a>;
+}
+
+TVector3
+<a name="PAFAodCluster:GetEmcCentroid"> </a><a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcCentroid">PAFAodCluster::GetEmcCentroid</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[13]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[13]-&gt;CheckBranch();
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[14]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[14]-&gt;CheckBranch();
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[15]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[15]-&gt;CheckBranch();
+    return TVector3(<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcx">_EMCcx</a>,<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcy">_EMCcy</a>,<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcz">_EMCcz</a>);
+}
+
+<b>//BtaIfrQual___________________________________________________________</b>
+<a name="PAFAodCluster:SetIfrPattern"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrPattern">PAFAodCluster::SetIfrPattern</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRpattern">_IFRpattern</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetIfrHitLayers"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrHitLayers">PAFAodCluster::SetIfrHitLayers</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlayers">_IFRlayers</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetIfrNumberOfStrips"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrNumberOfStrips">PAFAodCluster::SetIfrNumberOfStrips</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRstrips">_IFRstrips</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetIfrNumberOfStrips"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrNumberOfStrips">PAFAodCluster::SetIfrNumberOfStrips</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t,<a href="../ListOfTypes.html#Int_t">Int_t</a> l) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlaystrips">_IFRlaystrips</a>[l]=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetIfrFirstHit"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrFirstHit">PAFAodCluster::SetIfrFirstHit</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRfirsthit">_IFRfirsthit</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetIfrLastHit"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrLastHit">PAFAodCluster::SetIfrLastHit</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlasthit">_IFRlasthit</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetIfrClusters"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrClusters">PAFAodCluster::SetIfrClusters</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRclusters">_IFRclusters</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetIfrMeasuredInteractionLengths"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrMeasuredInteractionLengths">PAFAodCluster::SetIfrMeasuredInteractionLengths</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRiron">_IFRiron</a>=t;
+}
+
+<a name="PAFAodCluster:SetIfrExpectedInteractionLengths"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrExpectedInteractionLengths">PAFAodCluster::SetIfrExpectedInteractionLengths</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRtrk">_IFRtrk</a>=t;
+}
+
+<a name="PAFAodCluster:SetIfrInteractionLengthsBeforeIron"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrInteractionLengthsBeforeIron">PAFAodCluster::SetIfrInteractionLengthsBeforeIron</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRemc">_IFRemc</a>=t;
+}
+
+<a name="PAFAodCluster:SetIfrTrackMatchConsistency"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrTrackMatchConsistency">PAFAodCluster::SetIfrTrackMatchConsistency</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRtrkmatch">_IFRtrkmatch</a>=t;
+}
+
+<a name="PAFAodCluster:SetIfrEmcMatchConsistency"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrEmcMatchConsistency">PAFAodCluster::SetIfrEmcMatchConsistency</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRemcmatch">_IFRemcmatch</a>=t;
+}
+
+<a name="PAFAodCluster:SetIfrLastBarrel"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrLastBarrel">PAFAodCluster::SetIfrLastBarrel</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlastbar">_IFRlastbar</a>=(<a href="../ListOfTypes.html#Char_t">Char_t</a>)t;
+}
+
+<a name="PAFAodCluster:SetIfrRpcMuProb"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrRpcMuProb">PAFAodCluster::SetIfrRpcMuProb</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) {
+  <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRrpcMuProb">_IFRrpcMuProb</a> = f;
+}
+
+<a name="PAFAodCluster:SetIfrClusfitChi2"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrClusfitChi2">PAFAodCluster::SetIfrClusfitChi2</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) {
+  <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRclusfitChi2">_IFRclusfitChi2</a> = f;
+}
+
+<a name="PAFAodCluster:GetIfrHitLayers"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrHitLayers">PAFAodCluster::GetIfrHitLayers</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[20]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[20]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlayers">_IFRlayers</a>;
+}
+
+<a name="PAFAodCluster:GetIfrNumberOfStrips"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrNumberOfStrips">PAFAodCluster::GetIfrNumberOfStrips</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[21]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[21]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRstrips">_IFRstrips</a>;
+}
+
+<a name="PAFAodCluster:GetIfrPattern"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrPattern">PAFAodCluster::GetIfrPattern</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[22]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[22]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRpattern">_IFRpattern</a>;
+}
+
+<a name="PAFAodCluster:GetIfrClusters"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrClusters">PAFAodCluster::GetIfrClusters</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[23]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[23]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRclusters">_IFRclusters</a>;
+}
+
+<a name="PAFAodCluster:GetIfrFirstHit"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrFirstHit">PAFAodCluster::GetIfrFirstHit</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[24]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[24]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRfirsthit">_IFRfirsthit</a>;
+}
+
+<a name="PAFAodCluster:GetIfrLastHit"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrLastHit">PAFAodCluster::GetIfrLastHit</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[25]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[25]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlasthit">_IFRlasthit</a>;
+}
+
+<a name="PAFAodCluster:GetIfrMeasuredInteractionLengths"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrMeasuredInteractionLengths">PAFAodCluster::GetIfrMeasuredInteractionLengths</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[26]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[26]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRiron">_IFRiron</a>;
+}
+
+<a name="PAFAodCluster:GetIfrExpectedInteractionLengths"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrExpectedInteractionLengths">PAFAodCluster::GetIfrExpectedInteractionLengths</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[27]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[27]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRtrk">_IFRtrk</a>;
+}
+
+<a name="PAFAodCluster:GetIfrInteractionLengthsBeforeIron"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrInteractionLengthsBeforeIron">PAFAodCluster::GetIfrInteractionLengthsBeforeIron</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[28]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[28]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRemc">_IFRemc</a>;
+}
+
+<a name="PAFAodCluster:GetIfrTrackMatchConsistency"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrTrackMatchConsistency">PAFAodCluster::GetIfrTrackMatchConsistency</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[29]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[29]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRtrkmatch">_IFRtrkmatch</a>;
+}
+
+<a name="PAFAodCluster:GetIfrEmcMatchConsistency"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrEmcMatchConsistency">PAFAodCluster::GetIfrEmcMatchConsistency</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[30]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[30]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRemcmatch">_IFRemcmatch</a>;
+}
+
+<a name="PAFAodCluster:GetIfrNumberOfStrips"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrNumberOfStrips">PAFAodCluster::GetIfrNumberOfStrips</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> n) const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[31]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[31]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlaystrips">_IFRlaystrips</a>[n];
+}
+
+<a name="PAFAodCluster:GetIfrLastBarrel"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrLastBarrel">PAFAodCluster::GetIfrLastBarrel</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[47]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[47]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlastbar">_IFRlastbar</a>;
+}
+
+<a name="PAFAodCluster:GetIfrRpcMuProb"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrRpcMuProb">PAFAodCluster::GetIfrRpcMuProb</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[32]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[32]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRrpcMuProb">_IFRrpcMuProb</a>;
+}
+
+<a name="PAFAodCluster:GetIfrClusfitChi2"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrClusfitChi2">PAFAodCluster::GetIfrClusfitChi2</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[33]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[33]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRclusfitChi2">_IFRclusfitChi2</a>;
+}
+
+<b>// PidInfo ________________________________________________</b>
+
+const <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a>&amp; 
+<a name="PAFAodCluster:GetEmcPidInfo"> </a><a href=".././PAFAodCluster.html#PAFAodCluster:GetEmcPidInfo">PAFAodCluster::GetEmcPidInfo</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[35]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[35]-&gt;CheckBranch();
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[36]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[36]-&gt;CheckBranch();
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[37]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[37]-&gt;CheckBranch();
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[38]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[38]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCPidInfo">_EMCPidInfo</a>;
+}
+
+const <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a>&amp; 
+<a name="PAFAodCluster:GetIfrPidInfo"> </a><a href=".././PAFAodCluster.html#PAFAodCluster:GetIfrPidInfo">PAFAodCluster::GetIfrPidInfo</a>() const {
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[39]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[39]-&gt;CheckBranch();
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[40]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[40]-&gt;CheckBranch();
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[41]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[41]-&gt;CheckBranch();
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[42]) <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[42]-&gt;CheckBranch();
+    return <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRPidInfo">_IFRPidInfo</a>;
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFAodCluster:SetEmcPidInfo"> </a><a href=".././PAFAodCluster.html#PAFAodCluster:SetEmcPidInfo">PAFAodCluster::SetEmcPidInfo</a>(<a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a> &amp;p) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCPidInfo">_EMCPidInfo</a> = p;
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFAodCluster:SetIfrPidInfo"> </a><a href=".././PAFAodCluster.html#PAFAodCluster:SetIfrPidInfo">PAFAodCluster::SetIfrPidInfo</a>(<a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a> &amp;p) {
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRPidInfo">_IFRPidInfo</a> = p;
+}
+
+<a name="PAFAodCluster:PrintOn"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:PrintOn">PAFAodCluster::PrintOn</a>(std::ostream &amp;o) const 
+{
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:_cpattern">_cpattern</a>&amp;8) {
+	o &lt;&lt; " EMC raw energy :                     : " &lt;&lt; <a href="#PAFAodCluster:GetEmcRawEnergy">GetEmcRawEnergy</a>() &lt;&lt; endl;
+	o &lt;&lt; " EMC cal energy :                     : " &lt;&lt; <a href="#PAFAodCluster:GetEmcCalEnergy">GetEmcCalEnergy</a>() &lt;&lt; endl;
+	o &lt;&lt; " Number of Crystals in EmcCluster : " &lt;&lt; <a href="#PAFAodCluster:GetEmcNumberOfCrystals">GetEmcNumberOfCrystals</a>() &lt;&lt; endl;
+	o &lt;&lt; " EMC lateral shape                : " &lt;&lt; <a href="#PAFAodCluster:GetEmcLateralShape">GetEmcLateralShape</a>() &lt;&lt; endl;
+	o &lt;&lt; " EMC Zernike moment (2,0)         : " &lt;&lt; <a href="#PAFAodCluster:GetEmcZernikeMoment20">GetEmcZernikeMoment20</a>() &lt;&lt; endl;
+	o &lt;&lt; " EMC Zernike moment (3,1)         : " &lt;&lt; <a href="#PAFAodCluster:GetEmcZernikeMoment31">GetEmcZernikeMoment31</a>() &lt;&lt; endl;
+	o &lt;&lt; " EMC Zernike moment (4,2)         : " &lt;&lt; <a href="#PAFAodCluster:GetEmcZernikeMoment42">GetEmcZernikeMoment42</a>() &lt;&lt; endl;
+	o &lt;&lt; " EMC second moment                : " &lt;&lt; <a href="#PAFAodCluster:GetEmcSecondMoment">GetEmcSecondMoment</a>() &lt;&lt; endl;
+	TVector3 r = <a href="#PAFAodCluster:GetEmcCentroid">GetEmcCentroid</a>();
+	o &lt;&lt; " EMC cluster position :           : (" &lt;&lt; r.X() &lt;&lt; ";" &lt;&lt; r.Y() &lt;&lt; ";" &lt;&lt; r.Z() &lt;&lt;")" &lt;&lt; endl;
+    } else {
+	o &lt;&lt; " EMC : no Cluster " &lt;&lt; endl;
+    }
+    
+    if (<a href=".././PAFAodCluster.html#PAFAodCluster:_cpattern">_cpattern</a>&amp;16) {
+	o &lt;&lt; " IFR #layers hit                  : " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href="#PAFAodCluster:GetIfrHitLayers">GetIfrHitLayers</a>() &lt;&lt; endl;
+	o &lt;&lt; " IFR #strips                      : " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href="#PAFAodCluster:GetIfrNumberOfStrips">GetIfrNumberOfStrips</a>() &lt;&lt; endl;
+	o &lt;&lt; " IFR clusters                     : " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href="#PAFAodCluster:GetIfrClusters">GetIfrClusters</a>() &lt;&lt; endl;
+	o &lt;&lt; " IFR first/last hit layer         : " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href="#PAFAodCluster:GetIfrFirstHit">GetIfrFirstHit</a>() &lt;&lt; " / " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlasthit">_IFRlasthit</a> &lt;&lt; endl;
+	o &lt;&lt; " IFR expected                     : " &lt;&lt; <a href="#PAFAodCluster:GetIfrExpectedInteractionLengths">GetIfrExpectedInteractionLengths</a>() &lt;&lt; endl;
+	o &lt;&lt; " IFR measured                     : " &lt;&lt; <a href="#PAFAodCluster:GetIfrMeasuredInteractionLengths">GetIfrMeasuredInteractionLengths</a>() &lt;&lt; endl;
+	o &lt;&lt; " IFR before iron                  : " &lt;&lt; <a href="#PAFAodCluster:GetIfrInteractionLengthsBeforeIron">GetIfrInteractionLengthsBeforeIron</a>() &lt;&lt; endl;
+	o &lt;&lt; " IFR track match                  : " &lt;&lt; <a href="#PAFAodCluster:GetIfrTrackMatchConsistency">GetIfrTrackMatchConsistency</a>() &lt;&lt; endl;
+	o &lt;&lt; " IFR EMC match                    : " &lt;&lt; <a href="#PAFAodCluster:GetIfrEmcMatchConsistency">GetIfrEmcMatchConsistency</a>() &lt;&lt; endl;
+	o &lt;&lt; " IFR rpc muon probability         : " &lt;&lt; <a href="#PAFAodCluster:GetIfrRpcMuProb">GetIfrRpcMuProb</a>() &lt;&lt; endl;
+	o &lt;&lt; " IFR chi**2 of cluster fit        : " &lt;&lt; <a href="#PAFAodCluster:GetIfrClusfitChi2">GetIfrClusfitChi2</a>() &lt;&lt; endl;
+	o &lt;&lt; " IFR last barrel                  : " &lt;&lt; <a href="#PAFAodCluster:GetIfrLastBarrel">GetIfrLastBarrel</a>() &lt;&lt; endl;
+    } else {
+	o &lt;&lt; " IFR : no Cluster " &lt;&lt; endl;
+    }
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_EMCPidInfo">_EMCPidInfo</a>.<a href=".././PAFAbsPidInfo.html#PAFAbsPidInfo:PrintOn">PrintOn</a>(cout);
+    <a href=".././PAFAodCluster.html#PAFAodCluster:_IFRPidInfo">_IFRPidInfo</a>.<a href=".././PAFAbsPidInfo.html#PAFAbsPidInfo:PrintOn">PrintOn</a>(cout);
+
+} 
+
+<a name="PAFAodCluster:Init"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodCluster.html#PAFAodCluster:Init">PAFAodCluster::Init</a>(<a href=".././PAFAodCluster.html">PAFAodCluster</a>* other)
+{
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=1; i&lt;NELEM_AODCLUSTER; i++) {
+	<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[i] = other-&gt;<a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[i];
+    }
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFAodCluster:Init"> </a><a href=".././PAFAodCluster.html#PAFAodCluster:Init">PAFAodCluster::Init</a>(TBranchClones *clonesBranch)
+{
+    TString branchName(clonesBranch-&gt;GetName());
+    TBranch *subBranch;
+    TObjArray *list = clonesBranch-&gt;GetListOfBranches();
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> listLen = list-&gt;GetEntries();
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;listLen; i++) {
+	subBranch = (TBranch*) (*list)[i];
+	TString t(subBranch-&gt;GetName());
+<b>	// EMC</b>
+	if      (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcrystals">_EMCcrystals</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[1] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCbumps">_EMCbumps</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[2] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCenergy">_EMCenergy</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[3] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMClateralshape">_EMClateralshape</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[4] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMC20">_EMC20</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[5] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMC31">_EMC31</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[6] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMC42">_EMC42</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[7] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCsecmom">_EMCsecmom</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[8] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCconsistency">_EMCconsistency</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[9] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcalenergy">_EMCcalenergy</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[10] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCstatus">_EMCstatus</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[11] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCpidhypo">_EMCpidhypo</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[12] = new TSmartPointer(subBranch); } 
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcx">_EMCcx</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[13] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcy">_EMCcy</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[14] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcz">_EMCcz</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[15] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovenergy">_EMCcovenergy</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[16] = new TSmartPointer(subBranch); } 
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovtheta">_EMCcovtheta</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[17] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovphi">_EMCcovphi</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[18] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCcovrho">_EMCcovrho</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[19] = new TSmartPointer(subBranch); }   
+<b>	// IFR</b>
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlayers">_IFRlayers</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[20] = new TSmartPointer(subBranch); }  
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRstrips">_IFRstrips</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[21] = new TSmartPointer(subBranch); }  
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRpattern">_IFRpattern</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[22] = new TSmartPointer(subBranch); } 
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRclusters">_IFRclusters</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[23] = new TSmartPointer(subBranch); }  
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRfirsthit">_IFRfirsthit</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[24] = new TSmartPointer(subBranch); }  
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlasthit">_IFRlasthit</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[25] = new TSmartPointer(subBranch); } 
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRiron">_IFRiron</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[26] = new TSmartPointer(subBranch); }  
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRtrk">_IFRtrk</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[27] = new TSmartPointer(subBranch); }  
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRemc">_IFRemc</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[28] = new TSmartPointer(subBranch); }    
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRtrkmatch">_IFRtrkmatch</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[29] = new TSmartPointer(subBranch); }  
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRemcmatch">_IFRemcmatch</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[30] = new TSmartPointer(subBranch); }    
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlaystrips">_IFRlaystrips</a>[20]") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[31] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRrpcMuProb">_IFRrpcMuProb</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[32] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRclusfitChi2">_IFRclusfitChi2</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[33] = new TSmartPointer(subBranch); }
+<b>	// pattern</b>
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_cpattern">_cpattern</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[34] = new TSmartPointer(subBranch); }        
+<b>	// EmcPidInfo</b>
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCPidInfo">_EMCPidInfo</a>._likelihood[5]") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[35] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCPidInfo">_EMCPidInfo</a>._significanceLevel[5]") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[36] = new TSmartPointer(subBranch); }
+	else if (t == branchName+"._EMCidInfo._status") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[37] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCPidInfo">_EMCPidInfo</a>._sign") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[38] = new TSmartPointer(subBranch); }
+<b>	// IfrPidInfo</b>
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRPidInfo">_IFRPidInfo</a>._likelihood[5]") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[39] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRPidInfo">_IFRPidInfo</a>._significanceLevel[5]") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[40] = new TSmartPointer(subBranch); }
+	else if (t == branchName+"._IFRidInfo._status") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[41] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRPidInfo">_IFRPidInfo</a>._sign") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[42] = new TSmartPointer(subBranch); }
+<b>	// new in 8.6.x</b>
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCs9s25">_EMCs9s25</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[43] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCs1s9">_EMCs1s9</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[44] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMClikelihood">_EMClikelihood</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[45] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_EMCbits">_EMCbits</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[46] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodCluster.html#PAFAodCluster:_IFRlastbar">_IFRlastbar</a>") { <a href=".././PAFAodCluster.html#PAFAodCluster:fBranches">fBranches</a>[47] = new TSmartPointer(subBranch); }	
+    }
+}
+
+std::ostream&amp;  operator &lt;&lt; (std::ostream&amp; o, const <a href=".././PAFAodCluster.html">PAFAodCluster</a>&amp; a) { /* a.<a href="#PAFAodCluster:PrintOn">PrintOn</a>(o) */ ; return o; }
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:02 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TLogInfo - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TLogInfo.html">TLogInfo</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Log info class							//</b>
+<b>//                                                                      //</b>
+<b>// Author: Thorsten Brandt, Dresden University, Aug. 99			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "RhoManager/TLogInfo.h"
+
+ClassImp(TLogInfo)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TLogInfo:TLogInfo"> </a>TLogInfo::TLogInfo(Int_t n) :
+fLumi(0),
+fYear(0),fDay(0),fMonth(0),
+fStartHour(255),fStartMin(0),fStopHour(255),fStopMin(0)
+{
+    fCollection = TString("");
+    SetRunNumber(n);
+}
+
+<a name="TLogInfo:~TLogInfo"> </a>TLogInfo::~TLogInfo()
+{
+}
+
+void 
+<a name="TLogInfo:SetDate"> </a>TLogInfo::SetDate(Int_t y,Int_t m, Int_t d)
+{
+    fYear=y; fMonth=m; fDay=d;
+}
+
+void
+<a name="TLogInfo:SetStart"> </a>TLogInfo::SetStart(Int_t h,Int_t m)
+{
+    fStartHour=h; fStartMin=m;
+}
+
+void
+<a name="TLogInfo:SetStop"> </a>TLogInfo::SetStop(Int_t h,Int_t m)
+{
+    fStopHour=h; fStopMin=m;
+}
+
+
+void 
+<a name="TLogInfo:SetRunNumber"> </a>TLogInfo::SetRunNumber(Int_t no)
+{
+    char str[20];
+    sprintf(str,"r%i",no);
+    fRunNumber=no;
+    SetName(str);
+}
+
+Int_t
+<a name="TLogInfo:Compare"> </a>TLogInfo::Compare(const TObject *obj) const
+{
+    TLogInfo *otherL = (TLogInfo*) obj;
+    if (fRunNumber &lt; otherL-&gt;fRunNumber) { return -1; }
+    if (fRunNumber &gt; otherL-&gt;fRunNumber) { return 1; }
+    return 0;
+}
+
+void
+<a name="TLogInfo:PrintOn"> </a>TLogInfo::PrintOn(std::ostream &amp;o) const
+{
+    o &lt;&lt; " RUN #" &lt;&lt; fRunNumber &lt;&lt; " : ";
+    if (fShiftType==TLogInfo::owl) { o &lt;&lt; "OWL Shift"; }
+    if (fShiftType==TLogInfo::swing) { o &lt;&lt; "SWING Shift"; }
+    if (fShiftType==TLogInfo::day) { o &lt;&lt; "DAY Shift"; }
+    Int_t dt,t1,t2;
+    o &lt;&lt; " on " &lt;&lt; (Int_t) fDay &lt;&lt; "/" &lt;&lt; (Int_t) fMonth &lt;&lt; "/" &lt;&lt; (Int_t) fYear &lt;&lt; endl;
+    o &lt;&lt; "   Begin of Data Taking : "; 
+    if (fStartHour&lt;24) {
+	o &lt;&lt; (Int_t) fStartHour &lt;&lt; ":" &lt;&lt; (Int_t) fStartMin &lt;&lt; endl;
+    } else {
+	o &lt;&lt; " unknown" &lt;&lt; endl;
+    }
+    o &lt;&lt; "   End of Data Taking   : "; 
+    if (fStopHour&lt;24) {
+	o &lt;&lt; (Int_t) fStopHour &lt;&lt; ":" &lt;&lt; (Int_t) fStopMin &lt;&lt; endl; 
+    } else { 
+	o &lt;&lt; " unknown" &lt;&lt; endl;
+    }
+    o &lt;&lt; "   Run - Type           : " ;
+    if (fRunType== TLogInfo::colliding) { o &lt;&lt; "Colliding Beams"; }
+    if (fRunType== TLogInfo::cosmics) { o &lt;&lt; "Cosmics"; }
+    if (fRunType== TLogInfo::stable) { o &lt;&lt; "Stable Beams"; }
+    if (fRunType== TLogInfo::calibration) { o &lt;&lt; "Calibration"; }
+    if (fRunType== TLogInfo::other) { o &lt;&lt; "Other"; }
+    if (fRunType== TLogInfo::none) { o &lt;&lt; "Unknown"; }
+    o &lt;&lt; endl;
+    o &lt;&lt; "   Solenoid Current=";
+    if (fSolenoid&gt;0) { o &lt;&lt; fSolenoid; } else { o &lt;&lt; "n/a"; }
+    o &lt;&lt; "   Beamenergies (GeV)   HER = " &lt;&lt; fHer &lt;&lt; "  LER = " &lt;&lt; fLer &lt;&lt; endl;
+    o &lt;&lt; "   Integrated Luminosity : ";
+    if (fLumi&gt;0) { o &lt;&lt; fLumi &lt;&lt; " nb-1"; } else { o &lt;&lt; "n/a"; }
+    o &lt;&lt; endl;
+    if (fCollection.Length()==0) {
+	cout &lt;&lt; "  NOT yet reconstructed" &lt;&lt; endl;
+    } else {
+	cout &lt;&lt; "   OPR : " &lt;&lt; fCollection.Data() &lt;&lt; endl;
+	cout &lt;&lt; "          Procspec " &lt;&lt; fProcspec.Data() &lt;&lt; " , Vers " &lt;&lt; (Int_t) fVersion &lt;&lt; " , CONS " &lt;&lt; (Int_t) fCons &lt;&lt; endl;
+    }
+    o &lt;&lt; " ----------------------------------------" &lt;&lt; endl;
+    
+}
+
+
+/*Bool_t 
+TLogInfo::operator== (TLogInfo &amp;other)
+{
+return ( (fCollection.GetString()==other.fCollection.GetString) &amp;&amp; (_oprRelease==other._oprRelease) &amp;&amp;
+(_oprVersion==other._oprVersion) &amp;&amp; (fSolenoid==other.fSolenoid) &amp;&amp; 
+(_nL1Events==other._nL1Events) &amp;&amp;  (_nL3Events==other._nL3Events) &amp;&amp; 
+(fLumi == other.fLumi) &amp;&amp; (fRunType==other.fRunType) &amp;&amp;
+(_shiftType==other._shiftType) ) ;
+}
+*/
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

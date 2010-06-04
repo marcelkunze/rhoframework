@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:46 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TDecayMode - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: TDecayMode.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//	Class <a href=".././TDecayMode.html">TDecayMode</a> - </b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Gautier Hamel de Monchenault</b>
+<b>//      Paul Harrison &amp; Luca Lista, original Authors of TMode and DecayMode</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//      Copyright (C) 1998              Saclay &amp; LBNL</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "RhoTools/TDecayMode.h"
+#include &lt;math.h&gt;
+#include "TIterator.h"
+#include "RhoBase/TRho.h"
+
+ClassImp(TDecayMode)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TDecayMode *&amp;obj)
+{
+   obj = (TDecayMode *) buf.ReadObject(TDecayMode::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TDecayMode:TDecayMode"> </a>TDecayMode::TDecayMode( TParticlePDG* theMother,const TList&amp; theDaughters )
+{
+    SetMother( theMother );
+    for( size_t i=0; i&lt;theDaughters.GetSize(); i++ ) {
+	TParticlePDG *p = (TParticlePDG*) theDaughters.At(i);
+	AddDaughter( p );
+    }
+}
+
+<a name="TDecayMode:TDecayMode"> </a>TDecayMode::TDecayMode( const TString&amp; theMotherName,const TString theDaughterNames[5] )
+{
+    TDatabasePDG *pdt = TRho::Instance()-&gt;GetPDG();
+    SetMother( pdt-&gt;GetParticle( theMotherName ) );
+    for( size_t i=0; i&lt;5; i++ )
+	if (theDaughterNames[i]!="")
+	AddDaughter(  pdt-&gt;GetParticle( theDaughterNames[i] ) );
+<b>    //    assert( makeSense() );</b>
+}
+
+<a name="TDecayMode:TDecayMode"> </a><a href=".././TDecayMode.html#TDecayMode:TDecayMode">TDecayMode::TDecayMode</a>( const <a href=".././TDecayMode.html">TDecayMode</a>&amp; o )
+:
+<a href=".././TDecayMode.html#TDecayMode:_theMother">_theMother</a>( o.<a href=".././TDecayMode.html#TDecayMode:_theMother">_theMother</a> ),
+<a href=".././TDecayMode.html#TDecayMode:_theAntiMother">_theAntiMother</a>( o.<a href=".././TDecayMode.html#TDecayMode:_theAntiMother">_theAntiMother</a> )
+{
+    TList *l1 = const_cast&lt;TList *&gt; (&amp;o.<a href=".././TDecayMode.html#TDecayMode:_theDaughters">_theDaughters</a>);
+    TList *l2 = const_cast&lt;TList *&gt; (&amp;o.<a href=".././TDecayMode.html#TDecayMode:_theAntiDaughters">_theAntiDaughters</a>);
+    for( <a href="../ListOfTypes.html#size_t">size_t</a> i=0; i&lt;<a href=".././TDecayMode.html#TDecayMode:_theDaughters">_theDaughters</a>.GetSize(); i++ ) {
+	l1-&gt;Add(<a href=".././TDecayMode.html#TDecayMode:_theDaughters">_theDaughters</a>.At(i));
+	l2-&gt;Add(<a href=".././TDecayMode.html#TDecayMode:_theAntiDaughters">_theAntiDaughters</a>.At(i));
+    }
+}
+
+<a name="TDecayMode:TDecayMode"> </a><a href=".././TDecayMode.html#TDecayMode:TDecayMode">TDecayMode::TDecayMode</a>( const <a href="../ListOfTypes.html#char">char</a>* theMode )
+{
+    TDatabasePDG *pdt = TRho::Instance()-&gt;GetPDG();
+    
+<b>    // the initial string</b>
+    TString string( theMode );
+    string = string.Strip(TString::kBoth);
+    
+<b>    // find the arrow</b>
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> i;
+    i = string.Index("-&gt;");
+    
+<b>    // extract the mother</b>
+    TString mother( string, i );
+    mother = mother.Strip(TString::kBoth);
+    <a href="#TDecayMode:SetMother">SetMother</a>( pdt-&gt;GetParticle( mother ) );
+    
+<b>    // now the decay products</b>
+    string.Remove( 0, i+2 );
+    string = string.Strip(TString::kBoth);
+    
+    while( 1 )
+    {
+	i=string.First(" ");
+	
+	if( i &gt; 0 )
+	{
+	    <a href="#TDecayMode:AddDaughter">AddDaughter</a>( pdt-&gt;GetParticle( TString( string, i ) ) );
+	}
+	else
+	{
+	    <a href="#TDecayMode:AddDaughter">AddDaughter</a>( pdt-&gt;GetParticle( string ) );
+	    break;
+	}
+	
+	string.Remove( 0, i+1 );
+	string = string.Strip(TString::kBoth);
+	
+    }
+    
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="TDecayMode:SetMother"> </a><a href=".././TDecayMode.html#TDecayMode:SetMother">TDecayMode::SetMother</a>( TParticlePDG* theMother )
+{
+    if( theMother==0 ) return kFALSE;
+    <a href=".././TDecayMode.html#TDecayMode:_theMother">_theMother</a> = theMother;
+    <a href=".././TDecayMode.html#TDecayMode:_theAntiMother">_theAntiMother</a> = <a href="#TDecayMode:CPConjugate">CPConjugate</a>( theMother );
+    return kTRUE;
+}
+
+TParticlePDG*
+<a name="TDecayMode:CPConjugate"> </a><a href=".././TDecayMode.html#TDecayMode:CPConjugate">TDecayMode::CPConjugate</a>( TParticlePDG* thePart )
+{
+    TDatabasePDG *pdt = TRho::Instance()-&gt;GetPDG();
+    
+    TString name = thePart-&gt;GetName();
+    if (name.Index("-")&gt;0)
+	name.ReplaceAll("-","+");
+    else
+	name.ReplaceAll("+","-");
+    
+    return pdt-&gt;GetParticle(name);
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="TDecayMode:AddDaughter"> </a><a href=".././TDecayMode.html#TDecayMode:AddDaughter">TDecayMode::AddDaughter</a>( TParticlePDG* aDaughter )
+{
+    if( aDaughter==0 ) return kFALSE;
+    <a href=".././TDecayMode.html#TDecayMode:_theDaughters">_theDaughters</a>.Add( aDaughter );
+    <a href=".././TDecayMode.html#TDecayMode:_theAntiDaughters">_theAntiDaughters</a>.Add( <a href="#TDecayMode:CPConjugate">CPConjugate</a>( aDaughter ) );
+    return kTRUE;
+}
+
+const TParticlePDG * 
+<a name="TDecayMode:Mother"> </a><a href=".././TDecayMode.html#TDecayMode:Mother">TDecayMode::Mother</a>( <a href="../ListOfTypes.html#Bool_t">Bool_t</a> conjugate ) const
+{
+    if( conjugate ) return <a href=".././TDecayMode.html#TDecayMode:_theAntiMother">_theAntiMother</a>;
+    else            return <a href=".././TDecayMode.html#TDecayMode:_theMother">_theMother</a>;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> 
+<a name="TDecayMode:IsSelfConjugate"> </a><a href=".././TDecayMode.html#TDecayMode:IsSelfConjugate">TDecayMode::IsSelfConjugate</a>() const
+{
+    return <a href=".././TDecayMode.html#TDecayMode:_theMother">_theMother</a>==<a href=".././TDecayMode.html#TDecayMode:_theAntiMother">_theAntiMother</a>;
+}
+
+<b>// access to daughters</b>
+<a href="../ListOfTypes.html#int">int</a> 
+<a name="TDecayMode:NDaughters"> </a><a href=".././TDecayMode.html#TDecayMode:NDaughters">TDecayMode::NDaughters</a>() const
+{
+    return <a href=".././TDecayMode.html#TDecayMode:_theDaughters">_theDaughters</a>.GetSize();
+}
+
+const TList&amp; 
+<a name="TDecayMode:Daughters"> </a><a href=".././TDecayMode.html#TDecayMode:Daughters">TDecayMode::Daughters</a>( <a href="../ListOfTypes.html#Bool_t">Bool_t</a> conjugate ) const
+{
+    if( conjugate ) return <a href=".././TDecayMode.html#TDecayMode:_theAntiDaughters">_theAntiDaughters</a>;
+    else            return <a href=".././TDecayMode.html#TDecayMode:_theDaughters">_theDaughters</a>;
+}
+
+TIter
+<a name="TDecayMode:DaughterIterator"> </a><a href=".././TDecayMode.html#TDecayMode:DaughterIterator">TDecayMode::DaughterIterator</a>( <a href="../ListOfTypes.html#Bool_t">Bool_t</a> conjugate ) const
+{
+    if( conjugate ) 
+	return TIter(&amp;<a href=".././TDecayMode.html#TDecayMode:_theAntiDaughters">_theAntiDaughters</a>);
+    else            
+	return TIter(&amp;<a href=".././TDecayMode.html#TDecayMode:_theDaughters">_theDaughters</a>);
+}
+
+
+TString 
+<a name="TDecayMode:DecayString"> </a><a href=".././TDecayMode.html#TDecayMode:DecayString">TDecayMode::DecayString</a>( <a href="../ListOfTypes.html#Bool_t">Bool_t</a> conjugate ) const
+{
+    TString s;
+    s += <a href="#TDecayMode:Mother">Mother</a>( conjugate )-&gt;GetName();
+    s += " -&gt;";
+    TIter iter( <a href="#TDecayMode:DaughterIterator">DaughterIterator</a>( conjugate ) );
+    TParticlePDG* pdt;
+    while( pdt=(TParticlePDG*) iter.Next() )
+    {
+	s += " ";
+	s += pdt-&gt;GetName();
+    }
+    
+<b>    //</b>
+<b>    // </b>
+    return s;
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TDecayMode:~TDecayMode"> </a><a href=".././TDecayMode.html">TDecayMode</a>::~<a href=".././TDecayMode.html">TDecayMode</a>() 
+{
+}
+
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

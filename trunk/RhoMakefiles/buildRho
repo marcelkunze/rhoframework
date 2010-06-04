@@ -1,0 +1,29 @@
+#! /bin/sh
+# Build sequence for the Rho system (mk)
+
+   ROPT=-Shared
+   export ROPT
+   ROOTVER=3.03-09
+   export ROOTVER
+
+#  Build the basic Rho system
+
+   gmake RhoNNO.lib
+   gmake RhoGA.lib
+   gmake RhoMath.lib
+   gmake RhoBase.lib
+   gmake RhoConditions.lib
+   gmake RhoHistogram.lib
+   gmake RhoTools.lib
+
+#  Build the extended Rho system
+
+   gmake PAFSchema.lib
+   gmake KangaSchema.lib
+   gmake RhoManager.lib
+   gmake RhoSelector.lib
+
+#  Build the example programs
+
+   gmake RhoExamples.lib; gmake RhoExamples.bin
+

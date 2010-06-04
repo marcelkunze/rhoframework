@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:18 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFStream</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>PAFStream</h1>
+<hr width=300>
+<!--SDL--><em><a href="#PAFStream:description">class description</a> - <a href="src/PAFStream.cxx.html">source file</a> - <a href="PAFStream_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="PAFStream" href="PAFStream.h">PAFStream</a> : public TNamed</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                   <a href="./PAFStream.html">PAFStream</a> <!--TAB--><!--BOLD--><a href="#PAFStream:PAFStream">PAFStream</a><!--PLAIN-->()
+<!--TAB6-->                   <a href="./PAFStream.html">PAFStream</a> <!--TAB--><!--BOLD--><a href="#PAFStream:PAFStream">PAFStream</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* AFileNameBase, const <a href="ListOfTypes.html#char">char</a>* ATreeName)
+<!--TAB6-->                   <a href="./PAFStream.html">PAFStream</a> <!--TAB--><!--BOLD--><a href="#PAFStream:PAFStream">PAFStream</a><!--PLAIN-->(const <a href="./PAFStream.html">PAFStream</a>&amp;)
+<!--TAB6-->                virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:~PAFStream">~PAFStream</a><!--PLAIN-->()
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:AddClonesArray">AddClonesArray</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* ASubBranch, const <a href="ListOfTypes.html#char">char</a>* ABranchName, <a href="ListOfTypes.html#void">void</a>* ABranchAddress, const <a href="ListOfTypes.html#Text_t">Text_t</a>* AClassName)
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:AddLeaflist">AddLeaflist</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* ASubBranch, const <a href="ListOfTypes.html#char">char</a>* ABranchName, <a href="ListOfTypes.html#void">void</a>* ABranchAddress, const <a href="ListOfTypes.html#Text_t">Text_t</a>* ALeaflist)
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:AddObject">AddObject</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* ASubBranch, const <a href="ListOfTypes.html#char">char</a>* ABranchName, <a href="ListOfTypes.html#void">void</a>* ABranchAddress, const <a href="ListOfTypes.html#Text_t">Text_t</a>* AClassName)
+<!--TAB6-->                      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFStream:Append">Append</a><!--PLAIN-->(TFile*)
+<!--TAB6-->              static TClass* <!--TAB--><!--BOLD--><a href="#PAFStream:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:CloseFile">CloseFile</a><!--PLAIN-->()
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:Disable">Disable</a><!--PLAIN-->()
+<!--TAB6-->                      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFStream:Enable">Enable</a><!--PLAIN-->()
+<!--TAB6-->                      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFStream:Exists">Exists</a><!--PLAIN-->()
+<!--TAB6-->                    TBranch* <!--TAB--><!--BOLD--><a href="#PAFStream:FindBranch">FindBranch</a><!--PLAIN-->(PAFStreamMember* m)
+<!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFStream:GetEvent">GetEvent</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<!--TAB6-->                      TFile* <!--TAB--><!--BOLD--><a href="#PAFStream:GetFile">GetFile</a><!--PLAIN-->()
+<!--TAB6-->                 const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#PAFStream:GetFileName">GetFileName</a><!--PLAIN-->() const
+<!--TAB6-->                 const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#PAFStream:GetFileNameBase">GetFileNameBase</a><!--PLAIN-->() const
+<!--TAB6-->      const PAFStreamMember* <!--TAB--><!--BOLD--><a href="#PAFStream:GetMember">GetMember</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> MemberNo) const
+<!--TAB6-->            const TObjArray* <!--TAB--><!--BOLD--><a href="#PAFStream:GetMembers">GetMembers</a><!--PLAIN-->() const
+<!--TAB6-->                       <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFStream:GetNumberOfEvents">GetNumberOfEvents</a><!--PLAIN-->()
+<!--TAB6-->                      TTree* <!--TAB--><!--BOLD--><a href="#PAFStream:GetTree">GetTree</a><!--PLAIN-->()
+<!--TAB6-->                 const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#PAFStream:GetTreeName">GetTreeName</a><!--PLAIN-->() const
+<!--TAB6-->             virtual TClass* <!--TAB--><!--BOLD--><a href="#PAFStream:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFStream:IsActive">IsActive</a><!--PLAIN-->()
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:Lock">Lock</a><!--PLAIN-->()
+<!--TAB6-->                      TFile* <!--TAB--><!--BOLD--><a href="#PAFStream:OpenFile">OpenFile</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name, <a href="ListOfTypes.html#Bool_t">Bool_t</a> activate = kFALSE)
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:SetFile">SetFile</a><!--PLAIN-->(TFile* AFile)
+<!--TAB6-->                      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFStream:SetTree">SetTree</a><!--PLAIN-->(TTree* ATree)
+<!--TAB6-->                virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->                virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFStream:Unlock">Unlock</a><!--PLAIN-->()
+</pre>
+
+<h3><!--TAB2-->  <a name="PAFStream:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->         TString <!--TAB--><!--BOLD--><a name="PAFStream:fCurrentFilename">fCurrentFilename</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fCurrentFilename">name of file from which fTree originates </a></i>
+<!--TAB6-->      TObjArray* <!--TAB--><!--BOLD--><a name="PAFStream:fMembers">fMembers</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fMembers">a list of PAFStreamMember objects</a></i>
+<!--TAB6-->          TFile* <!--TAB--><!--BOLD--><a name="PAFStream:fFile">fFile</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fFile"></a></i>
+<!--TAB6-->          TTree* <!--TAB--><!--BOLD--><a name="PAFStream:fTree">fTree</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fTree"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFStream:fCount">fCount</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fCount"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="PAFStream:fActive">fActive</a><!--PLAIN-->           <!--TAB--><i><a name="Title:fActive"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="PAFStream:fOk">fOk</a><!--PLAIN-->               <!--TAB--><i><a name="Title:fOk">false if fTree not initialised </a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="PAFStream:fLock">fLock</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fLock"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="PAFStream:description">Class Description</a></h2>
+<pre> 									
+ <a href="./PAFStream.html">PAFStream</a>			               				
+ 									
+ Data stream class in PAF(Pico Analysis Framework)	    		
+ A "stream" is a file with a Tree in it                               
+ 									
+ Author: Leif Wilden &amp; Thorsten Brandt, TU Dresden			
+ changes: network capability, Helmut Schmuecker, Oct. 99		
+ Mods:   Stream is TNamed, MK, Jan 2k					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="PAFStream:PAFStream" href="src/PAFStream.cxx.html#PAFStream:PAFStream">PAFStream</a>(const <a href="ListOfTypes.html#char">char</a>* AFileNameBase, const <a href="ListOfTypes.html#char">char</a>* ATreeName):
+TNamed(AFileNameBase,ATreeName),
+<a href="./PAFStream.html#PAFStream:fCurrentFilename">fCurrentFilename</a>(""),
+<a href="./PAFStream.html#PAFStream:fFile">fFile</a>(0), <a href="./PAFStream.html#PAFStream:fTree">fTree</a>(0), <a href="./PAFStream.html#PAFStream:fOk">fOk</a>(kFALSE), <a href="./PAFStream.html#PAFStream:fActive">fActive</a>(kTRUE), <a href="./PAFStream.html#PAFStream:fLock">fLock</a>(kFALSE), <a href="./PAFStream.html#PAFStream:fCount">fCount</a>(0)
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFStream:~PAFStream" href="src/PAFStream.cxx.html#PAFStream:~PAFStream">~PAFStream</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFStream:AddClonesArray" href="src/PAFStream.cxx.html#PAFStream:AddClonesArray">AddClonesArray</a>(const <a href="ListOfTypes.html#char">char</a>* ASubBranch, const <a href="ListOfTypes.html#char">char</a>* ABranchName, 
+			       <a href="ListOfTypes.html#void">void</a>* ABranchAddress, const <a href="ListOfTypes.html#Text_t">Text_t</a>* AClassName)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFStream:AddLeaflist" href="src/PAFStream.cxx.html#PAFStream:AddLeaflist">AddLeaflist</a>(const <a href="ListOfTypes.html#char">char</a>* ASubBranch, const <a href="ListOfTypes.html#char">char</a>* ABranchName,
+			    <a href="ListOfTypes.html#void">void</a>* ABranchAddress, const <a href="ListOfTypes.html#Text_t">Text_t</a> *ALeaflist)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFStream:AddObject" href="src/PAFStream.cxx.html#PAFStream:AddObject">AddObject</a>(const <a href="ListOfTypes.html#char">char</a>* ASubBranch, const <a href="ListOfTypes.html#char">char</a>* ABranchName,
+			  <a href="ListOfTypes.html#void">void</a>* ABranchAddress, const <a href="ListOfTypes.html#Text_t">Text_t</a>* AClassName)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFStream:PrintOn" href="src/PAFStream.cxx.html#PAFStream:PrintOn">PrintOn</a>(std::ostream&amp; o) const
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFStream:OpenFile" href="src/PAFStream.cxx.html#PAFStream:OpenFile">OpenFile</a>(const <a href="ListOfTypes.html#char">char</a> *filename, <a href="ListOfTypes.html#Bool_t">Bool_t</a> activate)
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFStream:CloseFile" href="src/PAFStream.cxx.html#PAFStream:CloseFile">CloseFile</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFStream:SetTree" href="src/PAFStream.cxx.html#PAFStream:SetTree">SetTree</a>(TTree *t)
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFStream:Enable" href="src/PAFStream.cxx.html#PAFStream:Enable">Enable</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFStream:Exists" href="src/PAFStream.cxx.html#PAFStream:Exists">Exists</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFStream:Append" href="src/PAFStream.cxx.html#PAFStream:Append">Append</a>(TFile *file)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFStream:GetEvent" href="src/PAFStream.cxx.html#PAFStream:GetEvent">GetEvent</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n) 
+<br>
+<hr>
+<!--FUNCTION-->TBranch* <a name="PAFStream:FindBranch" href="src/PAFStream.cxx.html#PAFStream:FindBranch">FindBranch</a>(PAFStreamMember *m)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="./PAFStream.html">PAFStream</a> <a name="PAFStream:PAFStream" href="PAFStream.h">PAFStream</a>(const <a href="ListOfTypes.html#char">char</a>* AFileNameBase, const <a href="ListOfTypes.html#char">char</a>* ATreeName)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="PAFStream:IsActive" href="PAFStream.h">IsActive</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                          <a href="ListOfTypes.html#void">void</a> <a name="PAFStream:Disable" href="PAFStream.h">Disable</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                          <a href="ListOfTypes.html#void">void</a> <a name="PAFStream:Lock" href="PAFStream.h">Lock</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                          <a href="ListOfTypes.html#void">void</a> <a name="PAFStream:Unlock" href="PAFStream.h">Unlock</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                   const <a href="ListOfTypes.html#char">char</a>* <a name="PAFStream:GetFileName" href="PAFStream.h">GetFileName</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                   const <a href="ListOfTypes.html#char">char</a>* <a name="PAFStream:GetFileNameBase" href="PAFStream.h">GetFileNameBase</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                   const <a href="ListOfTypes.html#char">char</a>* <a name="PAFStream:GetTreeName" href="PAFStream.h">GetTreeName</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              const TObjArray* <a name="PAFStream:GetMembers" href="PAFStream.h">GetMembers</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        const PAFStreamMember* <a name="PAFStream:GetMember" href="PAFStream.h">GetMember</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> MemberNo) const
+<!--INLINE FUNCTION--><!--TAB6-->                        TFile* <a name="PAFStream:GetFile" href="PAFStream.h">GetFile</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                        TTree* <a name="PAFStream:GetTree" href="PAFStream.h">GetTree</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                          <a href="ListOfTypes.html#void">void</a> <a name="PAFStream:SetFile" href="PAFStream.h">SetFile</a>(TFile* AFile)
+<!--INLINE FUNCTION--><!--TAB6-->                         <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFStream:GetNumberOfEvents" href="PAFStream.h">GetNumberOfEvents</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       TClass* <a name="PAFStream:Class" href="PAFStream.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                       TClass* <a name="PAFStream:IsA" href="PAFStream.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                          <a href="ListOfTypes.html#void">void</a> <a name="PAFStream:ShowMembers" href="PAFStream.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                          <a href="ListOfTypes.html#void">void</a> <a name="PAFStream:Streamer" href="PAFStream.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                          <a href="ListOfTypes.html#void">void</a> <a name="PAFStream:StreamerNVirtual" href="PAFStream.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                     <a href="./PAFStream.html">PAFStream</a> <a name="PAFStream:PAFStream" href="PAFStream.h">PAFStream</a>(const <a href="./PAFStream.html">PAFStream</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Leif+Wilden">Leif Wilden</a> & Thorsten Brandt, <a href="http://consult.cern.ch/xwho/people?TU+Dresden">TU Dresden			</a> //</em><br>
+<em>Last update: Fri Dec 20 16:02:18 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

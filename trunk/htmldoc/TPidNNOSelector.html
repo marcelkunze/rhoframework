@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:17 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TPidNNOSelector</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TPidNNOSelector</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TPidNNOSelector:description">class description</a> - <a href="src/TPidNNOSelector.cxx.html">source file</a> - <a href="TPidNNOSelector_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TPidNNOSelector" href="TPidNNOSelector.h">TPidNNOSelector</a> : public VAbsPidSelector</h2>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:CalculateRatio">CalculateRatio</a><!--PLAIN-->()
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:CalculateSignificanceLevel">CalculateSignificanceLevel</a><!--PLAIN-->()
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:~TPidNNOSelector">~TPidNNOSelector</a><!--PLAIN-->()
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:Accept">Accept</a><!--PLAIN-->(TCandidate&amp;)
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:Accept">Accept</a><!--PLAIN-->(VAbsMicroCandidate&amp;)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:ActivateQualityControl">ActivateQualityControl</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:GetInput">GetInput</a><!--PLAIN-->(VAbsMicroCandidate&amp;)
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:GetParm">GetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key)
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:GetParmValue">GetParmValue</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key)
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->            <a href="ListOfTypes.html#Double_t">Double_t</a>* <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:Output">Output</a><!--PLAIN-->(VAbsMicroCandidate&amp;)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:Recall">Recall</a><!--PLAIN-->()
+<!--TAB6-->          static <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:SetAprioriProbability">SetAprioriProbability</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> p0 = 1., <a href="ListOfTypes.html#Double_t">Double_t</a> p1 = 1., <a href="ListOfTypes.html#Double_t">Double_t</a> p2 = 1., <a href="ListOfTypes.html#Double_t">Double_t</a> p3 = 1., <a href="ListOfTypes.html#Double_t">Double_t</a> p4 = 1.)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:SetCriterion">SetCriterion</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* c)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:SetNNOCut">SetNNOCut</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> cut)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Float_t">Float_t</a> value)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, const <a href="ListOfTypes.html#char">char</a>* value)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:SetProbabilityConversion">SetProbabilityConversion</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesno = kFALSE)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:SetRatioConversion">SetRatioConversion</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesno = kFALSE)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TPidNNOSelector:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TPidNNOSelector:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->                   static <a href="./TXMLP.html">TXMLP</a>* <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fEsel">fEsel</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fEsel"></a></i>
+<!--TAB6-->                   static <a href="./TXMLP.html">TXMLP</a>* <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fPisel">fPisel</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fPisel"></a></i>
+<!--TAB6-->                   static <a href="./TXMLP.html">TXMLP</a>* <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fMusel">fMusel</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fMusel"></a></i>
+<!--TAB6-->                   static <a href="./TXMLP.html">TXMLP</a>* <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fKasel">fKasel</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fKasel"></a></i>
+<!--TAB6-->                   static <a href="./TXMLP.html">TXMLP</a>* <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fProsel">fProsel</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fProsel">! Do not stream</a></i>
+<!--TAB6-->                          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fActiveEsel">fActiveEsel</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fActiveEsel"></a></i>
+<!--TAB6-->                          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fActivePisel">fActivePisel</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fActivePisel"></a></i>
+<!--TAB6-->                          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fActiveMusel">fActiveMusel</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fActiveMusel"></a></i>
+<!--TAB6-->                          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fActiveKasel">fActiveKasel</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fActiveKasel"></a></i>
+<!--TAB6-->                          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fActiveProsel">fActiveProsel</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fActiveProsel"></a></i>
+<!--TAB6-->                        <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fPi">fPi</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fPi"></a></i>
+<!--TAB6-->                        <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fMu">fMu</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fMu"></a></i>
+<!--TAB6-->                        <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fE">fE</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fE"></a></i>
+<!--TAB6-->                        <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fKa">fKa</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fKa"></a></i>
+<!--TAB6-->                        <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fPro">fPro</a><!--PLAIN-->           <!--TAB--><i><a name="Title:fPro"></a></i>
+<!--TAB6-->                        <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fOut">fOut[5]</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fOut"></a></i>
+<!--TAB6-->                          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fUseSL">fUseSL</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fUseSL"></a></i>
+<!--TAB6-->                          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fUseRatio">fUseRatio</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fUseRatio"></a></i>
+<!--TAB6-->                        <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fNNOCut">fNNOCut</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fNNOCut"></a></i>
+<!--TAB6-->                  static <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fNNOInput">fNNOInput[20]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fNNOInput"></a></i>
+<!--TAB6-->                 static <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fAprio">fAprio[5]</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fAprio"></a></i>
+<!--TAB6-->      static VAbsMicroCandidate* <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fInCache">fInCache</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fInCache">! Do not stream</a></i>
+<!--TAB6-->                    <a href="./TPidQuality.html">TPidQuality</a>* <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fQC">fQC</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fQC">! Produce quality plots</a></i>
+<!--TAB6-->                           TParm <!--TAB--><!--BOLD--><a name="TPidNNOSelector:fParms">fParms</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fParms"></a></i>
+</pre>
+<!--END-->
+<br><hr>
+<!--SEE ALSO--><h2>See also</h2><dl><dd>
+<a href="./TPidNNOElectronSelector.html">TPidNNOElectronSelector</a>, <a href="./TPidNNOKaonSelector.html">TPidNNOKaonSelector</a>, <a href="./TPidNNOMuonSelector.html">TPidNNOMuonSelector</a>, <a href="./TPidNNOPionSelector.html">TPidNNOPionSelector</a>, <a href="./TPidNNOProtonSelector.html">TPidNNOProtonSelector</a></dl>
+<hr>
+<!--DESCRIPTION--><h2><a name="TPidNNOSelector:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TPidNNOSelector.html">TPidNNOSelector</a>							
+                                                                      
+ Selector class for artificial neural networks for particle           
+ identification				                        
+                                                                      
+ Author List:                                                         
+ Marcel Kunze,  RUB, Feb. 99                                          
+ Copyright (C) 1999-2001, Ruhr-University Bochum.                     
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TPidNNOSelector:~TPidNNOSelector" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:~TPidNNOSelector">~TPidNNOSelector</a>( ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:SetCriterion" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:SetCriterion">SetCriterion</a>(const <a href="ListOfTypes.html#char">char</a> *c) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:SetAprioriProbability" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:SetAprioriProbability">SetAprioriProbability</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> p0,<a href="ListOfTypes.html#Double_t">Double_t</a> p1,<a href="ListOfTypes.html#Double_t">Double_t</a> p2,<a href="ListOfTypes.html#Double_t">Double_t</a> p3,<a href="ListOfTypes.html#Double_t">Double_t</a> p4)
+    <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:CalculateRatio" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:CalculateRatio">CalculateRatio</a>()
+<br>
+<pre> Protect against negative values
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:CalculateSignificanceLevel" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:CalculateSignificanceLevel">CalculateSignificanceLevel</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:Recall" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:Recall">Recall</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TPidNNOSelector:GetInput" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:GetInput">GetInput</a>(VAbsMicroCandidate&amp; b) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a>* <a name="TPidNNOSelector:Output" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:Output">Output</a>(VAbsMicroCandidate&amp; b) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:SetParm" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:SetParm">SetParm</a>(const <a href="ListOfTypes.html#char">char</a> *key, <a href="ListOfTypes.html#Float_t">Float_t</a> value) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:SetParm" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:SetParm">SetParm</a>(const <a href="ListOfTypes.html#char">char</a> *key, const <a href="ListOfTypes.html#char">char</a> *value) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TPidNNOSelector:GetParm" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:GetParm">GetParm</a>(const <a href="ListOfTypes.html#char">char</a> *key) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TPidNNOSelector:GetParmValue" href="src/TPidNNOSelector.cxx.html#TPidNNOSelector:GetParmValue">GetParmValue</a>(const <a href="ListOfTypes.html#char">char</a> *key) 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TPidNNOSelector:Accept" href="TPidNNOSelector.h">Accept</a>(TCandidate&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TPidNNOSelector:Accept" href="TPidNNOSelector.h">Accept</a>(VAbsMicroCandidate&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:SetNNOCut" href="TPidNNOSelector.h">SetNNOCut</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> cut)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:SetProbabilityConversion" href="TPidNNOSelector.h">SetProbabilityConversion</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesno = kFALSE)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:SetRatioConversion" href="TPidNNOSelector.h">SetRatioConversion</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesno = kFALSE)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:ActivateQualityControl" href="TPidNNOSelector.h">ActivateQualityControl</a>(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TPidNNOSelector:Class" href="TPidNNOSelector.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TPidNNOSelector:IsA" href="TPidNNOSelector.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:ShowMembers" href="TPidNNOSelector.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:Streamer" href="TPidNNOSelector.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TPidNNOSelector:StreamerNVirtual" href="TPidNNOSelector.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:18 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

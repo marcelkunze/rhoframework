@@ -1,0 +1,18 @@
+#! /bin/sh
+# Tag the Rho packages (mk)
+
+   RHOVER=V02-00-00
+
+   cd RhoMakefiles; cvs tag $RHOVER; cd ..
+   cd RhoNNO; cvs tag $RHOVER; cd ..
+   cd RhoGA; cvs tag $RHOVER; cd ..
+   cd RhoMath; cvs tag $RHOVER; cd ..
+   cd RhoBase; cvs tag $RHOVER; cd ..
+   cd RhoConditions;cvs tag $RHOVER; cd ..
+   cd RhoTools; cvs tag $RHOVER; cd ..
+   cd RhoExamples; cvs tag $RHOVER; cd ..
+   cd KangaSchema; cvs tag $RHOVER; cd ..
+   cd PAFSchema; cvs tag $RHOVER; cd ..
+   cd RhoManager; cvs tag $RHOVER; cd ..
+   cd RhoHistogram; cvs tag $RHOVER; cd ..
+   cd RhoSelector; cvs tag $RHOVER; cd ..

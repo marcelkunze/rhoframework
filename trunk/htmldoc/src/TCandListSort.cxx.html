@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:41 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TCandListSort - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// File and Version Information:					//</b>
+<b>//   <a href=".././TCandListSort.html">TCandListSort</a>.h							//</b>
+<b>//                                                                      //</b>
+<b>// Description:								//</b>
+<b>//   Operates on a list of TCandidates to sort them according to	//</b>
+<b>//   momentum or cluster energy, highest first.				//</b>
+<b>//                                                                      //</b>
+<b>// Usage:								//</b>
+<b>//   TCandidList aList;							//</b>
+<b>//   // ..and fill your list....					//</b>
+<b>//   <a href=".././TCandListSort.html">TCandListSort</a> mylistsort; // to instantiate a <a href=".././TCandListSort.html">TCandListSort</a> object	//</b>
+<b>//   mylistsort.p(aList); // to sort list according to momentum		//</b>
+<b>//   mylistsort.<a href="#TCandListSort:Ecal">Ecal</a>(aList); // sort list according to cluster energy	//</b>
+<b>//									//</b>
+<b>//   Clearly, the momentum sort is very general. However, the Ecal sort	//</b>
+<b>//   requires the presence of the CalQual info at Micro level.		//</b>
+<b>//                                                                      //</b>
+<b>// Original Author     Theresa Champion					//</b>
+<b>//                                                                      //</b>
+<b>// ROOT Version by Marcel Kunze, RUB					//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "RhoTools/TCandListSort.h"
+#include &lt;assert.h&gt;
+#include &lt;math.h&gt;
+#include "RhoBase/VAbsMicroCandidate.h"
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandidate.h"
+
+ClassImp(TCandListSort)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TCandListSort *&amp;obj)
+{
+   obj = (TCandListSort *) buf.ReadObject(TCandListSort::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+<b>// function to sort list of TCandidates according to momentum</b>
+<a href="../ListOfTypes.html#int">int</a> 
+SortMom(const TCandidate **trkptr1, const TCandidate **trkptr2)
+{
+  if ((*trkptr1)-&gt;<a href="#TCandListSort:P">P</a>() &lt; (*trkptr2)-&gt;<a href="#TCandListSort:P">P</a>()) return 1;
+  return -1;
+} 
+
+<b>// function to sort list of TCandidates according to EMC energy</b>
+<a href="../ListOfTypes.html#int">int</a> 
+SortEcal(const TCandidate **trkptr1, const TCandidate **trkptr2)
+{
+  <a href="../ListOfTypes.html#double">double</a> e1(0.), e2(0.);
+
+  const VAbsMicroCandidate&amp; CalQual1 = (*trkptr1)-&gt;GetMicroCandidate();
+  const VAbsMicroCandidate&amp; CalQual2 = (*trkptr2)-&gt;GetMicroCandidate();
+  if (&amp;CalQual1!=0) { e1 = CalQual1.GetEmcCalEnergy();}
+  if (&amp;CalQual2!=0) { e2 = CalQual2.GetEmcCalEnergy();}
+
+  if (e1 &lt; e2) return 1;
+  return -1;
+}
+<b>//---------------</b>
+<b>// Constructors -</b>
+<b>//---------------</b>
+
+<a name="TCandListSort:TCandListSort"> </a><a href=".././TCandListSort.html#TCandListSort:TCandListSort">TCandListSort::TCandListSort</a>()
+{
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TCandListSort:~TCandListSort"> </a><a href=".././TCandListSort.html">TCandListSort</a>::~<a href=".././TCandListSort.html">TCandListSort</a>()
+{
+}
+
+<b>//-------------------</b>
+<b>// Member functions -</b>
+<b>//-------------------</b>
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TCandListSort:P"> </a><a href=".././TCandListSort.html#TCandListSort:P">TCandListSort::P</a>(TCandList&amp; theList)
+{
+  theList.Sort(SortMom);
+}
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TCandListSort:Ecal"> </a><a href=".././TCandListSort.html#TCandListSort:Ecal">TCandListSort::Ecal</a>(TCandList&amp; theList)
+{
+  theList.Sort(SortEcal);
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

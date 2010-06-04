@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:45 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TDataServe</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TDataServe</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TDataServe:description">class description</a> - <a href="src/TDataServe.cxx.html">source file</a> - <a href="TDataServe_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TDataServe" href="TDataServe.h">TDataServe</a> : public TNamed</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:BlastAr2DD">BlastAr2DD</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>*&amp; ar, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> oldlen1, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> newlen1, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> len2)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:DelAr2DD">DelAr2DD</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>*&amp; ar, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> len)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:Mix">Mix</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a>*, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->           <a href="./TDataServe.html">TDataServe</a> <!--TAB--><!--BOLD--><a href="#TDataServe:TDataServe">TDataServe</a><!--PLAIN-->()
+<!--TAB6-->           <a href="./TDataServe.html">TDataServe</a> <!--TAB--><!--BOLD--><a href="#TDataServe:TDataServe">TDataServe</a><!--PLAIN-->(<a href="ListOfTypes.html#Text_t">Text_t</a>* name, <a href="ListOfTypes.html#Text_t">Text_t</a>* title, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>)
+<!--TAB6-->           <a href="./TDataServe.html">TDataServe</a> <!--TAB--><!--BOLD--><a href="#TDataServe:TDataServe">TDataServe</a><!--PLAIN-->(const <a href="./TDataServe.html">TDataServe</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:~TDataServe">~TDataServe</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TDataServe:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:DataRead">DataRead</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, const <a href="ListOfTypes.html#Float_t">Float_t</a>*, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> = 0, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> = 0)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:Deletevec">Deletevec</a><!--PLAIN-->(const <a href="ListOfTypes.html#UInt_t">UInt_t</a>)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:FillTNtuple">FillTNtuple</a><!--PLAIN-->(TNtuple&amp;) const
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TDataServe:GetInputMean">GetInputMean</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TDataServe:GetInputScale">GetInputScale</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TDataServe:GetInvec">GetInvec</a><!--PLAIN-->(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TDataServe:GetInvecLen">GetInvecLen</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TDataServe:GetInvecTrn">GetInvecTrn</a><!--PLAIN-->(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TDataServe:GetInvecTst">GetInvecTst</a><!--PLAIN-->(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TDataServe:GetNumAllvecs">GetNumAllvecs</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TDataServe:GetNumTrnvecs">GetNumTrnvecs</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TDataServe:GetNumTstvecs">GetNumTstvecs</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TDataServe:GetNumvecs">GetNumvecs</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TDataServe:GetOutputMean">GetOutputMean</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TDataServe:GetOutputScale">GetOutputScale</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TDataServe:GetOutvec">GetOutvec</a><!--PLAIN-->(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#TDataServe:GetOutvecLen">GetOutvecLen</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TDataServe:GetOutvecTrn">GetOutvecTrn</a><!--PLAIN-->(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#TDataServe:GetOutvecTst">GetOutvecTst</a><!--PLAIN-->(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:Init">Init</a><!--PLAIN-->(const <a href="ListOfTypes.html#UInt_t">UInt_t</a>)
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TDataServe:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:MixTrn">MixTrn</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:Putvec">Putvec</a><!--PLAIN-->(const <a href="ListOfTypes.html#Float_t">Float_t</a>*, const <a href="ListOfTypes.html#Float_t">Float_t</a>*)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:Reset">Reset</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:SetInvecElem">SetInvecElem</a><!--PLAIN-->(const <a href="ListOfTypes.html#UInt_t">UInt_t</a>, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>, const <a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:SetOutvecElem">SetOutvecElem</a><!--PLAIN-->(const <a href="ListOfTypes.html#UInt_t">UInt_t</a>, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>, const <a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:TNtupleDataRead">TNtupleDataRead</a><!--PLAIN-->(TNtuple&amp;, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> = 0, <a href="ListOfTypes.html#UInt_t">UInt_t</a> = 0)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDataServe:TNtupleXDataRead">TNtupleXDataRead</a><!--PLAIN-->(TNtuple&amp;, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>*, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>*, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> = 0, <a href="ListOfTypes.html#UInt_t">UInt_t</a> = 0)
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TDataServe:TTreeDataRead">TTreeDataRead</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* file, const <a href="ListOfTypes.html#char">char</a>* tree, const <a href="ListOfTypes.html#char">char</a>* in, const <a href="ListOfTypes.html#char">char</a>* out, const <a href="ListOfTypes.html#char">char</a>* cut)
+</pre>
+
+<h3><!--TAB2-->  <a name="TDataServe:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->         <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TDataServe:fInvecLen">fInvecLen</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fInvecLen">length of inputvector</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TDataServe:fOutvecLen">fOutvecLen</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fOutvecLen">length of outputvectors</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TDataServe:fMaxvecs">fMaxvecs</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fMaxvecs"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Float_t">Float_t</a>** <!--TAB--><!--BOLD--><a name="TDataServe:fInvecAr">fInvecAr</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fInvecAr">array of inputputvectors</a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a name="TDataServe:fInvecMean">fInvecMean</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fInvecMean">mean values</a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a name="TDataServe:fInvecScale">fInvecScale</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fInvecScale">input scale</a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Float_t">Float_t</a>** <!--TAB--><!--BOLD--><a name="TDataServe:fOutvecAr">fOutvecAr</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fOutvecAr">array of outputvectors</a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a name="TDataServe:fOutvecMean">fOutvecMean</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fOutvecMean">mean values</a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a name="TDataServe:fOutvecScale">fOutvecScale</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fOutvecScale">output scale</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TDataServe:fNumTrnvecs">fNumTrnvecs</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fNumTrnvecs">Number of trainvectors</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TDataServe:fNumTstvecs">fNumTstvecs</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fNumTstvecs">Number of testvevtors</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TDataServe:fNumvecs">fNumvecs</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fNumvecs">Number of all vectors</a></i>
+<!--TAB6-->        <a href="ListOfTypes.html#UInt_t">UInt_t</a>* <!--TAB--><!--BOLD--><a name="TDataServe:fIndexTrn">fIndexTrn</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fIndexTrn">index array</a></i>
+<!--TAB6-->        <a href="ListOfTypes.html#UInt_t">UInt_t</a>* <!--TAB--><!--BOLD--><a name="TDataServe:fIndexTst">fIndexTst</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fIndexTst">index array</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TDataServe:fData_OK">fData_OK</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fData_OK"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TDataServe:fBalance">fBalance</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fBalance">!Balance samples</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TDataServe:description">Class Description</a></h2>
+<pre>									
+ <a href="./TDataServe.html">TDataServe</a>								
+									
+ A simple datastack for use with the Neural Network Objects (NNO)	
+ It supports: - separate storing of train and testvectors		
+		- mixing of the trainvectors				
+		- deleting of bad vectors				
+		- reading data from TNtuple				
+									
+ Usage: - Call the normal constructors				
+	  - Fill the <a href="./TDataServe.html">TDataServe</a> objects via				
+		- Putvec function					
+		- TNtuple_DataRead function				
+		- TNtuple_XDataRead function				
+	  - Call Init function						
+									
+ Author List:								
+ H.Schmücker, Bochum University					
+ M.Kunze, Bochum University, Feb. 01					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+									
+
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:Streamer" href="src/TDataServe.cxx.html#TDataServe:Streamer">Streamer</a>(TBuffer &amp;b)
+<br>
+<pre> Streamer
+</pre><hr>
+<!--FUNCTION--> <a name="TDataServe:TDataServe" href="src/TDataServe.cxx.html#TDataServe:TDataServe">TDataServe</a>() :
+TNamed(),
+<a href="./TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>(0),
+<a href="./TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>(0),
+<a href="./TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>(0),
+<a href="./TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>(0),
+<a href="./TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>(0),
+<a href="./TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>(0),
+<a href="./TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>(0),
+<a href="./TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>(0),
+<a href="./TDataServe.html#TDataServe:fData_OK">fData_OK</a>(kFALSE),
+<a href="./TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>(0),
+<a href="./TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>(0),
+<a href="./TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>(0),
+<a href="./TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>(0),
+<a href="./TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>(0),
+<a href="./TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>(0)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDataServe:TDataServe" href="src/TDataServe.cxx.html#TDataServe:TDataServe">TDataServe</a>(<a href="ListOfTypes.html#Text_t">Text_t</a>* name,<a href="ListOfTypes.html#Text_t">Text_t</a>* title,const <a href="ListOfTypes.html#UInt_t">UInt_t</a> in,const  <a href="ListOfTypes.html#UInt_t">UInt_t</a> out):
+<a href="./TDataServe.html#TDataServe:fInvecLen">fInvecLen</a>(in),
+<a href="./TDataServe.html#TDataServe:fOutvecLen">fOutvecLen</a>(out),
+<a href="./TDataServe.html#TDataServe:fInvecScale">fInvecScale</a>(0),
+<a href="./TDataServe.html#TDataServe:fOutvecScale">fOutvecScale</a>(0),
+TNamed(name,title),
+<a href="./TDataServe.html#TDataServe:fMaxvecs">fMaxvecs</a>(0),
+<a href="./TDataServe.html#TDataServe:fNumvecs">fNumvecs</a>(0),
+<a href="./TDataServe.html#TDataServe:fNumTrnvecs">fNumTrnvecs</a>(0),
+<a href="./TDataServe.html#TDataServe:fNumTstvecs">fNumTstvecs</a>(0),
+<a href="./TDataServe.html#TDataServe:fData_OK">fData_OK</a>(kFALSE),
+<a href="./TDataServe.html#TDataServe:fInvecAr">fInvecAr</a>(0),
+<a href="./TDataServe.html#TDataServe:fInvecMean">fInvecMean</a>(0),
+<a href="./TDataServe.html#TDataServe:fOutvecAr">fOutvecAr</a>(0),
+<a href="./TDataServe.html#TDataServe:fOutvecMean">fOutvecMean</a>(0),
+<a href="./TDataServe.html#TDataServe:fIndexTrn">fIndexTrn</a>(0),
+<a href="./TDataServe.html#TDataServe:fIndexTst">fIndexTst</a>(0)
+<br>
+<pre> normal constructor
+ Parameters: name, title, inputvectorlength, outputvectorlength
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:FillTNtuple" href="src/TDataServe.cxx.html#TDataServe:FillTNtuple">FillTNtuple</a>(TNtuple&amp; tup) const
+<br>
+<pre> fill tup with input and outputvectors
+ e.g. TNtuple tup("tup","in out","i1:i2:i3:i4... :o1:o2:o3");
+</pre><hr>
+<!--FUNCTION--> <a name="TDataServe:~TDataServe" href="src/TDataServe.cxx.html#TDataServe:~TDataServe">~TDataServe</a>()
+<br>
+<pre> destructor
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:Reset" href="src/TDataServe.cxx.html#TDataServe:Reset">Reset</a>()
+<br>
+<pre> clears <a href="./TDataServe.html">TDataServe</a> object and sets allocated memory free
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:DelAr2DD" href="src/TDataServe.cxx.html#TDataServe:DelAr2DD">DelAr2DD</a>(<a href="ListOfTypes.html#Float_t">Float_t</a>**&amp; ar,const <a href="ListOfTypes.html#UInt_t">UInt_t</a> len)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:BlastAr2DD" href="src/TDataServe.cxx.html#TDataServe:BlastAr2DD">BlastAr2DD</a>(<a href="ListOfTypes.html#Float_t">Float_t</a>**&amp; ar,
+			    const <a href="ListOfTypes.html#UInt_t">UInt_t</a> oldlen1,
+			    const <a href="ListOfTypes.html#UInt_t">UInt_t</a> newlen1,
+			    const <a href="ListOfTypes.html#UInt_t">UInt_t</a> len2)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:Mix" href="src/TDataServe.cxx.html#TDataServe:Mix">Mix</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a>* vec, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> len)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:MixTrn" href="src/TDataServe.cxx.html#TDataServe:MixTrn">MixTrn</a>()
+<br>
+<pre>mixes trainvectors of <a href="./TDataServe.html">TDataServe</a> object.
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:Init" href="src/TDataServe.cxx.html#TDataServe:Init">Init</a>(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> tst)
+<br>
+<pre> <a href="#TDataServe:Init">Init</a>(number of testvectors)
+ Call Init after every change of data.
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:DataRead" href="src/TDataServe.cxx.html#TDataServe:DataRead">DataRead</a>(const <a href="ListOfTypes.html#char">char</a>* name,
+			     const <a href="ListOfTypes.html#Float_t">Float_t</a>* out,
+			     const <a href="ListOfTypes.html#UInt_t">UInt_t</a> start,
+			     const <a href="ListOfTypes.html#UInt_t">UInt_t</a> laenge)
+<br>
+<pre> forget it
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:TNtupleXDataRead" href="src/TDataServe.cxx.html#TDataServe:TNtupleXDataRead">TNtupleXDataRead</a>(TNtuple&amp; tup,
+				   const <a href="ListOfTypes.html#UInt_t">UInt_t</a> inlen,
+				   const <a href="ListOfTypes.html#UInt_t">UInt_t</a> outlen,			
+				   const <a href="ListOfTypes.html#UInt_t">UInt_t</a>* inselect,
+				   const <a href="ListOfTypes.html#UInt_t">UInt_t</a>* outselect,
+				   const <a href="ListOfTypes.html#UInt_t">UInt_t</a> start,
+				   <a href="ListOfTypes.html#UInt_t">UInt_t</a> len)
+<br>
+<pre> fill <a href="./TDataServe.html">TDataServe</a> from TNtuple
+
+ inlen: length of inselect, i.e. number of selected Ntuple columns
+ inselect: array containing the indexnumbers of selected TNtuple columns
+	       (first column: 0), if the number of selected columns is smaller than
+	       the length of inputvectors, the skipped elements of inputvectors
+	       are filled with zero.
+ start=0: startevent of TNtuple
+ len=0: Number of events   if len=0, tup is read from
+	    start position to last row of Ntuple.
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:TNtupleDataRead" href="src/TDataServe.cxx.html#TDataServe:TNtupleDataRead">TNtupleDataRead</a>(TNtuple&amp; tup,
+				  const <a href="ListOfTypes.html#UInt_t">UInt_t</a> start,
+				  <a href="ListOfTypes.html#UInt_t">UInt_t</a> len)
+<br>
+<pre> fill <a href="./TDataServe.html">TDataServe</a> from TNtuple
+ tup("tup","in out","i1:i2:i3:i4... :o1:o2:o3");
+ start=0: startevent of TNtuple
+ len=0: Number of events   if len=0, TNuple is read, from
+	    startposition to the last row of Ntuple.
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:SetInvecElem" href="src/TDataServe.cxx.html#TDataServe:SetInvecElem">SetInvecElem</a>(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> ind1,
+			      const <a href="ListOfTypes.html#UInt_t">UInt_t</a> ind2,
+			      const <a href="ListOfTypes.html#Float_t">Float_t</a> val)
+<br>
+<pre> set single inputvector element
+ ind1: number of vector
+ ind2: number of element
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:SetOutvecElem" href="src/TDataServe.cxx.html#TDataServe:SetOutvecElem">SetOutvecElem</a>(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> ind1,
+			       const <a href="ListOfTypes.html#UInt_t">UInt_t</a> ind2,
+			       const <a href="ListOfTypes.html#Float_t">Float_t</a> val)
+<br>
+<pre> set single inputvector element
+ ind1: number of vector
+ ind2; number of element
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:Putvec" href="src/TDataServe.cxx.html#TDataServe:Putvec">Putvec</a>(const <a href="ListOfTypes.html#Float_t">Float_t</a>* invec, const <a href="ListOfTypes.html#Float_t">Float_t</a>* outvec)
+<br>
+<pre>Add new input and outputvector
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TDataServe:Deletevec" href="src/TDataServe.cxx.html#TDataServe:Deletevec">Deletevec</a>(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> ind)
+<br>
+<pre> Deletes input and outputvector
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TDataServe:TTreeDataRead" href="src/TDataServe.cxx.html#TDataServe:TTreeDataRead">TTreeDataRead</a>(const <a href="ListOfTypes.html#char">char</a>* file,const <a href="ListOfTypes.html#char">char</a> *tree,const <a href="ListOfTypes.html#char">char</a>* in, const <a href="ListOfTypes.html#char">char</a>* out, const <a href="ListOfTypes.html#char">char</a> *c)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TDataServe:GetInputMean" href="src/TDataServe.cxx.html#TDataServe:GetInputMean">GetInputMean</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TDataServe:GetOutputMean" href="src/TDataServe.cxx.html#TDataServe:GetOutputMean">GetOutputMean</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TDataServe:GetInputScale" href="src/TDataServe.cxx.html#TDataServe:GetInputScale">GetInputScale</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TDataServe:GetOutputScale" href="src/TDataServe.cxx.html#TDataServe:GetOutputScale">GetOutputScale</a>()
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TDataServe:GetNumAllvecs" href="TDataServe.h">GetNumAllvecs</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TDataServe:GetNumTrnvecs" href="TDataServe.h">GetNumTrnvecs</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TDataServe:GetNumTstvecs" href="TDataServe.h">GetNumTstvecs</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TDataServe:GetNumvecs" href="TDataServe.h">GetNumvecs</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TDataServe:GetInvecLen" href="TDataServe.h">GetInvecLen</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="TDataServe:GetOutvecLen" href="TDataServe.h">GetOutvecLen</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TDataServe:GetInvec" href="TDataServe.h">GetInvec</a>(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TDataServe:GetOutvec" href="TDataServe.h">GetOutvec</a>(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TDataServe:GetInvecTrn" href="TDataServe.h">GetInvecTrn</a>(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TDataServe:GetInvecTst" href="TDataServe.h">GetInvecTst</a>(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TDataServe:GetOutvecTrn" href="TDataServe.h">GetOutvecTrn</a>(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="TDataServe:GetOutvecTst" href="TDataServe.h">GetOutvecTst</a>(const <a href="ListOfTypes.html#UInt_t">UInt_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TDataServe:Class" href="TDataServe.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TDataServe:IsA" href="TDataServe.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDataServe:ShowMembers" href="TDataServe.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDataServe:StreamerNVirtual" href="TDataServe.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TDataServe.html">TDataServe</a> <a name="TDataServe:TDataServe" href="TDataServe.h">TDataServe</a>(const <a href="./TDataServe.html">TDataServe</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:46 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

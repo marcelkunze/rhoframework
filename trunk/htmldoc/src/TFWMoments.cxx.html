@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:54 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TFWMoments - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//      </b>
+<b>//	Class <a href=".././TFWMoments.html">TFWMoments</a> - a simple class to calculate Fox-Wolfram Moments</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//      Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author :</b>
+<b>//      Gautier Hamel de Monchenault  </b>
+<b>//</b>
+<b>// From :</b>
+<b>//      Alex Samuel, Theresa Champion, original authors</b>
+<b>//             of Fox-Wolfram classes in BetaTools</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+<b>//-------------</b>
+<b>// C Headers --</b>
+<b>//-------------</b>
+#include &lt;math.h&gt;
+#include &lt;assert.h&gt;
+<b>//-----------------------</b>
+<b>// This Class's Header --</b>
+<b>//-----------------------</b>
+#include "RhoTools/TFWMoments.h"
+
+ClassImp(TFWMoments)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TFWMoments *&amp;obj)
+{
+   obj = (TFWMoments *) buf.ReadObject(TFWMoments::Class());
+   return buf;
+}
+
+<b>//-------------------------------</b>
+<b>// Collaborating Class Headers --</b>
+<b>//-------------------------------</b>
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandListIterator.h"
+#include "TLorentzVector.h"
+#include "RhoTools/TBooster.h"
+#include "RhoBase/TCandidate.h"
+
+<b>//-----------------------------------------------------------------------</b>
+<b>// Local Macros, Typedefs, Structures, Unions and Forward Declarations --</b>
+<b>//-----------------------------------------------------------------------</b>
+
+<a name="TFWMoments:TFWMoments"> </a><a href=".././TFWMoments.html#TFWMoments:TFWMoments">TFWMoments::TFWMoments</a>( <a href="../ListOfTypes.html#int">int</a> maxorder )
+  : <a href=".././TFWMoments.html#TFWMoments:_nmom">_nmom</a>( maxorder+1 )
+  , <a href=".././TFWMoments.html#TFWMoments:_FWarray">_FWarray</a>( <a href=".././TFWMoments.html#TFWMoments:_nmom">_nmom</a> )
+  , <a href=".././TFWMoments.html#TFWMoments:_sumarray">_sumarray</a>( <a href=".././TFWMoments.html#TFWMoments:_nmom">_nmom</a> )
+{
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TFWMoments:BoostAndCompute"> </a><a href=".././TFWMoments.html#TFWMoments:BoostAndCompute">TFWMoments::BoostAndCompute</a>( TCandList&amp; list,
+			       <a href=".././TBooster.html">TBooster</a>* booster )
+{
+  assert( booster!=0 );
+  TCandList boostedList;
+  booster-&gt;BoostTo( list, boostedList );
+  <a href="#TFWMoments:Compute">Compute</a>( boostedList );
+  boostedList.Cleanup();
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TFWMoments:Compute"> </a><a href=".././TFWMoments.html#TFWMoments:Compute">TFWMoments::Compute</a>(TCandList&amp; list )
+{
+<b>  // initialize</b>
+  <a href="#TFWMoments:Reset">Reset</a>();
+  
+  if( list.GetNumberOfCandidates()==0 ) return;
+
+  TCandidate* c1;
+  TCandidate* c2;
+  <a href="../ListOfTypes.html#double">double</a> s = 0.;
+  <a href="../ListOfTypes.html#int">int</a> l;
+
+<b>  // start a loop over the all candidates</b>
+  TCandListIterator iter1(list);
+
+  while ( c1 = iter1.Next() ) 
+    {
+<b>      // this candidate's 3-momentum</b>
+      TVector3 p1(c1-&gt;P3());  // use the cast operator of LorentzVector
+      <a href="../ListOfTypes.html#double">double</a> pmag1 = p1.Mag();
+
+<b>      // loop over other candidates, starting at the next one in the list</b>
+      TCandListIterator iter2(iter1);
+
+      while ( c2 = iter2.Next() ) 
+	{
+<b>	  // this candidate's 3-momentum</b>
+	  TVector3 p2(c2-&gt;P3());
+	  <a href="../ListOfTypes.html#double">double</a> pmag2 = p2.Mag();
+
+<b>	  // the cosine of the angle between the two candidates</b>
+	  <a href="../ListOfTypes.html#double">double</a> cosPhi =  cos ( p1.Angle(p2) );
+
+<b>	  // the contribution of this pair of track </b>
+<b>	  // (note the factor 2 : the pair enters the sum twice)</b>
+	  for( l=0; l&lt;<a href=".././TFWMoments.html#TFWMoments:_nmom">_nmom</a>; l++ )
+	    <a href=".././TFWMoments.html#TFWMoments:_sumarray">_sumarray</a>(l) += 2 * pmag1 * pmag2 * <a href="#TFWMoments:Legendre">Legendre</a>( l, 0, cosPhi );
+	}
+      
+<b>      // contribution of this track</b>
+      for( l=0; l&lt;<a href=".././TFWMoments.html#TFWMoments:_nmom">_nmom</a>; l++ )
+	<a href=".././TFWMoments.html#TFWMoments:_sumarray">_sumarray</a>(l) += pmag1 * pmag1 * <a href="#TFWMoments:Legendre">Legendre</a>( l, 0, 1. );
+      
+<b>      // total energy</b>
+      s += c1-&gt;Energy();
+      
+    }
+  
+<b>  // well ...</b>
+  if( s&lt;=0. ) return;
+  
+<b>  // normalize Fox Wolfram Moments</b>
+  for(<a href="../ListOfTypes.html#int">int</a> i=0; i&lt;<a href=".././TFWMoments.html#TFWMoments:_nmom">_nmom</a>; i++)
+    <a href=".././TFWMoments.html#TFWMoments:_FWarray">_FWarray</a>(i) = <a href=".././TFWMoments.html#TFWMoments:_sumarray">_sumarray</a>(i)/pow(s,2) ;
+
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TFWMoments:Reset"> </a><a href=".././TFWMoments.html#TFWMoments:Reset">TFWMoments::Reset</a>() 
+{
+  for ( <a href="../ListOfTypes.html#int">int</a> i=0; i&lt;<a href=".././TFWMoments.html#TFWMoments:_nmom">_nmom</a>; i++) 
+    { 
+      <a href=".././TFWMoments.html#TFWMoments:_FWarray">_FWarray</a>(i) = 0.;
+      <a href=".././TFWMoments.html#TFWMoments:_sumarray">_sumarray</a>(i) = 0.;
+    }
+}
+
+<a href="../ListOfTypes.html#double">double</a>
+<a name="TFWMoments:R"> </a><a href=".././TFWMoments.html#TFWMoments:R">TFWMoments::R</a>( <a href="../ListOfTypes.html#int">int</a> order ) const
+{
+  if( <a href="#TFWMoments:H">H</a>(0)&gt;0. ) {
+    if( order &lt; <a href=".././TFWMoments.html#TFWMoments:_nmom">_nmom</a> ){ 
+      return ( <a href="#TFWMoments:H">H</a>(order)/<a href="#TFWMoments:H">H</a>(0) );
+    }
+  }
+  return 0.;
+}
+
+<a name="TFWMoments:~TFWMoments"> </a><a href=".././TFWMoments.html">TFWMoments</a>::~<a href=".././TFWMoments.html">TFWMoments</a>() {}
+
+
+<b>// Compute associated Legendre polynomial P_l^m(x) .</b>
+<b>// modification of plgndr() code, from Press et. al., "Numerical Recipes in C"</b>
+<b>// Code from Alex Samuel's BetaTools/TFoxWolfram class,</b>
+<b>// shamelessly stollen by Gautier</b>
+
+<a href="../ListOfTypes.html#double">double</a> 
+<a name="TFWMoments:Legendre"> </a><a href=".././TFWMoments.html#TFWMoments:Legendre">TFWMoments::Legendre</a>( <a href="../ListOfTypes.html#int">int</a> l, <a href="../ListOfTypes.html#int">int</a> m, <a href="../ListOfTypes.html#double">double</a> x )
+{
+    assert(m &gt;= 0.);
+    assert(m &lt;= l);
+    assert(fabs(x) &lt;= 1.);
+
+    <a href="../ListOfTypes.html#double">double</a> pmm = 1.;
+
+    if(m &gt; 0)
+    {
+	<a href="../ListOfTypes.html#double">double</a> somx2 = sqrt((1. - x) * (1. + x));
+	<a href="../ListOfTypes.html#double">double</a> fact = 1.;
+
+	for(<a href="../ListOfTypes.html#int">int</a> i=0; i&lt;m; i++)
+	{
+	    pmm *= -fact * somx2;
+	    fact += 2.0;
+	}
+    }
+
+    if(l == m)
+	return pmm;
+
+    else
+    {
+	<a href="../ListOfTypes.html#double">double</a> pmmp1 = x * (2 * m + 1) * pmm;
+	if(l == m + 1)
+	    return pmmp1;
+	else
+	{
+	    for(<a href="../ListOfTypes.html#int">int</a> ll=m+2; ll&lt;=l; ll++)
+	    {
+		<a href="../ListOfTypes.html#double">double</a> pll = (x * (2 * ll - 1) * pmmp1 - (ll + m - 1) * pmm) / 
+		    (ll - m);
+		pmm = pmmp1;
+		pmmp1 = pll;
+	    }
+
+	    return pmmp1;
+	}
+    }
+}
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>
