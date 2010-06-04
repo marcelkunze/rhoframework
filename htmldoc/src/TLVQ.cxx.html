@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:02 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TLVQ - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//									//</b>
+<b>// <a href=".././TLVQ.html">TLVQ</a>									//</b>
+<b>//									//</b>
+<b>// Implementation of the LEARNING-VECTOR-QUANTISATION (LVQ)		//</b>
+<b>// Part of the Neural Network Objects package (NNO)			//</b>
+<b>//									//</b>
+<b>// Author List:								//</b>
+<b>// Johannes Steffens, Bochum University					//</b>
+<b>// M.Kunze, Bochum University						//</b>
+<b>// (C) Copyright Johannes Steffens 1995, Ruhr-University Bochum.	//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include &lt;stdlib.h&gt;
+#include &lt;math.h&gt;
+#include &lt;float.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdarg.h&gt;
+#include "RhoNNO/TLVQ.h"
+#include "RhoNNO/VNeuralNetPlotter.h"
+
+ClassImp(TLVQ)
+
+<a name="TLVQ:TLVQ"> </a>TLVQ::TLVQ(Int_t innodes,Int_t cells,Double_t winStep,const char* netFile)
+: VUnsupervisedNet("LVQ",innodes,cells,netFile) 
+{
+    fXB.fCells   = cells;
+    fXB.fWinStep = winStep;
+    fU           = 0;
+    AllocNet();
+    InitNet();
+}
+
+<b>// copy constructor</b>
+<a name="TLVQ:TLVQ"> </a><a href=".././TLVQ.html#TLVQ:TLVQ">TLVQ::TLVQ</a>(const <a href=".././TLVQ.html">TLVQ</a>&amp; lvq,const <a href="../ListOfTypes.html#char">char</a>* netFile)
+: <a href=".././VUnsupervisedNet.html">VUnsupervisedNet</a>("LVQ",lvq.<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes,lvq.<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes,netFile) 
+{
+    <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a> = lvq.<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>;
+    <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>  = 0;
+    <a href="#TLVQ:AllocNet">AllocNet</a>();
+    <a href="#TLVQ:InitNet">InitNet</a>();
+    <a href="#TLVQ:CopyData">CopyData</a>(lvq);
+}
+
+<a name="TLVQ:~TLVQ"> </a><a href=".././TLVQ.html">TLVQ</a>::~<a href=".././TLVQ.html">TLVQ</a>() 
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+    if (<a href=".././VNeuralNet.html#VNeuralNet:fFilename">fFilename</a>!="") if (<a href=".././VNeuralNet.html#VNeuralNet:fShouldSave">fShouldSave</a>) Save();
+    if (<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>!=0) {
+	<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up = <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;
+	for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes;++I) {
+	    delete[] up-&gt;fVector;
+	    delete[] up-&gt;fDiff;
+	    ++up;
+	}
+	delete[] <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;
+    }
+}
+
+
+<a name="TLVQ:ReadBinary"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TLVQ.html#TLVQ:ReadBinary">TLVQ::ReadBinary</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a> = 0;
+    fread(&amp;<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>,sizeof(<a href=".././TNeuralNetCellParameters.html">TNeuralNetCellParameters</a>),1,<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>);
+    <a href="#TLVQ:AllocNet">AllocNet</a>();
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    for(up=<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;up&lt;<a href=".././TLVQ.html#TLVQ:fUbound">fUbound</a>;++up) {
+	fread(up-&gt;fVector,sizeof(<a href="../ListOfTypes.html#Double_t">Double_t</a>),<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes,<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>);
+	freadvar(up-&gt;fID);
+    }
+}
+
+
+<a name="TLVQ:ReadText"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TLVQ.html#TLVQ:ReadText">TLVQ::ReadText</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a> = 0;
+    fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"
+		    win_step     %len\
+		    cells        %in",
+		    &amp;<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>.fWinStep,
+		    &amp;<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>.fCells);
+    <a href="#TLVQ:AllocNet">AllocNet</a>();
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+    for(up=<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;up&lt;<a href=".././TLVQ.html#TLVQ:fUbound">fUbound</a>;++up) {
+	fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"n");
+	fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"<a href=".././TNeuralNetCell.html">TNeuralNetCell</a> number      %in",&amp;up-&gt;fID);
+	fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"class            %in",&amp;up-&gt;fClass);
+	fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"vectors ");
+	for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++I) fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"%le ",&amp;up-&gt;fVector[I]);
+	fscanf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"n");
+    }
+}
+
+<a name="TLVQ:WriteBinary"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TLVQ.html#TLVQ:WriteBinary">TLVQ::WriteBinary</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    fwrite(&amp;<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>,sizeof(<a href=".././TNeuralNetCellParameters.html">TNeuralNetCellParameters</a>),1,<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>);
+    for(up=<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;up&lt;<a href=".././TLVQ.html#TLVQ:fUbound">fUbound</a>;++up) {
+	fwrite(up-&gt;fVector,sizeof(<a href="../ListOfTypes.html#Double_t">Double_t</a>),<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes,<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>);
+	fwritevar(up-&gt;fID);
+    }
+}
+
+<a name="TLVQ:WriteText"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TLVQ.html#TLVQ:WriteText">TLVQ::WriteText</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"
+		 win_step     %len\
+		 cells        %in",
+		 <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>.fWinStep,
+		 <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>.fCells);
+<a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+<a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+for(up=<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;up&lt;<a href=".././TLVQ.html#TLVQ:fUbound">fUbound</a>;++up) {
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"n");
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"<a href=".././TNeuralNetCell.html">TNeuralNetCell</a> number      %in",up-&gt;fID);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"class            %in",up-&gt;fClass);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"vectors ");
+    for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++I) fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"%le ",up-&gt;fVector[I]);
+    fprintf(<a href=".././VNeuralNet.html#VNeuralNet:fFile">fFile</a>,"n");
+}
+}
+
+<a name="TLVQ:AllocNet"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TLVQ.html#TLVQ:AllocNet">TLVQ::AllocNet</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a> = new <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>[<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes];  TestPointer(<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>);
+    <a href=".././TLVQ.html#TLVQ:fUbound">fUbound</a> = &amp;<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>[<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>.fCells];
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up = <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;
+    for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes;++I) {
+	up-&gt;fVector = new <a href="../ListOfTypes.html#Double_t">Double_t</a>[<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes];    TestPointer(up-&gt;fVector);
+	up-&gt;fDiff = new <a href="../ListOfTypes.html#Double_t">Double_t</a>[<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes];    TestPointer(up-&gt;fDiff);
+	up-&gt;fID=I;
+	++up;
+    }
+}
+
+<a name="TLVQ:InitNet"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TLVQ.html#TLVQ:InitNet">TLVQ::InitNet</a>(<a href="../ListOfTypes.html#void">void</a>) 
+{
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> J;
+    for(up=<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;up&lt;<a href=".././TLVQ.html#TLVQ:fUbound">fUbound</a>;++up) {
+	for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++J) up-&gt;fVector[J]=Random();
+	up-&gt;fClass=0;
+    }
+}
+
+<a name="TLVQ:CopyData"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TLVQ.html#TLVQ:CopyData">TLVQ::CopyData</a>(const <a href=".././TLVQ.html">TLVQ</a>&amp; lvq) 
+{
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* thisup = <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* fromup = lvq.<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+    
+<b>    //check integrity</b>
+    if (<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes    !=lvq.<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes)  Errorf("cannot copy data; innodes not identical");
+    if (<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes   !=lvq.<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fOutNodes) Errorf("cannot copy data; outnodes not identical");
+    
+    <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a> = lvq.<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>;
+    <a href=".././TLVQ.html#TLVQ:fUbound">fUbound</a> = &amp;<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>[<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>.fCells];
+    for (I=0;I&lt;<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>.fCells;++I) {
+	memcpy(thisup-&gt;fVector,fromup-&gt;fVector,sizeof(<a href="../ListOfTypes.html#Double_t">Double_t</a>)*<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes);
+	thisup-&gt;fClass = fromup-&gt;fClass;
+	++thisup;
+	++fromup;
+    }
+}
+
+<a name="TLVQ:GetWinnerCell"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a>  <a href=".././TLVQ.html#TLVQ:GetWinnerCell">TLVQ::GetWinnerCell</a>(<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in) 
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I,J;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> s_dist;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> min_s_dist = DBL_MAX;
+    <a href=".././TNeuralNetCell.html">TNeuralNetCell</a>* up;
+    J=0;
+    for(up=<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>;up&lt;<a href=".././TLVQ.html#TLVQ:fUbound">fUbound</a>;++up){
+	<a href="../ListOfTypes.html#Double_t">Double_t</a>* v = up-&gt;fVector;
+	<a href="../ListOfTypes.html#Double_t">Double_t</a>* d = up-&gt;fDiff;
+	<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* i = in;
+	s_dist = 0.0;
+	for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++I) { *d =*i++ - *v++; s_dist+=*d * *d; ++d;}
+	<a href=".././VNeuralNet.html#VNeuralNet:fOut">fOut</a>[J++] = s_dist;
+	if (s_dist&lt;min_s_dist) { 
+	    min_s_dist=s_dist; 
+	    <a href=".././TLVQ.html#TLVQ:fUwin">fUwin</a>=up; 
+	}
+    }
+    
+    if (<a href=".././VNeuralNet.html#VNeuralNet:fPlotter">fPlotter</a>) <a href=".././VNeuralNet.html#VNeuralNet:fPlotter">fPlotter</a>-&gt;<a href=".././VNeuralNetPlotter.html#VNeuralNetPlotter:AddTestSample">AddTestSample</a>(min_s_dist);
+    
+    return <a href=".././TLVQ.html#TLVQ:fUwin">fUwin</a>-&gt;fID;
+}
+
+<a name="TLVQ:Train"> </a><a href="../ListOfTypes.html#Double_t">Double_t</a>  <a href=".././TLVQ.html#TLVQ:Train">TLVQ::Train</a>(<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in,<a href="../ListOfTypes.html#NNO_OUTTYPE">NNO_OUTTYPE</a>*) 
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> J;
+    <a href="#TLVQ:Recall">Recall</a>(in);  //make output of all cells and neurons find the winner
+    <a href="../ListOfTypes.html#Double_t">Double_t</a>* vwin = <a href=".././TLVQ.html#TLVQ:fUwin">fUwin</a>-&gt;fVector;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a>* dwin = <a href=".././TLVQ.html#TLVQ:fUwin">fUwin</a>-&gt;fDiff;
+    for (J=0;J&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++J) *vwin++ += *dwin++ * <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fXB">fXB</a>.fWinStep;
+    <a href=".././VNeuralNet.html#VNeuralNet:fShouldSave">fShouldSave</a> = kTRUE;
+    return <a href=".././TLVQ.html#TLVQ:fUwin">fUwin</a>-&gt;fID;
+}
+
+<a name="TLVQ:Implant"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TLVQ.html#TLVQ:Implant">TLVQ::Implant</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> nr,<a href="../ListOfTypes.html#Int_t">Int_t</a> c,<a href="../ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in) 
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> I;
+    <a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>[nr].fClass = c;
+    <a href="../ListOfTypes.html#Double_t">Double_t</a>* v=<a href=".././VUnsupervisedNet.html#VUnsupervisedNet:fU">fU</a>[nr].fVector;
+    for (I=0;I&lt;<a href=".././VNeuralNet.html#VNeuralNet:fParm">fParm</a>.fInNodes;++I) *v++ = *in++;
+    <a href=".././VNeuralNet.html#VNeuralNet:fShouldSave">fShouldSave</a> = kTRUE;
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

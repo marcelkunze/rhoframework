@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:10 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TParameterManager</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TParameterManager</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TParameterManager:description">class description</a> - <a href="src/TParameterManager.cxx.html">source file</a> - <a href="TParameterManager_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TParameterManager" href="TParameterManager.h">TParameterManager</a> : public TParm</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      TParm* <!--TAB--><!--BOLD--><a href="#TParameterManager:ArgSearch">ArgSearch</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      <a href="./TParameterManager.html">TParameterManager</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:TParameterManager">TParameterManager</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* file, const <a href="ListOfTypes.html#char">char</a>* fmode = "RECREATE")
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:~TParameterManager">~TParameterManager</a><!--PLAIN-->()
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:AddNewParm">AddNewParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b, TObject* x = 0)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:AddNewParm">AddNewParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Int_t">Int_t</a> i, TObject* x = 0)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:AddNewParm">AddNewParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Double_t">Double_t</a> d, TObject* x = 0)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:AddNewParm">AddNewParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, const <a href="ListOfTypes.html#char">char</a>* s, TObject* x = 0)
+<!--TAB6-->         static TClass* <!--TAB--><!--BOLD--><a href="#TParameterManager:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:ClearAllData">ClearAllData</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:GetBoolParm">GetBoolParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, TObject* x = 0)
+<!--TAB6-->            const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TParameterManager:GetDir">GetDir</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:GetDoubleParm">GetDoubleParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, TObject* x = 0)
+<!--TAB6-->                  <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:GetIntParm">GetIntParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, TObject* x = 0)
+<!--TAB6-->               <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:GetParmValue">GetParmValue</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, TObject* x = 0)
+<!--TAB6-->                TString <!--TAB--><!--BOLD--><a href="#TParameterManager:GetStringParm">GetStringParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, TObject* x = 0)
+<!--TAB6-->        virtual TClass* <!--TAB--><!--BOLD--><a href="#TParameterManager:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout, TObject* x = 0) const
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:PrintParm">PrintParm</a><!--PLAIN-->(ostream&amp; o, TObject* x = 0) const
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:PrintUsage">PrintUsage</a><!--PLAIN-->(ostream&amp; o = std::cout)
+<!--TAB6-->                 <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:ReadParm">ReadParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* filename)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:ScanCommandLine">ScanCommandLine</a><!--PLAIN-->(<a href="ListOfTypes.html#int">int</a> argc, <a href="ListOfTypes.html#char">char</a>** argv)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetBoolParm">SetBoolParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--TAB6-->                 <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetDir">SetDir</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* path = "/")
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetDoubleParm">SetDoubleParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Double_t">Double_t</a> d, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetIntParm">SetIntParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Int_t">Int_t</a> i, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetParameters">SetParameters</a><!--PLAIN-->(<a href="ListOfTypes.html#int">int</a> argc, <a href="ListOfTypes.html#char">char</a>** argv, const <a href="ListOfTypes.html#char">char</a>* module = "0")
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Int_t">Int_t</a> i, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Double_t">Double_t</a> d, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, const <a href="ListOfTypes.html#char">char</a>* s, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--TAB6-->                 <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetParmFile">SetParmFile</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* filename, const <a href="ListOfTypes.html#char">char</a>* mode)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SetStringParm">SetStringParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* p, const <a href="ListOfTypes.html#char">char</a>* s, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:SyntaxError">SyntaxError</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* message)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TParameterManager:WriteParm">WriteParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* filename)
+</pre>
+
+<h3><!--TAB2-->  <a name="TParameterManager:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      TString <!--TAB--><!--BOLD--><a name="TParameterManager:fName">fName</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fName"></a></i>
+<!--TAB6-->      TString <!--TAB--><!--BOLD--><a name="TParameterManager:fMode">fMode</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fMode"></a></i>
+<!--TAB6-->       TFile* <!--TAB--><!--BOLD--><a name="TParameterManager:fFile">fFile</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fFile">! Do not stream</a></i>
+<!--TAB6-->      TString <!--TAB--><!--BOLD--><a name="TParameterManager:fProgName">fProgName</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fProgName"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TParameterManager:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TParameterManager.html">TParameterManager</a>							
+                                                                      
+ Parameter manager					    		
+                                                                      
+ Author: Marcel Kunze, Bochum University, Nov. 99			
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TParameterManager:TParameterManager" href="src/TParameterManager.cxx.html#TParameterManager:TParameterManager">TParameterManager</a>(const <a href="ListOfTypes.html#char">char</a>* filename,const <a href="ListOfTypes.html#char">char</a>* mode ) :
+<a href="./TParameterManager.html#TParameterManager:fFile">fFile</a>(0), <a href="./TParameterManager.html#TParameterManager:fMode">fMode</a>(mode)
+<br>
+<pre> Open the parameter file
+</pre><hr>
+<!--FUNCTION--> <a name="TParameterManager:~TParameterManager" href="src/TParameterManager.cxx.html#TParameterManager:~TParameterManager">~TParameterManager</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TParameterManager:SetDir" href="src/TParameterManager.cxx.html#TParameterManager:SetDir">SetDir</a>( const <a href="ListOfTypes.html#char">char</a> * path ) <br>
+<hr>
+<!--FUNCTION-->const <a href="ListOfTypes.html#char">char</a>* <a name="TParameterManager:GetDir" href="src/TParameterManager.cxx.html#TParameterManager:GetDir">GetDir</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TParameterManager:SetParmFile" href="src/TParameterManager.cxx.html#TParameterManager:SetParmFile">SetParmFile</a>(const <a href="ListOfTypes.html#char">char</a>* filename, const <a href="ListOfTypes.html#char">char</a>* mode) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TParameterManager:ReadParm" href="src/TParameterManager.cxx.html#TParameterManager:ReadParm">ReadParm</a>(const <a href="ListOfTypes.html#char">char</a>* filename)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:WriteParm" href="src/TParameterManager.cxx.html#TParameterManager:WriteParm">WriteParm</a>(const <a href="ListOfTypes.html#char">char</a>* filename)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:ScanCommandLine" href="src/TParameterManager.cxx.html#TParameterManager:ScanCommandLine">ScanCommandLine</a>(<a href="ListOfTypes.html#int">int</a> argc, <a href="ListOfTypes.html#char">char</a> **argv)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:SetParameters" href="src/TParameterManager.cxx.html#TParameterManager:SetParameters">SetParameters</a>(<a href="ListOfTypes.html#int">int</a> _argc, <a href="ListOfTypes.html#char">char</a>** _argv,const <a href="ListOfTypes.html#char">char</a>* module)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:SyntaxError" href="src/TParameterManager.cxx.html#TParameterManager:SyntaxError">SyntaxError</a>(const <a href="ListOfTypes.html#char">char</a>* message)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:PrintUsage" href="src/TParameterManager.cxx.html#TParameterManager:PrintUsage">PrintUsage</a>(std::ostream &amp;o) 
+<br>
+<hr>
+<!--FUNCTION-->TParm* <a name="TParameterManager:ArgSearch" href="src/TParameterManager.cxx.html#TParameterManager:ArgSearch">ArgSearch</a>(const <a href="ListOfTypes.html#char">char</a> *a) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:PrintParm" href="src/TParameterManager.cxx.html#TParameterManager:PrintParm">PrintParm</a>(std::ostream &amp;o,TObject *x) const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:PrintOn" href="src/TParameterManager.cxx.html#TParameterManager:PrintOn">PrintOn</a>(std::ostream &amp;o,TObject *x) const <br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:ClearAllData" href="TParameterManager.h">ClearAllData</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:SetParm" href="TParameterManager.h">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:SetParm" href="TParameterManager.h">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Int_t">Int_t</a> i, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:SetParm" href="TParameterManager.h">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Double_t">Double_t</a> d, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:SetParm" href="TParameterManager.h">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, const <a href="ListOfTypes.html#char">char</a>* s, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:SetBoolParm" href="TParameterManager.h">SetBoolParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:SetIntParm" href="TParameterManager.h">SetIntParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Int_t">Int_t</a> i, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:SetDoubleParm" href="TParameterManager.h">SetDoubleParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Double_t">Double_t</a> d, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:SetStringParm" href="TParameterManager.h">SetStringParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, const <a href="ListOfTypes.html#char">char</a>* s, const <a href="ListOfTypes.html#char">char</a>* t = "0", TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TParameterManager:GetBoolParm" href="TParameterManager.h">GetBoolParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TParameterManager:GetIntParm" href="TParameterManager.h">GetIntParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TParameterManager:GetDoubleParm" href="TParameterManager.h">GetDoubleParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->            TString <a name="TParameterManager:GetStringParm" href="TParameterManager.h">GetStringParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:AddNewParm" href="TParameterManager.h">AddNewParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Bool_t">Bool_t</a> b, TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:AddNewParm" href="TParameterManager.h">AddNewParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Int_t">Int_t</a> i, TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:AddNewParm" href="TParameterManager.h">AddNewParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, <a href="ListOfTypes.html#Double_t">Double_t</a> d, TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:AddNewParm" href="TParameterManager.h">AddNewParm</a>(const <a href="ListOfTypes.html#char">char</a>* p, const <a href="ListOfTypes.html#char">char</a>* s, TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TParameterManager:GetParmValue" href="TParameterManager.h">GetParmValue</a>(const <a href="ListOfTypes.html#char">char</a>* p, TObject* x = 0)
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TParameterManager:Class" href="TParameterManager.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TParameterManager:IsA" href="TParameterManager.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:ShowMembers" href="TParameterManager.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:Streamer" href="TParameterManager.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TParameterManager:StreamerNVirtual" href="TParameterManager.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?Bochum+University">Bochum University</a>, <a href="http://consult.cern.ch/xwho/people?Nov.">Nov.</a> 99			//</em><br>
+<em>Last update: Fri Dec 20 16:03:11 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

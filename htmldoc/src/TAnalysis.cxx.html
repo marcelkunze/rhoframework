@@ -1,0 +1,916 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:30 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TAnalysis - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TAnalysis.html">TAnalysis</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Abstract class to define an analysis framework			//</b>
+<b>//                                                                      //</b>
+<b>// Author: Thorsten Brandt, Dresden University, Aug. 99			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+<b>// Default parameters which can be modified (on the command line):</b>
+<b>// Boolean:</b>
+<b>// -tag  	true            (Read the Tag)</b>
+<b>// -aod  	true            (Read the micro DST)</b>
+<b>// -mct  	false           (Read the MC-Truth)</b>
+<b>// -multi       false           (Read tag and micro from different files)</b>
+<b>// -verbose	false           (Dump events)</b>
+<b>// -conditions	false           (Dump conditions database)</b>
+<b>// -logbook	false           (Dump electronic logbook)</b>
+<b>// Integer:</b>
+<b>// -nev		1000000000      (Number of events to process)</b>
+<b>// -run		-1              (Run number to process)</b>
+<b>// -start	-1              (Range: First run number to process)</b>
+<b>// -end		-1              (Range: Last run number to process)</b>
+<b>// Double:</b>
+<b>// -FixedFieldStrength 1.51007  (Magnet field)</b>
+<b>// String:</b>
+<b>// -file	""		(Input file)</b>
+<b>// -collection	""		(Input collection)</b>
+<b>// -tcl		""		(TCL-ish steering file)</b>
+<b>// -logtcl	""		(Save parameters (Tcl-like))</b>
+<b>// -cluster	""	        (Database cluster to process)</b>
+<b>// -tagcut	""		(Cut to apply on tag data)</b>
+<b>// -bitcut	""	        (Cut to apply on bit data)</b>
+<b>// -store       ""              (Default event service)</b>
+<b>// -param       ""              (Default parameter service)</b>
+<b>// -RootConditionsFile ""	(Conditions file)</b>
+<b>// -pepBeamSpotCalKeys "TwoTracks" (Beamspot calibration)</b>
+
+#include "TNetFile.h"
+#include "TTreeFormula.h"
+#include "TTreeFormula.h"
+#include "TStopwatch.h"
+#include "TObjString.h"
+#include "TIterator.h"
+
+#include "RhoBase/TRho.h"
+#include "RhoBase/TFactory.h"
+#include "RhoBase/TCandList.h"
+#include "RhoBase/VAbsPidSelector.h"
+
+#include "RhoManager/TAnalysis.h"
+#include "RhoManager/TModule.h"
+#include "RhoManager/TEventManager.h"
+#include "RhoManager/TDirectoryManager.h"
+#include "RhoManager/TParameterManager.h"
+#include "RhoManager/TCandListManager.h"
+#include "RhoManager/TObjectManager.h"
+
+#include "RhoManager/TRunCollection.h"
+#include "RhoManager/TEventCollection.h"
+#include "RhoManager/TRunDB.h"
+#include "RhoManager/TLogInfo.h"
+
+#include "RhoConditions/TConditions.h"
+
+ClassImp(TAnalysis)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TAnalysis:TAnalysis"> </a>TAnalysis::TAnalysis(int argc, char **argv) : 
+fArgc(argc), fArgv(argv), fConditions(0), fRunDB(0)
+{
+<b>    // Instantiate managers if necessary</b>
+    
+    TRho *appmgr = (TRho *) TRho::Instance();
+    cout &lt;&lt; *appmgr;
+
+    if (appmgr-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>()==0) {
+	<a href=".././TEventManager.html">TEventManager</a> *mgr = new <a href=".././TEventManager.html">TEventManager</a>();
+	appmgr-&gt;SetEventManager(mgr);
+    }
+
+    if (appmgr-&gt;<a href="#TAnalysis:GetDirectoryManager">GetDirectoryManager</a>()==0) {
+	<a href=".././TDirectoryManager.html">TDirectoryManager</a> *mgr = new <a href=".././TDirectoryManager.html">TDirectoryManager</a>();
+	appmgr-&gt;SetDirectoryManager(mgr);
+    }
+
+    if (appmgr-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()==0) {
+	<a href=".././TParameterManager.html">TParameterManager</a> *mgr = new <a href=".././TParameterManager.html">TParameterManager</a>();
+	appmgr-&gt;SetParameterManager(mgr);
+    }
+
+    <a href=".././TAnalysis.html#TAnalysis:fAssociator">fAssociator</a> = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fCurrentCluster">fCurrentCluster</a> = TString(""); 
+    <a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a> = new <a href=".././TRunCollection.html">TRunCollection</a>("Collection");
+    <a href=".././TAnalysis.html#TAnalysis:fMode">fMode</a>=<a href=".././TAnalysis.html#TAnalysis:INVALID">INVALID</a>;
+    <a href=".././TAnalysis.html#TAnalysis:fFileName">fFileName</a> = TString("");
+    <a href=".././TAnalysis.html#TAnalysis:fCollectionList">fCollectionList</a> = new TObjArray();
+    <a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a> = new TObjArray();
+    <a href=".././TAnalysis.html#TAnalysis:fCurrentRun">fCurrentRun</a> = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fCurrentEvent">fCurrentEvent</a> = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fNumberToProcess">fNumberToProcess</a> = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fVerbose">fVerbose</a> = kFALSE;
+    <a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a> = 0;
+    
+    <a href="#TAnalysis:SetDefaultParameters">SetDefaultParameters</a>();	    // Defaults
+}
+
+
+<a name="TAnalysis:TAnalysis"> </a><a href=".././TAnalysis.html#TAnalysis:TAnalysis">TAnalysis::TAnalysis</a>(const <a href="../ListOfTypes.html#char">char</a>* output,<a href="../ListOfTypes.html#int">int</a> argc, <a href="../ListOfTypes.html#char">char</a> **argv) :
+<a href=".././TAnalysis.html#TAnalysis:fArgc">fArgc</a>(argc), <a href=".././TAnalysis.html#TAnalysis:fArgv">fArgv</a>(argv), <a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a>(0), <a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>(0)
+{
+<b>    // Instantiate managers if necessary</b>
+    
+    TRho *appmgr = (TRho *) TRho::Instance();
+    cout &lt;&lt; *appmgr;
+
+    if (appmgr-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>()==0) {
+	<a href=".././TEventManager.html">TEventManager</a> *mgr = new <a href=".././TEventManager.html">TEventManager</a>();
+	appmgr-&gt;SetEventManager(mgr);
+    }
+
+    if (appmgr-&gt;<a href="#TAnalysis:GetDirectoryManager">GetDirectoryManager</a>()==0) {
+	<a href=".././TDirectoryManager.html">TDirectoryManager</a> *mgr = new <a href=".././TDirectoryManager.html">TDirectoryManager</a>();
+	appmgr-&gt;SetDirectoryManager(mgr);
+    }
+
+    if (appmgr-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()==0) {
+	<a href=".././TParameterManager.html">TParameterManager</a> *mgr = new <a href=".././TParameterManager.html">TParameterManager</a>();
+	appmgr-&gt;SetParameterManager(mgr);
+    }
+
+    <a href=".././TAnalysis.html#TAnalysis:fAssociator">fAssociator</a> = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fCurrentCluster">fCurrentCluster</a> = TString(""); 
+    <a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a> = new <a href=".././TRunCollection.html">TRunCollection</a>("Collection");
+    <a href=".././TAnalysis.html#TAnalysis:fMode">fMode</a>=<a href=".././TAnalysis.html#TAnalysis:INVALID">INVALID</a>;
+    <a href=".././TAnalysis.html#TAnalysis:fFileName">fFileName</a> = output;
+    <a href=".././TAnalysis.html#TAnalysis:fCollectionList">fCollectionList</a> = new TObjArray();
+    <a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a> = new TObjArray();
+    <a href=".././TAnalysis.html#TAnalysis:fCurrentRun">fCurrentRun</a> = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fCurrentEvent">fCurrentEvent</a> = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fNumberToProcess">fNumberToProcess</a> = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fVerbose">fVerbose</a> = kFALSE;
+    <a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a> = 0;
+    
+    <a href="#TAnalysis:SetDefaultParameters">SetDefaultParameters</a>();	    // Defaults
+}
+
+
+<a name="TAnalysis:~TAnalysis"> </a><a href=".././TAnalysis.html">TAnalysis</a>::~<a href=".././TAnalysis.html">TAnalysis</a>()
+{
+    if (<a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>!=0) { delete <a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>; }
+    if (<a href=".././TAnalysis.html#TAnalysis:fAssociator">fAssociator</a>!=0) { delete <a href=".././TAnalysis.html#TAnalysis:fAssociator">fAssociator</a>; }
+    if (<a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a>!=0) { delete <a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a>; }
+    if (<a href=".././TAnalysis.html#TAnalysis:fCollectionList">fCollectionList</a>!=0) { <a href=".././TAnalysis.html#TAnalysis:fCollectionList">fCollectionList</a>-&gt;Delete(); delete <a href=".././TAnalysis.html#TAnalysis:fCollectionList">fCollectionList</a>; }
+    if (<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>!=0) { <a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>-&gt;Delete(); delete <a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>; }
+    if (<a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>!=0) { delete <a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>; }
+    if (<a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a>!=0) { <a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a>-&gt;Close(); delete <a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a>; }
+}
+
+<a name="TAnalysis:GetAssociator"> </a><a href=".././TAssociator.html">TAssociator</a>&amp; <a href=".././TAnalysis.html#TAnalysis:GetAssociator">TAnalysis::GetAssociator</a>()
+{
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+    if (<a href=".././TAnalysis.html#TAnalysis:fAssociator">fAssociator</a> == 0) {
+	<a href=".././TAnalysis.html#TAnalysis:fAssociator">fAssociator</a> = new <a href=".././TChi2Associator.html">TChi2Associator</a>(*evtmgr);
+    }
+    
+    return *<a href=".././TAnalysis.html#TAnalysis:fAssociator">fAssociator</a>;
+}
+
+<a name="TAnalysis:CheckNewRun"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TAnalysis.html#TAnalysis:CheckNewRun">TAnalysis::CheckNewRun</a>()
+{
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+    if (<a href=".././TAnalysis.html#TAnalysis:fCurrentRun">fCurrentRun</a> != evtmgr-&gt;GetRunNumber()) {
+	if (<a href=".././TAnalysis.html#TAnalysis:fCurrentRun">fCurrentRun</a> != 0) <a href="#TAnalysis:EndRun">EndRun</a>(evtmgr); // Do not at the beginning
+	<a href="#TAnalysis:BeginRun">BeginRun</a>(evtmgr);
+	<a href=".././TAnalysis.html#TAnalysis:fCurrentRun">fCurrentRun</a> = evtmgr-&gt;GetRunNumber();
+	return kTRUE;
+    }
+    
+    return kFALSE;
+}
+
+<a name="TAnalysis:CheckNewEvent"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TAnalysis.html#TAnalysis:CheckNewEvent">TAnalysis::CheckNewEvent</a>()
+{
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+    if (<a href=".././TAnalysis.html#TAnalysis:fCurrentEvent">fCurrentEvent</a> != evtmgr-&gt;GetEventNumber()) {
+	<a href=".././TAnalysis.html#TAnalysis:fCurrentEvent">fCurrentEvent</a> = evtmgr-&gt;GetEventNumber();
+	return kTRUE;
+    }
+    
+    return kFALSE;
+}
+
+
+<a name="TAnalysis:BeginJob"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:BeginJob">TAnalysis::BeginJob</a>(<a href=".././TEventManager.html">TEventManager</a> *evtmgr)
+{
+<b>    // Make sure eventmanager exists</b>
+    if (evtmgr==0) evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+    cout &lt;&lt; "BeginJob" &lt;&lt; endl;
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> result = kTRUE;
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> k=0; k&lt;<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>-&gt;GetEntries(); k++) {
+	<a href=".././TModule.html">TModule</a> *m = (<a href=".././TModule.html">TModule</a>*) (*<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>)[k];
+	m-&gt;<a href="#TAnalysis:PrintInfo">PrintInfo</a>();
+	if (!m-&gt;IsActive()) continue;
+	result &amp;= m-&gt;<a href="#TAnalysis:BeginJob">BeginJob</a>(evtmgr);
+    }
+
+<b>    // Do we need conditions database support ?</b>
+    if (<a href="#TAnalysis:GetBoolParm">GetBoolParm</a>("conditions")) <a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a> = TRho::Instance()-&gt;GetConditions();
+
+<b>    //return result;</b>
+}
+
+
+<a name="TAnalysis:EndJob"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:EndJob">TAnalysis::EndJob</a>(<a href=".././TEventManager.html">TEventManager</a> *evtmgr)
+{
+<b>    // Make sure eventmanager exists</b>
+    if (evtmgr==0) evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+    cout &lt;&lt; "EndJob" &lt;&lt; endl;
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> result = kTRUE;
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> k=0; k&lt;<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>-&gt;GetEntries(); k++) {
+	<a href=".././TModule.html">TModule</a> *m = (<a href=".././TModule.html">TModule</a>*) (*<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>)[k];
+	m-&gt;<a href="#TAnalysis:PrintInfo">PrintInfo</a>();
+	if (!m-&gt;IsActive()) continue;
+	result &amp;= m-&gt;<a href="#TAnalysis:EndJob">EndJob</a>(evtmgr);
+    }
+<b>    //return result;</b>
+}
+
+
+<a name="TAnalysis:BeginRun"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:BeginRun">TAnalysis::BeginRun</a>(<a href=".././TEventManager.html">TEventManager</a> *evtmgr)
+{
+<b>    // Make sure eventmanager exists</b>
+    if (evtmgr==0) evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+    cout &lt;&lt; "SOR #" &lt;&lt; evtmgr-&gt;GetRunNumber() &lt;&lt; endl;
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> result = kTRUE;
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> k=0; k&lt;<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>-&gt;GetEntries(); k++) {
+	<a href=".././TModule.html">TModule</a> *m = (<a href=".././TModule.html">TModule</a>*) (*<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>)[k];
+	if (!m-&gt;IsActive()) continue;
+	result &amp;= m-&gt;<a href="#TAnalysis:BeginRun">BeginRun</a>(evtmgr);
+    }
+
+<b>    // Access conditions database</b>
+    if (<a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a> != 0 &amp;&amp; <a href="#TAnalysis:GetBoolParm">GetBoolParm</a>("conditions")) {
+	<a href=".././TRhoTime.html">TRhoTime</a> theTime(evtmgr-&gt;GetTime());
+	<a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a>-&gt;<a href=".././TConditions.html#TConditions:At">At</a>(theTime); // Read the conditions
+	cout &lt;&lt; *<a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a>;
+    }
+
+<b>    //return result;</b>
+}
+
+
+<a name="TAnalysis:EndRun"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:EndRun">TAnalysis::EndRun</a>(<a href=".././TEventManager.html">TEventManager</a> *evtmgr)
+{
+<b>    // Make sure eventmanager exists</b>
+    if (evtmgr==0) evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+    cout &lt;&lt; "EOR #" &lt;&lt; <a href=".././TAnalysis.html#TAnalysis:fCurrentRun">fCurrentRun</a> &lt;&lt; endl;
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> result = kTRUE;
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> k=0; k&lt;<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>-&gt;GetEntries(); k++) {
+	<a href=".././TModule.html">TModule</a> *m = (<a href=".././TModule.html">TModule</a>*) (*<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>)[k];
+	if (!m-&gt;IsActive()) continue;
+	result &amp;= m-&gt;<a href="#TAnalysis:EndRun">EndRun</a>(evtmgr);
+    }
+
+<b>    // Access conditions database</b>
+    if (<a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a> != 0 &amp;&amp; <a href="#TAnalysis:GetBoolParm">GetBoolParm</a>("conditions")) {
+	<a href=".././TRhoTime.html">TRhoTime</a> theTime(evtmgr-&gt;GetTime());
+	<a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a>-&gt;<a href=".././TConditions.html#TConditions:At">At</a>(theTime); // Read the conditions
+	cout &lt;&lt; *<a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a>;
+    }
+
+<b>    //return result;</b>
+}
+
+
+<a name="TAnalysis:Event"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:Event">TAnalysis::Event</a>(<a href=".././TEventManager.html">TEventManager</a> *evtmgr)
+{
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> result = kTRUE;
+
+<b>    // Make sure eventmanager exists</b>
+    if (evtmgr==0) evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+<b>    // Set the event time</b>
+    <a href=".././TRhoTime.html">TRhoTime</a> theTime(evtmgr-&gt;GetTime());
+    TRho::Instance()-&gt;SetTime(&amp;theTime);
+
+<b>    // Access the conditions database</b>
+    if (<a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a> != 0) {
+	<a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a>-&gt;<a href=".././TConditions.html#TConditions:At">At</a>(theTime); // Read the conditions
+	if (<a href=".././TAnalysis.html#TAnalysis:fVerbose">fVerbose</a>) cout &lt;&lt; *<a href=".././TAnalysis.html#TAnalysis:fConditions">fConditions</a>;
+    }
+
+<b>    // Reset the candidate buffer</b>
+    TFactory::Reset();
+
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> k=0; k&lt;<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>-&gt;GetEntries(); k++) {
+	<a href=".././TModule.html">TModule</a> *m = (<a href=".././TModule.html">TModule</a>*) (*<a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>)[k];
+	if (!m-&gt;IsActive()) continue;
+	m-&gt;SetPassed(kTRUE);	    // Preset module status to acceptance
+	result &amp;= m-&gt;<a href="#TAnalysis:Event">Event</a>(evtmgr);
+	if (!result || !m-&gt;Passed()) break; // Skip rest of processing
+    }
+<b>    //return result;</b>
+}
+
+
+<a name="TAnalysis:PrintInfo"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:PrintInfo">TAnalysis::PrintInfo</a>()
+{
+    cout &lt;&lt; endl; 
+    cout &lt;&lt; " *** " &lt;&lt; <a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a> &lt;&lt; " Events processed " &lt;&lt; endl;
+    cout &lt;&lt; " *** " &lt;&lt; <a href=".././TAnalysis.html#TAnalysis:fAccepted">fAccepted</a> &lt;&lt; " Events survived TAG cut " &lt;&lt; endl;
+    cout &lt;&lt; endl;
+    if (<a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>==0) return;
+    cout &lt;&lt; " ----- Realtime:   "&lt;&lt;<a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>-&gt;RealTime()&lt;&lt;"sec"&lt;&lt;endl;
+    cout &lt;&lt; " ----- Cputime:    "&lt;&lt;<a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>-&gt;CpuTime()&lt;&lt;"sec"&lt;&lt;endl;
+    cout &lt;&lt; " ----- Time/Event: "&lt;&lt;<a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>-&gt;CpuTime()/<a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>&lt;&lt;"sec"&lt;&lt;endl;
+    cout &lt;&lt; " ----- Speed:      "&lt;&lt;<a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>/<a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>-&gt;CpuTime()&lt;&lt;"Hz"&lt;&lt;endl;   
+    cout &lt;&lt; endl; 
+}
+
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TAnalysis:CheckIndex"> </a><a href=".././TAnalysis.html#TAnalysis:CheckIndex">TAnalysis::CheckIndex</a>(const <a href="../ListOfTypes.html#char">char</a>* ifp)
+{
+/*
+    TString indexFilePath(ifp);
+<b>    // Build a sensible default path in case a path does not exist</b>
+    if (indexFilePath == "") indexFilePath = TString(TRho::Instance()-&gt;GetEventStore()) + "/" + <a href=".././TAnalysis.html#TAnalysis:fCurrentCluster">fCurrentCluster</a>;
+    
+<b>    // Check, if the index file exists and update, if necessary</b>
+    TString index;
+    index.Append(indexFilePath);
+    index.Append("/Index.root");
+    
+<b>    //static TFile::Open returns either TFile or TNetFile depending on fcurrentFilename</b>
+    TFile* indexFile=TFile::Open(index);
+    if (!indexFile-&gt;IsOpen()) {
+	cout &lt;&lt; "CheckIndex: Database directory " &lt;&lt; index.Data() &lt;&lt; " does not exist." &lt;&lt; endl;
+	cout &lt;&lt; "CheckIndex: Trying to update " &lt;&lt; indexFilePath.Data() &lt;&lt; endl;
+	if (<a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>==0) <a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a> = new <a href=".././TRunDB.html">TRunDB</a>(TRho::Instance()-&gt;GetEventStore()); 
+	<a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>-&gt;<a href=".././TRunDB.html#TRunDB:Update">Update</a>(indexFilePath);
+    }
+    else {
+	indexFile-&gt;Close();
+	cout &lt;&lt; "CheckIndex: Database directory " &lt;&lt; index.Data() &lt;&lt; " OK" &lt;&lt; endl;
+    }
+    delete indexFile;
+*/
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TAnalysis:SetNumberOfEvents"> </a><a href=".././TAnalysis.html#TAnalysis:SetNumberOfEvents">TAnalysis::SetNumberOfEvents</a>(<a href="../ListOfTypes.html#UInt_t">UInt_t</a> n) 
+{
+    <a href=".././TAnalysis.html#TAnalysis:fNumberToProcess">fNumberToProcess</a> = n;
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TAnalysis:SetInput"> </a><a href=".././TAnalysis.html#TAnalysis:SetInput">TAnalysis::SetInput</a>(<a href="../ListOfTypes.html#UInt_t">UInt_t</a> from, <a href="../ListOfTypes.html#UInt_t">UInt_t</a> to) 
+{
+    if (<a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>==0) {
+	<a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a> = new <a href=".././TRunDB.html">TRunDB</a>(TRho::Instance()-&gt;GetEventStore()); 
+	<a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>-&gt;<a href=".././TRunDB.html#TRunDB:SetCluster">SetCluster</a>(<a href=".././TAnalysis.html#TAnalysis:fCurrentCluster">fCurrentCluster</a>);
+    }
+    <a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>-&gt;<a href=".././TRunDB.html#TRunDB:AddRunsToCollection">AddRunsToCollection</a>(<a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a>,from,to);
+    <a href=".././TAnalysis.html#TAnalysis:fMode">fMode</a>=<a href=".././TAnalysis.html#TAnalysis:RUNS">RUNS</a>;
+}
+
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TAnalysis:Add"> </a><a href=".././TAnalysis.html#TAnalysis:Add">TAnalysis::Add</a>(<a href=".././TModule.html">TModule</a> *module)
+{
+    <a href=".././TAnalysis.html#TAnalysis:fModuleList">fModuleList</a>-&gt;Add(module);
+    <a href="#TAnalysis:Put">Put</a>(module); // Add it to object inventory
+}
+
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TAnalysis:AddFile"> </a><a href=".././TAnalysis.html#TAnalysis:AddFile">TAnalysis::AddFile</a>(const <a href="../ListOfTypes.html#char">char</a>* name)
+{
+    TRho::Instance()-&gt;<a href="#TAnalysis:GetDirectoryManager">GetDirectoryManager</a>()-&gt;<a href="#TAnalysis:AddFile">AddFile</a>(name);
+    <a href=".././TAnalysis.html#TAnalysis:fMode">fMode</a>=<a href=".././TAnalysis.html#TAnalysis:FILES">FILES</a>;
+}
+
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TAnalysis:AddCollection"> </a><a href=".././TAnalysis.html#TAnalysis:AddCollection">TAnalysis::AddCollection</a>(const <a href="../ListOfTypes.html#char">char</a>* name)
+{
+    TObjString *t = new TObjString(name);
+    <a href=".././TAnalysis.html#TAnalysis:fCollectionList">fCollectionList</a>-&gt;Add(t);
+    <a href=".././TAnalysis.html#TAnalysis:fMode">fMode</a>=<a href=".././TAnalysis.html#TAnalysis:COLLECTIONS">COLLECTIONS</a>;
+}
+
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TAnalysis:ClearInput"> </a><a href=".././TAnalysis.html#TAnalysis:ClearInput">TAnalysis::ClearInput</a>()
+{
+    <a href=".././TAnalysis.html#TAnalysis:fMode">fMode</a>=<a href=".././TAnalysis.html#TAnalysis:INVALID">INVALID</a>;
+    if (<a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a>!=0) { delete <a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a>; <a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a> = new <a href=".././TRunCollection.html">TRunCollection</a>(); }
+    if (<a href=".././TAnalysis.html#TAnalysis:fCollectionList">fCollectionList</a>!=0) { <a href=".././TAnalysis.html#TAnalysis:fCollectionList">fCollectionList</a>-&gt;Delete(); }
+}
+
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TAnalysis:SetTagSelection"> </a><a href=".././TAnalysis.html#TAnalysis:SetTagSelection">TAnalysis::SetTagSelection</a>(const <a href="../ListOfTypes.html#char">char</a>* expr1,const <a href="../ListOfTypes.html#char">char</a>* expr2)
+{
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+    if (evtmgr != 0) {
+	evtmgr-&gt;SetTagFormula(expr1);
+	evtmgr-&gt;SetBitFormula(expr2);
+    }
+}
+
+
+<a name="TAnalysis:SetCluster"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:SetCluster">TAnalysis::SetCluster</a>(const <a href="../ListOfTypes.html#char">char</a>* name)
+{
+    <a href=".././TAnalysis.html#TAnalysis:fCurrentCluster">fCurrentCluster</a> = name;
+    if (<a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>==0) <a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a> = new <a href=".././TRunDB.html">TRunDB</a>(TRho::Instance()-&gt;GetEventStore()); 
+    <a href=".././TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>-&gt;<a href=".././TRunDB.html#TRunDB:SetCluster">SetCluster</a>(name);
+<b>    //<a href="#TAnalysis:CheckIndex">CheckIndex</a>(); // Make sure index exists</b>
+}
+
+
+<a name="TAnalysis:TagSelector"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TAnalysis.html#TAnalysis:TagSelector">TAnalysis::TagSelector</a>()
+{
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+    return (evtmgr-&gt;EvalBitFormula()!=0 &amp;&amp; evtmgr-&gt;EvalTagFormula()!=0);
+}
+
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TAnalysis:Analyze"> </a><a href=".././TAnalysis.html#TAnalysis:Analyze">TAnalysis::Analyze</a>(<a href="../ListOfTypes.html#Long_t">Long_t</a> nFirst, <a href="../ListOfTypes.html#Long_t">Long_t</a> nLast, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> parms)
+{
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+<b>    // The hierarchy of parameter setting is as follows:</b>
+<b>    // 0) Check, whether we have request for parameters</b>
+<b>    // 1) Set default parameters (constructor)</b>
+<b>    // 2) Override from TCL file</b>
+<b>    // 3) Override from command line (highest priority)</b>
+<b>    // 4) Override from another TCL file</b>
+    
+    if (parms) {
+        
+	<a href="../ListOfTypes.html#Bool_t">Bool_t</a> useCommandLine = (<a href=".././TAnalysis.html#TAnalysis:fArgc">fArgc</a> &gt; 1);
+
+	TString nextFile = <a href="#TAnalysis:GetStringParm">GetStringParm</a>("tcl");
+	while (nextFile != "" &amp;&amp; nextFile != "none") {
+	  <a href="#TAnalysis:SetParm">SetParm</a>("tcl","");
+	  <a href="#TAnalysis:ReadParm">ReadParm</a>(nextFile); // Read the Tcl file
+	  nextFile = <a href="#TAnalysis:GetStringParm">GetStringParm</a>("tcl");
+	}
+
+	<a href="#TAnalysis:SetParm">SetParm</a>("tcl","");
+	if (useCommandLine) <a href="#TAnalysis:ScanCommandLine">ScanCommandLine</a>();	// Override parms
+
+	nextFile = <a href="#TAnalysis:GetStringParm">GetStringParm</a>("tcl");
+	while (nextFile != "" &amp;&amp; nextFile != "none") {
+	  <a href="#TAnalysis:SetParm">SetParm</a>("tcl","");
+	  <a href="#TAnalysis:ReadParm">ReadParm</a>(nextFile); // Read the Tcl file
+	  nextFile = <a href="#TAnalysis:GetStringParm">GetStringParm</a>("tcl");
+	}
+
+	<a href="#TAnalysis:ScanCommandLine">ScanCommandLine</a>();  // Override parms
+
+	<a href="#TAnalysis:EvaluateParameters">EvaluateParameters</a>();
+
+	<a href="#TAnalysis:PrintParm">PrintParm</a>();							// Dump to screen
+    } 
+
+    <a href="#TAnalysis:InitializeSelectors">InitializeSelectors</a>(); // Set the selector criteria
+
+    <a href="#TAnalysis:Initialize">Initialize</a>(); // For AppModule
+    
+<b>    // Open the output file for histograms</b>
+    
+    if (<a href=".././TAnalysis.html#TAnalysis:fFileName">fFileName</a>.Length()&gt;0) { <a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a> = new TFile(<a href=".././TAnalysis.html#TAnalysis:fFileName">fFileName</a>.Data(),"RECREATE"); <a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a>-&gt;cd(); }
+    
+    if (<a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a>!=0) <a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a>-&gt;cd();	    // Switch to the output file
+    
+    <a href="#TAnalysis:BeginJob">BeginJob</a>(evtmgr);						// Setting of parms etc.
+    
+    <a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a> = new TStopwatch();
+    
+    switch(<a href=".././TAnalysis.html#TAnalysis:fMode">fMode</a>) {  
+    case <a href=".././TAnalysis.html#TAnalysis:RUNS">RUNS</a> : <a href="#TAnalysis:AnalyzeRuns">AnalyzeRuns</a>(nFirst,nLast) ; break;
+    case <a href=".././TAnalysis.html#TAnalysis:FILES">FILES</a> : <a href="#TAnalysis:AnalyzeFiles">AnalyzeFiles</a>(nFirst,nLast) ; break;
+    case <a href=".././TAnalysis.html#TAnalysis:COLLECTIONS">COLLECTIONS</a> : <a href="#TAnalysis:AnalyzeCollections">AnalyzeCollections</a>(nFirst,nLast); break;
+    default : 
+	if (TRho::Instance()-&gt;<a href="#TAnalysis:GetDirectoryManager">GetDirectoryManager</a>()-&gt;GetNumberOfFiles()&gt;0) {
+	  cout &lt;&lt; *TRho::Instance()-&gt;<a href="#TAnalysis:GetDirectoryManager">GetDirectoryManager</a>();
+	  <a href=".././TAnalysis.html#TAnalysis:fMode">fMode</a> = <a href=".././TAnalysis.html#TAnalysis:FILES">FILES</a>;
+	  <a href="#TAnalysis:AnalyzeFiles">AnalyzeFiles</a>(nFirst,nLast); // Might come from TCL input
+	}
+	else
+	  cout &lt;&lt; " NO Input defined " &lt;&lt; endl; break;
+    }
+    
+    <a href="#TAnalysis:PrintInfo">PrintInfo</a>();
+    
+    <a href="#TAnalysis:EndRun">EndRun</a>(evtmgr);
+    <a href="#TAnalysis:EndJob">EndJob</a>(evtmgr);
+
+    if (<a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a>!=0) {
+	<a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a>-&gt;cd();
+	<a href=".././TAnalysis.html#TAnalysis:fOut">fOut</a>-&gt;Write();
+    }
+    
+    if (parms &amp;&amp; <a href="#TAnalysis:GetStringParm">GetStringParm</a>("logtcl")!="") {
+	<a href="#TAnalysis:WriteParm">WriteParm</a>(<a href="#TAnalysis:GetStringParm">GetStringParm</a>("logtcl"));	// Save the actual settings
+    }
+}
+
+<b>// _____________________________________________________</b>
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TAnalysis:AnalyzeRuns"> </a><a href=".././TAnalysis.html#TAnalysis:AnalyzeRuns">TAnalysis::AnalyzeRuns</a>(<a href="../ListOfTypes.html#Long_t">Long_t</a> nFirst, <a href="../ListOfTypes.html#Long_t">Long_t</a> nLast)
+{
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+    <a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a>-&gt;<a href=".././TRunCollection.html#TRunCollection:InitRead">InitRead</a>();
+    <a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a>-&gt;<a href=".././TRunCollection.html#TRunCollection:PrintOn">PrintOn</a>(cout);
+
+    evtmgr-&gt;UseCollection(<a href=".././TAnalysis.html#TAnalysis:fCollection">fCollection</a>);
+    
+    <a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>  = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fAccepted">fAccepted</a> = 0;
+    
+    <a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>-&gt;Start();
+    while ( (nFirst&lt;=nLast) &amp;&amp; (evtmgr-&gt;NextIter()) ) {
+	
+	if (<a href=".././TAnalysis.html#TAnalysis:fNumberToProcess">fNumberToProcess</a>&gt;0 &amp;&amp; <a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>&gt;=<a href=".././TAnalysis.html#TAnalysis:fNumberToProcess">fNumberToProcess</a>) break;
+	
+	<a href="#TAnalysis:CheckNewRun">CheckNewRun</a>();
+	if (<a href="#TAnalysis:TagSelector">TagSelector</a>()) {
+	    <a href="#TAnalysis:Event">Event</a>(evtmgr);
+	    <a href=".././TAnalysis.html#TAnalysis:fAccepted">fAccepted</a>++;
+	    if (<a href=".././TAnalysis.html#TAnalysis:fVerbose">fVerbose</a>) cout &lt;&lt; *evtmgr;
+	}
+	<a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>++;
+    }
+    <a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>-&gt;Stop();
+
+}
+
+<b>// ___________________________________________________________________</b>
+
+<a name="TAnalysis:AnalyzeFiles"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:AnalyzeFiles">TAnalysis::AnalyzeFiles</a>(<a href="../ListOfTypes.html#Long_t">Long_t</a> nFirst, <a href="../ListOfTypes.html#Long_t">Long_t</a> nLast)
+{
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+    evtmgr-&gt;UseCollection(TRho::Instance()-&gt;<a href="#TAnalysis:GetDirectoryManager">GetDirectoryManager</a>());
+    
+    <a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>  = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fAccepted">fAccepted</a> = 0;
+    
+    <a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>-&gt;Start();
+    while ( (nFirst&lt;=nLast) &amp;&amp; (evtmgr-&gt;NextIter()) ) {
+	
+	if (<a href=".././TAnalysis.html#TAnalysis:fNumberToProcess">fNumberToProcess</a>&gt;0 &amp;&amp; <a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>&gt;=<a href=".././TAnalysis.html#TAnalysis:fNumberToProcess">fNumberToProcess</a>) break;
+	
+	<a href="#TAnalysis:CheckNewRun">CheckNewRun</a>();
+	if (<a href="#TAnalysis:TagSelector">TagSelector</a>()) {
+	    <a href="#TAnalysis:Event">Event</a>(evtmgr);
+	    <a href=".././TAnalysis.html#TAnalysis:fAccepted">fAccepted</a>++;
+	    if (<a href=".././TAnalysis.html#TAnalysis:fVerbose">fVerbose</a>) cout &lt;&lt; *evtmgr;
+	}
+	<a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>++;
+    }
+    <a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>-&gt;Stop();
+    
+}
+
+
+
+<b>// ________________________________________________________</b>
+
+
+
+<a name="TAnalysis:AnalyzeCollections"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:AnalyzeCollections">TAnalysis::AnalyzeCollections</a>(<a href="../ListOfTypes.html#Long_t">Long_t</a> nFirst, <a href="../ListOfTypes.html#Long_t">Long_t</a> nLast)
+{
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+
+    <a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>  = 0;
+    <a href=".././TAnalysis.html#TAnalysis:fAccepted">fAccepted</a> = 0;
+    
+    <a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>-&gt;Start();
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> k=0; k&lt;<a href=".././TAnalysis.html#TAnalysis:fCollectionList">fCollectionList</a>-&gt;GetEntries(); k++) {
+	TObjString *t = (TObjString*) (*<a href=".././TAnalysis.html#TAnalysis:fCollectionList">fCollectionList</a>)[k];
+	<a href="../ListOfTypes.html#char">char</a> *c = (<a href="../ListOfTypes.html#char">char</a>*)  t-&gt;String().Data();
+	cout &lt;&lt; " Using collection " &lt;&lt; t-&gt;String().Data() &lt;&lt; endl;
+	evtmgr-&gt;UseCollection(c);
+	while ( (nFirst&lt;=nLast) &amp;&amp; (evtmgr-&gt;NextIter()) ) {
+	    
+	    if (<a href=".././TAnalysis.html#TAnalysis:fNumberToProcess">fNumberToProcess</a>&gt;0 &amp;&amp; <a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>&gt;=<a href=".././TAnalysis.html#TAnalysis:fNumberToProcess">fNumberToProcess</a>) break;
+	    
+	    <a href="#TAnalysis:CheckNewRun">CheckNewRun</a>();
+	    if (<a href="#TAnalysis:TagSelector">TagSelector</a>()) {
+		<a href="#TAnalysis:Event">Event</a>(evtmgr);
+		<a href=".././TAnalysis.html#TAnalysis:fAccepted">fAccepted</a>++;
+		if (<a href=".././TAnalysis.html#TAnalysis:fVerbose">fVerbose</a>) cout &lt;&lt; *evtmgr;
+	    }
+	    <a href=".././TAnalysis.html#TAnalysis:fCounter">fCounter</a>++;
+	}
+    }
+    <a href=".././TAnalysis.html#TAnalysis:fTimer">fTimer</a>-&gt;Stop();
+    
+}
+
+
+TCandList*
+<a name="TAnalysis:PutCandList"> </a><a href=".././TAnalysis.html#TAnalysis:PutCandList">TAnalysis::PutCandList</a>(TCandList* list)
+{
+<b>    // Make sure, list manager exists</b>
+    <a href=".././TCandListManager.html">TCandListManager</a> *listmgr = TRho::Instance()-&gt;GetCandListManager();
+    if (listmgr == 0) {
+	listmgr = new <a href=".././TCandListManager.html">TCandListManager</a>();
+	TRho *rho = (TRho *) TRho::Instance();
+	rho-&gt;SetCandListManager(listmgr);
+    }
+
+<b>    // Does this list already exist ?</b>
+    TString name = list-&gt;GetName();
+    if (<a href="#TAnalysis:GetCandList">GetCandList</a>(name)!=0) { 
+	cerr &lt;&lt; "<a href=".././TAnalysis.html">TAnalysis</a>: Trying to override existing TCandList " &lt;&lt; name &lt;&lt; endl;
+	return <a href="#TAnalysis:GetCandList">GetCandList</a>(name);
+    }
+    else
+	return listmgr-&gt;<a href="#TAnalysis:Add">Add</a>(list);
+}
+
+TCandList*
+<a name="TAnalysis:GetCandList"> </a><a href=".././TAnalysis.html#TAnalysis:GetCandList">TAnalysis::GetCandList</a>(const <a href="../ListOfTypes.html#char">char</a> *name)
+{
+<b>    // Make sure, list manager exists</b>
+    <a href=".././TCandListManager.html">TCandListManager</a> *listmgr = TRho::Instance()-&gt;GetCandListManager();
+    if (listmgr == 0) {
+	listmgr = new <a href=".././TCandListManager.html">TCandListManager</a>();
+	TRho *rho = (TRho *) TRho::Instance();
+	rho-&gt;SetCandListManager(listmgr);
+    }
+
+    return listmgr-&gt;<a href="#TAnalysis:Get">Get</a>(name);
+}
+
+
+TObject*
+<a name="TAnalysis:Put"> </a><a href=".././TAnalysis.html#TAnalysis:Put">TAnalysis::Put</a>(TObject* obj)
+{
+<b>    // Make sure, list manager exists</b>
+    <a href=".././TObjectManager.html">TObjectManager</a> *objmgr = TRho::Instance()-&gt;GetObjectManager();
+    if (objmgr == 0) {
+	objmgr = new <a href=".././TObjectManager.html">TObjectManager</a>();
+	TRho *rho = (TRho *) TRho::Instance();
+	rho-&gt;SetObjectManager(objmgr);
+    }
+
+<b>    // Does this list already exist ?</b>
+    TString name = obj-&gt;GetName();
+    if (<a href="#TAnalysis:Get">Get</a>(name)!=0) { 
+	cerr &lt;&lt; "<a href=".././TAnalysis.html">TAnalysis</a>: Trying to override existing TObject " &lt;&lt; name &lt;&lt; endl;
+	return <a href="#TAnalysis:Get">Get</a>(name);
+    }
+    else
+	return objmgr-&gt;<a href="#TAnalysis:Add">Add</a>(obj);
+}
+
+TObject*
+<a name="TAnalysis:Get"> </a><a href=".././TAnalysis.html#TAnalysis:Get">TAnalysis::Get</a>(const <a href="../ListOfTypes.html#char">char</a> *name)
+{
+<b>    // Make sure, list manager exists</b>
+    <a href=".././TObjectManager.html">TObjectManager</a> *objmgr = TRho::Instance()-&gt;GetObjectManager();
+    if (objmgr == 0) {
+	objmgr = new <a href=".././TObjectManager.html">TObjectManager</a>();
+	TRho *rho = (TRho *) TRho::Instance();
+	rho-&gt;SetObjectManager(objmgr);
+    }
+
+    return objmgr-&gt;<a href="#TAnalysis:Get">Get</a>(name);
+}
+
+<a name="TAnalysis:SetDefaultParameters"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:SetDefaultParameters">TAnalysis::SetDefaultParameters</a>()
+{
+    <a href="#TAnalysis:SetParm">SetParm</a>("tag",kTRUE,"Read the TAG stream");
+    <a href="#TAnalysis:SetParm">SetParm</a>("aod",kTRUE,"Read the micro stream");
+    <a href="#TAnalysis:SetParm">SetParm</a>("mct",kFALSE,"Read the MC-Truth stream");
+    <a href="#TAnalysis:SetParm">SetParm</a>("store",TRho::Instance()-&gt;GetEventStore(),"Event store");
+    <a href="#TAnalysis:SetParm">SetParm</a>("param",TRho::Instance()-&gt;GetParameterStore(),"Parameter store"); 
+    <a href="#TAnalysis:SetParm">SetParm</a>("tcl","","Tcl-like steering file");
+    <a href="#TAnalysis:SetParm">SetParm</a>("file","","Input file");
+    <a href="#TAnalysis:SetParm">SetParm</a>("collection","","Input collection");
+    <a href="#TAnalysis:SetParm">SetParm</a>("nev",1000000000,"Number of events to process");
+    <a href="#TAnalysis:SetParm">SetParm</a>("run",-1,"Run number to process");
+    <a href="#TAnalysis:SetParm">SetParm</a>("start",-1,"Range: First run number to process");
+    <a href="#TAnalysis:SetParm">SetParm</a>("end",-1,"Range: Last run number to process");
+    <a href="#TAnalysis:SetParm">SetParm</a>("cluster","","Database cluster to process");
+    <a href="#TAnalysis:SetParm">SetParm</a>("tagcut","","Cut to apply on tag data");
+    <a href="#TAnalysis:SetParm">SetParm</a>("bitcut","","Cut to apply on bit data");
+    <a href="#TAnalysis:SetParm">SetParm</a>("verbose",kFALSE,"Dump events");
+    <a href="#TAnalysis:SetParm">SetParm</a>("conditions",kFALSE, "Dump conditions database");
+    <a href="#TAnalysis:SetParm">SetParm</a>("logbook",kFALSE, "Dump electronic logbook");
+    <a href="#TAnalysis:SetParm">SetParm</a>("FixedFieldStrength", 1.51007, "Magnet field");
+    <a href="#TAnalysis:SetParm">SetParm</a>("RootConditionsFile", "","Conditions file");
+    <a href="#TAnalysis:SetParm">SetParm</a>("pepBeamSpotCalKeys", "TwoTracks", "Beamspot calibration");
+    <a href="#TAnalysis:SetParm">SetParm</a>("multi",kFALSE,"Read tag and micro from different files");
+    <a href="#TAnalysis:SetParm">SetParm</a>("readMaps",kFALSE,"Read candidate lists");
+    <a href="#TAnalysis:SetParm">SetParm</a>("readCmpList",kFALSE,"Read composite lists");
+    <a href="#TAnalysis:SetParm">SetParm</a>("logtcl","","Save parameters (Tcl-like)");
+}
+
+<a name="TAnalysis:EvaluateParameters"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:EvaluateParameters">TAnalysis::EvaluateParameters</a>()
+{
+<b>    // Read from a special event store ?</b>
+    if (<a href="#TAnalysis:GetStringParm">GetStringParm</a>("store") != "") {
+	TRho *rho = (TRho *) TRho::Instance();
+	rho-&gt;SetEventStore(<a href="#TAnalysis:GetStringParm">GetStringParm</a>("store"));
+    }
+
+<b>    // Read from a special parameter store ?</b>
+    if (<a href="#TAnalysis:GetStringParm">GetStringParm</a>("param") != "") {
+	TRho *rho = (TRho *) TRho::Instance();
+        rho-&gt;SetParameterStore(<a href="#TAnalysis:GetStringParm">GetStringParm</a>("param"));
+    }
+
+<b>    // Set the magnetic field</b>
+    TRho *rho = (TRho *) TRho::Instance();
+    rho-&gt;SetMagnetField(<a href="#TAnalysis:GetDoubleParm">GetDoubleParm</a>("FixedFieldStrength"));
+
+<b>    // Read a special conditions DB ?</b>
+    if (<a href="#TAnalysis:GetStringParm">GetStringParm</a>("RootConditionsFile") != "") {
+	const <a href="../ListOfTypes.html#char">char</a> *file = <a href="#TAnalysis:GetStringParm">GetStringParm</a>("RootConditionsFile");
+	const <a href="../ListOfTypes.html#char">char</a> *key  = <a href="#TAnalysis:GetStringParm">GetStringParm</a>("pepBeamSpotCalKeys");
+	cout &lt;&lt; "<a href=".././TAnalysis.html#TAnalysis:EvaluateParameters">TAnalysis::EvaluateParameters</a>: Opening conditions from " &lt;&lt; file &lt;&lt; " with key " &lt;&lt; key &lt;&lt; endl;
+	<a href=".././TConditions.html">TConditions</a> *cond = new <a href=".././TConditions.html">TConditions</a>(file,key);
+        TRho::Instance()-&gt;SetConditions(cond);
+    }
+
+    <a href="#TAnalysis:SetVerbose">SetVerbose</a>(<a href="#TAnalysis:GetBoolParm">GetBoolParm</a>("verbose"));   // Set debug mode
+    
+    <a href="#TAnalysis:SetNumberOfEvents">SetNumberOfEvents</a>(<a href="#TAnalysis:GetIntParm">GetIntParm</a>("nev")); // Set the max. number of events
+    
+<b>    // Define the database cluster</b>
+    if (<a href="#TAnalysis:GetStringParm">GetStringParm</a>("cluster") != "")
+	<a href="#TAnalysis:SetCluster">SetCluster</a>(<a href="#TAnalysis:GetStringParm">GetStringParm</a>("cluster"));
+    
+<b>    // Process a special file</b>
+    if (<a href="#TAnalysis:GetStringParm">GetStringParm</a>("file") != "") {
+	<a href="#TAnalysis:ClearInput">ClearInput</a>(); // Remove all data sources
+	<a href="#TAnalysis:AddFile">AddFile</a>(<a href="#TAnalysis:GetStringParm">GetStringParm</a>("file"));
+    }
+    
+<b>    // Process a collection</b>
+    if (<a href="#TAnalysis:GetStringParm">GetStringParm</a>("collection") != "") {
+	<a href="#TAnalysis:ClearInput">ClearInput</a>(); // Remove all data sources
+	<a href="#TAnalysis:AddCollection">AddCollection</a>(<a href="#TAnalysis:GetStringParm">GetStringParm</a>("collection"));
+    }
+    
+<b>    // Process a special run</b>
+    if (<a href="#TAnalysis:GetIntParm">GetIntParm</a>("run") &gt;= 0) {
+	<a href="#TAnalysis:CheckIndex">CheckIndex</a>();			  // Make sure index exists
+	<a href="#TAnalysis:SetInput">SetInput</a>(<a href="#TAnalysis:GetIntParm">GetIntParm</a>("run"));
+    }
+    
+<b>    // Process a range of runs</b>
+    if (<a href="#TAnalysis:GetIntParm">GetIntParm</a>("start") &gt;= 0) {
+	<a href="#TAnalysis:CheckIndex">CheckIndex</a>();			  // Make sure index exists
+	if (<a href="#TAnalysis:GetIntParm">GetIntParm</a>("end") &lt; 0)
+	    <a href="#TAnalysis:SetInput">SetInput</a>(<a href="#TAnalysis:GetIntParm">GetIntParm</a>("start"),1000000);
+	else
+	    <a href="#TAnalysis:SetInput">SetInput</a>(<a href="#TAnalysis:GetIntParm">GetIntParm</a>("start"),<a href="#TAnalysis:GetIntParm">GetIntParm</a>("end"));
+    }
+    
+<b>    // Install a dynamic cut on the TAG and BIT data</b>
+    if (<a href="#TAnalysis:GetStringParm">GetStringParm</a>("tagcut") != "" || <a href="#TAnalysis:GetStringParm">GetStringParm</a>("bitcut") != "")
+	<a href="#TAnalysis:SetTagSelection">SetTagSelection</a>(<a href="#TAnalysis:GetStringParm">GetStringParm</a>("tagcut"),<a href="#TAnalysis:GetStringParm">GetStringParm</a>("bitcut"));
+}
+
+<a name="TAnalysis:InitializeSelectors"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:InitializeSelectors">TAnalysis::InitializeSelectors</a>()
+{
+<b>    // Loop through the selectors and set the criteria</b>
+    <a href=".././TObjectManager.html">TObjectManager</a> *objmgr = TRho::Instance()-&gt;GetObjectManager();
+    if (objmgr==0) return;
+    TIterator *iter = objmgr-&gt;GetListOfObjects()-&gt;MakeIterator();
+    TObject *o = 0;
+    while ((o=iter-&gt;Next()) != 0) {
+	if (o-&gt;InheritsFrom("VAbsPidSelector")) {
+	    VAbsPidSelector *s = (VAbsPidSelector *) o;
+	    s-&gt;<a href="#TAnalysis:Initialize">Initialize</a>();
+	}
+    }
+}
+
+<a name="TAnalysis:DumpEvent"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:DumpEvent">TAnalysis::DumpEvent</a>(std::ostream &amp;o) 
+{ 
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;<a href="#TAnalysis:GetEventManager">GetEventManager</a>();
+    evtmgr-&gt;PrintOn(o); 
+}
+
+<a name="TAnalysis:SetParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:SetParm">TAnalysis::SetParm</a>(const <a href="../ListOfTypes.html#char">char</a>* k, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> val, const <a href="../ListOfTypes.html#char">char</a>* desc, <a href=".././TModule.html">TModule</a> *x) 
+{
+    TString key(k);
+    if (key=="verbose") <a href="#TAnalysis:SetVerbose">SetVerbose</a>(val);
+    TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:SetParm">SetParm</a>(key,val,desc,x); 
+}
+
+<a name="TAnalysis:SetParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:SetParm">TAnalysis::SetParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, <a href="../ListOfTypes.html#Int_t">Int_t</a> val, const <a href="../ListOfTypes.html#char">char</a>* desc, <a href=".././TModule.html">TModule</a> *x) 
+{ 
+    TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:SetParm">SetParm</a>(key,val,desc,x); 
+}
+
+<a name="TAnalysis:SetParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:SetParm">TAnalysis::SetParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, <a href="../ListOfTypes.html#Double_t">Double_t</a> val, const <a href="../ListOfTypes.html#char">char</a>* desc, <a href=".././TModule.html">TModule</a> *x) 
+{ 
+    TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:SetParm">SetParm</a>(key,val,desc,x); 
+}
+
+<a name="TAnalysis:SetParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:SetParm">TAnalysis::SetParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, const <a href="../ListOfTypes.html#char">char</a>* val, const <a href="../ListOfTypes.html#char">char</a>* desc, <a href=".././TModule.html">TModule</a> *x) 
+{ 
+    TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:SetParm">SetParm</a>(key,val,desc,x); 
+}
+
+<a name="TAnalysis:SetBoolParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:SetBoolParm">TAnalysis::SetBoolParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> val, const <a href="../ListOfTypes.html#char">char</a>* desc, <a href=".././TModule.html">TModule</a> *x) { <a href="#TAnalysis:SetParm">SetParm</a>(key,val,desc,x); }
+<a name="TAnalysis:SetIntParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:SetIntParm">TAnalysis::SetIntParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, <a href="../ListOfTypes.html#Int_t">Int_t</a> val, const <a href="../ListOfTypes.html#char">char</a>* desc, <a href=".././TModule.html">TModule</a> *x) { <a href="#TAnalysis:SetParm">SetParm</a>(key,val,desc,x); }
+<a name="TAnalysis:SetDoubleParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:SetDoubleParm">TAnalysis::SetDoubleParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, <a href="../ListOfTypes.html#Double_t">Double_t</a> val, const <a href="../ListOfTypes.html#char">char</a>* desc, <a href=".././TModule.html">TModule</a> *x) { <a href="#TAnalysis:SetParm">SetParm</a>(key,val,desc,x); }
+<a name="TAnalysis:SetStringParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:SetStringParm">TAnalysis::SetStringParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, const <a href="../ListOfTypes.html#char">char</a>* val, const <a href="../ListOfTypes.html#char">char</a>* desc, <a href=".././TModule.html">TModule</a> *x) { <a href="#TAnalysis:SetParm">SetParm</a>(key,val,desc,x); }
+
+<a name="TAnalysis:GetParm"> </a><a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././TAnalysis.html#TAnalysis:GetParm">TAnalysis::GetParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, <a href=".././TModule.html">TModule</a> *x) 
+{ 
+    return TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:GetParm">GetParm</a>(key,x); 
+}
+
+<a name="TAnalysis:GetBoolParm"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TAnalysis.html#TAnalysis:GetBoolParm">TAnalysis::GetBoolParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, <a href=".././TModule.html">TModule</a> *x) 
+{ 
+    return TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:GetBoolParm">GetBoolParm</a>(key,x); 
+}
+
+<a name="TAnalysis:GetIntParm"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TAnalysis.html#TAnalysis:GetIntParm">TAnalysis::GetIntParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, <a href=".././TModule.html">TModule</a> *x) 
+{ 
+    return TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:GetIntParm">GetIntParm</a>(key,x); 
+}
+
+<a name="TAnalysis:GetDoubleParm"> </a><a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././TAnalysis.html#TAnalysis:GetDoubleParm">TAnalysis::GetDoubleParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, <a href=".././TModule.html">TModule</a> *x) 
+{ 
+    return TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:GetDoubleParm">GetDoubleParm</a>(key,x); 
+}
+
+<a name="TAnalysis:GetStringParm"> </a>TString <a href=".././TAnalysis.html#TAnalysis:GetStringParm">TAnalysis::GetStringParm</a>(const <a href="../ListOfTypes.html#char">char</a>* key, <a href=".././TModule.html">TModule</a> *x) 
+{ 
+    return TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:GetStringParm">GetStringParm</a>(key,x); 
+}
+
+<a name="TAnalysis:PrintParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:PrintParm">TAnalysis::PrintParm</a>() 
+{ 
+    TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;PrintOn(cout); 
+}
+
+<a name="TAnalysis:ReadParm"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TAnalysis.html#TAnalysis:ReadParm">TAnalysis::ReadParm</a>(const <a href="../ListOfTypes.html#char">char</a>* file) 
+{ 
+    return TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:ReadParm">ReadParm</a>(file); 
+}
+
+<a name="TAnalysis:WriteParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:WriteParm">TAnalysis::WriteParm</a>(const <a href="../ListOfTypes.html#char">char</a>* file) 
+{ 
+    TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:WriteParm">WriteParm</a>(file); 
+}
+
+<a name="TAnalysis:ScanCommandLine"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TAnalysis.html#TAnalysis:ScanCommandLine">TAnalysis::ScanCommandLine</a>() 
+{ 
+    TRho::Instance()-&gt;<a href="#TAnalysis:GetParameterManager">GetParameterManager</a>()-&gt;<a href="#TAnalysis:ScanCommandLine">ScanCommandLine</a>(<a href=".././TAnalysis.html#TAnalysis:fArgc">fArgc</a>,<a href=".././TAnalysis.html#TAnalysis:fArgv">fArgv</a>); 
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

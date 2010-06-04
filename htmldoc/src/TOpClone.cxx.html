@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:10 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TOpClone - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: TOpClone.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//	Class <a href=".././TOpClone.html">TOpClone</a></b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//	Gautier Hamel de Monchenault - CEN Saclay </b>
+<b>//</b>
+<b>// History (add to end):</b>
+<b>//      Gautier   March, 1999  - creation</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999	       CEA - Centre d'Etude de Saclay</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "RhoTools/TOpClone.h"
+#include "RhoBase/TFactory.h"
+#include "RhoBase/TCandidate.h"
+
+ClassImp(TOpClone)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TOpClone *&amp;obj)
+{
+   obj = (TOpClone *) buf.ReadObject(TOpClone::Class());
+   return buf;
+}
+
+<b>//</b>
+<b>// Constructor</b>
+<b>//</b>
+
+<a name="TOpClone:TOpClone"> </a><a href=".././TOpClone.html#TOpClone:TOpClone">TOpClone::TOpClone</a>()
+{
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TOpClone:~TOpClone"> </a><a href=".././TOpClone.html">TOpClone</a>::~<a href=".././TOpClone.html">TOpClone</a>() 
+{
+}
+
+TCandidate*
+<a name="TOpClone:Create"> </a><a href=".././TOpClone.html#TOpClone:Create">TOpClone::Create</a>( const TCandidate&amp; cand ) 
+{
+<b>    // make a copy of the candidate</b>
+    TCandidate* newCand = TFactory::Instance()-&gt;NewCandidate(cand);
+    return newCand;
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

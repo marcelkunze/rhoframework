@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:10 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TOpMakeTree</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TOpMakeTree</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TOpMakeTree:description">class description</a> - <a href="src/TOpMakeTree.cxx.html">source file</a> - <a href="TOpMakeTree_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TOpMakeTree" href="TOpMakeTree.h">TOpMakeTree</a> : public <a href="./TOperator.html">TOperator</a></h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->              <a href="./TOpMakeTree.html">TOpMakeTree</a> <!--TAB--><!--BOLD--><a href="#TOpMakeTree:TOpMakeTree">TOpMakeTree</a><!--PLAIN-->(<a href="./TAdd4Vertexer.html">TAdd4Vertexer</a>&amp;)
+<!--TAB6-->              <a href="./TOpMakeTree.html">TOpMakeTree</a> <!--TAB--><!--BOLD--><a href="#TOpMakeTree:TOpMakeTree">TOpMakeTree</a><!--PLAIN-->()
+<!--TAB6-->              <a href="./TOpMakeTree.html">TOpMakeTree</a> <!--TAB--><!--BOLD--><a href="#TOpMakeTree:TOpMakeTree">TOpMakeTree</a><!--PLAIN-->(const <a href="./TOpMakeTree.html">TOpMakeTree</a>&amp;)
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TOpMakeTree:~TOpMakeTree">~TOpMakeTree</a><!--PLAIN-->()
+<!--TAB6-->           static TClass* <!--TAB--><!--BOLD--><a href="#TOpMakeTree:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->      virtual TCandidate* <!--TAB--><!--BOLD--><a href="#TOpMakeTree:CreateFromList">CreateFromList</a><!--PLAIN-->(TCandListIterator&amp; input)
+<!--TAB6-->          virtual TClass* <!--TAB--><!--BOLD--><a href="#TOpMakeTree:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TOpMakeTree:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TOpMakeTree:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TOpMakeTree:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TOpMakeTree:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TOpMakeTree:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="./TAdd4Vertexer.html">TAdd4Vertexer</a>* <!--TAB--><!--BOLD--><a name="TOpMakeTree:_theVertexer">_theVertexer</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_theVertexer">!Do not stream</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TOpMakeTree:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--> <a name="TOpMakeTree:TOpMakeTree" href="src/TOpMakeTree.cxx.html#TOpMakeTree:TOpMakeTree">TOpMakeTree</a>(<a href="./TAdd4Vertexer.html">TAdd4Vertexer</a>&amp; v )
+  : <a href="./TOpMakeTree.html#TOpMakeTree:_theVertexer">_theVertexer</a>( (<a href="./TAdd4Vertexer.html">TAdd4Vertexer</a> *) v.Clone() )
+<br>
+<hr>
+<!--FUNCTION--> <a name="TOpMakeTree:TOpMakeTree" href="src/TOpMakeTree.cxx.html#TOpMakeTree:TOpMakeTree">TOpMakeTree</a>(  )
+<br>
+<hr>
+<!--FUNCTION--> <a name="TOpMakeTree:~TOpMakeTree" href="src/TOpMakeTree.cxx.html#TOpMakeTree:~TOpMakeTree">~TOpMakeTree</a>( )
+<br>
+<hr>
+<!--FUNCTION--> <a name="TOpMakeTree:PrintOn" href="src/TOpMakeTree.cxx.html#TOpMakeTree:PrintOn">PrintOn</a>(std::ostream&amp; o) const 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TOpMakeTree:CreateFromList" href="src/TOpMakeTree.cxx.html#TOpMakeTree:CreateFromList">CreateFromList</a>( TCandListIterator&amp; iterDau )
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TOpMakeTree:Class" href="TOpMakeTree.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TOpMakeTree:IsA" href="TOpMakeTree.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TOpMakeTree:ShowMembers" href="TOpMakeTree.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TOpMakeTree:Streamer" href="TOpMakeTree.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TOpMakeTree:StreamerNVirtual" href="TOpMakeTree.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TOpMakeTree.html">TOpMakeTree</a> <a name="TOpMakeTree:TOpMakeTree" href="TOpMakeTree.h">TOpMakeTree</a>(const <a href="./TOpMakeTree.html">TOpMakeTree</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:10 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:31 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TTuple</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TTuple</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TTuple:description">class description</a> - <a href="src/TTuple.cxx.html">source file</a> - <a href="TTuple_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TTuple" href="TTuple.h">TTuple</a> : public TNamed</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->               <a href="./TTuple.html">TTuple</a> <!--TAB--><!--BOLD--><a href="#TTuple:TTuple">TTuple</a><!--PLAIN-->()
+<!--TAB6-->               <a href="./TTuple.html">TTuple</a> <!--TAB--><!--BOLD--><a href="#TTuple:TTuple">TTuple</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*, const <a href="ListOfTypes.html#char">char</a>*)
+<!--TAB6-->               <a href="./TTuple.html">TTuple</a> <!--TAB--><!--BOLD--><a href="#TTuple:TTuple">TTuple</a><!--PLAIN-->(const <a href="./TTuple.html">TTuple</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:~TTuple">~TTuple</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TTuple:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:ClearData">ClearData</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, <a href="ListOfTypes.html#Bool_t">Bool_t</a> value, <a href="ListOfTypes.html#Bool_t">Bool_t</a> defval = 0, const <a href="ListOfTypes.html#char">char</a>* block = "0")
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const HTAbsValVector&lt;<a href="ListOfTypes.html#Bool_t">Bool_t</a>&gt;&amp; vector, <a href="ListOfTypes.html#Bool_t">Bool_t</a> defval = kFALSE, const <a href="ListOfTypes.html#char">char</a>* block = "0")
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const HTAbsValVector&lt;<a href="ListOfTypes.html#Bool_t">Bool_t</a>&gt;&amp; vector, const <a href="ListOfTypes.html#char">char</a>* ilab, <a href="ListOfTypes.html#Bool_t">Bool_t</a> defval = kFALSE, const <a href="ListOfTypes.html#char">char</a>* block = "0")
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, <a href="ListOfTypes.html#Int_t">Int_t</a> value, <a href="ListOfTypes.html#Int_t">Int_t</a> defval = 0, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt;())
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const HTAbsValVector&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt;&amp; vector, <a href="ListOfTypes.html#Int_t">Int_t</a> defval = 0, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt;())
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const HTAbsValVector&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt;&amp; vector, const <a href="ListOfTypes.html#char">char</a>* ilab, <a href="ListOfTypes.html#Int_t">Int_t</a> defval = 0, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt;())
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, <a href="ListOfTypes.html#Float_t">Float_t</a> value, <a href="ListOfTypes.html#Float_t">Float_t</a> defval = 0.0f, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;())
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const TVector&amp; vec, <a href="ListOfTypes.html#Float_t">Float_t</a> defval = 0.0f, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;())
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const TVector&amp; vec, const <a href="ListOfTypes.html#char">char</a>* ilab, <a href="ListOfTypes.html#Float_t">Float_t</a> defval = 0.0f, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;())
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const HTAbsValVector&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;&amp; vector, <a href="ListOfTypes.html#Float_t">Float_t</a> defval = 0.0f, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;())
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const HTAbsValVector&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;&amp; vector, const <a href="ListOfTypes.html#char">char</a>* ilab, <a href="ListOfTypes.html#Float_t">Float_t</a> defval = 0.0f, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt;())
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, <a href="ListOfTypes.html#Double_t">Double_t</a> value, <a href="ListOfTypes.html#Double_t">Double_t</a> defval = 0.0, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt;())
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const HTAbsValVector&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt;&amp; vector, <a href="ListOfTypes.html#Double_t">Double_t</a> defval = 0.0, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt;())
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const HTAbsValVector&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt;&amp; vector, const <a href="ListOfTypes.html#char">char</a>* ilab, <a href="ListOfTypes.html#Double_t">Double_t</a> defval = 0.0, const <a href="ListOfTypes.html#char">char</a>* block = "0", const HTRange&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt;&amp; range = HTRange&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt;())
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const <a href="ListOfTypes.html#char">char</a>* value, <a href="ListOfTypes.html#Int_t">Int_t</a> N, const <a href="ListOfTypes.html#char">char</a>* defval = "0", const <a href="ListOfTypes.html#char">char</a>* block = "0")
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Column">Column</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* label, const <a href="ListOfTypes.html#char">char</a>* value)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:DumpData">DumpData</a><!--PLAIN-->()
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TTuple:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->          const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TTuple:Label">Label</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>) const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TTuple:NColumns">NColumns</a><!--PLAIN-->() const
+<!--TAB6-->              <a href="./TTuple.html">TTuple</a>&amp; <!--TAB--><!--BOLD--><a href="#TTuple:operator=">operator=</a><!--PLAIN-->(const <a href="./TTuple.html">TTuple</a>&amp; v)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp;) const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTuple:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->          const <a href="ListOfTypes.html#char">char</a>* <!--TAB--><!--BOLD--><a href="#TTuple:Title">Title</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="TTuple:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      THashList* <!--TAB--><!--BOLD--><a name="TTuple:fMap">fMap</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fMap">!Do not stream</a></i>
+<!--TAB6-->          TTree* <!--TAB--><!--BOLD--><a name="TTuple:fTree">fTree</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fTree">!Do not stream</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TTuple:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TTuple.html">TTuple</a>		                                                
+                                                                      
+ Nested class hierarchy to hold information about <a href="./TTuple.html">TTuple</a> columns.	
+									
+ Author List:								
+ Marcel Kunze, RUB,Mar. 99						
+ Apr.2001 (MK),Faster implementation based on THashList		
+ Copyright (C) 1999-2001,Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TTuple:TTuple" href="src/TTuple.cxx.html#TTuple:TTuple">TTuple</a>() 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TTuple:TTuple" href="src/TTuple.cxx.html#TTuple:TTuple">TTuple</a>(const <a href="ListOfTypes.html#char">char</a>* name,const <a href="ListOfTypes.html#char">char</a>* title) : 
+TNamed(name,title)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TTuple:~TTuple" href="src/TTuple.cxx.html#TTuple:~TTuple">~TTuple</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			<a href="ListOfTypes.html#Bool_t">Bool_t</a> value,
+			<a href="ListOfTypes.html#Bool_t">Bool_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const HTAbsValVector&lt;<a href="ListOfTypes.html#Bool_t">Bool_t</a>&gt; &amp;vector,
+			<a href="ListOfTypes.html#Bool_t">Bool_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const HTAbsValVector&lt;<a href="ListOfTypes.html#Bool_t">Bool_t</a>&gt; &amp;vector,
+			const <a href="ListOfTypes.html#char">char</a>* ilab,
+			<a href="ListOfTypes.html#Bool_t">Bool_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			<a href="ListOfTypes.html#Int_t">Int_t</a> value,
+			<a href="ListOfTypes.html#Int_t">Int_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt; &amp;range)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const HTAbsValVector&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt; &amp;vector,
+			<a href="ListOfTypes.html#Int_t">Int_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt; &amp;range)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const HTAbsValVector&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt; &amp;vector,
+			const <a href="ListOfTypes.html#char">char</a>* ilab,
+			<a href="ListOfTypes.html#Int_t">Int_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Int_t">Int_t</a>&gt; &amp;range)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			<a href="ListOfTypes.html#Float_t">Float_t</a> value,
+			<a href="ListOfTypes.html#Float_t">Float_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt; &amp;range) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const TVector &amp;vector,
+			<a href="ListOfTypes.html#Float_t">Float_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt; &amp;range)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const TVector &amp;vector,
+			const <a href="ListOfTypes.html#char">char</a> *ilab,
+			<a href="ListOfTypes.html#Float_t">Float_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt; &amp;range)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const HTAbsValVector&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt; &amp;vector,
+			<a href="ListOfTypes.html#Float_t">Float_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt; &amp;range) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const HTAbsValVector&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt; &amp;vector,
+			const <a href="ListOfTypes.html#char">char</a> *ilab,
+			<a href="ListOfTypes.html#Float_t">Float_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Float_t">Float_t</a>&gt; &amp;range) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			<a href="ListOfTypes.html#Double_t">Double_t</a> value,
+			<a href="ListOfTypes.html#Double_t">Double_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt; &amp;range) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const HTAbsValVector&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt; &amp;vector,
+			<a href="ListOfTypes.html#Double_t">Double_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt; &amp;range)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const HTAbsValVector&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt; &amp;vector,
+			const <a href="ListOfTypes.html#char">char</a> *ilab,
+			<a href="ListOfTypes.html#Double_t">Double_t</a> defval,
+			const <a href="ListOfTypes.html#char">char</a>* block,
+			const HTRange&lt;<a href="ListOfTypes.html#Double_t">Double_t</a>&gt; &amp;range)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,
+			const <a href="ListOfTypes.html#char">char</a>* value,
+			<a href="ListOfTypes.html#Int_t">Int_t</a> N,
+			const <a href="ListOfTypes.html#char">char</a>* defval,
+			const <a href="ListOfTypes.html#char">char</a>* block)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:Column" href="src/TTuple.cxx.html#TTuple:Column">Column</a>(const <a href="ListOfTypes.html#char">char</a>* label,const <a href="ListOfTypes.html#char">char</a>* value)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:DumpData" href="src/TTuple.cxx.html#TTuple:DumpData">DumpData</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:ClearData" href="src/TTuple.cxx.html#TTuple:ClearData">ClearData</a>() 
+<br>
+<hr>
+<!--FUNCTION-->const <a href="ListOfTypes.html#char">char</a>* <a name="TTuple:Title" href="src/TTuple.cxx.html#TTuple:Title">Title</a>() const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TTuple:NColumns" href="src/TTuple.cxx.html#TTuple:NColumns">NColumns</a>() const 
+<br>
+<hr>
+<!--FUNCTION-->const <a href="ListOfTypes.html#char">char</a>* <a name="TTuple:Label" href="src/TTuple.cxx.html#TTuple:Label">Label</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i) const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTuple:PrintOn" href="src/TTuple.cxx.html#TTuple:PrintOn">PrintOn</a>(std::ostream &amp; o)  const 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TTuple.html">TTuple</a>&amp; <a name="TTuple:operator=" href="TTuple.h">operator=</a>(const <a href="./TTuple.html">TTuple</a>&amp; v)
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TTuple:Class" href="TTuple.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TTuple:IsA" href="TTuple.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TTuple:ShowMembers" href="TTuple.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TTuple:Streamer" href="TTuple.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TTuple:StreamerNVirtual" href="TTuple.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TTuple.html">TTuple</a> <a name="TTuple:TTuple" href="TTuple.h">TTuple</a>(const <a href="./TTuple.html">TTuple</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:32 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

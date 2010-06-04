@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:30 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TAnalysis</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TAnalysis</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TAnalysis:description">class description</a> - <a href="src/TAnalysis.cxx.html">source file</a> - <a href="TAnalysis_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TAnalysis" href="TAnalysis.h">TAnalysis</a> : public TObject</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:AnalyzeCollections">AnalyzeCollections</a><!--PLAIN-->(<a href="ListOfTypes.html#Long_t">Long_t</a> nfirst, <a href="ListOfTypes.html#Long_t">Long_t</a> nLast)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:AnalyzeFiles">AnalyzeFiles</a><!--PLAIN-->(<a href="ListOfTypes.html#Long_t">Long_t</a> nfirst, <a href="ListOfTypes.html#Long_t">Long_t</a> nLast)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:AnalyzeRuns">AnalyzeRuns</a><!--PLAIN-->(<a href="ListOfTypes.html#Long_t">Long_t</a> nfirst, <a href="ListOfTypes.html#Long_t">Long_t</a> nLast)
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:CheckNewEvent">CheckNewEvent</a><!--PLAIN-->()
+<!--TAB6-->      <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:CheckNewRun">CheckNewRun</a><!--PLAIN-->()
+<!--TAB6-->        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:InitializeSelectors">InitializeSelectors</a><!--PLAIN-->()
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->               <a href="./TAnalysis.html">TAnalysis</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:TAnalysis">TAnalysis</a><!--PLAIN-->(<a href="ListOfTypes.html#int">int</a> argc = 0, <a href="ListOfTypes.html#char">char</a>** argv = "0")
+<!--TAB6-->               <a href="./TAnalysis.html">TAnalysis</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:TAnalysis">TAnalysis</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* output, <a href="ListOfTypes.html#int">int</a> argc = 0, <a href="ListOfTypes.html#char">char</a>** argv = "0")
+<!--TAB6-->               <a href="./TAnalysis.html">TAnalysis</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:TAnalysis">TAnalysis</a><!--PLAIN-->(const <a href="./TAnalysis.html">TAnalysis</a>&amp;)
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:~TAnalysis">~TAnalysis</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:Add">Add</a><!--PLAIN-->(<a href="./TModule.html">TModule</a>* module)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:AddCollection">AddCollection</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:AddFile">AddFile</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>*)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:Analyze">Analyze</a><!--PLAIN-->(<a href="ListOfTypes.html#Long_t">Long_t</a> nFirst = 0, <a href="ListOfTypes.html#Long_t">Long_t</a> nLast = 1000000000, <a href="ListOfTypes.html#Bool_t">Bool_t</a> parms = kTRUE)
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:BeginJob">BeginJob</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>* evtmgr = 0)
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:BeginRun">BeginRun</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>* evtmgr = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:CheckIndex">CheckIndex</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* path)
+<!--TAB6-->          static TClass* <!--TAB--><!--BOLD--><a href="#TAnalysis:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:ClearInput">ClearInput</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:DumpEvent">DumpEvent</a><!--PLAIN-->(ostream&amp; o = std::cout)
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:EndJob">EndJob</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>* evtmgr = 0)
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:EndRun">EndRun</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>* evtmgr = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:EvaluateParameters">EvaluateParameters</a><!--PLAIN-->()
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:Event">Event</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>* evtmgr)
+<!--TAB6-->                TObject* <!--TAB--><!--BOLD--><a href="#TAnalysis:Get">Get</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->            <a href="./TAssociator.html">TAssociator</a>&amp; <!--TAB--><!--BOLD--><a href="#TAnalysis:GetAssociator">GetAssociator</a><!--PLAIN-->()
+<!--TAB6-->                  <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:GetBoolParm">GetBoolParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->              TCandList* <!--TAB--><!--BOLD--><a href="#TAnalysis:GetCandList">GetCandList</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->      <a href="./TDirectoryManager.html">TDirectoryManager</a>&amp; <!--TAB--><!--BOLD--><a href="#TAnalysis:GetDirectoryManager">GetDirectoryManager</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:GetDoubleParm">GetDoubleParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->          <a href="./TEventManager.html">TEventManager</a>&amp; <!--TAB--><!--BOLD--><a href="#TAnalysis:GetEventManager">GetEventManager</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:GetIntParm">GetIntParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->      <a href="./TParameterManager.html">TParameterManager</a>&amp; <!--TAB--><!--BOLD--><a href="#TAnalysis:GetParameterManager">GetParameterManager</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:GetParm">GetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                 TString <!--TAB--><!--BOLD--><a href="#TAnalysis:GetStringParm">GetStringParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:Initialize">Initialize</a><!--PLAIN-->()
+<!--TAB6-->         virtual TClass* <!--TAB--><!--BOLD--><a href="#TAnalysis:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:PrintInfo">PrintInfo</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:PrintParm">PrintParm</a><!--PLAIN-->()
+<!--TAB6-->                TObject* <!--TAB--><!--BOLD--><a href="#TAnalysis:Put">Put</a><!--PLAIN-->(TObject* obj)
+<!--TAB6-->              TCandList* <!--TAB--><!--BOLD--><a href="#TAnalysis:PutCandList">PutCandList</a><!--PLAIN-->(TCandList* list)
+<!--TAB6-->                  <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:ReadParm">ReadParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* file)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:Run">Run</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:ScanCommandLine">ScanCommandLine</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetAssociator">SetAssociator</a><!--PLAIN-->(<a href="./TAssociator.html">TAssociator</a>&amp; a)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetBoolParm">SetBoolParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Bool_t">Bool_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc = "0", <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetCluster">SetCluster</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetCommandLine">SetCommandLine</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> argc, <a href="ListOfTypes.html#char">char</a>** argv)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetDefaultParameters">SetDefaultParameters</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetDoubleParm">SetDoubleParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Double_t">Double_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc = "0", <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetInput">SetInput</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a> from, <a href="ListOfTypes.html#UInt_t">UInt_t</a> to = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetIntParm">SetIntParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Int_t">Int_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc = "0", <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetNumberOfEvents">SetNumberOfEvents</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a>)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Bool_t">Bool_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc = "0", <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Int_t">Int_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc = "0", <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Double_t">Double_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc = "0", <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetParm">SetParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, const <a href="ListOfTypes.html#char">char</a>* val, const <a href="ListOfTypes.html#char">char</a>* desc = "0", <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetStringParm">SetStringParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key, const <a href="ListOfTypes.html#char">char</a>* val, const <a href="ListOfTypes.html#char">char</a>* desc = "0", <a href="./TModule.html">TModule</a>* x = 0)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetTagSelection">SetTagSelection</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* expr, const <a href="ListOfTypes.html#char">char</a>* bitExpr)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:SetVerbose">SetVerbose</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesno)
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->          virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:TagSelector">TagSelector</a><!--PLAIN-->()
+<!--TAB6-->                  <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:Verbose">Verbose</a><!--PLAIN-->()
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TAnalysis:WriteParm">WriteParm</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* file)
+</pre>
+
+<h3><!--TAB2-->  <a name="TAnalysis:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->          TStopwatch* <!--TAB--><!--BOLD--><a name="TAnalysis:fTimer">fTimer</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fTimer">! Do not stream</a></i>
+<!--TAB6-->         <a href="./TAssociator.html">TAssociator</a>* <!--TAB--><!--BOLD--><a name="TAnalysis:fAssociator">fAssociator</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fAssociator">! Do not stream</a></i>
+<!--TAB6-->         <a href="./TConditions.html">TConditions</a>* <!--TAB--><!--BOLD--><a name="TAnalysis:fConditions">fConditions</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fConditions">! Do not stream</a></i>
+<!--TAB6-->              <a href="./TRunDB.html">TRunDB</a>* <!--TAB--><!--BOLD--><a name="TAnalysis:fRunDB">fRunDB</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fRunDB">! Do not stream</a></i>
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TAnalysis:fMode">fMode</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fMode">! Do not stream</a></i>
+<!--TAB6-->              TString <!--TAB--><!--BOLD--><a name="TAnalysis:fFileName">fFileName</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fFileName">! Do not stream</a></i>
+<!--TAB6-->               TFile* <!--TAB--><!--BOLD--><a name="TAnalysis:fOut">fOut</a><!--PLAIN-->              <!--TAB--><i><a name="Title:fOut">! Do not stream</a></i>
+<!--TAB6-->              TString <!--TAB--><!--BOLD--><a name="TAnalysis:fCurrentCluster">fCurrentCluster</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fCurrentCluster">! Do not stream</a></i>
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TAnalysis:fCurrentRun">fCurrentRun</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fCurrentRun">! Do not stream</a></i>
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TAnalysis:fCurrentEvent">fCurrentEvent</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fCurrentEvent">! Do not stream</a></i>
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TAnalysis:fNumberToProcess">fNumberToProcess</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fNumberToProcess">! Do not stream</a></i>
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TAnalysis:fVerbose">fVerbose</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fVerbose">! Do not stream</a></i>
+<!--TAB6-->      <a href="./TRunCollection.html">TRunCollection</a>* <!--TAB--><!--BOLD--><a name="TAnalysis:fCollection">fCollection</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fCollection">! Do not stream</a></i>
+<!--TAB6-->           TObjArray* <!--TAB--><!--BOLD--><a name="TAnalysis:fCollectionList">fCollectionList</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fCollectionList">! Do not stream</a></i>
+<!--TAB6-->           TObjArray* <!--TAB--><!--BOLD--><a name="TAnalysis:fModuleList">fModuleList</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fModuleList">! Do not stream </a></i>
+<!--TAB6-->                  <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a name="TAnalysis:fArgc">fArgc</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fArgc">! Do not stream</a></i>
+<!--TAB6-->               <a href="ListOfTypes.html#char">char</a>** <!--TAB--><!--BOLD--><a name="TAnalysis:fArgv">fArgv</a><!--PLAIN-->             <!--TAB--><i><a name="Title:fArgv">! Do not stream</a></i>
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TAnalysis:fCounter">fCounter</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fCounter"></a></i>
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="TAnalysis:fAccepted">fAccepted</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fAccepted"></a></i>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      static const <a href="./TAnalysis.html#TAnalysis:AnalysisModes">TAnalysis::AnalysisModes</a> <!--TAB--><!--BOLD--><a name="TAnalysis:INVALID">INVALID</a><!--PLAIN-->      <!--TAB--><i><a name="Title:INVALID"></a></i>
+<!--TAB6-->      static const <a href="./TAnalysis.html#TAnalysis:AnalysisModes">TAnalysis::AnalysisModes</a> <!--TAB--><!--BOLD--><a name="TAnalysis:RUNS">RUNS</a><!--PLAIN-->         <!--TAB--><i><a name="Title:RUNS"></a></i>
+<!--TAB6-->      static const <a href="./TAnalysis.html#TAnalysis:AnalysisModes">TAnalysis::AnalysisModes</a> <!--TAB--><!--BOLD--><a name="TAnalysis:FILES">FILES</a><!--PLAIN-->        <!--TAB--><i><a name="Title:FILES"></a></i>
+<!--TAB6-->      static const <a href="./TAnalysis.html#TAnalysis:AnalysisModes">TAnalysis::AnalysisModes</a> <!--TAB--><!--BOLD--><a name="TAnalysis:COLLECTIONS">COLLECTIONS</a><!--PLAIN-->  <!--TAB--><i><a name="Title:COLLECTIONS"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TAnalysis:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TAnalysis.html">TAnalysis</a>								
+                                                                      
+ Abstract class to define an analysis framework			
+                                                                      
+ Author: Thorsten Brandt, Dresden University, Aug. 99			
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TAnalysis:TAnalysis" href="src/TAnalysis.cxx.html#TAnalysis:TAnalysis">TAnalysis</a>(<a href="ListOfTypes.html#int">int</a> argc, <a href="ListOfTypes.html#char">char</a> **argv) : 
+<a href="./TAnalysis.html#TAnalysis:fArgc">fArgc</a>(argc), <a href="./TAnalysis.html#TAnalysis:fArgv">fArgv</a>(argv), <a href="./TAnalysis.html#TAnalysis:fConditions">fConditions</a>(0), <a href="./TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>(0)
+<br>
+<pre> Instantiate managers if necessary
+</pre><hr>
+<!--FUNCTION--> <a name="TAnalysis:TAnalysis" href="src/TAnalysis.cxx.html#TAnalysis:TAnalysis">TAnalysis</a>(const <a href="ListOfTypes.html#char">char</a>* output,<a href="ListOfTypes.html#int">int</a> argc, <a href="ListOfTypes.html#char">char</a> **argv) :
+<a href="./TAnalysis.html#TAnalysis:fArgc">fArgc</a>(argc), <a href="./TAnalysis.html#TAnalysis:fArgv">fArgv</a>(argv), <a href="./TAnalysis.html#TAnalysis:fConditions">fConditions</a>(0), <a href="./TAnalysis.html#TAnalysis:fRunDB">fRunDB</a>(0)
+<br>
+<pre> Instantiate managers if necessary
+</pre><hr>
+<!--FUNCTION--> <a name="TAnalysis:~TAnalysis" href="src/TAnalysis.cxx.html#TAnalysis:~TAnalysis">~TAnalysis</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="./TAssociator.html">TAssociator</a> <a name="TAnalysis:GetAssociator" href="src/TAnalysis.cxx.html#TAnalysis:GetAssociator">GetAssociator</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TAnalysis:CheckNewRun" href="src/TAnalysis.cxx.html#TAnalysis:CheckNewRun">CheckNewRun</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TAnalysis:CheckNewEvent" href="src/TAnalysis.cxx.html#TAnalysis:CheckNewEvent">CheckNewEvent</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:BeginJob" href="src/TAnalysis.cxx.html#TAnalysis:BeginJob">BeginJob</a>(<a href="./TEventManager.html">TEventManager</a> *evtmgr)
+<br>
+<pre> Make sure eventmanager exists
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:EndJob" href="src/TAnalysis.cxx.html#TAnalysis:EndJob">EndJob</a>(<a href="./TEventManager.html">TEventManager</a> *evtmgr)
+<br>
+<pre> Make sure eventmanager exists
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:BeginRun" href="src/TAnalysis.cxx.html#TAnalysis:BeginRun">BeginRun</a>(<a href="./TEventManager.html">TEventManager</a> *evtmgr)
+<br>
+<pre> Make sure eventmanager exists
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:EndRun" href="src/TAnalysis.cxx.html#TAnalysis:EndRun">EndRun</a>(<a href="./TEventManager.html">TEventManager</a> *evtmgr)
+<br>
+<pre> Make sure eventmanager exists
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:Event" href="src/TAnalysis.cxx.html#TAnalysis:Event">Event</a>(<a href="./TEventManager.html">TEventManager</a> *evtmgr)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:PrintInfo" href="src/TAnalysis.cxx.html#TAnalysis:PrintInfo">PrintInfo</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:CheckIndex" href="src/TAnalysis.cxx.html#TAnalysis:CheckIndex">CheckIndex</a>(const <a href="ListOfTypes.html#char">char</a>* ifp)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:SetNumberOfEvents" href="src/TAnalysis.cxx.html#TAnalysis:SetNumberOfEvents">SetNumberOfEvents</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> n) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:SetInput" href="src/TAnalysis.cxx.html#TAnalysis:SetInput">SetInput</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> from, <a href="ListOfTypes.html#UInt_t">UInt_t</a> to) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:Add" href="src/TAnalysis.cxx.html#TAnalysis:Add">Add</a>(<a href="./TModule.html">TModule</a> *module)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:AddFile" href="src/TAnalysis.cxx.html#TAnalysis:AddFile">AddFile</a>(const <a href="ListOfTypes.html#char">char</a>* name)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:AddCollection" href="src/TAnalysis.cxx.html#TAnalysis:AddCollection">AddCollection</a>(const <a href="ListOfTypes.html#char">char</a>* name)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:ClearInput" href="src/TAnalysis.cxx.html#TAnalysis:ClearInput">ClearInput</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:SetTagSelection" href="src/TAnalysis.cxx.html#TAnalysis:SetTagSelection">SetTagSelection</a>(const <a href="ListOfTypes.html#char">char</a>* expr1,const <a href="ListOfTypes.html#char">char</a>* expr2)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetCluster" href="src/TAnalysis.cxx.html#TAnalysis:SetCluster">SetCluster</a>(const <a href="ListOfTypes.html#char">char</a>* name)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TAnalysis:TagSelector" href="src/TAnalysis.cxx.html#TAnalysis:TagSelector">TagSelector</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:Analyze" href="src/TAnalysis.cxx.html#TAnalysis:Analyze">Analyze</a>(<a href="ListOfTypes.html#Long_t">Long_t</a> nFirst, <a href="ListOfTypes.html#Long_t">Long_t</a> nLast, <a href="ListOfTypes.html#Bool_t">Bool_t</a> parms)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:AnalyzeRuns" href="src/TAnalysis.cxx.html#TAnalysis:AnalyzeRuns">AnalyzeRuns</a>(<a href="ListOfTypes.html#Long_t">Long_t</a> nFirst, <a href="ListOfTypes.html#Long_t">Long_t</a> nLast)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:AnalyzeFiles" href="src/TAnalysis.cxx.html#TAnalysis:AnalyzeFiles">AnalyzeFiles</a>(<a href="ListOfTypes.html#Long_t">Long_t</a> nFirst, <a href="ListOfTypes.html#Long_t">Long_t</a> nLast)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:AnalyzeCollections" href="src/TAnalysis.cxx.html#TAnalysis:AnalyzeCollections">AnalyzeCollections</a>(<a href="ListOfTypes.html#Long_t">Long_t</a> nFirst, <a href="ListOfTypes.html#Long_t">Long_t</a> nLast)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TAnalysis:PutCandList" href="src/TAnalysis.cxx.html#TAnalysis:PutCandList">PutCandList</a>(TCandList* list)
+<br>
+<pre> Make sure, list manager exists
+</pre><hr>
+<!--FUNCTION--> <a name="TAnalysis:GetCandList" href="src/TAnalysis.cxx.html#TAnalysis:GetCandList">GetCandList</a>(const <a href="ListOfTypes.html#char">char</a> *name)
+<br>
+<pre> Make sure, list manager exists
+</pre><hr>
+<!--FUNCTION--> <a name="TAnalysis:Put" href="src/TAnalysis.cxx.html#TAnalysis:Put">Put</a>(TObject* obj)
+<br>
+<pre> Make sure, list manager exists
+</pre><hr>
+<!--FUNCTION--> <a name="TAnalysis:Get" href="src/TAnalysis.cxx.html#TAnalysis:Get">Get</a>(const <a href="ListOfTypes.html#char">char</a> *name)
+<br>
+<pre> Make sure, list manager exists
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetDefaultParameters" href="src/TAnalysis.cxx.html#TAnalysis:SetDefaultParameters">SetDefaultParameters</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:EvaluateParameters" href="src/TAnalysis.cxx.html#TAnalysis:EvaluateParameters">EvaluateParameters</a>()
+<br>
+<pre> Read from a special event store ?
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:InitializeSelectors" href="src/TAnalysis.cxx.html#TAnalysis:InitializeSelectors">InitializeSelectors</a>()
+<br>
+<pre> Loop through the selectors and set the criteria
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:DumpEvent" href="src/TAnalysis.cxx.html#TAnalysis:DumpEvent">DumpEvent</a>(std::ostream &amp;o) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetParm" href="src/TAnalysis.cxx.html#TAnalysis:SetParm">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* k, <a href="ListOfTypes.html#Bool_t">Bool_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc, <a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetParm" href="src/TAnalysis.cxx.html#TAnalysis:SetParm">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Int_t">Int_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc, <a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetParm" href="src/TAnalysis.cxx.html#TAnalysis:SetParm">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Double_t">Double_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc, <a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetParm" href="src/TAnalysis.cxx.html#TAnalysis:SetParm">SetParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, const <a href="ListOfTypes.html#char">char</a>* val, const <a href="ListOfTypes.html#char">char</a>* desc, <a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetBoolParm" href="src/TAnalysis.cxx.html#TAnalysis:SetBoolParm">SetBoolParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Bool_t">Bool_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc, <a href="./TModule.html">TModule</a> *x) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetIntParm" href="src/TAnalysis.cxx.html#TAnalysis:SetIntParm">SetIntParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Int_t">Int_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc, <a href="./TModule.html">TModule</a> *x) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetDoubleParm" href="src/TAnalysis.cxx.html#TAnalysis:SetDoubleParm">SetDoubleParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="ListOfTypes.html#Double_t">Double_t</a> val, const <a href="ListOfTypes.html#char">char</a>* desc, <a href="./TModule.html">TModule</a> *x) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetStringParm" href="src/TAnalysis.cxx.html#TAnalysis:SetStringParm">SetStringParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, const <a href="ListOfTypes.html#char">char</a>* val, const <a href="ListOfTypes.html#char">char</a>* desc, <a href="./TModule.html">TModule</a> *x) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TAnalysis:GetParm" href="src/TAnalysis.cxx.html#TAnalysis:GetParm">GetParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TAnalysis:GetBoolParm" href="src/TAnalysis.cxx.html#TAnalysis:GetBoolParm">GetBoolParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TAnalysis:GetIntParm" href="src/TAnalysis.cxx.html#TAnalysis:GetIntParm">GetIntParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TAnalysis:GetDoubleParm" href="src/TAnalysis.cxx.html#TAnalysis:GetDoubleParm">GetDoubleParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION-->TString <a name="TAnalysis:GetStringParm" href="src/TAnalysis.cxx.html#TAnalysis:GetStringParm">GetStringParm</a>(const <a href="ListOfTypes.html#char">char</a>* key, <a href="./TModule.html">TModule</a> *x) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:PrintParm" href="src/TAnalysis.cxx.html#TAnalysis:PrintParm">PrintParm</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TAnalysis:ReadParm" href="src/TAnalysis.cxx.html#TAnalysis:ReadParm">ReadParm</a>(const <a href="ListOfTypes.html#char">char</a>* file) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:WriteParm" href="src/TAnalysis.cxx.html#TAnalysis:WriteParm">WriteParm</a>(const <a href="ListOfTypes.html#char">char</a>* file) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:ScanCommandLine" href="src/TAnalysis.cxx.html#TAnalysis:ScanCommandLine">ScanCommandLine</a>() 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetVerbose" href="TAnalysis.h">SetVerbose</a>(<a href="ListOfTypes.html#Bool_t">Bool_t</a> yesno)
+<!--INLINE FUNCTION--><!--TAB6-->                    <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TAnalysis:Verbose" href="TAnalysis.h">Verbose</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetCommandLine" href="TAnalysis.h">SetCommandLine</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> argc, <a href="ListOfTypes.html#char">char</a>** argv)
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./TEventManager.html">TEventManager</a>&amp; <a name="TAnalysis:GetEventManager" href="TAnalysis.h">GetEventManager</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:SetAssociator" href="TAnalysis.h">SetAssociator</a>(<a href="./TAssociator.html">TAssociator</a>&amp; a)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TDirectoryManager.html">TDirectoryManager</a>&amp; <a name="TAnalysis:GetDirectoryManager" href="TAnalysis.h">GetDirectoryManager</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TParameterManager.html">TParameterManager</a>&amp; <a name="TAnalysis:GetParameterManager" href="TAnalysis.h">GetParameterManager</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:Initialize" href="TAnalysis.h">Initialize</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:Run" href="TAnalysis.h">Run</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                   TClass* <a name="TAnalysis:Class" href="TAnalysis.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                   TClass* <a name="TAnalysis:IsA" href="TAnalysis.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:ShowMembers" href="TAnalysis.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:Streamer" href="TAnalysis.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="TAnalysis:StreamerNVirtual" href="TAnalysis.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="./TAnalysis.html">TAnalysis</a> <a name="TAnalysis:TAnalysis" href="TAnalysis.h">TAnalysis</a>(const <a href="./TAnalysis.html">TAnalysis</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Thorsten+Brandt">Thorsten Brandt</a>, <a href="http://consult.cern.ch/xwho/people?Dresden+University">Dresden University</a>, <a href="http://consult.cern.ch/xwho/people?Aug.">Aug.</a> 99			//</em><br>
+<em>Last update: Fri Dec 20 16:02:31 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

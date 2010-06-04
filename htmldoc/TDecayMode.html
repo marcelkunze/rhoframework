@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:46 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TDecayMode</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TDecayMode</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TDecayMode:description">class description</a> - <a href="src/TDecayMode.cxx.html">source file</a> - <a href="TDecayMode_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TDecayMode" href="TDecayMode.h">TDecayMode</a> : public TObject</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:AddDaughter">AddDaughter</a><!--PLAIN-->(TParticlePDG* aDaughter)
+<!--TAB6-->      TParticlePDG* <!--TAB--><!--BOLD--><a href="#TDecayMode:CPConjugate">CPConjugate</a><!--PLAIN-->(TParticlePDG* aPart)
+<!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:SetMother">SetMother</a><!--PLAIN-->(TParticlePDG* theMother)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->               <a href="./TDecayMode.html">TDecayMode</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:TDecayMode">TDecayMode</a><!--PLAIN-->(TParticlePDG* theMother, const TList&amp; theDaughters)
+<!--TAB6-->               <a href="./TDecayMode.html">TDecayMode</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:TDecayMode">TDecayMode</a><!--PLAIN-->(const TString&amp; theMotherName, const TString* theDaughterNames)
+<!--TAB6-->               <a href="./TDecayMode.html">TDecayMode</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:TDecayMode">TDecayMode</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* = "D0 -&gt; K+ pi-")
+<!--TAB6-->               <a href="./TDecayMode.html">TDecayMode</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:TDecayMode">TDecayMode</a><!--PLAIN-->(const <a href="./TDecayMode.html">TDecayMode</a>&amp;)
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:~TDecayMode">~TDecayMode</a><!--PLAIN-->()
+<!--TAB6-->           static TClass* <!--TAB--><!--BOLD--><a href="#TDecayMode:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                    TIter <!--TAB--><!--BOLD--><a href="#TDecayMode:DaughterIterator">DaughterIterator</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> conj = kFALSE) const
+<!--TAB6-->             const TList&amp; <!--TAB--><!--BOLD--><a href="#TDecayMode:Daughters">Daughters</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> conj = kFALSE) const
+<!--TAB6-->                  TString <!--TAB--><!--BOLD--><a href="#TDecayMode:DecayString">DecayString</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> conj = kFALSE) const
+<!--TAB6-->          virtual TClass* <!--TAB--><!--BOLD--><a href="#TDecayMode:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:IsSelfConjugate">IsSelfConjugate</a><!--PLAIN-->() const
+<!--TAB6-->      const TParticlePDG* <!--TAB--><!--BOLD--><a href="#TDecayMode:Mother">Mother</a><!--PLAIN-->(<a href="ListOfTypes.html#Bool_t">Bool_t</a> conjugate = kFALSE) const
+<!--TAB6-->                      <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:NDaughters">NDaughters</a><!--PLAIN-->() const
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->             virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                     <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDecayMode:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TDecayMode:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      TParticlePDG* <!--TAB--><!--BOLD--><a name="TDecayMode:_theMother">_theMother</a><!--PLAIN-->         <!--TAB--><i><a name="Title:_theMother">! Do not stream</a></i>
+<!--TAB6-->      TParticlePDG* <!--TAB--><!--BOLD--><a name="TDecayMode:_theAntiMother">_theAntiMother</a><!--PLAIN-->     <!--TAB--><i><a name="Title:_theAntiMother">! Do not stream</a></i>
+<!--TAB6-->              TList <!--TAB--><!--BOLD--><a name="TDecayMode:_theDaughters">_theDaughters</a><!--PLAIN-->      <!--TAB--><i><a name="Title:_theDaughters">! Do not stream</a></i>
+<!--TAB6-->              TList <!--TAB--><!--BOLD--><a name="TDecayMode:_theAntiDaughters">_theAntiDaughters</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_theAntiDaughters">! Do not stream</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TDecayMode:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:TDecayMode" href="src/TDecayMode.cxx.html#TDecayMode:TDecayMode">TDecayMode</a>( TParticlePDG* theMother,const TList&amp; theDaughters )
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:TDecayMode" href="src/TDecayMode.cxx.html#TDecayMode:TDecayMode">TDecayMode</a>( const TString&amp; theMotherName,const TString theDaughterNames[5] )
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:TDecayMode" href="src/TDecayMode.cxx.html#TDecayMode:TDecayMode">TDecayMode</a>( const <a href="./TDecayMode.html">TDecayMode</a>&amp; o )
+:
+<a href="./TDecayMode.html#TDecayMode:_theMother">_theMother</a>( o.<a href="./TDecayMode.html#TDecayMode:_theMother">_theMother</a> ),
+<a href="./TDecayMode.html#TDecayMode:_theAntiMother">_theAntiMother</a>( o.<a href="./TDecayMode.html#TDecayMode:_theAntiMother">_theAntiMother</a> )
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:TDecayMode" href="src/TDecayMode.cxx.html#TDecayMode:TDecayMode">TDecayMode</a>( const <a href="ListOfTypes.html#char">char</a>* theMode )
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:SetMother" href="src/TDecayMode.cxx.html#TDecayMode:SetMother">SetMother</a>( TParticlePDG* theMother )
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:CPConjugate" href="src/TDecayMode.cxx.html#TDecayMode:CPConjugate">CPConjugate</a>( TParticlePDG* thePart )
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:AddDaughter" href="src/TDecayMode.cxx.html#TDecayMode:AddDaughter">AddDaughter</a>( TParticlePDG* aDaughter )
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:Mother" href="src/TDecayMode.cxx.html#TDecayMode:Mother">Mother</a>( <a href="ListOfTypes.html#Bool_t">Bool_t</a> conjugate ) const
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:IsSelfConjugate" href="src/TDecayMode.cxx.html#TDecayMode:IsSelfConjugate">IsSelfConjugate</a>() const
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:NDaughters" href="src/TDecayMode.cxx.html#TDecayMode:NDaughters">NDaughters</a>() const
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:Daughters" href="src/TDecayMode.cxx.html#TDecayMode:Daughters">Daughters</a>( <a href="ListOfTypes.html#Bool_t">Bool_t</a> conjugate ) const
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:DaughterIterator" href="src/TDecayMode.cxx.html#TDecayMode:DaughterIterator">DaughterIterator</a>( <a href="ListOfTypes.html#Bool_t">Bool_t</a> conjugate ) const
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:DecayString" href="src/TDecayMode.cxx.html#TDecayMode:DecayString">DecayString</a>( <a href="ListOfTypes.html#Bool_t">Bool_t</a> conjugate ) const
+<br>
+<hr>
+<!--FUNCTION--> <a name="TDecayMode:~TDecayMode" href="src/TDecayMode.cxx.html#TDecayMode:~TDecayMode">~TDecayMode</a>() 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TDecayMode:Class" href="TDecayMode.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TDecayMode:IsA" href="TDecayMode.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDecayMode:ShowMembers" href="TDecayMode.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDecayMode:Streamer" href="TDecayMode.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDecayMode:StreamerNVirtual" href="TDecayMode.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:47 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

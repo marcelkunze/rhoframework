@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:34 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>VUnsupervisedNet</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>VUnsupervisedNet</h1>
+<hr width=300>
+<!--SDL--><em><a href="#VUnsupervisedNet:description">class description</a> - <a href="src/VUnsupervisedNet.cxx.html">source file</a> - <a href="VUnsupervisedNet_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="VUnsupervisedNet" href="VUnsupervisedNet.h">VUnsupervisedNet</a> : public <a href="./VNeuralNet.html">VNeuralNet</a></h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                           <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VUnsupervisedNet:~VUnsupervisedNet">~VUnsupervisedNet</a><!--PLAIN-->()
+<!--TAB6-->                 static TClass* <!--TAB--><!--BOLD--><a href="#VUnsupervisedNet:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                          <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#VUnsupervisedNet:GetNumberOfCells">GetNumberOfCells</a><!--PLAIN-->() const
+<!--TAB6-->      <a href="./TNeuralNetCellParameters.html">TNeuralNetCellParameters</a>&amp; <!--TAB--><!--BOLD--><a href="#VUnsupervisedNet:GetParameters">GetParameters</a><!--PLAIN-->()
+<!--TAB6-->                  virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#VUnsupervisedNet:GetWinnerCell">GetWinnerCell</a><!--PLAIN-->(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in)
+<!--TAB6-->                virtual TClass* <!--TAB--><!--BOLD--><a href="#VUnsupervisedNet:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VUnsupervisedNet:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->                   virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VUnsupervisedNet:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                           <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#VUnsupervisedNet:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#Long_t">Long_t</a> <!--TAB--><!--BOLD--><a href="#VUnsupervisedNet:TrainEpoch">TrainEpoch</a><!--PLAIN-->(FILE* trainFile)
+</pre>
+
+<h3><!--TAB2-->  <a name="VUnsupervisedNet:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->               <a href="./TNeuralNetCell.html">TNeuralNetCell</a>* <!--TAB--><!--BOLD--><a name="VUnsupervisedNet:fU">fU</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fU">! Temp. unit</a></i>
+<!--TAB6-->      <a href="./TNeuralNetCellParameters.html">TNeuralNetCellParameters</a> <!--TAB--><!--BOLD--><a name="VUnsupervisedNet:fXB">fXB</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fXB">Network parameters</a></i>
+</pre>
+<!--END-->
+<br><hr>
+<!--SEE ALSO--><h2>See also</h2><dl><dd>
+<a href="./TGCS.html">TGCS</a>, <a href="./TGNG.html">TGNG</a>, <a href="./TLVQ.html">TLVQ</a></dl>
+<hr>
+<!--DESCRIPTION--><h2><a name="VUnsupervisedNet:description">Class Description</a></h2>
+<pre>									
+ <a href="./VUnsupervisedNet.html">VUnsupervisedNet</a>							
+									
+ Base classes for unsupervised learning				
+ Abstract base class of all unsupervised networks			
+ Part of the Neural Network Objects package (NNO)			
+									
+ Author List:								
+ Johannes Steffens, Bochum University					
+ M.Kunze, Bochum University						
+ (C) Copyright Johannes Steffens 1995, Ruhr-University Bochum.	
+									
+
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Long_t">Long_t</a> <a name="VUnsupervisedNet:TrainEpoch" href="src/VUnsupervisedNet.cxx.html#VUnsupervisedNet:TrainEpoch">TrainEpoch</a>(FILE* file) 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TNeuralNetCellParameters.html">TNeuralNetCellParameters</a>&amp; <a name="VUnsupervisedNet:GetParameters" href="VUnsupervisedNet.h">GetParameters</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                            <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="VUnsupervisedNet:GetNumberOfCells" href="VUnsupervisedNet.h">GetNumberOfCells</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                            <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="VUnsupervisedNet:GetWinnerCell" href="VUnsupervisedNet.h">GetWinnerCell</a>(<a href="ListOfTypes.html#NNO_INTYPE">NNO_INTYPE</a>* in)
+<!--INLINE FUNCTION--><!--TAB6-->                          TClass* <a name="VUnsupervisedNet:Class" href="VUnsupervisedNet.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                          TClass* <a name="VUnsupervisedNet:IsA" href="VUnsupervisedNet.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <a name="VUnsupervisedNet:ShowMembers" href="VUnsupervisedNet.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <a name="VUnsupervisedNet:Streamer" href="VUnsupervisedNet.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <a name="VUnsupervisedNet:StreamerNVirtual" href="VUnsupervisedNet.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                             <a href="ListOfTypes.html#void">void</a> <a name="VUnsupervisedNet:~VUnsupervisedNet" href="VUnsupervisedNet.h">~VUnsupervisedNet</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:34 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

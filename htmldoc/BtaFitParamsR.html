@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:01:59 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>BtaFitParamsR</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>BtaFitParamsR</h1>
+<hr width=300>
+<!--SDL--><em><a href="#BtaFitParamsR:description">class description</a> - <a href="src/BtaFitParamsR.cxx.html">source file</a> - <a href="BtaFitParamsR_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="BtaFitParamsR" href="BtaFitParamsR.h">BtaFitParamsR</a> </h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->        <a href="./BtaFitParamsR.html">BtaFitParamsR</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR:BtaFitParamsR">BtaFitParamsR</a><!--PLAIN-->()
+<!--TAB6-->        <a href="./BtaFitParamsR.html">BtaFitParamsR</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR:BtaFitParamsR">BtaFitParamsR</a><!--PLAIN-->(const <a href="./BtaFitParamsR.html">BtaFitParamsR</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR:~BtaFitParamsR">~BtaFitParamsR</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#BtaFitParamsR:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#BtaFitParamsR:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->          TFitParams* <!--TAB--><!--BOLD--><a href="#BtaFitParamsR:Transient">Transient</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="BtaFitParamsR:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Short_t">Short_t</a> <!--TAB--><!--BOLD--><a name="BtaFitParamsR:_q">_q</a><!--PLAIN-->         <!--TAB--><i><a name="Title:_q"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="BtaFitParamsR:_pos">_pos[3]</a><!--PLAIN-->    <!--TAB--><i><a name="Title:_pos"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="BtaFitParamsR:_p4">_p4[4]</a><!--PLAIN-->     <!--TAB--><i><a name="Title:_p4"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="BtaFitParamsR:_cov7">_cov7[28]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_cov7"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="BtaFitParamsR:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--> <a name="BtaFitParamsR:BtaFitParamsR" href="src/BtaFitParamsR.cxx.html#BtaFitParamsR:BtaFitParamsR">BtaFitParamsR</a>() : 
+  <a href="./BtaFitParamsR.html#BtaFitParamsR:_q">_q</a>( 0 ) <br>
+<hr>
+<!--FUNCTION--> <a name="BtaFitParamsR:BtaFitParamsR" href="src/BtaFitParamsR.cxx.html#BtaFitParamsR:BtaFitParamsR">BtaFitParamsR</a>( const TFitParams &amp; transient )
+  : <a href="./BtaFitParamsR.html#BtaFitParamsR:_q">_q</a>( transient.charge() ) <br>
+<hr>
+<!--FUNCTION--> <a name="BtaFitParamsR:~BtaFitParamsR" href="src/BtaFitParamsR.cxx.html#BtaFitParamsR:~BtaFitParamsR">~BtaFitParamsR</a>() <br>
+<hr>
+<!--FUNCTION-->TFitParams* <a name="BtaFitParamsR:Transient" href="src/BtaFitParamsR.cxx.html#BtaFitParamsR:Transient">Transient</a>() const <br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="BtaFitParamsR:Class" href="BtaFitParamsR.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="BtaFitParamsR:IsA" href="BtaFitParamsR.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="BtaFitParamsR:ShowMembers" href="BtaFitParamsR.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="BtaFitParamsR:Streamer" href="BtaFitParamsR.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="BtaFitParamsR:StreamerNVirtual" href="BtaFitParamsR.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:00 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

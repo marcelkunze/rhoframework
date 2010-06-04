@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:45 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TDataBlock - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TDataBlock.html">TDataBlock</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Define a block of runs for use in a collection			//</b>
+<b>//                                                                      //</b>
+<b>// Author: TB, TUD, May. 99						//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "RhoManager/TDataBlock.h"
+
+ClassImp(TDataBlock);
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TDataBlock:TDataBlock"> </a>TDataBlock::TDataBlock(const char* filename,Int_t indexFrom, Int_t indexTo) :
+  fMin(indexFrom),
+  fMax(indexTo),
+  fName(filename)
+{ }
+
+void
+<a name="TDataBlock:PrintOn"> </a>TDataBlock::PrintOn(std::ostream &amp;o) const
+{
+   o &lt;&lt; " " &lt;&lt; fName.Data() &lt;&lt; " : Entries " &lt;&lt; fMin &lt;&lt; " - " &lt;&lt; fMax &lt;&lt; endl;
+}
+
+Int_t
+<a name="TDataBlock:Compare"> </a>TDataBlock::Compare(const TObject *other) const
+{
+  TDataBlock *otherR = (TDataBlock*) other;
+  Int_t n = fName.CompareTo(otherR-&gt;fName);
+  if (n==0) {
+    if (fMin &lt; otherR-&gt;fMin) {
+      return -1;
+    } else if  (fMin &gt; otherR-&gt;fMin) {
+      return 1;
+    }
+  }
+  return n;
+}
+
+<a name="TDataBlock:GetFilename"> </a>const char* TDataBlock::GetFilename() 
+{ 
+<b>  //return TRho::Instance()-&gt;GetEventStore() + "/" + <a href=".././TDataBlock.html#TDataBlock:fName">fName</a>; </b>
+<b>  // TB 3/11/99 complete filename is now made in Stream</b>
+  return <a href=".././TDataBlock.html#TDataBlock:fName">fName</a>.Data();
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

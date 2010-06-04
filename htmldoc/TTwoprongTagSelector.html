@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:32 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TTwoprongTagSelector</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TTwoprongTagSelector</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TTwoprongTagSelector:description">class description</a> - <a href="src/TTwoprongTagSelector.cxx.html">source file</a> - <a href="TTwoprongTagSelector_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TTwoprongTagSelector" href="TEventSelector.h">TTwoprongTagSelector</a> : public <a href="./TTagBaseSelector.html">TTagBaseSelector</a></h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      <a href="./TTwoprongTagSelector.html">TTwoprongTagSelector</a> <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:TTwoprongTagSelector">TTwoprongTagSelector</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name = "<a href="./TTwoprongTagSelector.html">TTwoprongTagSelector</a>")
+<!--TAB6-->      <a href="./TTwoprongTagSelector.html">TTwoprongTagSelector</a> <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:TTwoprongTagSelector">TTwoprongTagSelector</a><!--PLAIN-->(const <a href="./TTwoprongTagSelector.html">TTwoprongTagSelector</a>&amp;)
+<!--TAB6-->              virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:~TTwoprongTagSelector">~TTwoprongTagSelector</a><!--PLAIN-->()
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:Accept">Accept</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>&amp;)
+<!--TAB6-->            static TClass* <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->           virtual TClass* <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->              virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:SetDeltaCosTheta">SetDeltaCosTheta</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> c)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:SetDeltaPhi">SetDeltaPhi</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> p)
+<!--TAB6-->              virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->              virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTwoprongTagSelector:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TTwoprongTagSelector:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TTwoprongTagSelector:fDPhi">fDPhi</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fDPhi"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TTwoprongTagSelector:fDCosTh">fDCosTh</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fDCosTh"></a></i>
+</pre>
+<!--END-->
+<br><hr>
+<!--SEE ALSO--><h2>See also</h2><dl><dd>
+<a href="./TBhabhaRatioTagSelector.html">TBhabhaRatioTagSelector</a>, <a href="./TRadiativeBhabhaTagSelector.html">TRadiativeBhabhaTagSelector</a></dl>
+<hr>
+<!--DESCRIPTION--><h2><a name="TTwoprongTagSelector:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TEventSelector.html">TEventSelector</a>							
+                                                                      
+ Selector classes for event selection                                 
+                                                                      
+ Author List:                                                         
+ Marcel Kunze,  RUB, Feb. 99                                          
+ Copyright (C) 1999-2001, Ruhr-University Bochum.                     
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TTwoprongTagSelector:TTwoprongTagSelector" href="src/TTwoprongTagSelector.cxx.html#TTwoprongTagSelector:TTwoprongTagSelector">TTwoprongTagSelector</a>(const <a href="ListOfTypes.html#char">char</a> *name) :
+<a href="./TTagBaseSelector.html">TTagBaseSelector</a>(name)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TTwoprongTagSelector:Accept" href="src/TTwoprongTagSelector.cxx.html#TTwoprongTagSelector:Accept">Accept</a>(<a href="./TEventManager.html">TEventManager</a>&amp; e) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TTwoprongTagSelector:PrintOn" href="src/TTwoprongTagSelector.cxx.html#TTwoprongTagSelector:PrintOn">PrintOn</a>(std::ostream&amp; o) const 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="TTwoprongTagSelector:SetDeltaPhi" href="TEventSelector.h">SetDeltaPhi</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> p)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="TTwoprongTagSelector:SetDeltaCosTheta" href="TEventSelector.h">SetDeltaCosTheta</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> c)
+<!--INLINE FUNCTION--><!--TAB6-->                     TClass* <a name="TTwoprongTagSelector:Class" href="TEventSelector.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                     TClass* <a name="TTwoprongTagSelector:IsA" href="TEventSelector.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="TTwoprongTagSelector:ShowMembers" href="TEventSelector.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="TTwoprongTagSelector:Streamer" href="TEventSelector.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="TTwoprongTagSelector:StreamerNVirtual" href="TEventSelector.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TTwoprongTagSelector.html">TTwoprongTagSelector</a> <a name="TTwoprongTagSelector:TTwoprongTagSelector" href="TEventSelector.h">TTwoprongTagSelector</a>(const <a href="./TTwoprongTagSelector.html">TTwoprongTagSelector</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <a name="TTwoprongTagSelector:~TTwoprongTagSelector" href="TEventSelector.h">~TTwoprongTagSelector</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:33 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

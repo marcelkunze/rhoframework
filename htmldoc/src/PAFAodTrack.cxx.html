@@ -1,0 +1,640 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:12 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFAodTrack - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././PAFAodTrack.html">PAFAodTrack</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Definition of the Analysis Object Data database (charged part)	//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, Bochum University, March 1999			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "PAFSchema/PAFAodTrack.h"
+#include "RhoBase/TSmartPointer.h"
+
+#include "TBranchClones.h"
+
+ClassImp(PAFAodTrack)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="PAFAodTrack:PAFAodTrack"> </a>PAFAodTrack::PAFAodTrack() :
+_SVThitpattern(0),
+_SVThits(0),
+_DCHinnerlayer(0),
+_DCHouterlayer(0),
+_DCHhits(0),
+_TRKpidhypo(0), 
+_TRKndof(0), 
+_TRKfitstatus(0), 
+_TRKprob(0), 
+_TRKchi2(0),
+_TRKtlen(0),
+_DRCthetaC(0),
+_DRCethetaC(0),
+_DCHmom(0),
+_DRCmom(0),
+_DRCnphot(0), 
+_DRCnbkgd(0),
+_DRCstatus(0), 
+_DRCnumbar(0),
+_DRCexit(0),
+_DRCxpos(0),
+_DCHdedx(0),
+_SVTdedx(0),
+_DCHPidInfo(),
+_SVTPidInfo(),
+_DRCPidInfo(),
+_pattern(0),
+_TRKst(0.0),
+_DCHsamples(0),
+_SVTsamples(0),
+_EMCinterphi(0),
+_EMCintertheta(0)
+{
+    Int_t i;
+    
+    for (i=0;i&lt;5;i++) _DRCnexp[i] = 0;
+    
+    for (i=0; i&lt;NELEM_AODTRACK; i++) {
+	fBranches[i]=0;
+    }
+    
+}
+
+<a name="PAFAodTrack:PAFAodTrack"> </a>PAFAodTrack::PAFAodTrack(PAFAodTrack &amp;other)
+{
+<b>    // set branch pointers of copy </b>
+    <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[0]=NULL;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> i;
+    for (i=1; i&lt;NELEM_AODTRACK; i++) {
+	if (other.<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[i]!=other.<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[0]) {
+	    <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[i]=other.<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[i];
+	} else {
+	    <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[i] = <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[0];
+	}
+    }
+<b>    // copy data</b>
+    for (i=0; i&lt;5; i++) {
+      <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnexp">_DRCnexp</a>[i] = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnexp">_DRCnexp</a>[i];
+    }
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_SVThitpattern">_SVThitpattern</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_SVThitpattern">_SVThitpattern</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_SVThits">_SVThits</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_SVThits">_SVThits</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHinnerlayer">_DCHinnerlayer</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHinnerlayer">_DCHinnerlayer</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHouterlayer">_DCHouterlayer</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHouterlayer">_DCHouterlayer</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHhits">_DCHhits</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHhits">_DCHhits</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKpidhypo">_TRKpidhypo</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKpidhypo">_TRKpidhypo</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKndof">_TRKndof</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKndof">_TRKndof</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKfitstatus">_TRKfitstatus</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKfitstatus">_TRKfitstatus</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKprob">_TRKprob</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKprob">_TRKprob</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKchi2">_TRKchi2</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKchi2">_TRKchi2</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKtlen">_TRKtlen</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKtlen">_TRKtlen</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCthetaC">_DRCthetaC</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCthetaC">_DRCthetaC</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCethetaC">_DRCethetaC</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCethetaC">_DRCethetaC</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHmom">_DCHmom</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHmom">_DCHmom</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCmom">_DRCmom</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCmom">_DRCmom</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnphot">_DRCnphot</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnphot">_DRCnphot</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnbkgd">_DRCnbkgd</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnbkgd">_DRCnbkgd</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCstatus">_DRCstatus</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCstatus">_DRCstatus</a>; 
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnumbar">_DRCnumbar</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnumbar">_DRCnumbar</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCexit">_DRCexit</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCexit">_DRCexit</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCxpos">_DRCxpos</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCxpos">_DRCxpos</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHdedx">_DCHdedx</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHdedx">_DCHdedx</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_SVTdedx">_SVTdedx</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_SVTdedx">_SVTdedx</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_SVTPidInfo">_SVTPidInfo</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_SVTPidInfo">_SVTPidInfo</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHPidInfo">_DCHPidInfo</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHPidInfo">_DCHPidInfo</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCPidInfo">_DRCPidInfo</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCPidInfo">_DRCPidInfo</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a>; 
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKst">_TRKst</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKst">_TRKst</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHsamples">_DCHsamples</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHsamples">_DCHsamples</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_SVTsamples">_SVTsamples</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_SVTsamples">_SVTsamples</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCintertheta">_EMCintertheta</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_EMCintertheta">_EMCintertheta</a>;
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCinterphi">_EMCinterphi</a> = other.<a href=".././PAFAodTrack.html#PAFAodTrack:_EMCinterphi">_EMCinterphi</a>;
+}
+
+<a name="PAFAodTrack:~PAFAodTrack"> </a><a href=".././PAFAodTrack.html">PAFAodTrack</a>::~<a href=".././PAFAodTrack.html">PAFAodTrack</a>()  
+{ 
+    for (<a href="../ListOfTypes.html#int">int</a> i=0; i&lt;NELEM_AODTRACK; i++) delete <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[i];
+}
+
+<b>//Detector status ( = subsystem with hits) __________</b>
+
+<a name="PAFAodTrack:SvtOk"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SvtOk">PAFAodTrack::SvtOk</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[36]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[36]-&gt;CheckBranch();
+    return ((<a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a>&amp;1)==1);
+}
+
+<a name="PAFAodTrack:DchOk"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:DchOk">PAFAodTrack::DchOk</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[36]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[36]-&gt;CheckBranch();
+    return ((<a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a>&amp;2)==2);
+}
+
+<a name="PAFAodTrack:DrcOk"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:DrcOk">PAFAodTrack::DrcOk</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[36]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[36]-&gt;CheckBranch();
+    return ((<a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a>&amp;4)==4);
+}
+
+
+<a name="PAFAodTrack:SetTrackStatus"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetTrackStatus">PAFAodTrack::SetTrackStatus</a>(<a href="../ListOfTypes.html#Bool_t">Bool_t</a> svt,<a href="../ListOfTypes.html#Bool_t">Bool_t</a> dch, <a href="../ListOfTypes.html#Bool_t">Bool_t</a> drc)
+{
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a>=0;
+    if (svt) { <a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a> |=1; }
+    if (dch) { <a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a> |=2; }
+    if (drc) { <a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a> |=4; }
+}
+
+<b>//BtaTrkQual___________________________________________________________</b>
+
+<a name="PAFAodTrack:SetSvtHitPattern"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetSvtHitPattern">PAFAodTrack::SetSvtHitPattern</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_SVThitpattern">_SVThitpattern</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodTrack:SetSvtHits"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetSvtHits">PAFAodTrack::SetSvtHits</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_SVThits">_SVThits</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodTrack:SetDchInnerLayer"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDchInnerLayer">PAFAodTrack::SetDchInnerLayer</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHinnerlayer">_DCHinnerlayer</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodTrack:SetDchOuterLayer"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDchOuterLayer">PAFAodTrack::SetDchOuterLayer</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHouterlayer">_DCHouterlayer</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodTrack:SetDchHits"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDchHits">PAFAodTrack::SetDchHits</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHhits">_DCHhits</a>=(<a href="../ListOfTypes.html#Byte_t">Byte_t</a>)t;
+}
+
+<a name="PAFAodTrack:SetChargedPidHypo"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetChargedPidHypo">PAFAodTrack::SetChargedPidHypo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKpidhypo">_TRKpidhypo</a>=(<a href="../ListOfTypes.html#Char_t">Char_t</a>)t;
+}
+
+<a name="PAFAodTrack:SetDegreesOfFreedom"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDegreesOfFreedom">PAFAodTrack::SetDegreesOfFreedom</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKndof">_TRKndof</a>=(<a href="../ListOfTypes.html#Short_t">Short_t</a>)t;
+}
+
+<a name="PAFAodTrack:SetProbability"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetProbability">PAFAodTrack::SetProbability</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKprob">_TRKprob</a>=t;
+}
+
+<a name="PAFAodTrack:SetChiSquared"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetChiSquared">PAFAodTrack::SetChiSquared</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKchi2">_TRKchi2</a>=t;
+}
+
+<a name="PAFAodTrack:SetTrackLength"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetTrackLength">PAFAodTrack::SetTrackLength</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKtlen">_TRKtlen</a>=t;
+}
+
+<a name="PAFAodTrack:SetTrackStartFoundRange"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetTrackStartFoundRange">PAFAodTrack::SetTrackStartFoundRange</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKst">_TRKst</a>=t;
+}
+
+<a name="PAFAodTrack:GetSvtHitPattern"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetSvtHitPattern">PAFAodTrack::GetSvtHitPattern</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[1]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[1]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_SVThitpattern">_SVThitpattern</a>;
+}
+
+<a name="PAFAodTrack:GetSvtHits"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetSvtHits">PAFAodTrack::GetSvtHits</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[2]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[2]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_SVThits">_SVThits</a>;
+}
+
+<a name="PAFAodTrack:GetDchInnerLayer"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDchInnerLayer">PAFAodTrack::GetDchInnerLayer</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[3]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[3]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHinnerlayer">_DCHinnerlayer</a>;
+}
+
+<a name="PAFAodTrack:GetDchOuterLayer"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDchOuterLayer">PAFAodTrack::GetDchOuterLayer</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[4]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[4]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHouterlayer">_DCHouterlayer</a>;
+}
+
+<a name="PAFAodTrack:GetDchHits"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDchHits">PAFAodTrack::GetDchHits</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[5]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[5]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHhits">_DCHhits</a>;
+}
+
+<a name="PAFAodTrack:GetChargedPidHypo"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetChargedPidHypo">PAFAodTrack::GetChargedPidHypo</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[6]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[6]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKpidhypo">_TRKpidhypo</a>;
+}
+
+<a name="PAFAodTrack:GetDegreesOfFreedom"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDegreesOfFreedom">PAFAodTrack::GetDegreesOfFreedom</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[7]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[7]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKndof">_TRKndof</a>;
+}
+
+<a name="PAFAodTrack:GetFitStatus"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetFitStatus">PAFAodTrack::GetFitStatus</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[8]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[8]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKfitstatus">_TRKfitstatus</a>;
+}
+
+<a name="PAFAodTrack:GetProbability"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetProbability">PAFAodTrack::GetProbability</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[9]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[9]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKprob">_TRKprob</a>;
+}
+
+<a name="PAFAodTrack:GetChiSquared"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetChiSquared">PAFAodTrack::GetChiSquared</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[10]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[10]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKchi2">_TRKchi2</a>;
+}
+
+<a name="PAFAodTrack:GetTrackLength"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetTrackLength">PAFAodTrack::GetTrackLength</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[11]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[11]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKtlen">_TRKtlen</a>;
+}
+
+<a name="PAFAodTrack:GetTrackStartFoundRange"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetTrackStartFoundRange">PAFAodTrack::GetTrackStartFoundRange</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[37]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[37]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKst">_TRKst</a>;
+}
+
+
+<b>//BtaPidQual___________________________________________________________</b>
+
+<a name="PAFAodTrack:SetDrcThetaC"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcThetaC">PAFAodTrack::SetDrcThetaC</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCthetaC">_DRCthetaC</a>=t;
+}
+
+<a name="PAFAodTrack:SetDrcThetaCError"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcThetaCError">PAFAodTrack::SetDrcThetaCError</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCethetaC">_DRCethetaC</a>=t;
+}
+
+<a name="PAFAodTrack:SetFitStatus"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetFitStatus">PAFAodTrack::SetFitStatus</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> stat) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_TRKfitstatus">_TRKfitstatus</a> = (<a href="../ListOfTypes.html#Short_t">Short_t</a>) stat;
+}
+
+<b>// TB 21.02.00 :  'DRCstatus' exchanged by DRCnumbar,DRCexit and DRCxpos (for 8.5.x) </b>
+<b>//<a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcStatus">PAFAodTrack::SetDrcStatus</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {</b>
+<b>//    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCstatus">_DRCstatus</a>=(<a href="../ListOfTypes.html#Short_t">Short_t</a>)t;</b>
+<b>//}</b>
+
+<a name="PAFAodTrack:SetDrcNumBar"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcNumBar">PAFAodTrack::SetDrcNumBar</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+  <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnumbar">_DRCnumbar</a> = (<a href="../ListOfTypes.html#Short_t">Short_t</a>) t;
+}
+
+<a name="PAFAodTrack:SetDrcExit"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcExit">PAFAodTrack::SetDrcExit</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+  <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCexit">_DRCexit</a> = (<a href="../ListOfTypes.html#Short_t">Short_t</a>) t;
+}
+
+<a name="PAFAodTrack:SetDrcXpos"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcXpos">PAFAodTrack::SetDrcXpos</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+  <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCxpos">_DRCxpos</a> = t;
+}
+
+<a name="PAFAodTrack:SetDrcNumberOfPhotons"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcNumberOfPhotons">PAFAodTrack::SetDrcNumberOfPhotons</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> nphot) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnphot">_DRCnphot</a> = nphot; 
+}
+
+<a name="PAFAodTrack:SetDrcNumberOfBackgroundPhotons"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcNumberOfBackgroundPhotons">PAFAodTrack::SetDrcNumberOfBackgroundPhotons</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> nphot) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnbkgd">_DRCnbkgd</a> = nphot; 
+}
+
+<a name="PAFAodTrack:SetDrcNumberOfExpectedPhotons"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcNumberOfExpectedPhotons">PAFAodTrack::SetDrcNumberOfExpectedPhotons</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> nphot, <a href="../ListOfTypes.html#Int_t">Int_t</a> hypo) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnexp">_DRCnexp</a>[hypo] =  (<a href="../ListOfTypes.html#Short_t">Short_t</a>) nphot; 
+}
+
+<a name="PAFAodTrack:SetDchDeltaMomentum"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDchDeltaMomentum">PAFAodTrack::SetDchDeltaMomentum</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHmom">_DCHmom</a>=t;
+}
+
+<a name="PAFAodTrack:SetDrcDeltaMomentum"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcDeltaMomentum">PAFAodTrack::SetDrcDeltaMomentum</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCmom">_DRCmom</a>=t;
+}
+
+<a name="PAFAodTrack:SetDrcPhiAtEmc"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcPhiAtEmc">PAFAodTrack::SetDrcPhiAtEmc</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCinterphi">_EMCinterphi</a>=t;
+}
+
+<a name="PAFAodTrack:SetDrcThetaAtEmc"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcThetaAtEmc">PAFAodTrack::SetDrcThetaAtEmc</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCintertheta">_EMCintertheta</a>=t;
+}
+ 
+<a name="PAFAodTrack:SetDchMeanDEdx"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDchMeanDEdx">PAFAodTrack::SetDchMeanDEdx</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHdedx">_DCHdedx</a>=t;
+}
+
+<a name="PAFAodTrack:SetSvtMeanDEdx"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetSvtMeanDEdx">PAFAodTrack::SetSvtMeanDEdx</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_SVTdedx">_SVTdedx</a>=t;
+}
+
+<a name="PAFAodTrack:SetDchSamples"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetDchSamples">PAFAodTrack::SetDchSamples</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHsamples">_DCHsamples</a>=t;
+}
+
+<a name="PAFAodTrack:SetSvtSamples"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetSvtSamples">PAFAodTrack::SetSvtSamples</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> t) {
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_SVTsamples">_SVTsamples</a>=t;
+}
+
+<a name="PAFAodTrack:SetEmcInterTheta"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetEmcInterTheta">PAFAodTrack::SetEmcInterTheta</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) {
+  <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCintertheta">_EMCintertheta</a>=f;
+}
+
+<a name="PAFAodTrack:SetEmcInterPhi"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:SetEmcInterPhi">PAFAodTrack::SetEmcInterPhi</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> f) {
+  <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCinterphi">_EMCinterphi</a>=f;
+}
+
+<a name="PAFAodTrack:GetDrcThetaC"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcThetaC">PAFAodTrack::GetDrcThetaC</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[12]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[12]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCthetaC">_DRCthetaC</a>;
+}
+
+<a name="PAFAodTrack:GetDrcThetaCError"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcThetaCError">PAFAodTrack::GetDrcThetaCError</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[13]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[13]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCethetaC">_DRCethetaC</a>;
+}
+
+<a name="PAFAodTrack:GetDchDeltaMomentum"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDchDeltaMomentum">PAFAodTrack::GetDchDeltaMomentum</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[14]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[14]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHmom">_DCHmom</a>;
+}
+
+<a name="PAFAodTrack:GetDrcDeltaMomentum"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcDeltaMomentum">PAFAodTrack::GetDrcDeltaMomentum</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[15]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[15]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCmom">_DRCmom</a>;
+}
+
+<a name="PAFAodTrack:GetDrcNumberOfPhotons"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcNumberOfPhotons">PAFAodTrack::GetDrcNumberOfPhotons</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[16]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[16]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnphot">_DRCnphot</a>;
+}
+
+<a name="PAFAodTrack:GetDrcNumberOfBackgroundPhotons"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcNumberOfBackgroundPhotons">PAFAodTrack::GetDrcNumberOfBackgroundPhotons</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[17]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[17]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnbkgd">_DRCnbkgd</a>;
+}
+
+<a name="PAFAodTrack:GetDrcNumBar"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcNumBar">PAFAodTrack::GetDrcNumBar</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[19]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[19]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnumbar">_DRCnumbar</a>;
+}
+
+<a name="PAFAodTrack:GetDrcExit"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcExit">PAFAodTrack::GetDrcExit</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[20]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[20]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCexit">_DRCexit</a>;
+}
+
+<a name="PAFAodTrack:GetDrcXpos"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcXpos">PAFAodTrack::GetDrcXpos</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[21]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[21]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCxpos">_DRCxpos</a>;
+}
+
+<a name="PAFAodTrack:GetDrcNumberOfExpectedPhotons"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcNumberOfExpectedPhotons">PAFAodTrack::GetDrcNumberOfExpectedPhotons</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> hypo) const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[38]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[38]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnexp">_DRCnexp</a>[hypo];
+}
+
+<a name="PAFAodTrack:GetDrcPhiAtEmc"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcPhiAtEmc">PAFAodTrack::GetDrcPhiAtEmc</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[41]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[41]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCinterphi">_EMCinterphi</a>;
+}
+
+<a name="PAFAodTrack:GetDrcThetaAtEmc"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcThetaAtEmc">PAFAodTrack::GetDrcThetaAtEmc</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[42]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[42]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCintertheta">_EMCintertheta</a>;
+}
+
+<a name="PAFAodTrack:GetDchMeanDEdx"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDchMeanDEdx">PAFAodTrack::GetDchMeanDEdx</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[22]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[22]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHdedx">_DCHdedx</a>;
+}
+
+<a name="PAFAodTrack:GetSvtMeanDEdx"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetSvtMeanDEdx">PAFAodTrack::GetSvtMeanDEdx</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[23]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[23]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_SVTdedx">_SVTdedx</a>;
+}
+
+<a name="PAFAodTrack:GetDchSamples"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetDchSamples">PAFAodTrack::GetDchSamples</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[39]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[39]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHsamples">_DCHsamples</a>;
+}
+
+<a name="PAFAodTrack:GetSvtSamples"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetSvtSamples">PAFAodTrack::GetSvtSamples</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[40]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[40]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_SVTsamples">_SVTsamples</a>;
+}
+
+<a name="PAFAodTrack:GetEmcInterPhi"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetEmcInterPhi">PAFAodTrack::GetEmcInterPhi</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[41]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[41]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCinterphi">_EMCinterphi</a>;
+}
+
+
+<a name="PAFAodTrack:GetEmcInterTheta"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodTrack.html#PAFAodTrack:GetEmcInterTheta">PAFAodTrack::GetEmcInterTheta</a>() const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[42]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[42]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCintertheta">_EMCintertheta</a>;
+}
+
+<b>//PidInfo___________________________________________________________</b>
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFAodTrack:SetDrcPidInfo"> </a><a href=".././PAFAodTrack.html#PAFAodTrack:SetDrcPidInfo">PAFAodTrack::SetDrcPidInfo</a>(<a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a>&amp; p)
+{
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCPidInfo">_DRCPidInfo</a> = p;
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFAodTrack:SetDchPidInfo"> </a><a href=".././PAFAodTrack.html#PAFAodTrack:SetDchPidInfo">PAFAodTrack::SetDchPidInfo</a>(<a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a>&amp; p)
+{
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHPidInfo">_DCHPidInfo</a> = p;
+}
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="PAFAodTrack:SetSvtPidInfo"> </a><a href=".././PAFAodTrack.html#PAFAodTrack:SetSvtPidInfo">PAFAodTrack::SetSvtPidInfo</a>(<a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a>&amp; p)
+{
+    <a href=".././PAFAodTrack.html#PAFAodTrack:_SVTPidInfo">_SVTPidInfo</a> = p;
+}
+
+const <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a>&amp;
+<a name="PAFAodTrack:GetDchPidInfo"> </a><a href=".././PAFAodTrack.html#PAFAodTrack:GetDchPidInfo">PAFAodTrack::GetDchPidInfo</a>() const
+{
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[24]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[24]-&gt;CheckBranch();
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[25]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[25]-&gt;CheckBranch();
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[26]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[26]-&gt;CheckBranch();
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[27]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[27]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DCHPidInfo">_DCHPidInfo</a>;
+}
+
+const <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a>&amp;
+<a name="PAFAodTrack:GetDrcPidInfo"> </a><a href=".././PAFAodTrack.html#PAFAodTrack:GetDrcPidInfo">PAFAodTrack::GetDrcPidInfo</a>() const
+{  
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[28]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[28]-&gt;CheckBranch();
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[29]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[29]-&gt;CheckBranch();
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[30]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[30]-&gt;CheckBranch();
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[31]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[31]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_DRCPidInfo">_DRCPidInfo</a>;
+}
+
+const <a href=".././PAFAbsPidInfo.html">PAFAbsPidInfo</a>&amp;
+<a name="PAFAodTrack:GetSvtPidInfo"> </a><a href=".././PAFAodTrack.html#PAFAodTrack:GetSvtPidInfo">PAFAodTrack::GetSvtPidInfo</a>() const
+{
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[32]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[32]-&gt;CheckBranch();
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[33]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[33]-&gt;CheckBranch();
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[34]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[34]-&gt;CheckBranch();
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[35]) <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[35]-&gt;CheckBranch();
+    return <a href=".././PAFAodTrack.html#PAFAodTrack:_SVTPidInfo">_SVTPidInfo</a>;
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFAodTrack:PrintOn"> </a><a href=".././PAFAodTrack.html#PAFAodTrack:PrintOn">PAFAodTrack::PrintOn</a>(std::ostream &amp;o) const {
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a>&amp;1) {
+	o &lt;&lt; " SVT #hits                        : " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href="#PAFAodTrack:GetSvtHits">GetSvtHits</a>() &lt;&lt; endl;
+	o &lt;&lt; " SVT pattern                      : " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href="#PAFAodTrack:GetSvtHitPattern">GetSvtHitPattern</a>() &lt;&lt; endl;
+	o &lt;&lt; " SVT dE/dx                        : " &lt;&lt; <a href="#PAFAodTrack:GetSvtMeanDEdx">GetSvtMeanDEdx</a>() &lt;&lt; endl;
+    } else {
+	o &lt;&lt; " SVT : no track " &lt;&lt; endl;
+    }
+    
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a>&amp;2) {
+	o &lt;&lt; " DCH #hits                        : " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href="#PAFAodTrack:GetDchHits">GetDchHits</a>() &lt;&lt; endl;
+	o &lt;&lt; " DCH inner/outer layer            : " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href="#PAFAodTrack:GetDchInnerLayer">GetDchInnerLayer</a>() &lt;&lt; " / " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href="#PAFAodTrack:GetDchOuterLayer">GetDchOuterLayer</a>()  &lt;&lt; endl;
+	o &lt;&lt; " DCH dE/dx                        : " &lt;&lt; <a href="#PAFAodTrack:GetDchMeanDEdx">GetDchMeanDEdx</a>() &lt;&lt; endl; 
+	o &lt;&lt; " DCH momentum correction          : " &lt;&lt; <a href="#PAFAodTrack:GetDchDeltaMomentum">GetDchDeltaMomentum</a>() &lt;&lt; endl; 
+    } else {
+	o &lt;&lt; " DCH : no track  " &lt;&lt; endl;
+    }
+    
+    o &lt;&lt; " TRK pid hypo                     : " &lt;&lt; (<a href="../ListOfTypes.html#Int_t">Int_t</a>) <a href="#PAFAodTrack:GetChargedPidHypo">GetChargedPidHypo</a>() &lt;&lt; endl;
+    o &lt;&lt; " TRK ndof                         : " &lt;&lt; <a href="#PAFAodTrack:GetDegreesOfFreedom">GetDegreesOfFreedom</a>() &lt;&lt; endl;
+    o &lt;&lt; " TRK chi**2                       : " &lt;&lt; <a href="#PAFAodTrack:GetChiSquared">GetChiSquared</a>() &lt;&lt; endl;
+    o &lt;&lt; " TRK length                       : " &lt;&lt; <a href="#PAFAodTrack:GetTrackLength">GetTrackLength</a>() &lt;&lt; endl;
+    o &lt;&lt; " TRK start found range            : " &lt;&lt; <a href="#PAFAodTrack:GetTrackStartFoundRange">GetTrackStartFoundRange</a>() &lt;&lt; endl;
+    
+    if (<a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a>&amp;4) {
+	o &lt;&lt; " DRC thetaC                     : " &lt;&lt; <a href="#PAFAodTrack:GetDrcThetaC">GetDrcThetaC</a>() &lt;&lt; endl;
+	o &lt;&lt; " DRC thetaC error               : " &lt;&lt; <a href="#PAFAodTrack:GetDrcThetaCError">GetDrcThetaCError</a>() &lt;&lt; endl;
+	o &lt;&lt; " DRC number of photons          : " &lt;&lt; <a href="#PAFAodTrack:GetDrcNumberOfPhotons">GetDrcNumberOfPhotons</a>() &lt;&lt; endl;
+	o &lt;&lt; " DRC number of bkgd photons     : " &lt;&lt; <a href="#PAFAodTrack:GetDrcNumberOfBackgroundPhotons">GetDrcNumberOfBackgroundPhotons</a>() &lt;&lt; endl;
+	o &lt;&lt; " DRC expected Photons (e)       : " &lt;&lt; <a href="#PAFAodTrack:GetDrcNumberOfExpectedPhotons">GetDrcNumberOfExpectedPhotons</a>(0) &lt;&lt; endl;
+	o &lt;&lt; " DRC expected Photons (mu)      : " &lt;&lt; <a href="#PAFAodTrack:GetDrcNumberOfExpectedPhotons">GetDrcNumberOfExpectedPhotons</a>(1) &lt;&lt; endl;
+	o &lt;&lt; " DRC expected Photons (pi)      : " &lt;&lt; <a href="#PAFAodTrack:GetDrcNumberOfExpectedPhotons">GetDrcNumberOfExpectedPhotons</a>(2) &lt;&lt; endl;
+	o &lt;&lt; " DRC expected Photons (k)       : " &lt;&lt; <a href="#PAFAodTrack:GetDrcNumberOfExpectedPhotons">GetDrcNumberOfExpectedPhotons</a>(3) &lt;&lt; endl;
+	o &lt;&lt; " DRC expected Photons (p)       : " &lt;&lt; <a href="#PAFAodTrack:GetDrcNumberOfExpectedPhotons">GetDrcNumberOfExpectedPhotons</a>(4) &lt;&lt; endl;
+	o &lt;&lt; " DRC Entance Bar                : " &lt;&lt; <a href="#PAFAodTrack:GetDrcNumBar">GetDrcNumBar</a>() &lt;&lt; endl;
+	o &lt;&lt; " DRC Exit    Bar                : " &lt;&lt; <a href="#PAFAodTrack:GetDrcExit">GetDrcExit</a>() &lt;&lt; endl;
+	o &lt;&lt; " DRC xpos                       : " &lt;&lt; <a href="#PAFAodTrack:GetDrcXpos">GetDrcXpos</a>() &lt;&lt; endl;
+	o &lt;&lt; " DRC delta Momentum             : " &lt;&lt; <a href="#PAFAodTrack:GetDrcDeltaMomentum">GetDrcDeltaMomentum</a>() &lt;&lt; endl;
+    } else {
+	o &lt;&lt; " DRC : no track " &lt;&lt; endl;
+    }
+    o &lt;&lt; " EMC - TRK intersection : theta = " &lt;&lt; <a href="#PAFAodTrack:GetDrcThetaAtEmc">GetDrcThetaAtEmc</a>() &lt;&lt; " phi = " &lt;&lt; <a href=".././PAFAodTrack.html#PAFAodTrack:_EMCinterphi">_EMCinterphi</a> &lt;&lt; endl;
+    <a href="#PAFAodTrack:GetDchPidInfo">GetDchPidInfo</a>().<a href="#PAFAodTrack:PrintOn">PrintOn</a>(cout);
+    <a href="#PAFAodTrack:GetSvtPidInfo">GetSvtPidInfo</a>().<a href="#PAFAodTrack:PrintOn">PrintOn</a>(cout);
+    <a href="#PAFAodTrack:GetDrcPidInfo">GetDrcPidInfo</a>().<a href="#PAFAodTrack:PrintOn">PrintOn</a>(cout);
+    
+    
+}
+
+<a name="PAFAodTrack:Init"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodTrack.html#PAFAodTrack:Init">PAFAodTrack::Init</a>(<a href=".././PAFAodTrack.html">PAFAodTrack</a>* other)
+{
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=1; i&lt;NELEM_AODTRACK; i++) {
+	<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[i] = other-&gt;<a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[i];
+    }
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFAodTrack:Init"> </a><a href=".././PAFAodTrack.html#PAFAodTrack:Init">PAFAodTrack::Init</a>(TBranchClones *clonesBranch)
+{
+    TString branchName(clonesBranch-&gt;GetName());
+    TBranch *subBranch;
+    TObjArray *list = clonesBranch-&gt;GetListOfBranches();
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> listLen = list-&gt;GetEntries();
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;listLen; i++) {
+	subBranch = (TBranch*) (*list)[i];
+	TString t(subBranch-&gt;GetName());
+<b>	// SVT</b>
+	if      (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_SVThitpattern">_SVThitpattern</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[1] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_SVThits">_SVThits</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[2] = new TSmartPointer(subBranch); }
+<b>	// DCH</b>
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHinnerlayer">_DCHinnerlayer</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[3] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHouterlayer">_DCHouterlayer</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[4] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHhits">_DCHhits</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[5] = new TSmartPointer(subBranch); }
+<b>	// TRK</b>
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKpidhypo">_TRKpidhypo</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[6] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKndof">_TRKndof</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[7] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKfitstatus">_TRKfitstatus</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[8] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKprob">_TRKprob</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[9] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKchi2">_TRKchi2</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[10] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKtlen">_TRKtlen</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[11] = new TSmartPointer(subBranch); }
+<b>	// PIDqual</b>
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCthetaC">_DRCthetaC</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[12] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCethetaC">_DRCethetaC</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[13] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHmom">_DCHmom</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[14] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCmom">_DRCmom</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[15] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnphot">_DRCnphot</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[16] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnbkgd">_DRCnbkgd</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[17] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCstatus">_DRCstatus</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[18] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnumbar">_DRCnumbar</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[19] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCexit">_DRCexit</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[20] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCxpos">_DRCxpos</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[21] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHdedx">_DCHdedx</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[22] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_SVTdedx">_SVTdedx</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[23] = new TSmartPointer(subBranch); }
+<b>	// DchPidInfo</b>
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHPidInfo">_DCHPidInfo</a>._likelihood[5]") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[24] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHPidInfo">_DCHPidInfo</a>._significanceLevel[5]") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[25] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHPidInfo">_DCHPidInfo</a>._status") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[26] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHPidInfo">_DCHPidInfo</a>._sign") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[27] = new TSmartPointer(subBranch); }
+<b>	// DrcPidInfo</b>
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCPidInfo">_DRCPidInfo</a>._likelihood[5]") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[28] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCPidInfo">_DRCPidInfo</a>._significanceLevel[5]") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[29] = new TSmartPointer(subBranch); }
+	else if (t == branchName+"._DRCidInfo._status") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[30] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCPidInfo">_DRCPidInfo</a>._sign") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[31] = new TSmartPointer(subBranch); }
+<b>	// SvtPidInfo</b>
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_SVTPidInfo">_SVTPidInfo</a>._likelihood[5]") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[32] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_SVTPidInfo">_SVTPidInfo</a>._significanceLevel[5]") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[33] = new TSmartPointer(subBranch); }
+	else if (t == branchName+"._SVTidInfo._status") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[34] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_SVTPidInfo">_SVTPidInfo</a>._sign") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[35] = new TSmartPointer(subBranch); }
+
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_pattern">_pattern</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[36] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_TRKst">_TRKst</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[37] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DRCnexp">_DRCnexp</a>[5]") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[38] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_DCHsamples">_DCHsamples</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[39] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_SVTsamples">_SVTsamples</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[40] = new TSmartPointer(subBranch); }
+
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_EMCinterphi">_EMCinterphi</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[41] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodTrack.html#PAFAodTrack:_EMCintertheta">_EMCintertheta</a>") { <a href=".././PAFAodTrack.html#PAFAodTrack:fBranches">fBranches</a>[42] = new TSmartPointer(subBranch); }
+
+<b>	// Unknown branch</b>
+<b>	//else </b>
+<b>	//    cout &lt;&lt; "<a href=".././PAFAodTrack.html#PAFAodTrack:Init">PAFAodTrack::Init</a>: Unknown branch " &lt;&lt; t &lt;&lt; endl;</b>
+    }
+}
+
+std::ostream&amp;  operator &lt;&lt; (std::ostream&amp; o, const <a href=".././PAFAodTrack.html">PAFAodTrack</a>&amp; a) { a.<a href="#PAFAodTrack:PrintOn">PrintOn</a>(o); return o; }
+
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

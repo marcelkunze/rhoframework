@@ -1,0 +1,327 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:40 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TBtaPidQualR - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Stefan Kluth</b>
+<b>//      Leif Wilden</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999       LBNL, TU Dresden</b>
+<b>//</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "KangaSchema/TBtaPidQualR.h"
+#include "KangaSchema/kanga.h"
+
+ClassImp(TBtaPidQualR)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TBtaPidQualR *&amp;obj)
+{
+   obj = (TBtaPidQualR *) buf.ReadObject(TBtaPidQualR::Class());
+   return buf;
+}
+
+ComPackNonFlatFloat TBtaPidQualR::Packer(ComPackNonFlatFloat::UNSIG);
+ComPackNonFlatFloat TBtaPidQualR::Packer8(ComPackNonFlatFloat::UNSIG_8);
+ComPackFlatFloat TBtaPidQualR::anglePacker(0,1,16);
+ComPackFlatFloat TBtaPidQualR::packX(-2.,2.,6);
+ComPackFlatFloat TBtaPidQualR::thetaPack(0,TMath::Pi(),16);
+ComPackFlatFloat TBtaPidQualR::phiPack(-TMath::Pi(),TMath::Pi(),16);
+ComPackUFloat TBtaPidQualR::packdEdX(FRACLEN,EXPLEN,BIAS);
+
+<a name="TBtaPidQualR:TBtaPidQualR"> </a>TBtaPidQualR::TBtaPidQualR()
+{
+    Reset();
+}
+
+<a name="TBtaPidQualR:~TBtaPidQualR"> </a>TBtaPidQualR::~TBtaPidQualR() {}
+
+<a name="TBtaPidQualR:Reset"> </a>void TBtaPidQualR::Reset()
+{
+    for (int i=0; i&lt;nByteVars; i++) bytes[i]= 0;
+    for (int j=0; j&lt;nShortVars; j++) shorts[j]= 0;
+    _thetaDirc= 0; 
+    _eThetaDirc= 0; 
+    _dEdXDch= 0;
+    _dEdXSvt= 0;
+    _nSamplesDch= 0;
+    _nSamplesSvt= 0;
+    _deltaDchMom= 0;
+    _drcNumBar= 0;
+    _drcExit= 0;
+    _drcXPos= 0;
+    _deltaDrcMom= 0;
+    _trkEmcTheta= 0;
+    _trkEmcPhi= 0;
+    for (int k=0;k&lt;5;k++) _nExPhot[k] = 0;
+}
+
+TBtaPidQualR &amp; TBtaPidQualR::operator = ( const TBtaPidQualR &amp; rhs ) {
+    
+    _thetaDirc= rhs._thetaDirc;
+    _eThetaDirc= rhs._eThetaDirc;
+    _dEdXDch= rhs._dEdXDch;
+    _dEdXSvt= rhs._dEdXSvt;
+    _nSamplesDch= rhs._nSamplesDch;
+    _nSamplesSvt= rhs._nSamplesSvt;
+    _drcNumBar= rhs._drcNumBar;
+    _drcExit= rhs._drcExit;
+    _drcXPos= rhs._drcXPos;
+    _trkEmcTheta= rhs._trkEmcTheta;
+    _trkEmcPhi= rhs._trkEmcPhi;
+    for (int i=0;i&lt;5;i++) _nExPhot[i] = rhs._nExPhot[i];
+    return *this;
+    
+}
+
+<a name="TBtaPidQualR:GetThetaDirc"> </a>Float_t TBtaPidQualR::GetThetaDirc()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	double d;
+	anglePacker.unpack(shorts[thetaDirc],d);
+	_thetaDirc = d;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_thetaDirc);
+    }
+    return _thetaDirc;
+}
+
+<a name="TBtaPidQualR:GetEThetaDirc"> </a>Float_t TBtaPidQualR::GetEThetaDirc()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	double d;
+	Packer.unpackAndScream(0,1,shorts[eThetaDirc],d, "eThetaDirc" );
+	_eThetaDirc = d;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_eThetaDirc);
+    }
+    return _eThetaDirc;
+}
+
+<a name="TBtaPidQualR:GetDEdXDch"> </a>Float_t TBtaPidQualR::GetDEdXDch()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	d_UShort u = shorts[dEdXDch]&amp;0x3ff;
+	double d;
+	packdEdX.unpack(u,d);
+	_dEdXDch = d * 10000.;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_dEdXDch);
+    }
+    return _dEdXDch;
+}
+
+<a name="TBtaPidQualR:GetDEdXSvt"> </a>Float_t TBtaPidQualR::GetDEdXSvt()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	d_UShort u = shorts[dEdXSvt]&amp;0x3ff;
+	double d;
+	packdEdX.unpack(u,d);
+	_dEdXSvt = d * 100.;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_dEdXSvt);
+    }
+    return _dEdXSvt;
+}
+
+<a name="TBtaPidQualR:GetNSamplesDch"> </a>UShort_t TBtaPidQualR::GetNSamplesDch()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	_nSamplesDch = (shorts[dEdXDch]&gt;&gt;10)&amp;0x3f;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_nSamplesDch);
+    }
+    return _nSamplesDch;
+}
+
+<a name="TBtaPidQualR:GetNSamplesSvt"> </a>UShort_t TBtaPidQualR::GetNSamplesSvt()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	_nSamplesSvt = (shorts[dEdXSvt]&gt;&gt;10)&amp;0x3f;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_nSamplesSvt);
+    }
+    return _nSamplesSvt;
+}
+
+<a name="TBtaPidQualR:GetDrcInBar"> </a>Int_t TBtaPidQualR::GetDrcInBar()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	_drcNumBar = shorts[statusDRC]&amp;0xff;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_drcNumBar);
+    }
+    return _drcNumBar;
+}
+
+<a name="TBtaPidQualR:GetDrcExitBar"> </a>Int_t TBtaPidQualR::GetDrcExitBar()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	_drcExit = (shorts[statusDRC]&gt;&gt;8)&amp;0x3;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_drcExit);
+    }
+    return _drcExit;
+}
+
+<a name="TBtaPidQualR:GetDrcXPos"> </a>Float_t TBtaPidQualR::GetDrcXPos()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	d_ULong packedX = (shorts[statusDRC]&gt;&gt;10)&amp;0x3f;
+	double xPos;
+	packX.unpack(packedX,xPos);
+	_drcXPos = xPos;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_drcXPos);
+    }
+    return _drcXPos;
+}
+
+<a name="TBtaPidQualR:GetNPhot"> </a>Int_t TBtaPidQualR::GetNPhot()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_bytes);
+	_nPhot = 0xff&amp;bytes[nPhot];
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_nPhot);
+    }
+    return _nPhot;
+}
+
+<a name="TBtaPidQualR:GetNBkgd"> </a>Int_t TBtaPidQualR::GetNBkgd()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_bytes);
+	_nBkgd = 0xff&amp;bytes[nBkgd];
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_nBkgd);
+    }
+    return _nBkgd;
+}
+
+<a name="TBtaPidQualR:GetNExPhot"> </a>Short_t TBtaPidQualR::GetNExPhot(UShort_t PidHypo)
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_bytes);
+	_nExPhot[PidHypo] = 0xff&amp;bytes[nExPhot0+PidHypo];
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_nExPhot);
+    }
+    return _nExPhot[PidHypo];
+}
+
+<a name="TBtaPidQualR:GetDeltaDchMom"> </a>Float_t TBtaPidQualR::GetDeltaDchMom()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_bytes);
+	double dchMom;
+	d_UShort u= bytes[deltaDchMom];
+	Packer8.unpackAndScream(0,0.1,u,dchMom, "dchMom" );
+	_deltaDchMom = -dchMom;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_deltaDchMom);
+    }
+    return _deltaDchMom;
+}
+
+<a name="TBtaPidQualR:GetDeltaDrcMom"> </a>Float_t TBtaPidQualR::GetDeltaDrcMom()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_bytes);
+	double drcMom;
+	d_UShort u = bytes[deltaDrcMom];
+	Packer8.unpackAndScream(0,0.1,u,drcMom, "drcMom" );
+	_deltaDrcMom = -drcMom;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_deltaDrcMom);
+    }
+    return _deltaDrcMom;
+}
+
+<a name="TBtaPidQualR:GetDrcPhiAtEmc"> </a>Float_t TBtaPidQualR::GetDrcPhiAtEmc()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	double phi;
+	thetaPack.unpack(shorts[trkEmcPhi],phi);
+	_trkEmcPhi = phi;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_trkEmcPhi);
+    }
+    return _trkEmcPhi;
+}
+
+<a name="TBtaPidQualR:GetDrcThetaAtEmc"> </a>Float_t TBtaPidQualR::GetDrcThetaAtEmc()
+{
+    if (TBtaMicroCandRDir::GetSchema()&gt;3) {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_shorts);
+	double theta;
+	thetaPack.unpack(shorts[trkEmcTheta],theta);
+	_trkEmcTheta = theta;
+    }
+    else {
+	TBtaMicroCandRDir::Instance()-&gt;ReadBranch(TBtaMicroCandRDir::pq_trkEmcTheta);
+    }
+    return _trkEmcTheta;
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

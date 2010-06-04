@@ -1,0 +1,14 @@
+#! /bin/sh
+# Make a Beta package PAF compliant
+
+echo Tweaking $1/GNUmakefile  ...
+echo "include \$(TOPDIR)/RhoMakefiles/link_PAF.mk" >> $1/GNUmakefile
+
+echo Tweaking $1/link_$1.mk ...
+echo override LINK_RooCond  += $1 >>  $1/link_$1.mk
+echo override LINK_RooPidCond  += $1 >>  $1/link_$1.mk
+echo override LINK_ROOT     += $1 >>  $1/link_$1.mk
+
+echo The package $1 has been made PAF compliant. You can build now with
+echo gmake $1.all
+

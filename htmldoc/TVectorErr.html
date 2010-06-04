@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:33 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TVectorErr</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TVectorErr</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TVectorErr:description">class description</a> - <a href="src/TVectorErr.cxx.html">source file</a> - <a href="TVectorErr_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TVectorErr" href="TVectorErr.h">TVectorErr</a> : public TVector3</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->           <a href="./TVectorErr.html">TVectorErr</a> <!--TAB--><!--BOLD--><a href="#TVectorErr:TVectorErr">TVectorErr</a><!--PLAIN-->()
+<!--TAB6-->           <a href="./TVectorErr.html">TVectorErr</a> <!--TAB--><!--BOLD--><a href="#TVectorErr:TVectorErr">TVectorErr</a><!--PLAIN-->(const TVector3&amp; p)
+<!--TAB6-->           <a href="./TVectorErr.html">TVectorErr</a> <!--TAB--><!--BOLD--><a href="#TVectorErr:TVectorErr">TVectorErr</a><!--PLAIN-->(const TVector3&amp; p, const <a href="./TError.html">TError</a>&amp; covMat)
+<!--TAB6-->           <a href="./TVectorErr.html">TVectorErr</a> <!--TAB--><!--BOLD--><a href="#TVectorErr:TVectorErr">TVectorErr</a><!--PLAIN-->(const <a href="./TVectorErr.html">TVectorErr</a>&amp; v)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TVectorErr:~TVectorErr">~TVectorErr</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TVectorErr:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->        const <a href="./TError.html">TError</a>&amp; <!--TAB--><!--BOLD--><a href="#TVectorErr:CovMatrix">CovMatrix</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TVectorErr:DetermineChisq">DetermineChisq</a><!--PLAIN-->(const TVector3&amp; refVector)
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TVectorErr:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->          <a href="./TVectorErr.html">TVectorErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TVectorErr:operator+=">operator+=</a><!--PLAIN-->(const <a href="./TVectorErr.html">TVectorErr</a>&amp; v)
+<!--TAB6-->          <a href="./TVectorErr.html">TVectorErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TVectorErr:operator-">operator-</a><!--PLAIN-->()
+<!--TAB6-->          <a href="./TVectorErr.html">TVectorErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TVectorErr:operator-=">operator-=</a><!--PLAIN-->(const <a href="./TVectorErr.html">TVectorErr</a>&amp; v)
+<!--TAB6-->          <a href="./TVectorErr.html">TVectorErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TVectorErr:operator=">operator=</a><!--PLAIN-->(const <a href="./TVectorErr.html">TVectorErr</a>&amp; v)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TVectorErr:SetCovMatrix">SetCovMatrix</a><!--PLAIN-->(const <a href="./TError.html">TError</a>&amp; v)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TVectorErr:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TVectorErr:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TVectorErr:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->          <a href="./TVectorErr.html">TVectorErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TVectorErr:Transform">Transform</a><!--PLAIN-->(const TRotation&amp; rot)
+</pre>
+
+<h3><!--TAB2-->  <a name="TVectorErr:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="./TError.html">TError</a> <!--TAB--><!--BOLD--><a name="TVectorErr:fCovMatrix">fCovMatrix</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fCovMatrix">!</a></i>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->            static const <a href="./TVectorErr.html#TVectorErr:PolarCoordinateIndex">TVectorErr::PolarCoordinateIndex</a> <!--TAB--><!--BOLD--><a name="TVectorErr:Rho">Rho</a><!--PLAIN-->               <!--TAB--><i><a name="Title:Rho"></a></i>
+<!--TAB6-->            static const <a href="./TVectorErr.html#TVectorErr:PolarCoordinateIndex">TVectorErr::PolarCoordinateIndex</a> <!--TAB--><!--BOLD--><a name="TVectorErr:Theta">Theta</a><!--PLAIN-->             <!--TAB--><i><a name="Title:Theta"></a></i>
+<!--TAB6-->            static const <a href="./TVectorErr.html#TVectorErr:PolarCoordinateIndex">TVectorErr::PolarCoordinateIndex</a> <!--TAB--><!--BOLD--><a name="TVectorErr:Phi">Phi</a><!--PLAIN-->               <!--TAB--><i><a name="Title:Phi"></a></i>
+<!--TAB6-->            static const <a href="./TVectorErr.html#TVectorErr:PolarCoordinateIndex">TVectorErr::PolarCoordinateIndex</a> <!--TAB--><!--BOLD--><a name="TVectorErr:NUM_PCOORDINATES">NUM_PCOORDINATES</a><!--PLAIN-->  <!--TAB--><i><a name="Title:NUM_PCOORDINATES"></a></i>
+<!--TAB6-->      static const <a href="./TVectorErr.html#TVectorErr:CylindricalCoordinateIndex">TVectorErr::CylindricalCoordinateIndex</a> <!--TAB--><!--BOLD--><a name="TVectorErr:C_Rho">C_Rho</a><!--PLAIN-->             <!--TAB--><i><a name="Title:C_Rho"></a></i>
+<!--TAB6-->      static const <a href="./TVectorErr.html#TVectorErr:CylindricalCoordinateIndex">TVectorErr::CylindricalCoordinateIndex</a> <!--TAB--><!--BOLD--><a name="TVectorErr:C_Zeta">C_Zeta</a><!--PLAIN-->            <!--TAB--><i><a name="Title:C_Zeta"></a></i>
+<!--TAB6-->      static const <a href="./TVectorErr.html#TVectorErr:CylindricalCoordinateIndex">TVectorErr::CylindricalCoordinateIndex</a> <!--TAB--><!--BOLD--><a name="TVectorErr:C_Phi">C_Phi</a><!--PLAIN-->             <!--TAB--><i><a name="Title:C_Phi"></a></i>
+<!--TAB6-->      static const <a href="./TVectorErr.html#TVectorErr:CylindricalCoordinateIndex">TVectorErr::CylindricalCoordinateIndex</a> <!--TAB--><!--BOLD--><a name="TVectorErr:NUM_CCOORDINATES">NUM_CCOORDINATES</a><!--PLAIN-->  <!--TAB--><i><a name="Title:NUM_CCOORDINATES"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TVectorErr:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TVectorErr.html">TVectorErr</a>		    						
+                                                                      
+ Vector w/ error class						
+                                                                      
+ Author: Marcel Kunze, RUB, Nov. 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TVectorErr:TVectorErr" href="src/TVectorErr.cxx.html#TVectorErr:TVectorErr">TVectorErr</a>() : TVector3(), <a href="./TVectorErr.html#TVectorErr:fCovMatrix">fCovMatrix</a>(3) <br>
+<hr>
+<!--FUNCTION--> <a name="TVectorErr:TVectorErr" href="src/TVectorErr.cxx.html#TVectorErr:TVectorErr">TVectorErr</a>(const TVector3 &amp;p) : TVector3(p), <a href="./TVectorErr.html#TVectorErr:fCovMatrix">fCovMatrix</a>(3)	<br>
+<hr>
+<!--FUNCTION--> <a name="TVectorErr:TVectorErr" href="src/TVectorErr.cxx.html#TVectorErr:TVectorErr">TVectorErr</a>(const TVector3 &amp;p, const <a href="./TError.html">TError</a>&amp; covMat) : TVector3(p),
+<a href="./TVectorErr.html#TVectorErr:fCovMatrix">fCovMatrix</a>(3)				<br>
+<hr>
+<!--FUNCTION--> <a name="TVectorErr:TVectorErr" href="src/TVectorErr.cxx.html#TVectorErr:TVectorErr">TVectorErr</a>(const <a href="./TVectorErr.html">TVectorErr</a>&amp; v) : TVector3(v),
+<a href="./TVectorErr.html#TVectorErr:fCovMatrix">fCovMatrix</a>(v.<a href="#TVectorErr:CovMatrix">CovMatrix</a>())	<br>
+<hr>
+<!--FUNCTION--><a href="./TVectorErr.html">TVectorErr</a> <a name="TVectorErr:Transform" href="src/TVectorErr.cxx.html#TVectorErr:Transform">Transform</a>(const TRotation&amp; rot)<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TVectorErr:DetermineChisq" href="src/TVectorErr.cxx.html#TVectorErr:DetermineChisq">DetermineChisq</a>(const TVector3&amp; refVector)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->          <a href="./TVectorErr.html">TVectorErr</a>&amp; <a name="TVectorErr:operator=" href="TVectorErr.h">operator=</a>(const <a href="./TVectorErr.html">TVectorErr</a>&amp; v)
+<!--INLINE FUNCTION--><!--TAB6-->          <a href="./TVectorErr.html">TVectorErr</a>&amp; <a name="TVectorErr:operator-" href="TVectorErr.h">operator-</a>()
+<!--INLINE FUNCTION--><!--TAB6-->          <a href="./TVectorErr.html">TVectorErr</a>&amp; <a name="TVectorErr:operator+=" href="TVectorErr.h">operator+=</a>(const <a href="./TVectorErr.html">TVectorErr</a>&amp; v)
+<!--INLINE FUNCTION--><!--TAB6-->          <a href="./TVectorErr.html">TVectorErr</a>&amp; <a name="TVectorErr:operator-=" href="TVectorErr.h">operator-=</a>(const <a href="./TVectorErr.html">TVectorErr</a>&amp; v)
+<!--INLINE FUNCTION--><!--TAB6-->        const <a href="./TError.html">TError</a>&amp; <a name="TVectorErr:CovMatrix" href="TVectorErr.h">CovMatrix</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TVectorErr:SetCovMatrix" href="TVectorErr.h">SetCovMatrix</a>(const <a href="./TError.html">TError</a>&amp; v)
+<!--INLINE FUNCTION--><!--TAB6-->              TClass* <a name="TVectorErr:Class" href="TVectorErr.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->              TClass* <a name="TVectorErr:IsA" href="TVectorErr.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TVectorErr:ShowMembers" href="TVectorErr.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TVectorErr:Streamer" href="TVectorErr.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TVectorErr:StreamerNVirtual" href="TVectorErr.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <a name="TVectorErr:~TVectorErr" href="TVectorErr.h">~TVectorErr</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?Nov.">Nov.</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:03:33 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

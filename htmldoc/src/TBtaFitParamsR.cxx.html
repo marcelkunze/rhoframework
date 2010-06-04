@@ -1,0 +1,437 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:38 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TBtaFitParamsR - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//      Class <a href=".././TBtaFitParamsR.html">TBtaFitParamsR</a></b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Yury Kolomensky</b>
+<b>//      Leif Wilden</b>
+<b>//      M. Kunze, added support for Kanga schema &gt;=3, Dec. 2k</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999         Caltech, TU Dresden</b>
+<b>//</b>
+<b>//------------------------------------------------------------------------</b>
+<b>//#define SCHEMA3</b>
+
+#include &lt;assert.h&gt;
+#include "RhoBase/TFitParams.h"
+#include "KangaSchema/TBtaFitParamsR.h"
+#include "KangaSchema/kanga.h"
+#include "KangaSchema/ComPackFlatFloat.h"
+#include "KangaSchema/ComPackNonFlatFloat.h"
+#include "RhoMath/TError.h"
+
+#ifdef SCHEMA3
+#include "PAFAdapters/PAFConverter.h"
+#endif
+
+ClassImp(TBtaFitParamsR)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TBtaFitParamsR *&amp;obj)
+{
+   obj = (TBtaFitParamsR *) buf.ReadObject(TBtaFitParamsR::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TBtaFitParamsR:TBtaFitParamsR"> </a>TBtaFitParamsR::TBtaFitParamsR()
+{
+    Reset();
+}
+
+<a name="TBtaFitParamsR:~TBtaFitParamsR"> </a>TBtaFitParamsR::~TBtaFitParamsR() {}
+
+<a name="TBtaFitParamsR:Reset"> </a>void TBtaFitParamsR::Reset()
+{
+    _q = _qold = 0;
+    Int_t i= 0;
+    for( i= 0; i &lt; 3; i++ ) _pos[i]= 0;
+    for( i= 0; i &lt; 4; i++ ) _p4[i]= 0;
+    for( i= 0; i &lt; 28; i++ ) _cov7[i]= 0;
+    for( i= 0; i &lt; 5; i++ ) _params[i]= 0;
+    for( i= 0; i &lt; 15; i++ ) _cov[i]= 0;
+    for( i= 0; i &lt; 15; i++ ) _diag[i]= 0;
+    for( i= 0; i &lt; 10; i++ ) _corr[i]= 0;
+}
+
+<b>// Getters:</b>
+
+<a name="TBtaFitParamsR:GetQ"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetQ">TBtaFitParamsR::GetQ</a>() const
+{ 
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_q">TBtaMicroCandRDir::fp_q</a>);
+    return <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>;
+}
+
+<a name="TBtaFitParamsR:GetPos"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetPos">TBtaFitParamsR::GetPos</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> pos[3]) const
+{
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_pos">TBtaMicroCandRDir::fp_pos</a>);
+    pos[0]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_pos">_pos</a>[0];
+    pos[1]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_pos">_pos</a>[1];
+    pos[2]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_pos">_pos</a>[2];
+}
+
+<a name="TBtaFitParamsR:GetP4"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetP4">TBtaFitParamsR::GetP4</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> p4[4]) const
+{
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_p4">TBtaMicroCandRDir::fp_p4</a>);
+    p4[0]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[0];
+    p4[1]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[1];
+    p4[2]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[2];
+    p4[3]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[3];
+}
+
+<a name="TBtaFitParamsR:GetCov7"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetCov7">TBtaFitParamsR::GetCov7</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> cov7[28]) const
+{
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_cov7">TBtaMicroCandRDir::fp_cov7</a>);
+    
+<b>    //change from line to block arrangement</b>
+<b>    //position</b>
+    cov7[0]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[0];
+    cov7[1]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[1]; cov7[2]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[2];
+    cov7[3]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[3]; cov7[4]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[4]; cov7[5]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[5];
+    
+<b>    //momentum-position</b>
+    cov7[6]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[6];    cov7[7]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[7];   cov7[8]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[8];
+    cov7[9]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[10];  cov7[10]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[11]; cov7[11]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[12];
+    cov7[12]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[15]; cov7[13]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[16]; cov7[14]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[17];
+    cov7[15]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[21]; cov7[16]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[22]; cov7[17]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[23];
+    
+<b>    //momentum4</b>
+    cov7[18]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[9];
+    cov7[19]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[13];  cov7[20]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[14];
+    cov7[21]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[18];  cov7[22]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[19];  cov7[23]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[20];
+    cov7[24]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[24];  cov7[25]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[25];  cov7[26]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[26];  cov7[27]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[27];
+}
+
+<a name="TBtaFitParamsR:GetParams"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetParams">TBtaFitParamsR::GetParams</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> p[5]) const
+{
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_params">TBtaMicroCandRDir::fp_params</a>);
+    p[0]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[0];
+    p[1]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[1];
+    p[2]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[2];
+    p[3]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[3];
+    p[4]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[4];
+}
+
+<a name="TBtaFitParamsR:GetCov"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetCov">TBtaFitParamsR::GetCov</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> cov[15]) const
+{
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_cov">TBtaMicroCandRDir::fp_cov</a>);
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;15; i++) cov[i]= <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>[i];
+}
+
+<b>// Here is the faster, non-const interface</b>
+
+<a name="TBtaFitParamsR:GetPos"> </a>TVector3 <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetPos">TBtaFitParamsR::GetPos</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&lt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_pos">TBtaMicroCandRDir::fp_pos</a>);
+	return TVector3(<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_pos">_pos</a>[0],<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_pos">_pos</a>[1],<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_pos">_pos</a>[2]);
+    }
+    
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_q">TBtaMicroCandRDir::fp_q</a>);
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_params">TBtaMicroCandRDir::fp_params</a>);
+    
+    return <a href="#TBtaFitParamsR:GetTFitParams">GetTFitParams</a>(<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>,<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>,0)-&gt;GetPosition(); // Do not propagate error matrix
+}
+
+<a name="TBtaFitParamsR:GetP"> </a>TVector3 <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetP">TBtaFitParamsR::GetP</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&lt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_p4">TBtaMicroCandRDir::fp_p4</a>);
+	return TVector3(<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[0],<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[1],<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[2]);
+    }
+    
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_q">TBtaMicroCandRDir::fp_q</a>);
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_params">TBtaMicroCandRDir::fp_params</a>);
+    
+    return <a href="#TBtaFitParamsR:GetTFitParams">GetTFitParams</a>(<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>,<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>,0)-&gt;P4().Vect(); // Do not propagate error matrix
+}
+
+<a name="TBtaFitParamsR:GetP4"> </a>TLorentzVector <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetP4">TBtaFitParamsR::GetP4</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&lt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_p4">TBtaMicroCandRDir::fp_p4</a>);
+	return TLorentzVector(<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[0],<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[1],<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[2],<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[3]);
+    }
+    
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_q">TBtaMicroCandRDir::fp_q</a>);
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_params">TBtaMicroCandRDir::fp_params</a>);
+    
+    return <a href="#TBtaFitParamsR:GetTFitParams">GetTFitParams</a>(<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>,<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>,0)-&gt;P4(); // Do not propagate error matrix
+}
+
+<a name="TBtaFitParamsR:GetCov7"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>* <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetCov7">TBtaFitParamsR::GetCov7</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&lt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_cov7">TBtaMicroCandRDir::fp_cov7</a>);
+<b>	//change from line to block arrangement</b>
+<b>	//position</b>
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[0]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[0];
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[1]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[1]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[2]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[2];
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[3]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[3]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[4]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[4]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[5]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[5];
+	
+<b>	//momentum-position</b>
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[6]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[6];   <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[7]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[7];   <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[8]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[8];
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[9]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[10];  <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[10]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[11]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[11]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[12];
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[12]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[15]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[13]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[16]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[14]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[17];
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[15]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[21]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[16]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[22]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[17]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[23];
+	
+<b>	//momentum4</b>
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[18]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[9];
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[19]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[13];  <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[20]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[14];
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[21]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[18];  <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[22]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[19];  <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[23]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[20];
+	<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[24]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[24];  <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[25]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[25];  <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[26]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[26];  <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>[27]=<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[27];
+	
+	return <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:fCov">fCov</a>;
+    }
+    
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_q">TBtaMicroCandRDir::fp_q</a>);
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_params">TBtaMicroCandRDir::fp_params</a>);
+    
+    <a href="#TBtaFitParamsR:GetCov">GetCov</a>(); // Prepare the cov. matrix
+    
+<b>    // Use the BABAR covariance for charged until the problems</b>
+<b>    // with the charged covariance matrix are resolved...</b>
+#ifdef SCHEMA3
+    if (fabs(_q)&gt;.1)
+        return PAFConverter::Instance()-&gt;KangaToCovariance(_q,_params,_cov);
+    else
+#endif
+        return GetTFitParams(_q,_params,_cov)-&gt;GetErrP7(); // Propagate error matrix
+}
+
+<b>// Setters:</b>
+
+<a name="TBtaFitParamsR:SetQ"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:SetQ">TBtaFitParamsR::SetQ</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> q) 
+{ <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>= q; }
+
+<a name="TBtaFitParamsR:SetPos"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:SetPos">TBtaFitParamsR::SetPos</a>(const <a href="../ListOfTypes.html#Float_t">Float_t</a> pos[3])
+{ <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_pos">_pos</a>[0]= pos[0]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_pos">_pos</a>[1]= pos[1]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_pos">_pos</a>[2]= pos[2]; }
+
+<a name="TBtaFitParamsR:SetP4"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:SetP4">TBtaFitParamsR::SetP4</a>(const <a href="../ListOfTypes.html#Float_t">Float_t</a> p4[4]) 
+{ <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[0]= p4[0]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[1]= p4[1]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[2]= p4[2]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_p4">_p4</a>[3]= p4[3]; }
+
+<a name="TBtaFitParamsR:SetCov7"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:SetCov7">TBtaFitParamsR::SetCov7</a>(const <a href="../ListOfTypes.html#Float_t">Float_t</a> cov7[28])
+{
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;28; i++) <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov7">_cov7</a>[i]= cov7[i];
+}
+
+<a name="TBtaFitParamsR:SetParams"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:SetParams">TBtaFitParamsR::SetParams</a>(const <a href="../ListOfTypes.html#Float_t">Float_t</a> p[5]) 
+{ <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[0]= p[0]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[1]= p[1]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[2]= p[2]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[3]= p[3]; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[4]= p[4]; }
+
+<a name="TBtaFitParamsR:GetParams"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>* <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetParams">TBtaFitParamsR::GetParams</a>()
+{
+    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_params">TBtaMicroCandRDir::fp_params</a>);
+    return <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>;
+}
+
+<a name="TBtaFitParamsR:SetCov"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:SetCov">TBtaFitParamsR::SetCov</a>(const <a href="../ListOfTypes.html#Float_t">Float_t</a> cov[15])
+{
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;15; i++) <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>[i]= cov[i];
+}
+
+<a name="TBtaFitParamsR:GetCov"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a>* <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetCov">TBtaFitParamsR::GetCov</a>()
+{
+<b>    // Unpack the data (charged only)</b>
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	if (fabs(<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>)&gt;.1) {
+	    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_diag">TBtaMicroCandRDir::fp_diag</a>);
+	    <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_corr">TBtaMicroCandRDir::fp_corr</a>);
+	    <a href="#TBtaFitParamsR:LoadRotation">LoadRotation</a>();
+	}
+<b>	//Neutrals</b>
+	else {
+	   <a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_diag">TBtaMicroCandRDir::fp_diag</a>);
+	   <a href="#TBtaFitParamsR:Load">Load</a>();
+	}
+    }
+    else
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:fp_cov">TBtaMicroCandRDir::fp_cov</a>);
+    
+    return <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>;
+}
+
+<b>// Parameter cache function</b>
+<b>// The expensive covariance is only calculated if an array <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a> is passed along</b>
+
+<a name="TBtaFitParamsR:GetTFitParams"> </a>TFitParams* <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:GetTFitParams">TBtaFitParamsR::GetTFitParams</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>, <a href="../ListOfTypes.html#Float_t">Float_t</a> *<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>, <a href="../ListOfTypes.html#Float_t">Float_t</a> *<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>) 
+{
+    static TFitParams *transient = new TFitParams(); // This is the cache
+    static <a href="../ListOfTypes.html#Double_t">Double_t</a> oldParams = 0.0;
+    static <a href="../ListOfTypes.html#Bool_t">Bool_t</a> cachedCov = kFALSE;
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> needCov = (!cachedCov &amp;&amp; <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>!=0);
+    
+<b>    // Check valididty of cache</b>
+    
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> newParams = <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[0]+<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[1]+<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[2]+<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[3]+<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>[4];
+    if (newParams==oldParams&amp;&amp;!needCov) return transient;
+    oldParams = newParams;
+    cachedCov = (<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>!=0);
+    
+<b>    // Generate a new object as requested    </b>
+    
+    new (transient) TFitParams(<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>,<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_params">_params</a>,<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>);
+    
+    return transient;
+}
+
+<b>// This code reads the schema 4 covariance matrices</b>
+
+class ComFitRangePack{
+private:
+  <a href="../ListOfTypes.html#double">double</a> ranges[5][5];
+public:
+  ComFitRangePack(<a href="../ListOfTypes.html#int">int</a> chge){
+    if(chge == 0){
+      for(<a href="../ListOfTypes.html#int">int</a> j=0;j&lt;4;j++)ranges[j][j]=1e3;
+    }else{
+      ranges[0][0]=10;
+      ranges[1][1]=1e-3;
+      ranges[2][2]=1e-4;
+      ranges[3][3]=1e3;
+      ranges[4][4]=0.1;
+    }
+  }
+  <a href="../ListOfTypes.html#double">double</a> range(<a href="../ListOfTypes.html#int">int</a> i,<a href="../ListOfTypes.html#int">int</a> j){return ranges[i][j];}
+};
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TBtaFitParamsR:Load"> </a><a href=".././TBtaFitParamsR.html#TBtaFitParamsR:Load">TBtaFitParamsR::Load</a>() {
+    TMatrixD covariance(<a href="#TBtaFitParamsR:nParm">nParm</a>(),<a href="#TBtaFitParamsR:nParm">nParm</a>());
+    ComFitRangePack ranges(<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_q">_q</a>);
+    ComPackNonFlatFloat packer(ComPackNonFlatFloat::UNSIG);
+    ComPackNonFlatFloat packer8(ComPackNonFlatFloat::SIG_8);
+    for(<a href="../ListOfTypes.html#int">int</a> j=0;j&lt;<a href="#TBtaFitParamsR:nParm">nParm</a>();j++){
+	if ( ! packer.unpackAndScream (0,ranges.range(j,j),<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_diag">_diag</a>[j],covariance(j,j),"DiagCov ") ) {
+	    cerr &lt;&lt; " load: problems unpacking " &lt;&lt; "DiagCov " &lt;&lt; j &lt;&lt; endl ;
+	}
+	<a href="../ListOfTypes.html#double">double</a> variance1 = covariance(j,j);
+<b>	//    assert(covariance[j][j]&gt;1e-30);</b>
+	if (variance1&lt;1e-30) variance1 = packer.getMinVal();
+	for(<a href="../ListOfTypes.html#int">int</a> j2=0;j2&lt;j;j2++){
+	    <a href="../ListOfTypes.html#double">double</a> variance2 = covariance(j2,j2);
+	    if (variance2&lt;1e-30) variance2 = packer.getMinVal();
+	    <a href="../ListOfTypes.html#double">double</a> corr;
+	    if ( ! packer8.unpackAndScream (-1.1,1.1,<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_corr">_corr</a>[<a href="#TBtaFitParamsR:indexCorr">indexCorr</a>(j,j2)],corr,"Corr") ) {
+		cerr &lt;&lt; " load: problems unpacking " &lt;&lt; "Corr" &lt;&lt; j &lt;&lt; j2 &lt;&lt; endl ;
+	    }
+<b>	    //      covariance[j][j2]=corr*sqrt(covariance[j][j]*covariance[j2][j2]);</b>
+	    covariance(j,j2)=corr*sqrt(variance1*variance2);
+	}
+    }
+    
+    <a href="../ListOfTypes.html#int">int</a> n= 0;
+    for( <a href="../ListOfTypes.html#int">int</a> row= 1; row &lt; 5; row++ ) {
+        for( <a href="../ListOfTypes.html#int">int</a> col= 1; col &lt;= row; col++ ) {
+            <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>[n]= covariance( row-1, col-1 );
+            n++;
+        }
+    }
+
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TBtaFitParamsR:LoadRotation"> </a><a href=".././TBtaFitParamsR.html#TBtaFitParamsR:LoadRotation">TBtaFitParamsR::LoadRotation</a>() {
+    ComPackNonFlatFloat packer(ComPackNonFlatFloat::UNSIG);
+<b>    //  ComPackNonFlatFloat packer8(ComPackNonFlatFloat::SIG);</b>
+    ComPackFlatFloat packer8(-1,1,15);
+    TVectorD eigenValues(5),angles(10);
+    for(<a href="../ListOfTypes.html#Int_t">Int_t</a> j=0;j&lt;<a href="#TBtaFitParamsR:nParm">nParm</a>();j++){
+	if ( ! packer.unpackAndScream (0,10,<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_diag">_diag</a>[j],eigenValues(j),"DiagCov ") ) {
+	    cerr &lt;&lt; " loadRotation: problems unpacking " &lt;&lt; "DiagCov " &lt;&lt; j &lt;&lt; endl ;
+	}
+	if(eigenValues(j)&lt;=0)eigenValues(j)=packer.getMinVal();
+    }
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> nc = <a href="#TBtaFitParamsR:nCorr">nCorr</a>();
+    for(<a href="../ListOfTypes.html#Int_t">Int_t</a> j2=0;j2&lt;nc;j2++) {
+<b>	// if ( ! packer8.unpackAndScream (-1.1,1.1,<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_diag">_diag</a>[<a href="#TBtaFitParamsR:nParm">nParm</a>()+j2],angles(j2),"Corr") ) {</b>
+<b>	//   cerr &lt;&lt; " loadRotation: problems unpacking " &lt;&lt; "Corr" &lt;&lt; j &lt;&lt; j2 &lt;&lt; endl ;</b>
+<b>	// }</b>
+	packer8.unpack(<a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_diag">_diag</a>[<a href="#TBtaFitParamsR:nParm">nParm</a>()+j2],angles(j2));
+    }
+    
+    <a href="#TBtaFitParamsR:ComPackedCovariance">ComPackedCovariance</a>(eigenValues,angles);
+}
+
+<a href="../ListOfTypes.html#Int_t">Int_t</a>
+<a name="TBtaFitParamsR:indexCorr"> </a><a href=".././TBtaFitParamsR.html#TBtaFitParamsR:indexCorr">TBtaFitParamsR::indexCorr</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> j1,<a href="../ListOfTypes.html#Int_t">Int_t</a> j2) const {
+    return (j2&lt;j1) ? j1*(j1+1)/2-j2-1 :j2*(j2+1)/2-j1-1 ; 
+}
+
+<a name="TBtaFitParamsR:ComPackedCovariance"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:ComPackedCovariance">TBtaFitParamsR::ComPackedCovariance</a>(const TVectorD&amp; eigenValues,const TVectorD&amp; angles)
+{
+    <a href="../ListOfTypes.html#int">int</a> nDim=5;
+    assert (eigenValues.GetNrows() == nDim);
+    assert (angles.GetNrows() == 2*nDim);
+<b>    // restore the diagonal part</b>
+    <a href=".././TError.html">TError</a> diag(nDim);
+    diag.Zero();
+    for(<a href="../ListOfTypes.html#int">int</a> l=0;l&lt;nDim;l++)diag(l,l)=eigenValues(l);
+<b>    // build up the rotation</b>
+    TMatrixD rot(nDim,nDim);
+    rot.UnitMatrix();
+    for(<a href="../ListOfTypes.html#int">int</a> i=nDim-1;i&gt;0;i--){
+	for(<a href="../ListOfTypes.html#int">int</a> j=i+1;j&lt;=nDim;j++){
+	    <a href="../ListOfTypes.html#double">double</a> phi=angles( j*(j-1)/2-i)*TMath::Pi();
+	    <a href="../ListOfTypes.html#double">double</a> co = TMath::Cos(phi);
+	    <a href="../ListOfTypes.html#double">double</a> si = TMath::Sin(phi);
+	    for (<a href="../ListOfTypes.html#int">int</a> k=1;k&lt;=nDim;k++){
+		<a href="../ListOfTypes.html#double">double</a> a1 = co*rot(k-1,j-2)-si*rot(k-1,j-1);
+		<a href="../ListOfTypes.html#double">double</a> a2 = si*rot(k-1,j-2)+co*rot(k-1,j-1);
+		rot(k-1,j-2) = a1;
+		rot(k-1,j-1) = a2;
+	    }
+	}
+    }
+
+<b>    //HepSymMatrix result(diag.similarity(rot));</b>
+    TMatrixD result(diag.Similarity(rot));
+    <a href="../ListOfTypes.html#int">int</a> n= 0;
+    for( <a href="../ListOfTypes.html#int">int</a> row= 1; row &lt; 6; row++ ) {
+	for( <a href="../ListOfTypes.html#int">int</a> col= 1; col &lt;= row; col++ ) {
+	    <a href=".././TBtaFitParamsR.html#TBtaFitParamsR:_cov">_cov</a>[n]= result( row-1, col-1 );
+	    n++;
+	}
+    }
+    
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

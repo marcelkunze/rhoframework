@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:39 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TBtaIfrQualR - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//      summarizes the information on the quality of the IFR</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Stefan Kluth</b>
+<b>//      Leif Wilden</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999       LBNL, TU Dresden</b>
+<b>//</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "KangaSchema/TBtaIfrQualR.h"
+#include "KangaSchema/kanga.h"
+
+ClassImp(TBtaIfrQualR)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TBtaIfrQualR *&amp;obj)
+{
+   obj = (TBtaIfrQualR *) buf.ReadObject(TBtaIfrQualR::Class());
+   return buf;
+}
+
+ComPackNonFlatFloat TBtaIfrQualR::Packer(ComPackNonFlatFloat::UNSIG_8);
+ComPackFlatFloat TBtaIfrQualR::intlPack(0,10,8);
+ComPackFlatFloat TBtaIfrQualR::intlPack2(0,3,8);
+ComPackFlatFloat TBtaIfrQualR::Packer2(0,10,8);
+ComPackNonFlatFloat TBtaIfrQualR::Packer8(ComPackNonFlatFloat::UNSIG_8);
+
+<a name="TBtaIfrQualR:TBtaIfrQualR"> </a>TBtaIfrQualR::TBtaIfrQualR()
+{
+    Reset();
+}
+
+<a name="TBtaIfrQualR:~TBtaIfrQualR"> </a>TBtaIfrQualR::~TBtaIfrQualR() {}
+
+TBtaIfrQualR &amp; TBtaIfrQualR::operator = ( const TBtaIfrQualR &amp; rhs ) 
+{
+    for( unsigned i= 0; i &lt; 20; i++ ) _IfrLayStrips[i]= rhs._IfrLayStrips[i];
+    _IfrNstrip= rhs._IfrNstrip;
+    _IfrBits= rhs._IfrBits;
+    _expectedInteractionLengths= rhs._expectedInteractionLengths;
+    _interactionLengthsBeforeIron= rhs._interactionLengthsBeforeIron;
+    _measuredInteractionLengths= rhs._measuredInteractionLengths;
+    _IfrTrkMatch= rhs._IfrTrkMatch;
+    _IfrEmcMatch= rhs._IfrEmcMatch;
+    _lastBarrel= rhs._lastBarrel;
+    return *this;
+}
+
+<a name="TBtaIfrQualR:Reset"> </a>void TBtaIfrQualR::Reset()
+{
+    for ( unsigned i= 0; i &lt; 11; i++ ) _IfrPattern[i]= 0;
+    for ( int j=0; j&lt;nByteVars; j++) bytes[j]= 0;
+    _IfrNstrip= 0;
+    _IfrBits= 0;
+    _expectedInteractionLengths= 0;
+    _interactionLengthsBeforeIron= 0;
+    _measuredInteractionLengths= 0;
+    _IfrTrkMatch= 0;
+    _IfrEmcMatch= 0;
+    _lastBarrel= 0; 
+    for( unsigned k= 0; k &lt; 20; k++ ) _IfrLayStrips[k]= 0;
+}
+
+<b>// Getters:</b>
+
+<a name="TBtaIfrQualR:GetIfrLayStrips"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetIfrLayStrips">TBtaIfrQualR::GetIfrLayStrips</a>(<a href="../ListOfTypes.html#UShort_t">UShort_t</a> laystrips[20])
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_pattern">TBtaMicroCandRDir::iq_pattern</a>);
+	<a href="../ListOfTypes.html#int">int</a> ioff = 0;
+	for(<a href="../ListOfTypes.html#int">int</a> layer=0;layer&lt;20;layer++){
+	<a href="../ListOfTypes.html#int">int</a> ipos = (layer+ioff)/2;
+	<a href="../ListOfTypes.html#int">int</a> ishift = layer+ioff-2*ipos;
+	<a href="../ListOfTypes.html#int">int</a> ival=(ishift == 0)?
+	  <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrPattern">_IfrPattern</a>[ipos]&amp;0xf :
+	  (<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrPattern">_IfrPattern</a>[ipos]&gt;&gt;4)&amp;0xf;
+<b>	// the strips is set to 15 at the end of the barrel</b>
+	if(ioff == 0 &amp;&amp;  (<a href="#TBtaIfrQualR:GetIfrBits">GetIfrBits</a>() &amp; 0x2) &amp;&amp; ival == 15 )
+	  { 
+	    <a href="#TBtaIfrQualR:SetLastBarrel">SetLastBarrel</a>(layer);
+	    layer-- ;
+	    ioff=1;
+	    continue;
+	  }
+	laystrips[layer] = ival;
+	}
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_IfrLayStrips">TBtaMicroCandRDir::iq_IfrLayStrips</a>);
+	for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i= 0; i&lt;20; i++) laystrips[i]= <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrLayStrips">_IfrLayStrips</a>[i];
+    }
+}
+
+<a name="TBtaIfrQualR:GetIfrNstrip"> </a><a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetIfrNstrip">TBtaIfrQualR::GetIfrNstrip</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_bytes">TBtaMicroCandRDir::iq_bytes</a>);
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrNstrip">_IfrNstrip</a> = <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:bytes">bytes</a>[<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:IfrNstrip">IfrNstrip</a>] &amp; 0xFF;
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_IfrNstrip">TBtaMicroCandRDir::iq_IfrNstrip</a>);
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrNstrip">_IfrNstrip</a>;
+}
+
+<a name="TBtaIfrQualR:GetIfrDigis"> </a><a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetIfrDigis">TBtaIfrQualR::GetIfrDigis</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_bytes">TBtaMicroCandRDir::iq_bytes</a>);
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrDigis">_IfrDigis</a> = <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:bytes">bytes</a>[<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:ifrDigis">ifrDigis</a>] &amp; 0xFF;
+    }
+    else {
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrDigis">_IfrDigis</a> = 0;
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrDigis">_IfrDigis</a>;
+}
+
+<a name="TBtaIfrQualR:GetIfrBits"> </a><a href="../ListOfTypes.html#UChar_t">UChar_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetIfrBits">TBtaIfrQualR::GetIfrBits</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_bytes">TBtaMicroCandRDir::iq_bytes</a>);
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrBits">_IfrBits</a> = <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:bytes">bytes</a>[<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:IfrBits">IfrBits</a>];
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_IfrBits">TBtaMicroCandRDir::iq_IfrBits</a>);
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrBits">_IfrBits</a>;
+}
+
+<a name="TBtaIfrQualR:GetInteractionLengthsBeforeIron"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetInteractionLengthsBeforeIron">TBtaIfrQualR::GetInteractionLengthsBeforeIron</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_bytes">TBtaMicroCandRDir::iq_bytes</a>);
+	<a href="../ListOfTypes.html#double">double</a> d;
+	<a href="../ListOfTypes.html#d_ULong">d_ULong</a> l= <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:bytes">bytes</a>[<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:intLenBI">intLenBI</a>];
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:intlPack2">intlPack2</a>.unpack(l,d);
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_interactionLengthsBeforeIron">_interactionLengthsBeforeIron</a> = d;
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_interactionLengthsBeforeIron">TBtaMicroCandRDir::iq_interactionLengthsBeforeIron</a>);
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_interactionLengthsBeforeIron">_interactionLengthsBeforeIron</a>;
+}
+
+<a name="TBtaIfrQualR:GetExpectedInteractionLengths"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetExpectedInteractionLengths">TBtaIfrQualR::GetExpectedInteractionLengths</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_bytes">TBtaMicroCandRDir::iq_bytes</a>);
+	<a href="../ListOfTypes.html#double">double</a> d;
+	<a href="../ListOfTypes.html#d_ULong">d_ULong</a> l= <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:bytes">bytes</a>[<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:expInt">expInt</a>];
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:intlPack">intlPack</a>.unpack(l,d);
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_expectedInteractionLengths">_expectedInteractionLengths</a> = d;
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_expectedInteractionLengths">TBtaMicroCandRDir::iq_expectedInteractionLengths</a>);
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_expectedInteractionLengths">_expectedInteractionLengths</a>;
+}
+
+<a name="TBtaIfrQualR:GetMeasuredInteractionLengths"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetMeasuredInteractionLengths">TBtaIfrQualR::GetMeasuredInteractionLengths</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_bytes">TBtaMicroCandRDir::iq_bytes</a>);
+	<a href="../ListOfTypes.html#double">double</a> d;
+	<a href="../ListOfTypes.html#d_ULong">d_ULong</a> l= <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:bytes">bytes</a>[<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:intLen">intLen</a>];
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:intlPack">intlPack</a>.unpack(l,d);
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_measuredInteractionLengths">_measuredInteractionLengths</a> = d;
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_measuredInteractionLengths">TBtaMicroCandRDir::iq_measuredInteractionLengths</a>);
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_measuredInteractionLengths">_measuredInteractionLengths</a>;
+}
+
+<a name="TBtaIfrQualR:GetIfrTrkMatch"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetIfrTrkMatch">TBtaIfrQualR::GetIfrTrkMatch</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_bytes">TBtaMicroCandRDir::iq_bytes</a>);
+	<a href="../ListOfTypes.html#double">double</a> d;
+	<a href="../ListOfTypes.html#d_UShort">d_UShort</a> u= <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:bytes">bytes</a>[<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:trkMatchCons">trkMatchCons</a>];
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:Packer">Packer</a>.unpackAndScream(0,50,u,d, "trk Match" );
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrTrkMatch">_IfrTrkMatch</a> = d;
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_IfrTrkMatch">TBtaMicroCandRDir::iq_IfrTrkMatch</a>);
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrTrkMatch">_IfrTrkMatch</a>;
+}
+
+<a name="TBtaIfrQualR:GetIfrEmcMatch"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetIfrEmcMatch">TBtaIfrQualR::GetIfrEmcMatch</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_bytes">TBtaMicroCandRDir::iq_bytes</a>);
+	<a href="../ListOfTypes.html#double">double</a> d;
+	<a href="../ListOfTypes.html#d_UShort">d_UShort</a> u= <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:bytes">bytes</a>[<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:emcMatchCons">emcMatchCons</a>];
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:Packer">Packer</a>.unpackAndScream(0,1.1,u,d, "emc Match" );
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrEmcMatch">_IfrEmcMatch</a> = d;
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_IfrEmcMatch">TBtaMicroCandRDir::iq_IfrEmcMatch</a>);
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrEmcMatch">_IfrEmcMatch</a>;
+}
+
+<a name="TBtaIfrQualR:GetLastBarrel"> </a><a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetLastBarrel">TBtaIfrQualR::GetLastBarrel</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href="../ListOfTypes.html#UShort_t">UShort_t</a> laystrips[20];
+	<a href="#TBtaIfrQualR:GetIfrLayStrips">GetIfrLayStrips</a>(laystrips);
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_lastBarrel">TBtaMicroCandRDir::iq_lastBarrel</a>);
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_lastBarrel">_lastBarrel</a>;
+}
+
+<a name="TBtaIfrQualR:GetIfrClusterFit"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetIfrClusterFit">TBtaIfrQualR::GetIfrClusterFit</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_bytes">TBtaMicroCandRDir::iq_bytes</a>);
+	<a href="../ListOfTypes.html#double">double</a> chi2;
+	<a href="../ListOfTypes.html#d_UShort">d_UShort</a> u = <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:bytes">bytes</a>[<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:trkMatchChi2">trkMatchChi2</a>];
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:Packer8">Packer8</a>.unpackAndScream(0,50,u,chi2, "trk Chi2" );
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrTrkMatchChi2">_IfrTrkMatchChi2</a> = chi2;
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_IfrTrkMatchChi2">TBtaMicroCandRDir::iq_IfrTrkMatchChi2</a>);
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrTrkMatchChi2">_IfrTrkMatchChi2</a>;
+}
+
+<a name="TBtaIfrQualR:GetIfrRpcMuonProbability"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:GetIfrRpcMuonProbability">TBtaIfrQualR::GetIfrRpcMuonProbability</a>()
+{
+    if (<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:GetSchema">TBtaMicroCandRDir::GetSchema</a>()&gt;3) {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_bytes">TBtaMicroCandRDir::iq_bytes</a>);
+	<a href="../ListOfTypes.html#double">double</a> d;
+	<a href="../ListOfTypes.html#d_ULong">d_ULong</a> l= <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:bytes">bytes</a>[<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:rpcProb">rpcProb</a>];
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:Packer2">Packer2</a>.unpack( l,d );
+	d = (d!=10) ? pow(10,-d) : 0;
+	<a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_rpcProb">_rpcProb</a> = d;
+    }
+    else {
+	<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:Instance">TBtaMicroCandRDir::Instance</a>()-&gt;ReadBranch(<a href=".././TBtaMicroCandRDir.html#TBtaMicroCandRDir:iq_rpcProb">TBtaMicroCandRDir::iq_rpcProb</a>);
+    }
+    return <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_rpcProb">_rpcProb</a>;
+}
+
+<b>// Setters:</b>
+
+<a name="TBtaIfrQualR:SetIfrLayStrips"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:SetIfrLayStrips">TBtaIfrQualR::SetIfrLayStrips</a>(<a href="../ListOfTypes.html#UShort_t">UShort_t</a> laystrips[20])
+{
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i= 0; i&lt;20; i++) <a href=".././TBtaIfrQualR.html#TBtaIfrQualR:_IfrLayStrips">_IfrLayStrips</a>[i]= laystrips[i];
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

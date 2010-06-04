@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:52 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TEventSelector</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TEventSelector</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TEventSelector:description">class description</a> - <a href="src/TEventSelector.cxx.html">source file</a> - <a href="TEventSelector_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TEventSelector" href="TEventSelector.h">TEventSelector</a> : public TNamed</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:~TEventSelector">~TEventSelector</a><!--PLAIN-->()
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:Accept">Accept</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>&amp;)
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TEventSelector:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TEventSelector:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetEnergy">SetEnergy</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> e1, <a href="ListOfTypes.html#Double_t">Double_t</a> e2 = 1.E8)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetLoose">SetLoose</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetMomentum">SetMomentum</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> p1, <a href="ListOfTypes.html#Double_t">Double_t</a> p2 = 1.E8)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetNumberOfTracks">SetNumberOfTracks</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a> n1, <a href="ListOfTypes.html#UInt_t">UInt_t</a> n2 = 65535)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetPhi">SetPhi</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> p1, <a href="ListOfTypes.html#Double_t">Double_t</a> p2 = kTWOPI)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetPrimaryVertex">SetPrimaryVertex</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> d, <a href="ListOfTypes.html#Double_t">Double_t</a> zMin, <a href="ListOfTypes.html#Double_t">Double_t</a> zMax)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetPt">SetPt</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> p1, <a href="ListOfTypes.html#Double_t">Double_t</a> p2 = 1.E8)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetShowerEnergy">SetShowerEnergy</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> e1, <a href="ListOfTypes.html#Double_t">Double_t</a> e2 = 1.E8)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetTheta">SetTheta</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> t1, <a href="ListOfTypes.html#Double_t">Double_t</a> t2 = kTWOPI)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetTight">SetTight</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetTotalCharge">SetTotalCharge</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetTotalEnergy">SetTotalEnergy</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> e1, <a href="ListOfTypes.html#Double_t">Double_t</a> e2 = 1.E8)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:SetTotalMomentum">SetTotalMomentum</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> p1, <a href="ListOfTypes.html#Double_t">Double_t</a> p2 = 1.E8)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TEventSelector:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TEventSelector:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->        <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fTight">fTight</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fTight"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fNTracksMin">fNTracksMin</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fNTracksMin"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fNTracksMax">fNTracksMax</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fNTracksMax"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fTotChar">fTotChar</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fTotChar"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fETotLow">fETotLow</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fETotLow"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fETotHigh">fETotHigh</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fETotHigh"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fPTotLow">fPTotLow</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fPTotLow"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fPTotHigh">fPTotHigh</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fPTotHigh"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fDocaMax">fDocaMax</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fDocaMax"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fZMin">fZMin</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fZMin"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fZMax">fZMax</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fZMax"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fELow">fELow</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fELow"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fEHigh">fEHigh</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fEHigh"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fEmcLow">fEmcLow</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fEmcLow"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fEmcHigh">fEmcHigh</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fEmcHigh"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fPLow">fPLow</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fPLow"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fPHigh">fPHigh</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fPHigh"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fPtLow">fPtLow</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fPtLow"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fPtHigh">fPtHigh</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fPtHigh"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fThetaLow">fThetaLow</a><!--PLAIN-->    <!--TAB--><i><a name="Title:fThetaLow"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fThetaHigh">fThetaHigh</a><!--PLAIN-->   <!--TAB--><i><a name="Title:fThetaHigh"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fPhiLow">fPhiLow</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fPhiLow"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TEventSelector:fPhiHigh">fPhiHigh</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fPhiHigh"></a></i>
+</pre>
+<!--END-->
+<br><hr>
+<!--SEE ALSO--><h2>See also</h2><dl><dd>
+<a href="./TAodBaseSelector.html">TAodBaseSelector</a>, <a href="./TTagBaseSelector.html">TTagBaseSelector</a></dl>
+<hr>
+<!--DESCRIPTION--><h2><a name="TEventSelector:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TEventSelector.html">TEventSelector</a>							
+                                                                      
+ Selector classes for event selection                                 
+                                                                      
+ Author List:                                                         
+ Marcel Kunze,  RUB, Feb. 99                                          
+ Copyright (C) 1999-2001, Ruhr-University Bochum.                     
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:PrintOn" href="src/TEventSelector.cxx.html#TEventSelector:PrintOn">PrintOn</a>(std::ostream&amp; o) const 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TEventSelector:Accept" href="TEventSelector.h">Accept</a>(<a href="./TEventManager.html">TEventManager</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetTight" href="TEventSelector.h">SetTight</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetLoose" href="TEventSelector.h">SetLoose</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetNumberOfTracks" href="TEventSelector.h">SetNumberOfTracks</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> n1, <a href="ListOfTypes.html#UInt_t">UInt_t</a> n2 = 65535)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetPrimaryVertex" href="TEventSelector.h">SetPrimaryVertex</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> d, <a href="ListOfTypes.html#Double_t">Double_t</a> zMin, <a href="ListOfTypes.html#Double_t">Double_t</a> zMax)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetTotalCharge" href="TEventSelector.h">SetTotalCharge</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetTotalEnergy" href="TEventSelector.h">SetTotalEnergy</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> e1, <a href="ListOfTypes.html#Double_t">Double_t</a> e2 = 1.E8)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetTotalMomentum" href="TEventSelector.h">SetTotalMomentum</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> p1, <a href="ListOfTypes.html#Double_t">Double_t</a> p2 = 1.E8)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetEnergy" href="TEventSelector.h">SetEnergy</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> e1, <a href="ListOfTypes.html#Double_t">Double_t</a> e2 = 1.E8)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetShowerEnergy" href="TEventSelector.h">SetShowerEnergy</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> e1, <a href="ListOfTypes.html#Double_t">Double_t</a> e2 = 1.E8)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetMomentum" href="TEventSelector.h">SetMomentum</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> p1, <a href="ListOfTypes.html#Double_t">Double_t</a> p2 = 1.E8)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetPt" href="TEventSelector.h">SetPt</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> p1, <a href="ListOfTypes.html#Double_t">Double_t</a> p2 = 1.E8)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetTheta" href="TEventSelector.h">SetTheta</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> t1, <a href="ListOfTypes.html#Double_t">Double_t</a> t2 = kTWOPI)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:SetPhi" href="TEventSelector.h">SetPhi</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> p1, <a href="ListOfTypes.html#Double_t">Double_t</a> p2 = kTWOPI)
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TEventSelector:Class" href="TEventSelector.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TEventSelector:IsA" href="TEventSelector.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:ShowMembers" href="TEventSelector.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:Streamer" href="TEventSelector.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:StreamerNVirtual" href="TEventSelector.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TEventSelector:~TEventSelector" href="TEventSelector.h">~TEventSelector</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:53 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

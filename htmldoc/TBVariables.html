@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:32 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TBVariables</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TBVariables</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TBVariables:description">class description</a> - <a href="src/TBVariables.cxx.html">source file</a> - <a href="TBVariables_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TBVariables" href="TBVariables.h">TBVariables</a> : public TObject</h2>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:CheckSqrt">CheckSqrt</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> square, const <a href="ListOfTypes.html#char">char</a>* file, <a href="ListOfTypes.html#int">int</a> line) const
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:MomErr">MomErr</a><!--PLAIN-->(const <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a>&amp; p4) const
+<!--TAB6-->      <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <!--TAB--><!--BOLD--><a href="#TBVariables:ReFit">ReFit</a><!--PLAIN-->()
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                   <a href="./TBVariables.html">TBVariables</a> <!--TAB--><!--BOLD--><a href="#TBVariables:TBVariables">TBVariables</a><!--PLAIN-->()
+<!--TAB6-->                   <a href="./TBVariables.html">TBVariables</a> <!--TAB--><!--BOLD--><a href="#TBVariables:TBVariables">TBVariables</a><!--PLAIN-->(const <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a>&amp; p4Lab, <a href="ListOfTypes.html#Bool_t">Bool_t</a> quiet = kFALSE)
+<!--TAB6-->                   <a href="./TBVariables.html">TBVariables</a> <!--TAB--><!--BOLD--><a href="#TBVariables:TBVariables">TBVariables</a><!--PLAIN-->(const <a href="./TBVariables.html">TBVariables</a>&amp;)
+<!--TAB6-->                  virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBVariables:~TBVariables">~TBVariables</a><!--PLAIN-->()
+<!--TAB6-->               static <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:BMass">BMass</a><!--PLAIN-->()
+<!--TAB6-->                static TClass* <!--TAB--><!--BOLD--><a href="#TBVariables:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:DeltaE">DeltaE</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:DeltaEErr">DeltaEErr</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:EBeam">EBeam</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:EBeamErr">EBeamErr</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:EHat">EHat</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:EHatErr">EHatErr</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:EnergySubstitutedMass">EnergySubstitutedMass</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:EnergySubstitutedMassErr">EnergySubstitutedMassErr</a><!--PLAIN-->() const
+<!--TAB6-->           <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <!--TAB--><!--BOLD--><a href="#TBVariables:FitStatus">FitStatus</a><!--PLAIN-->() const
+<!--TAB6-->               virtual TClass* <!--TAB--><!--BOLD--><a href="#TBVariables:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:M_ES">M_ES</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:M_ESErr">M_ESErr</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:MHat">MHat</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:MHatErr">MHatErr</a><!--PLAIN-->() const
+<!--TAB6-->      const <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TBVariables:P4">P4</a><!--PLAIN-->() const
+<!--TAB6-->      const <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TBVariables:P4Hat">P4Hat</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:PHat">PHat</a><!--PLAIN-->() const
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:PHatErr">PHatErr</a><!--PLAIN-->() const
+<!--TAB6-->                          <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBVariables:SetDefaultUpsilonWidth">SetDefaultUpsilonWidth</a><!--PLAIN-->()
+<!--TAB6-->           <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <!--TAB--><!--BOLD--><a href="#TBVariables:SetP4CM">SetP4CM</a><!--PLAIN-->(const <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a>&amp; theP4CM)
+<!--TAB6-->           <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <!--TAB--><!--BOLD--><a href="#TBVariables:SetP4Lab">SetP4Lab</a><!--PLAIN-->(const <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a>&amp; theP4Lab)
+<!--TAB6-->                          <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBVariables:SetUpsilonWidth">SetUpsilonWidth</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> upsWidth)
+<!--TAB6-->                  virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBVariables:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->                  virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBVariables:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                          <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TBVariables:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TBVariables:UpsilonWidth">UpsilonWidth</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="TBVariables:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->        <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a> <!--TAB--><!--BOLD--><a name="TBVariables:fP4Lab">fP4Lab</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fP4Lab"></a></i>
+<!--TAB6-->        <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a> <!--TAB--><!--BOLD--><a name="TBVariables:fP4">fP4</a><!--PLAIN-->            <!--TAB--><i><a name="Title:fP4"></a></i>
+<!--TAB6-->        <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a> <!--TAB--><!--BOLD--><a name="TBVariables:fP4Hat">fP4Hat</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fP4Hat"></a></i>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fMHat">fMHat</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fMHat"></a></i>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fM_ES">fM_ES</a><!--PLAIN-->          <!--TAB--><i><a name="Title:fM_ES"></a></i>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fDeltaE">fDeltaE</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fDeltaE"></a></i>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fMHatErr">fMHatErr</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fMHatErr"></a></i>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fM_ESErr">fM_ESErr</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fM_ESErr"></a></i>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fDeltaEErr">fDeltaEErr</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fDeltaEErr"></a></i>
+<!--TAB6-->      <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <!--TAB--><!--BOLD--><a name="TBVariables:fStatus">fStatus</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fStatus"></a></i>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fEBeam">fEBeam</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fEBeam"></a></i>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fEBeamErr">fEBeamErr</a><!--PLAIN-->      <!--TAB--><i><a name="Title:fEBeamErr"></a></i>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fUpsilonWidth">fUpsilonWidth</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fUpsilonWidth"></a></i>
+<!--TAB6-->                 <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fBMass">fBMass</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fBMass"></a></i>
+<!--TAB6-->                   <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TBVariables:fQuietMode">fQuietMode</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fQuietMode"></a></i>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      static const <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <!--TAB--><!--BOLD--><a name="TBVariables:GOOD">GOOD</a><!--PLAIN-->           <!--TAB--><i><a name="Title:GOOD"></a></i>
+<!--TAB6-->      static const <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <!--TAB--><!--BOLD--><a name="TBVariables:NO_BCAND">NO_BCAND</a><!--PLAIN-->       <!--TAB--><i><a name="Title:NO_BCAND"></a></i>
+<!--TAB6-->      static const <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <!--TAB--><!--BOLD--><a name="TBVariables:NO_BEAMS_INFO">NO_BEAMS_INFO</a><!--PLAIN-->  <!--TAB--><i><a name="Title:NO_BEAMS_INFO"></a></i>
+<!--TAB6-->      static const <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <!--TAB--><!--BOLD--><a name="TBVariables:BAD_BCAND">BAD_BCAND</a><!--PLAIN-->      <!--TAB--><i><a name="Title:BAD_BCAND"></a></i>
+<!--TAB6-->      static const <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <!--TAB--><!--BOLD--><a name="TBVariables:SQRT_NEGATIVE">SQRT_NEGATIVE</a><!--PLAIN-->  <!--TAB--><i><a name="Title:SQRT_NEGATIVE"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TBVariables:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:MomErr" href="src/TBVariables.cxx.html#TBVariables:MomErr">MomErr</a>(const <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a> &amp; p4) const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:BMass" href="src/TBVariables.cxx.html#TBVariables:BMass">BMass</a>() <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:TBVariables" href="src/TBVariables.cxx.html#TBVariables:TBVariables">TBVariables</a>() :
+<a href="./TBVariables.html#TBVariables:fMHat">fMHat</a>(0.0),
+<a href="./TBVariables.html#TBVariables:fM_ES">fM_ES</a>(0.0),
+<a href="./TBVariables.html#TBVariables:fDeltaE">fDeltaE</a>(0.0),
+<a href="./TBVariables.html#TBVariables:fMHatErr">fMHatErr</a>(0.0),
+<a href="./TBVariables.html#TBVariables:fM_ESErr">fM_ESErr</a>(0.0),
+<a href="./TBVariables.html#TBVariables:fDeltaEErr">fDeltaEErr</a>(0.0),
+<a href="./TBVariables.html#TBVariables:fStatus">fStatus</a>(<a href="./TBVariables.html#TBVariables:NO_BCAND">TBVariables::NO_BCAND</a>),
+<a href="./TBVariables.html#TBVariables:fUpsilonWidth">fUpsilonWidth</a>(-DBL_MAX),
+<a href="./TBVariables.html#TBVariables:fQuietMode">fQuietMode</a>(kFALSE)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:TBVariables" href="src/TBVariables.cxx.html#TBVariables:TBVariables">TBVariables</a>(const <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a> &amp; p4Lab,
+			     <a href="ListOfTypes.html#Bool_t">Bool_t</a> quiet) :
+<a href="./TBVariables.html#TBVariables:fStatus">fStatus</a>(<a href="./TBVariables.html#TBVariables:NO_BCAND">TBVariables::NO_BCAND</a>),
+<a href="./TBVariables.html#TBVariables:fUpsilonWidth">fUpsilonWidth</a>(-DBL_MAX),
+<a href="./TBVariables.html#TBVariables:fQuietMode">fQuietMode</a>(quiet)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:~TBVariables" href="src/TBVariables.cxx.html#TBVariables:~TBVariables">~TBVariables</a>() <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:PHat" href="src/TBVariables.cxx.html#TBVariables:PHat">PHat</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:PHatErr" href="src/TBVariables.cxx.html#TBVariables:PHatErr">PHatErr</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:EnergySubstitutedMass" href="src/TBVariables.cxx.html#TBVariables:EnergySubstitutedMass">EnergySubstitutedMass</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:EnergySubstitutedMassErr" href="src/TBVariables.cxx.html#TBVariables:EnergySubstitutedMassErr">EnergySubstitutedMassErr</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:SetUpsilonWidth" href="src/TBVariables.cxx.html#TBVariables:SetUpsilonWidth">SetUpsilonWidth</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> upsWidth) <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:SetDefaultUpsilonWidth" href="src/TBVariables.cxx.html#TBVariables:SetDefaultUpsilonWidth">SetDefaultUpsilonWidth</a>() <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:SetP4Lab" href="src/TBVariables.cxx.html#TBVariables:SetP4Lab">SetP4Lab</a>(const <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a> &amp; theP4Lab) <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:SetP4CM" href="src/TBVariables.cxx.html#TBVariables:SetP4CM">SetP4CM</a>(const <a href="./TLorentzVectorErr.html">TLorentzVectorErr</a> &amp; theP4CM) <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:CheckSqrt" href="src/TBVariables.cxx.html#TBVariables:CheckSqrt">CheckSqrt</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> square, const <a href="ListOfTypes.html#char">char</a> * file, <a href="ListOfTypes.html#int">int</a> line) const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:ReFit" href="src/TBVariables.cxx.html#TBVariables:ReFit">ReFit</a>() <br>
+<pre> Initialize:
+</pre><hr>
+<!--FUNCTION--> <a name="TBVariables:MHat" href="src/TBVariables.cxx.html#TBVariables:MHat">MHat</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:M_ES" href="src/TBVariables.cxx.html#TBVariables:M_ES">M_ES</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:DeltaE" href="src/TBVariables.cxx.html#TBVariables:DeltaE">DeltaE</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:MHatErr" href="src/TBVariables.cxx.html#TBVariables:MHatErr">MHatErr</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:M_ESErr" href="src/TBVariables.cxx.html#TBVariables:M_ESErr">M_ESErr</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:DeltaEErr" href="src/TBVariables.cxx.html#TBVariables:DeltaEErr">DeltaEErr</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:P4" href="src/TBVariables.cxx.html#TBVariables:P4">P4</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:P4Hat" href="src/TBVariables.cxx.html#TBVariables:P4Hat">P4Hat</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:EHat" href="src/TBVariables.cxx.html#TBVariables:EHat">EHat</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:EHatErr" href="src/TBVariables.cxx.html#TBVariables:EHatErr">EHatErr</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:EBeam" href="src/TBVariables.cxx.html#TBVariables:EBeam">EBeam</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:EBeamErr" href="src/TBVariables.cxx.html#TBVariables:EBeamErr">EBeamErr</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="TBVariables:UpsilonWidth" href="src/TBVariables.cxx.html#TBVariables:UpsilonWidth">UpsilonWidth</a>() const <br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TBVariables.html#TBVariables:Status">TBVariables::Status</a> <a name="TBVariables:FitStatus" href="TBVariables.h">FitStatus</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                    TClass* <a name="TBVariables:Class" href="TBVariables.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                    TClass* <a name="TBVariables:IsA" href="TBVariables.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TBVariables:ShowMembers" href="TBVariables.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TBVariables:Streamer" href="TBVariables.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#void">void</a> <a name="TBVariables:StreamerNVirtual" href="TBVariables.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="./TBVariables.html">TBVariables</a> <a name="TBVariables:TBVariables" href="TBVariables.h">TBVariables</a>(const <a href="./TBVariables.html">TBVariables</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:33 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

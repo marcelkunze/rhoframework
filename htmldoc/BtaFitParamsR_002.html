@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:00 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>BtaFitParamsR_002</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>BtaFitParamsR_002</h1>
+<hr width=300>
+<!--SDL--><em><a href="#BtaFitParamsR_002:description">class description</a> - <a href="src/BtaFitParamsR_002.cxx.html">source file</a> - <a href="BtaFitParamsR_002_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="BtaFitParamsR_002" href="BtaFitParamsR_002.h">BtaFitParamsR_002</a> </h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->       <a href="./BtaFitParamsR_002.html">BtaFitParamsR_002</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:BtaFitParamsR_002">BtaFitParamsR_002</a><!--PLAIN-->(const <a href="./BtaFitParamsR_002.html">BtaFitParamsR_002</a>&amp;)
+<!--TAB6-->                <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:ComPackedCovariance">ComPackedCovariance</a><!--PLAIN-->(const TVectorD&amp; eigenValues, const TVectorD&amp; angles) const
+<!--TAB6-->                     <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:indexCorr">indexCorr</a><!--PLAIN-->(<a href="ListOfTypes.html#int">int</a> i, <a href="ListOfTypes.html#int">int</a> j) const
+<!--TAB6-->                <a href="ListOfTypes.html#Float_t">Float_t</a>* <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:LoadRotation">LoadRotation</a><!--PLAIN-->() const
+<!--TAB6-->                     <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:nCorr">nCorr</a><!--PLAIN-->() const
+<!--TAB6-->                     <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:nOct">nOct</a><!--PLAIN-->() const
+<!--TAB6-->                     <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:nParm">nParm</a><!--PLAIN-->() const
+<!--TAB6-->                     <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:nShort">nShort</a><!--PLAIN-->() const
+<!--TAB6-->      <a href="./BtaFitParamsR_002.html">BtaFitParamsR_002</a>&amp; <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:operator=">operator=</a><!--PLAIN-->(const <a href="./BtaFitParamsR_002.html">BtaFitParamsR_002</a>&amp;)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      <a href="./BtaFitParamsR_002.html">BtaFitParamsR_002</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:BtaFitParamsR_002">BtaFitParamsR_002</a><!--PLAIN-->()
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:~BtaFitParamsR_002">~BtaFitParamsR_002</a><!--PLAIN-->()
+<!--TAB6-->         static TClass* <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->        virtual TClass* <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->            TFitParams* <!--TAB--><!--BOLD--><a href="#BtaFitParamsR_002:Transient">Transient</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="BtaFitParamsR_002:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->        <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="BtaFitParamsR_002:_q">_q</a><!--PLAIN-->          <!--TAB--><i><a name="Title:_q"></a></i>
+<!--TAB6-->       <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="BtaFitParamsR_002:_params">_params[5]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_params"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#UShort_t">UShort_t</a> <!--TAB--><!--BOLD--><a name="BtaFitParamsR_002:_diag">_diag[15]</a><!--PLAIN-->   <!--TAB--><i><a name="Title:_diag"></a></i>
+<!--TAB6-->        <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="BtaFitParamsR_002:_corr">_corr[10]</a><!--PLAIN-->   <!--TAB--><i><a name="Title:_corr"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="BtaFitParamsR_002:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--> <a name="BtaFitParamsR_002:BtaFitParamsR_002" href="src/BtaFitParamsR_002.cxx.html#BtaFitParamsR_002:BtaFitParamsR_002">BtaFitParamsR_002</a>() : 
+  <a href="./BtaFitParamsR_002.html#BtaFitParamsR_002:_q">_q</a>( 0 ) <br>
+<hr>
+<!--FUNCTION--> <a name="BtaFitParamsR_002:BtaFitParamsR_002" href="src/BtaFitParamsR_002.cxx.html#BtaFitParamsR_002:BtaFitParamsR_002">BtaFitParamsR_002</a>( const BtaCandidate &amp; transient )
+  : <a href="./BtaFitParamsR_002.html#BtaFitParamsR_002:_q">_q</a>( transient.charge() ) <br>
+<hr>
+<!--FUNCTION--> <a name="BtaFitParamsR_002:~BtaFitParamsR_002" href="src/BtaFitParamsR_002.cxx.html#BtaFitParamsR_002:~BtaFitParamsR_002">~BtaFitParamsR_002</a>() <br>
+<hr>
+<!--FUNCTION-->TFitParams* <a name="BtaFitParamsR_002:Transient" href="src/BtaFitParamsR_002.cxx.html#BtaFitParamsR_002:Transient">Transient</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="BtaFitParamsR_002:LoadRotation" href="src/BtaFitParamsR_002.cxx.html#BtaFitParamsR_002:LoadRotation">LoadRotation</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a>* <a name="BtaFitParamsR_002:ComPackedCovariance" href="src/BtaFitParamsR_002.cxx.html#BtaFitParamsR_002:ComPackedCovariance">ComPackedCovariance</a>(const TVectorD&amp; eigenValues,const TVectorD&amp; angles) const
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#int">int</a> <a name="BtaFitParamsR_002:nParm" href="BtaFitParamsR_002.h">nParm</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#int">int</a> <a name="BtaFitParamsR_002:nCorr" href="BtaFitParamsR_002.h">nCorr</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#int">int</a> <a name="BtaFitParamsR_002:nOct" href="BtaFitParamsR_002.h">nOct</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#int">int</a> <a name="BtaFitParamsR_002:nShort" href="BtaFitParamsR_002.h">nShort</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                       <a href="ListOfTypes.html#int">int</a> <a name="BtaFitParamsR_002:indexCorr" href="BtaFitParamsR_002.h">indexCorr</a>(<a href="ListOfTypes.html#int">int</a> i, <a href="ListOfTypes.html#int">int</a> j) const
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./BtaFitParamsR_002.html">BtaFitParamsR_002</a>&amp; <a name="BtaFitParamsR_002:operator=" href="BtaFitParamsR_002.h">operator=</a>(const <a href="./BtaFitParamsR_002.html">BtaFitParamsR_002</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                   TClass* <a name="BtaFitParamsR_002:Class" href="BtaFitParamsR_002.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                   TClass* <a name="BtaFitParamsR_002:IsA" href="BtaFitParamsR_002.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="BtaFitParamsR_002:ShowMembers" href="BtaFitParamsR_002.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="BtaFitParamsR_002:Streamer" href="BtaFitParamsR_002.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="BtaFitParamsR_002:StreamerNVirtual" href="BtaFitParamsR_002.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:01 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:44 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TConeMomFlow - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//      </b>
+<b>//	Class <a href=".././TConeMomFlow.html">TConeMomFlow</a> - a simple object to calculate the momentum flow</b>
+<b>//        of an event in polar angle intervals around a given axis (a la CLEO)</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//      Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Georges Vasseur</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+<b>//-------------</b>
+<b>// C Headers --</b>
+<b>//-------------</b>
+#include &lt;math.h&gt;
+#include &lt;assert.h&gt;
+<b>//-----------------------</b>
+<b>// This Class's Header --</b>
+<b>//-----------------------</b>
+#include "RhoTools/TConeMomFlow.h"
+<b>//-------------------------------</b>
+<b>// Collaborating Class Headers --</b>
+<b>//-------------------------------</b>
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandListIterator.h"
+#include "TLorentzVector.h"
+#include "RhoTools/TBooster.h"
+#include "RhoBase/TCandidate.h"
+
+<b>//-----------------------------------------------------------------------</b>
+<b>// Local Macros, Typedefs, Structures, Unions and Forward Declarations --</b>
+<b>//-----------------------------------------------------------------------</b>
+
+ClassImp(<a href=".././TConeMomFlow.html">TConeMomFlow</a>)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, <a href=".././TConeMomFlow.html">TConeMomFlow</a> *&amp;obj)
+{
+   obj = (<a href=".././TConeMomFlow.html">TConeMomFlow</a> *) buf.ReadObject(<a href=".././TConeMomFlow.html#TConeMomFlow:Class">TConeMomFlow::Class</a>());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TConeMomFlow:TConeMomFlow"> </a>TConeMomFlow::TConeMomFlow( int nb_intervals )
+  : _ninter( nb_intervals )
+  , _flowarray( _ninter )
+  , _momsum( 0. )
+{
+}
+
+void
+<a name="TConeMomFlow:BoostAndCompute"> </a>TConeMomFlow::BoostAndCompute( TCandList&amp; list,
+			const TVector3&amp; axis, TBooster* booster )
+{
+  assert( booster!=0 );
+  TCandList boostedList;
+  booster-&gt;BoostTo( list, boostedList );
+  Compute( boostedList, axis );
+  boostedList.Cleanup();
+}
+
+void
+<a name="TConeMomFlow:Compute"> </a>TConeMomFlow::Compute( TCandList&amp; list,
+                         const TVector3&amp; axis)
+{
+  const double piover2 = 0.5*TMath::Pi();
+  const double angwidth = piover2/_ninter;
+
+<b>  // initialize</b>
+  <a href="#TConeMomFlow:Reset">Reset</a>();
+  
+  if( list.GetNumberOfCandidates()==0 ) return;
+
+  TCandidate* c;
+  TCandListIterator iter(list);
+  <a href="../ListOfTypes.html#int">int</a> l;
+
+<b>  // start a loop over the all candidates</b>
+  while ( c = iter.Next() ) 
+    {
+<b>      // this candidate's 3-momentum</b>
+      TVector3 p(c-&gt;P3());
+      <a href="../ListOfTypes.html#double">double</a> pmag = p.Mag();
+
+<b>      // the angle with the event axis</b>
+      <a href="../ListOfTypes.html#double">double</a> ang =  axis.Angle(p);
+      if ( ang &gt; piover2 ) ang = TMath::Pi() - ang;
+      l = (<a href="../ListOfTypes.html#int">int</a>)(ang/angwidth);
+      if ( l &lt; 0 ) {
+        l = 0;
+        cerr &lt;&lt; "<a href=".././TConeMomFlow.html">TConeMomFlow</a>: negative cone number " &lt;&lt; l
+          &lt;&lt; endl;
+      }
+      else if ( l &gt;= <a href=".././TConeMomFlow.html#TConeMomFlow:_ninter">_ninter</a> ) {
+        l = <a href=".././TConeMomFlow.html#TConeMomFlow:_ninter">_ninter</a>-1;
+        cerr &lt;&lt; "<a href=".././TConeMomFlow.html">TConeMomFlow</a>: too big cone number " &lt;&lt; l
+          &lt;&lt; endl;
+      }
+      
+<b>      // contribution of this track</b>
+      <a href=".././TConeMomFlow.html#TConeMomFlow:_flowarray">_flowarray</a>(l) += pmag;
+      
+<b>      // total momentum</b>
+      <a href=".././TConeMomFlow.html#TConeMomFlow:_momsum">_momsum</a> += pmag;
+      
+    }
+
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TConeMomFlow:Reset"> </a><a href=".././TConeMomFlow.html#TConeMomFlow:Reset">TConeMomFlow::Reset</a>() 
+{
+  for ( <a href="../ListOfTypes.html#int">int</a> i=0; i&lt;<a href=".././TConeMomFlow.html#TConeMomFlow:_ninter">_ninter</a>; i++) 
+    { 
+      <a href=".././TConeMomFlow.html#TConeMomFlow:_flowarray">_flowarray</a>(i) = 0.;
+      <a href=".././TConeMomFlow.html#TConeMomFlow:_momsum">_momsum</a> = 0.;
+    }
+}
+
+<a href="../ListOfTypes.html#double">double</a>
+<a name="TConeMomFlow:NormFlow"> </a><a href=".././TConeMomFlow.html#TConeMomFlow:NormFlow">TConeMomFlow::NormFlow</a>( <a href="../ListOfTypes.html#int">int</a> order ) const
+{
+  if( <a href=".././TConeMomFlow.html#TConeMomFlow:_momsum">_momsum</a>&gt;0. ) {
+    if( order &lt; <a href=".././TConeMomFlow.html#TConeMomFlow:_ninter">_ninter</a> ){ 
+      return ( <a href="#TConeMomFlow:Flow">Flow</a>(order)/<a href=".././TConeMomFlow.html#TConeMomFlow:_momsum">_momsum</a> );
+    }
+  }
+  return 0.;
+}
+
+<a name="TConeMomFlow:~TConeMomFlow"> </a><a href=".././TConeMomFlow.html">TConeMomFlow</a>::~<a href=".././TConeMomFlow.html">TConeMomFlow</a>() {}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

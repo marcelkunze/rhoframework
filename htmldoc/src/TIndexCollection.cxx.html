@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:02 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TIndexCollection - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TIndexCollection.html">TIndexCollection</a>		                                        //</b>
+<b>//                                                                      //</b>
+<b>// Event collection class						//</b>
+<b>//									//</b>
+<b>// Author List:								//</b>
+<b>// Sascha Berger, Bochum University, Feb. 99				//</b>
+<b>// Marcel Kunze,  RUB, Nov. 99						//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "RhoManager/TIndexCollection.h"
+
+ClassImp(TIndexCollection)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TIndexCollection:TIndexCollection"> </a>TIndexCollection::TIndexCollection(const char* c) {
+    MakeNew(c);
+}
+
+<a name="TIndexCollection:TIndexCollection"> </a>TIndexCollection::TIndexCollection() {
+  fCurrentIndex=-1;
+  fFilename = TString("collection.root");
+  fRootfile=0;
+  fTree=0;
+  fCurrentIndex=0;
+  fMajorID=0;
+  fMinorID=0;
+}
+
+
+Bool_t
+<a name="TIndexCollection:InitRead"> </a>TIndexCollection::InitRead()
+{
+  fRootfile = new TFile (fFilename);
+  if (!fRootfile-&gt;IsOpen()) {
+    cout &lt;&lt; " *** ERROR in TIndexcollection ! Could not open File ";
+    cout &lt;&lt; " ' " &lt;&lt; fFilename.Data() &lt;&lt; " ' " &lt;&lt; endl;
+    return kFALSE;
+  }
+  fTree = (TTree*) fRootfile-&gt;Get("Woodstock");
+  if (fTree==NULL) {
+    cout &lt;&lt; " *** ERROR in TIndexcollection ! Could not find Tree 'Woodstock' ";
+    cout &lt;&lt; "in File  ' " &lt;&lt; fFilename.Data() &lt;&lt; " ' " &lt;&lt; endl;
+    return kFALSE;
+  }
+  fTree-&gt;SetBranchAddress("fEventNumber",&amp;fCurrentIndex);
+  fTree-&gt;SetBranchAddress("fMajorID",&amp;fMajorID);
+  fTree-&gt;SetBranchAddress("fMinorID",&amp;fMinorID);
+  return kTRUE;
+}
+
+Int_t 
+<a name="TIndexCollection:NextIndex"> </a>TIndexCollection::NextIndex(Bool_t &amp;changeFile)
+{
+  fEventNumber++;
+  Int_t nbytes = fTree-&gt;GetEvent(fEventNumber);
+  if (nbytes==0) {
+    changeFile=kTRUE;
+  }
+  return fCurrentIndex;
+}
+
+void
+<a name="TIndexCollection:Rewind"> </a>TIndexCollection::Rewind()
+{
+  fEventNumber=0;
+}
+
+const char*
+<a name="TIndexCollection:GetFileName"> </a>TIndexCollection::GetFileName() const 
+{
+  return fFilename;
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+<a name="TIndexCollection:~TIndexCollection"> </a><a href=".././TIndexCollection.html">TIndexCollection</a>::~<a href=".././TIndexCollection.html">TIndexCollection</a>() {
+
+}
+
+<b>//----------------------</b>
+<b>//-- public Functions --</b>
+<b>//----------------------</b>
+
+<a name="TIndexCollection:Open"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TIndexCollection.html#TIndexCollection:Open">TIndexCollection::Open</a>() {
+}
+
+<a name="TIndexCollection:MakeNew"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TIndexCollection.html#TIndexCollection:MakeNew">TIndexCollection::MakeNew</a>(const <a href="../ListOfTypes.html#char">char</a>* s) {
+    <a href=".././TIndexCollection.html#TIndexCollection:fRootfile">fRootfile</a> = new TFile(s,"recreate");
+    <a href=".././TIndexCollection.html#TIndexCollection:fFilename">fFilename</a> = s;
+    <a href=".././TIndexCollection.html#TIndexCollection:fTree">fTree</a> = new TTree("Woodstock","A Collection Tree");
+    <a href=".././TIndexCollection.html#TIndexCollection:fTree">fTree</a>-&gt;Branch("<a href=".././TIndexCollection.html#TIndexCollection:fEventNumber">fEventNumber</a>",&amp;<a href=".././TIndexCollection.html#TIndexCollection:fEventNumber">fEventNumber</a>,"<a href=".././TIndexCollection.html#TIndexCollection:fEventNumber">fEventNumber</a>/i");
+    <a href=".././TIndexCollection.html#TIndexCollection:fTree">fTree</a>-&gt;Branch("<a href=".././TIndexCollection.html#TIndexCollection:fMajorID">fMajorID</a>",&amp;<a href=".././TIndexCollection.html#TIndexCollection:fMajorID">fMajorID</a>,"<a href=".././TIndexCollection.html#TIndexCollection:fMajorID">fMajorID</a>/i");
+    <a href=".././TIndexCollection.html#TIndexCollection:fTree">fTree</a>-&gt;Branch("<a href=".././TIndexCollection.html#TIndexCollection:fMinorID">fMinorID</a>",&amp;<a href=".././TIndexCollection.html#TIndexCollection:fMinorID">fMinorID</a>,"<a href=".././TIndexCollection.html#TIndexCollection:fMinorID">fMinorID</a>/i");
+}
+
+<a name="TIndexCollection:Fill"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TIndexCollection.html#TIndexCollection:Fill">TIndexCollection::Fill</a>(const <a href="../ListOfTypes.html#char">char</a> *file, <a href="../ListOfTypes.html#UInt_t">UInt_t</a> l, <a href="../ListOfTypes.html#UInt_t">UInt_t</a> major, <a href="../ListOfTypes.html#UInt_t">UInt_t</a> minor) {
+    <a href=".././TIndexCollection.html#TIndexCollection:fEventNumber">fEventNumber</a> = l;
+    <a href=".././TIndexCollection.html#TIndexCollection:fMajorID">fMajorID</a>  = major;
+    <a href=".././TIndexCollection.html#TIndexCollection:fMinorID">fMinorID</a>  = minor;
+    <a href=".././TIndexCollection.html#TIndexCollection:fTree">fTree</a>-&gt;Fill();
+}
+
+
+<a name="TIndexCollection:Finish"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TIndexCollection.html#TIndexCollection:Finish">TIndexCollection::Finish</a>() {
+    <a href=".././TIndexCollection.html#TIndexCollection:fRootfile">fRootfile</a>-&gt;cd();
+    <a href=".././TIndexCollection.html#TIndexCollection:fTree">fTree</a>-&gt;Write("Woodstock");
+    this-&gt;Write("Collection");
+    <a href=".././TIndexCollection.html#TIndexCollection:fRootfile">fRootfile</a>-&gt;Close();
+    delete <a href=".././TIndexCollection.html#TIndexCollection:fRootfile">fRootfile</a>;
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

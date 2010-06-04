@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:31 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TTotalMomentum</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TTotalMomentum</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TTotalMomentum:description">class description</a> - <a href="src/TTotalMomentum.cxx.html">source file</a> - <a href="TTotalMomentum_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TTotalMomentum" href="TTotalMomentum.h">TTotalMomentum</a> : public TObject</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->       <a href="./TTotalMomentum.html">TTotalMomentum</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:TTotalMomentum">TTotalMomentum</a><!--PLAIN-->(TCandList&amp;, const TEventInfo&amp;)
+<!--TAB6-->       <a href="./TTotalMomentum.html">TTotalMomentum</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:TTotalMomentum">TTotalMomentum</a><!--PLAIN-->(const <a href="./TTotalMomentum.html">TTotalMomentum</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:~TTotalMomentum">~TTotalMomentum</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TTotalMomentum:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TTotalMomentum:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#TTotalMomentum:Missing3Momentum">Missing3Momentum</a><!--PLAIN-->() const
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#TTotalMomentum:Missing3MomentumCms">Missing3MomentumCms</a><!--PLAIN-->() const
+<!--TAB6-->       TLorentzVector <!--TAB--><!--BOLD--><a href="#TTotalMomentum:Missing4Momentum">Missing4Momentum</a><!--PLAIN-->() const
+<!--TAB6-->       TLorentzVector <!--TAB--><!--BOLD--><a href="#TTotalMomentum:Missing4MomentumCms">Missing4MomentumCms</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:MissingEnergy">MissingEnergy</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:MissingEnergyCms">MissingEnergyCms</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:MissingMass">MissingMass</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:MissingMomentum">MissingMomentum</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:MissingMomentumCms">MissingMomentumCms</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#TTotalMomentum:Total3Momentum">Total3Momentum</a><!--PLAIN-->() const
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#TTotalMomentum:Total3MomentumCms">Total3MomentumCms</a><!--PLAIN-->() const
+<!--TAB6-->       TLorentzVector <!--TAB--><!--BOLD--><a href="#TTotalMomentum:Total4Momentum">Total4Momentum</a><!--PLAIN-->() const
+<!--TAB6-->       TLorentzVector <!--TAB--><!--BOLD--><a href="#TTotalMomentum:Total4MomentumCms">Total4MomentumCms</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:TotalEnergy">TotalEnergy</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:TotalEnergyCms">TotalEnergyCms</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:TotalMass">TotalMass</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:TotalMomentum">TotalMomentum</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TTotalMomentum:TotalMomentumCms">TotalMomentumCms</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="TTotalMomentum:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      TLorentzVector <!--TAB--><!--BOLD--><a name="TTotalMomentum:_total4Momentum">_total4Momentum</a><!--PLAIN-->       <!--TAB--><i><a name="Title:_total4Momentum">!</a></i>
+<!--TAB6-->      TLorentzVector <!--TAB--><!--BOLD--><a name="TTotalMomentum:_total4MomentumCms">_total4MomentumCms</a><!--PLAIN-->    <!--TAB--><i><a name="Title:_total4MomentumCms">!</a></i>
+<!--TAB6-->      TLorentzVector <!--TAB--><!--BOLD--><a name="TTotalMomentum:_missing4Momentum">_missing4Momentum</a><!--PLAIN-->     <!--TAB--><i><a name="Title:_missing4Momentum">!</a></i>
+<!--TAB6-->      TLorentzVector <!--TAB--><!--BOLD--><a name="TTotalMomentum:_missing4MomentumCms">_missing4MomentumCms</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_missing4MomentumCms">!</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TTotalMomentum:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--> <a name="TTotalMomentum:TTotalMomentum" href="src/TTotalMomentum.cxx.html#TTotalMomentum:TTotalMomentum">TTotalMomentum</a>(TCandList&amp; list, 
+const TEventInfo&amp; evtinfo) <br>
+<hr>
+<!--FUNCTION--> <a name="TTotalMomentum:~TTotalMomentum" href="src/TTotalMomentum.cxx.html#TTotalMomentum:~TTotalMomentum">~TTotalMomentum</a>() <br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#double">double</a> <a name="TTotalMomentum:TotalEnergy" href="TTotalMomentum.h">TotalEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#double">double</a> <a name="TTotalMomentum:TotalMomentum" href="TTotalMomentum.h">TotalMomentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              TVector3 <a name="TTotalMomentum:Total3Momentum" href="TTotalMomentum.h">Total3Momentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        TLorentzVector <a name="TTotalMomentum:Total4Momentum" href="TTotalMomentum.h">Total4Momentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#double">double</a> <a name="TTotalMomentum:TotalEnergyCms" href="TTotalMomentum.h">TotalEnergyCms</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#double">double</a> <a name="TTotalMomentum:TotalMomentumCms" href="TTotalMomentum.h">TotalMomentumCms</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              TVector3 <a name="TTotalMomentum:Total3MomentumCms" href="TTotalMomentum.h">Total3MomentumCms</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        TLorentzVector <a name="TTotalMomentum:Total4MomentumCms" href="TTotalMomentum.h">Total4MomentumCms</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#double">double</a> <a name="TTotalMomentum:TotalMass" href="TTotalMomentum.h">TotalMass</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#double">double</a> <a name="TTotalMomentum:MissingEnergy" href="TTotalMomentum.h">MissingEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#double">double</a> <a name="TTotalMomentum:MissingMomentum" href="TTotalMomentum.h">MissingMomentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              TVector3 <a name="TTotalMomentum:Missing3Momentum" href="TTotalMomentum.h">Missing3Momentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        TLorentzVector <a name="TTotalMomentum:Missing4Momentum" href="TTotalMomentum.h">Missing4Momentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#double">double</a> <a name="TTotalMomentum:MissingEnergyCms" href="TTotalMomentum.h">MissingEnergyCms</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#double">double</a> <a name="TTotalMomentum:MissingMomentumCms" href="TTotalMomentum.h">MissingMomentumCms</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              TVector3 <a name="TTotalMomentum:Missing3MomentumCms" href="TTotalMomentum.h">Missing3MomentumCms</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        TLorentzVector <a name="TTotalMomentum:Missing4MomentumCms" href="TTotalMomentum.h">Missing4MomentumCms</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#double">double</a> <a name="TTotalMomentum:MissingMass" href="TTotalMomentum.h">MissingMass</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="TTotalMomentum:Class" href="TTotalMomentum.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="TTotalMomentum:IsA" href="TTotalMomentum.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="TTotalMomentum:ShowMembers" href="TTotalMomentum.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="TTotalMomentum:Streamer" href="TTotalMomentum.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="TTotalMomentum:StreamerNVirtual" href="TTotalMomentum.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TTotalMomentum.html">TTotalMomentum</a> <a name="TTotalMomentum:TTotalMomentum" href="TTotalMomentum.h">TTotalMomentum</a>(const <a href="./TTotalMomentum.html">TTotalMomentum</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:31 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

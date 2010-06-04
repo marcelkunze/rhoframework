@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:44 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TConsistency</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TConsistency</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TConsistency:description">class description</a> - <a href="src/TConsistency.cxx.html">source file</a> - <a href="TConsistency_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TConsistency" href="TConsistency.h">TConsistency</a> : public TNamed</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                         <a href="./TConsistency.html">TConsistency</a> <!--TAB--><!--BOLD--><a href="#TConsistency:TConsistency">TConsistency</a><!--PLAIN-->()
+<!--TAB6-->                         <a href="./TConsistency.html">TConsistency</a> <!--TAB--><!--BOLD--><a href="#TConsistency:TConsistency">TConsistency</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> consistency, <a href="ListOfTypes.html#Double_t">Double_t</a> likelihood = 0.)
+<!--TAB6-->                         <a href="./TConsistency.html">TConsistency</a> <!--TAB--><!--BOLD--><a href="#TConsistency:TConsistency">TConsistency</a><!--PLAIN-->(const <a href="./TConsistency.html">TConsistency</a>&amp; rhs)
+<!--TAB6-->                         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TConsistency:~TConsistency">~TConsistency</a><!--PLAIN-->()
+<!--TAB6-->           static const <a href="./TConsistency.html">TConsistency</a>&amp; <!--TAB--><!--BOLD--><a href="#TConsistency:BadMeasurement">BadMeasurement</a><!--PLAIN-->() const
+<!--TAB6-->                       static TClass* <!--TAB--><!--BOLD--><a href="#TConsistency:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TConsistency:Consistency">Consistency</a><!--PLAIN-->() const
+<!--TAB6-->       virtual const <a href="./TConsistencySet.html">TConsistencySet</a>* <!--TAB--><!--BOLD--><a href="#TConsistency:Genealogy">Genealogy</a><!--PLAIN-->() const
+<!--TAB6-->                      virtual TClass* <!--TAB--><!--BOLD--><a href="#TConsistency:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TConsistency:Likelihood">Likelihood</a><!--PLAIN-->() const
+<!--TAB6-->                               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TConsistency:operator&lt;">operator&lt;</a><!--PLAIN-->(const <a href="./TConsistency.html">TConsistency</a>&amp; rhs) const
+<!--TAB6-->                        <a href="./TConsistency.html">TConsistency</a>&amp; <!--TAB--><!--BOLD--><a href="#TConsistency:operator=">operator=</a><!--PLAIN-->(const <a href="./TConsistency.html">TConsistency</a>&amp; rhs)
+<!--TAB6-->                               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TConsistency:operator==">operator==</a><!--PLAIN-->(const <a href="./TConsistency.html">TConsistency</a>&amp; rhs) const
+<!--TAB6-->                               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TConsistency:operator&gt;">operator&gt;</a><!--PLAIN-->(const <a href="./TConsistency.html">TConsistency</a>&amp; rhs) const
+<!--TAB6-->                         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TConsistency:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->                                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TConsistency:SetSign">SetSign</a><!--PLAIN-->(<a href="./TConsistency.html#TConsistency:EConsistentSign">TConsistency::EConsistentSign</a> s)
+<!--TAB6-->                                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TConsistency:SetStatus">SetStatus</a><!--PLAIN-->(<a href="./TConsistency.html#TConsistency:EConsistentStatus">TConsistency::EConsistentStatus</a> s)
+<!--TAB6-->                         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TConsistency:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->        <a href="./TConsistency.html#TConsistency:EConsistentSign">TConsistency::EConsistentSign</a> <!--TAB--><!--BOLD--><a href="#TConsistency:Sign">Sign</a><!--PLAIN-->() const
+<!--TAB6-->                             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TConsistency:SignificanceLevel">SignificanceLevel</a><!--PLAIN-->() const
+<!--TAB6-->      <a href="./TConsistency.html#TConsistency:EConsistentStatus">TConsistency::EConsistentStatus</a> <!--TAB--><!--BOLD--><a href="#TConsistency:Status">Status</a><!--PLAIN-->() const
+<!--TAB6-->                         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TConsistency:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TConsistency:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TConsistency:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="./TConsistency.html#TConsistency:EConsistentStatus">TConsistency::EConsistentStatus</a> <!--TAB--><!--BOLD--><a name="TConsistency:fStat">fStat</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fStat"></a></i>
+<!--TAB6-->        <a href="./TConsistency.html#TConsistency:EConsistentSign">TConsistency::EConsistentSign</a> <!--TAB--><!--BOLD--><a name="TConsistency:fSign">fSign</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fSign"></a></i>
+<!--TAB6-->                             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TConsistency:fValue">fValue</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fValue">value of the consistency</a></i>
+<!--TAB6-->                             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TConsistency:fLikelihood">fLikelihood</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fLikelihood">value of the likelihood </a></i>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      static const <a href="./TConsistency.html#TConsistency:EConsistentStatus">TConsistency::EConsistentStatus</a> <!--TAB--><!--BOLD--><a name="TConsistency:OK">OK</a><!--PLAIN-->          <!--TAB--><i><a name="Title:OK"></a></i>
+<!--TAB6-->      static const <a href="./TConsistency.html#TConsistency:EConsistentStatus">TConsistency::EConsistentStatus</a> <!--TAB--><!--BOLD--><a name="TConsistency:noMeasure">noMeasure</a><!--PLAIN-->   <!--TAB--><i><a name="Title:noMeasure"></a></i>
+<!--TAB6-->      static const <a href="./TConsistency.html#TConsistency:EConsistentStatus">TConsistency::EConsistentStatus</a> <!--TAB--><!--BOLD--><a name="TConsistency:underFlow">underFlow</a><!--PLAIN-->   <!--TAB--><i><a name="Title:underFlow"></a></i>
+<!--TAB6-->      static const <a href="./TConsistency.html#TConsistency:EConsistentStatus">TConsistency::EConsistentStatus</a> <!--TAB--><!--BOLD--><a name="TConsistency:unPhysical">unPhysical</a><!--PLAIN-->  <!--TAB--><i><a name="Title:unPhysical"></a></i>
+<!--TAB6-->        static const <a href="./TConsistency.html#TConsistency:EConsistentSign">TConsistency::EConsistentSign</a> <!--TAB--><!--BOLD--><a name="TConsistency:left">left</a><!--PLAIN-->        <!--TAB--><i><a name="Title:left"></a></i>
+<!--TAB6-->        static const <a href="./TConsistency.html#TConsistency:EConsistentSign">TConsistency::EConsistentSign</a> <!--TAB--><!--BOLD--><a name="TConsistency:unknown">unknown</a><!--PLAIN-->     <!--TAB--><i><a name="Title:unknown"></a></i>
+<!--TAB6-->        static const <a href="./TConsistency.html#TConsistency:EConsistentSign">TConsistency::EConsistentSign</a> <!--TAB--><!--BOLD--><a name="TConsistency:right">right</a><!--PLAIN-->       <!--TAB--><i><a name="Title:right"></a></i>
+</pre>
+<!--END-->
+<br><hr>
+<!--SEE ALSO--><h2>See also</h2><dl><dd>
+<a href="./TAsymGaussConsistency.html">TAsymGaussConsistency</a>, <a href="./TChisqConsistency.html">TChisqConsistency</a>, <a href="./TGaussConsistency.html">TGaussConsistency</a>, <a href="./TPoissonConsistency.html">TPoissonConsistency</a></dl>
+<hr>
+<!--DESCRIPTION--><h2><a name="TConsistency:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TConsistency.html">TConsistency</a>				    				
+                                                                      
+ Consistency base class						
+                                                                      
+ Author: Marcel Kunze, RUB, Nov. 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TConsistency:TConsistency" href="src/TConsistency.cxx.html#TConsistency:TConsistency">TConsistency</a>() 
+: <a href="./TConsistency.html#TConsistency:fStat">fStat</a>(<a href="./TConsistency.html#TConsistency:noMeasure">noMeasure</a>), <a href="./TConsistency.html#TConsistency:fValue">fValue</a>(0), <a href="./TConsistency.html#TConsistency:fLikelihood">fLikelihood</a>(1.), <a href="./TConsistency.html#TConsistency:fSign">fSign</a>(<a href="./TConsistency.html#TConsistency:unknown">unknown</a>)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TConsistency:TConsistency" href="src/TConsistency.cxx.html#TConsistency:TConsistency">TConsistency</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> v, <a href="ListOfTypes.html#Double_t">Double_t</a> l)
+: <a href="./TConsistency.html#TConsistency:fStat">fStat</a>(<a href="./TConsistency.html#TConsistency:OK">OK</a>), <a href="./TConsistency.html#TConsistency:fValue">fValue</a>(v), <a href="./TConsistency.html#TConsistency:fLikelihood">fLikelihood</a>(l), <a href="./TConsistency.html#TConsistency:fSign">fSign</a>(<a href="./TConsistency.html#TConsistency:unknown">unknown</a>)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TConsistency:TConsistency" href="src/TConsistency.cxx.html#TConsistency:TConsistency">TConsistency</a>(const <a href="./TConsistency.html">TConsistency</a>&amp; rhs) 
+: <a href="./TConsistency.html#TConsistency:fStat">fStat</a>(rhs.<a href="./TConsistency.html#TConsistency:fStat">fStat</a>), <a href="./TConsistency.html#TConsistency:fValue">fValue</a>(rhs.<a href="./TConsistency.html#TConsistency:fValue">fValue</a>)
+, <a href="./TConsistency.html#TConsistency:fLikelihood">fLikelihood</a>(rhs.<a href="./TConsistency.html#TConsistency:fLikelihood">fLikelihood</a>), <a href="./TConsistency.html#TConsistency:fSign">fSign</a>(rhs.<a href="./TConsistency.html#TConsistency:fSign">fSign</a>)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TConsistency:Genealogy" href="src/TConsistency.cxx.html#TConsistency:Genealogy">Genealogy</a>() const
+<br>
+<hr>
+<!--FUNCTION--> <a name="TConsistency:PrintOn" href="src/TConsistency.cxx.html#TConsistency:PrintOn">PrintOn</a>(std::ostream&amp; os) const
+<br>
+<hr>
+<!--FUNCTION--> <a name="TConsistency:BadMeasurement" href="src/TConsistency.cxx.html#TConsistency:BadMeasurement">BadMeasurement</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TConsistency:Consistency" href="src/TConsistency.cxx.html#TConsistency:Consistency">Consistency</a>() const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TConsistency:SignificanceLevel" href="src/TConsistency.cxx.html#TConsistency:SignificanceLevel">SignificanceLevel</a>() const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TConsistency:Likelihood" href="src/TConsistency.cxx.html#TConsistency:Likelihood">Likelihood</a>() const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TConsistency:SetStatus" href="src/TConsistency.cxx.html#TConsistency:SetStatus">SetStatus</a>(EConsistentStatus s ) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TConsistency:SetSign" href="src/TConsistency.cxx.html#TConsistency:SetSign">SetSign</a>(EConsistentSign s ) 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                          <a href="./TConsistency.html">TConsistency</a>&amp; <a name="TConsistency:operator=" href="TConsistency.h">operator=</a>(const <a href="./TConsistency.html">TConsistency</a>&amp; rhs)
+<!--INLINE FUNCTION--><!--TAB6-->                                 <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TConsistency:operator==" href="TConsistency.h">operator==</a>(const <a href="./TConsistency.html">TConsistency</a>&amp; rhs) const
+<!--INLINE FUNCTION--><!--TAB6-->                                 <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TConsistency:operator<" href="TConsistency.h">operator<</a>(const <a href="./TConsistency.html">TConsistency</a>&amp; rhs) const
+<!--INLINE FUNCTION--><!--TAB6-->                                 <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TConsistency:operator>" href="TConsistency.h">operator></a>(const <a href="./TConsistency.html">TConsistency</a>&amp; rhs) const
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TConsistency.html#TConsistency:EConsistentStatus">TConsistency::EConsistentStatus</a> <a name="TConsistency:Status" href="TConsistency.h">Status</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->          <a href="./TConsistency.html#TConsistency:EConsistentSign">TConsistency::EConsistentSign</a> <a name="TConsistency:Sign" href="TConsistency.h">Sign</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                                TClass* <a name="TConsistency:Class" href="TConsistency.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                                TClass* <a name="TConsistency:IsA" href="TConsistency.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                                   <a href="ListOfTypes.html#void">void</a> <a name="TConsistency:ShowMembers" href="TConsistency.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                                   <a href="ListOfTypes.html#void">void</a> <a name="TConsistency:Streamer" href="TConsistency.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                                   <a href="ListOfTypes.html#void">void</a> <a name="TConsistency:StreamerNVirtual" href="TConsistency.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                                   <a href="ListOfTypes.html#void">void</a> <a name="TConsistency:~TConsistency" href="TConsistency.h">~TConsistency</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?Nov.">Nov.</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:02:44 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

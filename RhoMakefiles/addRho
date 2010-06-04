@@ -1,0 +1,36 @@
+#! /bin/sh
+# Add the Rho packages (mk)
+
+   RHOVER=HEAD
+   if [ "$RHOCVS" = "" ]; then
+        RHOCVS=:ext:anoncvs@gridportal.fzk.de:/cvs/hep/rho
+        echo "Setting RHOCVS to $RHOCVS"
+   fi
+   export RHOCVS
+
+   ROPT=-Shared
+   export ROPT
+   ROOTVER=3.03-09
+   export ROOTVER
+
+   CVSROOT=$RHOCVS
+   export CVSROOT
+
+#  Add the Rho packages
+   cvs -z3 co -r $RHOVER RhoNNO
+#  cvs -z3 co -r $RHOVER RhoGA
+   cvs -z3 co -r $RHOVER RhoMath
+   cvs -z3 co -r $RHOVER RhoBase
+   cvs -z3 co -r $RHOVER RhoConditions
+   cvs -z3 co -r $RHOVER RhoTools
+   cvs -z3 co -r $RHOVER RhoExamples
+   cvs -z3 co -r $RHOVER KangaSchema
+   cvs -z3 co -r $RHOVER PAFSchema
+   cvs -z3 co -r $RHOVER RhoManager
+   cvs -z3 co -r $RHOVER RhoHistogram
+   cvs -z3 co -r $RHOVER RhoSelector
+   cvs -z3 co -r $RHOVER RhoParameters
+   cvs -z3 co -r $RHOVER RhoMacros
+   cvs -z3 co -r $RHOVER PAFDisplay
+
+

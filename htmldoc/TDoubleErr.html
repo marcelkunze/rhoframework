@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:49 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TDoubleErr</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TDoubleErr</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TDoubleErr:description">class description</a> - <a href="src/TDoubleErr.cxx.html">source file</a> - <a href="TDoubleErr_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TDoubleErr" href="TDoubleErr.h">TDoubleErr</a> : public TObject</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->           <a href="./TDoubleErr.html">TDoubleErr</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:TDoubleErr">TDoubleErr</a><!--PLAIN-->()
+<!--TAB6-->           <a href="./TDoubleErr.html">TDoubleErr</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:TDoubleErr">TDoubleErr</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> val)
+<!--TAB6-->           <a href="./TDoubleErr.html">TDoubleErr</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:TDoubleErr">TDoubleErr</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> val, <a href="ListOfTypes.html#Double_t">Double_t</a> cov)
+<!--TAB6-->           <a href="./TDoubleErr.html">TDoubleErr</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:TDoubleErr">TDoubleErr</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--TAB6-->           <a href="./TDoubleErr.html">TDoubleErr</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator-">operator-</a><!--PLAIN-->()
+<!--TAB6-->           <a href="./TDoubleErr.html">TDoubleErr</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator-">operator-</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--TAB6-->           <a href="./TDoubleErr.html">TDoubleErr</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator+">operator+</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--TAB6-->           <a href="./TDoubleErr.html">TDoubleErr</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator*">operator*</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--TAB6-->           <a href="./TDoubleErr.html">TDoubleErr</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator/">operator/</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:~TDoubleErr">~TDoubleErr</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TDoubleErr:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:Covariance">Covariance</a><!--PLAIN-->() const
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:DetermineChisq">DetermineChisq</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> ref) const
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TDoubleErr:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->          <a href="./TDoubleErr.html">TDoubleErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator*=">operator*=</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--TAB6-->          <a href="./TDoubleErr.html">TDoubleErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator+=">operator+=</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--TAB6-->          <a href="./TDoubleErr.html">TDoubleErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator-=">operator-=</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--TAB6-->          <a href="./TDoubleErr.html">TDoubleErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator/=">operator/=</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator&lt;">operator&lt;</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp; other) const
+<!--TAB6-->          <a href="./TDoubleErr.html">TDoubleErr</a>&amp; <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator=">operator=</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:operator==">operator==</a><!--PLAIN-->(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp; other) const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:SetCovariance">SetCovariance</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> cov)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:SetValue">SetValue</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> val)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TDoubleErr:Value">Value</a><!--PLAIN-->() const
+</pre>
+
+<h3><!--TAB2-->  <a name="TDoubleErr:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TDoubleErr:fValue">fValue</a><!--PLAIN-->       <!--TAB--><i><a name="Title:fValue"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TDoubleErr:fCovariance">fCovariance</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fCovariance"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TDoubleErr:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TDoubleErr.html">TDoubleErr</a>		    						
+                                                                      
+ Double w/ error							
+                                                                      
+ Author: Marcel Kunze, RUB, Nov. 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="TDoubleErr:TDoubleErr" href="src/TDoubleErr.cxx.html#TDoubleErr:TDoubleErr">TDoubleErr</a>(const <a href="./TDoubleErr.html">TDoubleErr</a> &amp; original) <br>
+<hr>
+<!--FUNCTION--> <a name="TDoubleErr:DetermineChisq" href="src/TDoubleErr.cxx.html#TDoubleErr:DetermineChisq">DetermineChisq</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> ref) const <br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TDoubleErr.html">TDoubleErr</a> <a name="TDoubleErr:TDoubleErr" href="TDoubleErr.h">TDoubleErr</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> val)
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TDoubleErr.html">TDoubleErr</a> <a name="TDoubleErr:TDoubleErr" href="TDoubleErr.h">TDoubleErr</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> val, <a href="ListOfTypes.html#Double_t">Double_t</a> cov)
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TDoubleErr.html">TDoubleErr</a> <a name="TDoubleErr:TDoubleErr" href="TDoubleErr.h">TDoubleErr</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TDoubleErr.html">TDoubleErr</a>&amp; <a name="TDoubleErr:operator=" href="TDoubleErr.h">operator=</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TDoubleErr:Value" href="TDoubleErr.h">Value</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->           <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TDoubleErr:Covariance" href="TDoubleErr.h">Covariance</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TDoubleErr.html">TDoubleErr</a> <a name="TDoubleErr:operator-" href="TDoubleErr.h">operator-</a>()
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TDoubleErr.html">TDoubleErr</a> <a name="TDoubleErr:operator-" href="TDoubleErr.h">operator-</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TDoubleErr.html">TDoubleErr</a> <a name="TDoubleErr:operator+" href="TDoubleErr.h">operator+</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TDoubleErr.html">TDoubleErr</a> <a name="TDoubleErr:operator*" href="TDoubleErr.h">operator*</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./TDoubleErr.html">TDoubleErr</a> <a name="TDoubleErr:operator/" href="TDoubleErr.h">operator/</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDoubleErr:SetValue" href="TDoubleErr.h">SetValue</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> val)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDoubleErr:SetCovariance" href="TDoubleErr.h">SetCovariance</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> cov)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TDoubleErr.html">TDoubleErr</a>&amp; <a name="TDoubleErr:operator+=" href="TDoubleErr.h">operator+=</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TDoubleErr.html">TDoubleErr</a>&amp; <a name="TDoubleErr:operator-=" href="TDoubleErr.h">operator-=</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TDoubleErr.html">TDoubleErr</a>&amp; <a name="TDoubleErr:operator*=" href="TDoubleErr.h">operator*=</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TDoubleErr.html">TDoubleErr</a>&amp; <a name="TDoubleErr:operator/=" href="TDoubleErr.h">operator/=</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TDoubleErr:operator==" href="TDoubleErr.h">operator==</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp; other) const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="TDoubleErr:operator<" href="TDoubleErr.h">operator<</a>(const <a href="./TDoubleErr.html">TDoubleErr</a>&amp; other) const
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TDoubleErr:Class" href="TDoubleErr.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TDoubleErr:IsA" href="TDoubleErr.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDoubleErr:ShowMembers" href="TDoubleErr.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDoubleErr:Streamer" href="TDoubleErr.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDoubleErr:StreamerNVirtual" href="TDoubleErr.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TDoubleErr:~TDoubleErr" href="TDoubleErr.h">~TDoubleErr</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?Nov.">Nov.</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:02:49 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,311 @@
+# Makefile for WIN32
+PACKAGE = KangaSchema
+COMPILER = cl
+
+ObjSuf        = obj
+SrcSuf        = cxx
+ExeSuf        = .exe
+DllSuf        = dll
+OutPutOpt     = /out:
+
+# Win32 system with Microsoft Visual C/C++
+!include <win32.mak>
+CC            = $(COMPILER)
+CXX           = $(COMPILER)
+CXXDEBUG      = -Fd$*.pdb
+CXXFLAGS      = -DBABAR_COMP_INST -DANSISTREAM $(cvarsdll) -EHsc -nologo -GR -MDd \
+                -DWIN32 -I.. -I$(ROOTSYS)/include
+
+LD            = $(link)
+LDFLAGS       = $(conlflags)
+LDDEBUG       = -DEBUG -PDB:$*.pdb
+SOFLAGS       = -DLL $(LDDEBUG)
+
+ROOTLIBS      = $(ROOTSYS)\lib\libCint.lib \
+				$(ROOTSYS)\lib\libCore.lib \
+				$(ROOTSYS)\lib\libEG.lib \
+				$(ROOTSYS)\lib\libHist.lib \
+				$(ROOTSYS)\lib\libGraf.lib \
+				$(ROOTSYS)\lib\libGraf3D.lib \
+				$(ROOTSYS)\lib\libGPad.lib \
+				$(ROOTSYS)\lib\libMatrix.lib \
+				$(ROOTSYS)\lib\libPhysics.lib \
+				$(ROOTSYS)\lib\libTree.lib \
+				$(ROOTSYS)\lib\libTreePlayer.lib \
+				$(ROOTSYS)\lib\libWin32gdk.lib
+
+
+LIBS          = $(ROOTLIBS) $(guilibsdll) \
+				../lib/RhoMath.lib \
+				../lib/RhoBase.lib \
+				../lib/RhoTools.lib \
+				../lib/PAFSchema.lib
+
+LIBSALL       = $(ROOTLIBS)
+LIBRARY       = $(PACKAGE).lib
+
+#------------------------------------------------------------------------------
+
+HEADERS	=	RooEvtObj.h \
+			RooPersObj.h \
+			RooRef.h \
+			RooValArray.h \
+			RooClonesVectorI.h \
+			RooClonesVectorR.h \
+			RooClonesClassObj.h \
+			BtaMicroCandR.h \
+			BtaMicroCandR_001.h \
+			BtaMicroCandR_002.h \
+			BtaMicroCandR_003.h \
+			BtaMicroCandR_004.h \
+			BtaMicroCandR_005.h \
+			BtaCandListR.h \
+			BtaCandListR_001.h \
+			BtaCandPtrR.h \
+			EidInfoR.h \
+			StdHepR.h \
+			StdHepTrkR.h \
+			BtaCandAssocMapR.h \
+			BtaCandidateR.h \
+			BtaClonedCandR_000.h \
+			BtaClonedCompositeCandR_000.h \
+			BtaCompositeCandR_000.h \
+			BtaAbsVertexR.h \
+			VtxVertexR.h \
+			BtaFitParamsR.h \
+			BtaFitParamsR_002.h \
+			kanga.h \
+			TBtaMicroCandR.h \
+			TBtaFitParamsR.h \
+			TBtaFitParamsR_001.h \
+			TBtaTrkQualR.h \
+			TBtaCalQualR.h \
+			TBtaPidQualR.h \
+			TBtaIfrQualR.h \
+			TBtaPidInfoR.h \
+			ComPackBase.h \
+			ComPackFlatFloat.h \
+			ComPackFloat.h \
+			ComPackNonFlatFloat.h \
+			ComPackUFloat.h \
+			ComPackExpFloat.h \
+			BtaMicroCandidate.h \
+			KangaReader.h
+	         
+OBJECTS	=	$(PACKAGE)Cint.$(ObjSuf) \
+			RooEvtObj.$(ObjSuf) \
+			RooPersObj.$(ObjSuf) \
+			RooRef.$(ObjSuf)  \
+			RooValArray.$(ObjSuf) \
+			RooClonesVectorI.$(ObjSuf) \
+			RooClonesVectorR.$(ObjSuf) \
+			RooClonesClassObj.$(ObjSuf) \
+			BtaMicroCandR.$(ObjSuf) \
+			BtaMicroCandR_001.$(ObjSuf) \
+			BtaMicroCandR_002.$(ObjSuf) \
+			BtaMicroCandR_003.$(ObjSuf) \
+			BtaMicroCandR_004.$(ObjSuf) \
+			BtaMicroCandR_005.$(ObjSuf) \
+			BtaCandListR.$(ObjSuf) \
+			BtaCandListR_001.$(ObjSuf) \
+			BtaCandPtrR.$(ObjSuf) \
+			EidInfoR.$(ObjSuf)  \
+			StdHepR.$(ObjSuf) \
+			StdHepTrkR.$(ObjSuf) \
+			BtaCandAssocMapR.$(ObjSuf) \
+			BtaCandidateR.$(ObjSuf) \
+			BtaClonedCandR_000.$(ObjSuf) \
+			BtaClonedCompositeCandR_000.$(ObjSuf) \
+			BtaCompositeCandR_000.$(ObjSuf) \
+			BtaAbsVertexR.$(ObjSuf) \
+			VtxVertexR.$(ObjSuf) \
+			BtaFitParamsR.$(ObjSuf) \
+			BtaFitParamsR_002.$(ObjSuf) \
+			kanga.$(ObjSuf) \
+			TBtaMicroCandR.$(ObjSuf) \
+			TBtaFitParamsR.$(ObjSuf) \
+			TBtaFitParamsR_001.$(ObjSuf) \
+			TBtaTrkQualR.$(ObjSuf) \
+			TBtaCalQualR.$(ObjSuf) \
+			TBtaPidQualR.$(ObjSuf) \
+			TBtaIfrQualR.$(ObjSuf) \
+			TBtaPidInfoR.$(ObjSuf) \
+			ComPackBase.$(ObjSuf) \
+			ComPackFlatFloat.$(ObjSuf) \
+			ComPackFloat.$(ObjSuf) \
+			ComPackNonFlatFloat.$(ObjSuf) \
+			ComPackUFloat.$(ObjSuf) \
+			ComPackExpFloat.$(ObjSuf) \
+			BtaMicroCandidate.$(ObjSuf) \
+			KangaReader.$(ObjSuf)
+
+SHLIB	=	$(PACKAGE).$(DllSuf)
+ 
+PROGRAMS	= 
+
+all: $(SHLIB)
+
+lib: $(OBJECTS)
+	BINDEXPLIB  $(PACKAGE) $(OBJECTS) > $(PACKAGE).def
+	lib /nologo /MACHINE:IX86 $(OBJECTS) /def:$(PACKAGE).def $(OutPutOpt)$(LIBRARY)
+	copy $(LIBRARY) ..\lib
+
+$(SHLIB): $(OBJECTS)
+	BINDEXPLIB  $* $(OBJECTS) > $*.def
+	lib /nologo /MACHINE:IX86 $(OBJECTS) /def:$*.def      $(OutPutOpt)$(LIBRARY)
+	$(LD) $(SOFLAGS) $(OBJECTS) $*.exp $(LIBS) $(OutPutOpt)$(SHLIB)
+	mt.exe -manifest $(SHLIB).manifest -outputresource:$(SHLIB);2
+	copy $(LIBRARY) ..\lib
+	copy $(SHLIB) ..\lib
+	copy $(PACKAGE).pdb ..\lib
+ 
+ 
+clean:
+	@del $(OBJECTS) *.pdb $(PACKAGE)Cint.* $(PACKAGE).lib $(PACKAGE).dll $(PACKAGE).def $(PACKAGE).exp $(PACKAGE).pdb
+ 
+###
+
+$(PACKAGE)Cint.$(SrcSuf): $(HEADERS) $(PACKAGE)_LinkDef.h
+	@echo "Generating dictionary ..."
+	@$(ROOTSYS)\bin\rootcint -f $(PACKAGE)Cint.$(SrcSuf) -c -I.. $(HEADERS) $(PACKAGE)_LinkDef.h
+ 
+.$(SrcSuf).$(ObjSuf):
+	$(CXX) $(CXXFLAGS) -c $<
+ 
+# Dependencies
+
+$(PACKAGE)Cint.$(ObjSuf): $(PACKAGE)Cint.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) -c $(PACKAGE)Cint.$(SrcSuf)
+
+BtaCandidateR.$(ObjSuf): BtaCandidateR.$(SrcSuf) BtaCandidateR.h
+	$(CXX) $(CXXFLAGS) -c BtaCandidateR.$(SrcSuf)
+
+BtaCompositeCandR_000.$(ObjSuf): BtaCompositeCandR_000.$(SrcSuf) BtaCompositeCandR_000.h
+	$(CXX) $(CXXFLAGS) -c BtaCompositeCandR_000.$(SrcSuf)
+
+BtaClonedCompositeCandR_000.$(ObjSuf): BtaClonedCompositeCandR_000.$(SrcSuf) BtaClonedCompositeCandR_000.h
+	$(CXX) $(CXXFLAGS) -c BtaClonedCompositeCandR_000.$(SrcSuf)
+
+BtaClonedCandR_000.$(ObjSuf): BtaClonedCandR_000.$(SrcSuf) BtaClonedCandR_000.h
+	$(CXX) $(CXXFLAGS) -c BtaClonedCandR_000.$(SrcSuf)
+
+BtaAbsVertexR.$(ObjSuf): BtaAbsVertexR.$(SrcSuf) BtaAbsVertexR.h
+	$(CXX) $(CXXFLAGS) -c BtaAbsVertexR.$(SrcSuf)
+
+VtxVertexR.$(ObjSuf): VtxVertexR.$(SrcSuf) VtxVertexR.h
+	$(CXX) $(CXXFLAGS) -c VtxVertexR.$(SrcSuf)
+
+BtaFitParamsR.$(ObjSuf): BtaFitParamsR.$(SrcSuf) BtaFitParamsR.h
+	$(CXX) $(CXXFLAGS) -c BtaFitParamsR.$(SrcSuf)
+
+BtaFitParamsR_002.$(ObjSuf): BtaFitParamsR_002.$(SrcSuf) BtaFitParamsR_002.h
+	$(CXX) $(CXXFLAGS) -c BtaFitParamsR_002.$(SrcSuf)
+
+ComPackBase.$(ObjSuf): ComPackBase.$(SrcSuf) ComPackBase.h
+	$(CXX) $(CXXFLAGS) -c ComPackBase.$(SrcSuf)
+
+ComPackFlatFloat.$(ObjSuf): ComPackFlatFloat.$(SrcSuf) ComPackFlatFloat.h
+	$(CXX) $(CXXFLAGS) -c ComPackFlatFloat.$(SrcSuf)
+
+ComPackFloat.$(ObjSuf): ComPackFloat.$(SrcSuf) ComPackFloat.h
+	$(CXX) $(CXXFLAGS) -c ComPackFloat.$(SrcSuf)
+
+ComPackNonFlatFloat.$(ObjSuf): ComPackNonFlatFloat.$(SrcSuf) ComPackNonFlatFloat.h
+	$(CXX) $(CXXFLAGS) -c ComPackNonFlatFloat.$(SrcSuf)
+
+ComPackUFloat.$(ObjSuf): ComPackUFloat.$(SrcSuf) ComPackUFloat.h
+	$(CXX) $(CXXFLAGS) -c ComPackUFloat.$(SrcSuf)
+
+ComPackExpFloat.$(ObjSuf): ComPackExpFloat.$(SrcSuf) ComPackExpFloat.h
+	$(CXX) $(CXXFLAGS) -c ComPackExpFloat.$(SrcSuf)
+
+RooEvtObj.$(ObjSuf): RooEvtObj.$(SrcSuf) RooEvtObj.h
+	$(CXX) $(CXXFLAGS) -c RooEvtObj.$(SrcSuf)
+
+RooPersObj.$(ObjSuf): RooPersObj.$(SrcSuf) RooPersObj.h
+	$(CXX) $(CXXFLAGS) -c RooPersObj.$(SrcSuf)
+
+RooRef.$(ObjSuf): RooRef.$(SrcSuf) RooRef.h
+	$(CXX) $(CXXFLAGS) -c RooRef.$(SrcSuf)
+
+RooValArray.$(ObjSuf): RooValArray.$(SrcSuf) RooValArray.h
+	$(CXX) $(CXXFLAGS) -c RooValArray.$(SrcSuf)
+
+RooClonesVectorI.$(ObjSuf): RooClonesVectorI.$(SrcSuf) RooClonesVectorI.h
+	$(CXX) $(CXXFLAGS) -c RooClonesVectorI.$(SrcSuf)
+
+RooClonesVectorR.$(ObjSuf): RooClonesVectorR.$(SrcSuf) RooClonesVectorR.h
+	$(CXX) $(CXXFLAGS) -c RooClonesVectorR.$(SrcSuf)
+
+RooClonesClassObj.$(ObjSuf): RooClonesClassObj.$(SrcSuf) RooClonesClassObj.h
+	$(CXX) $(CXXFLAGS) -c RooClonesClassObj.$(SrcSuf)
+
+BtaMicroCandR.$(ObjSuf): BtaMicroCandR.$(SrcSuf) BtaMicroCandR.h
+	$(CXX) $(CXXFLAGS) -c BtaMicroCandR.$(SrcSuf)
+
+BtaMicroCandR_001.$(ObjSuf): BtaMicroCandR_001.$(SrcSuf) BtaMicroCandR_001.h
+	$(CXX) $(CXXFLAGS) -c BtaMicroCandR_001.$(SrcSuf)
+
+BtaMicroCandR_002.$(ObjSuf): BtaMicroCandR_002.$(SrcSuf) BtaMicroCandR_002.h
+	$(CXX) $(CXXFLAGS) -c BtaMicroCandR_002.$(SrcSuf)
+
+BtaMicroCandR_003.$(ObjSuf): BtaMicroCandR_003.$(SrcSuf) BtaMicroCandR_003.h
+	$(CXX) $(CXXFLAGS) -c BtaMicroCandR_003.$(SrcSuf)
+
+BtaMicroCandR_004.$(ObjSuf): BtaMicroCandR_004.$(SrcSuf) BtaMicroCandR_004.h
+	$(CXX) $(CXXFLAGS) -c BtaMicroCandR_004.$(SrcSuf)
+
+BtaCandListR.$(ObjSuf): BtaCandListR.$(SrcSuf) BtaCandListR.h
+	$(CXX) $(CXXFLAGS) -c BtaCandListR.$(SrcSuf)
+
+BtaCandListR_001.$(ObjSuf): BtaCandListR_001.$(SrcSuf) BtaCandListR_001.h
+	$(CXX) $(CXXFLAGS) -c BtaCandListR_001.$(SrcSuf)
+
+BtaCandPtrR.$(ObjSuf): BtaCandPtrR.$(SrcSuf) BtaCandPtrR.h
+	$(CXX) $(CXXFLAGS) -c BtaCandPtrR.$(SrcSuf)
+
+EidInfoR.$(ObjSuf): EidInfoR.$(SrcSuf) EidInfoR.h
+	$(CXX) $(CXXFLAGS) -c EidInfoR.$(SrcSuf)
+
+StdHepR.$(ObjSuf): StdHepR.$(SrcSuf) StdHepR.h
+	$(CXX) $(CXXFLAGS) -c StdHepR.$(SrcSuf)
+
+StdHepTrkR.$(ObjSuf): StdHepTrkR.$(SrcSuf) StdHepTrkR.h
+	$(CXX) $(CXXFLAGS) -c StdHepTrkR.$(SrcSuf)
+
+BtaCandAssocMapR.$(ObjSuf): BtaCandAssocMapR.$(SrcSuf) BtaCandAssocMapR.h
+	$(CXX) $(CXXFLAGS) -c BtaCandAssocMapR.$(SrcSuf)
+
+kanga.$(ObjSuf): kanga.$(SrcSuf) kanga.h
+	$(CXX) $(CXXFLAGS) -c kanga.$(SrcSuf)
+
+TBtaMicroCandR.$(ObjSuf): TBtaMicroCandR.$(SrcSuf) TBtaMicroCandR.h
+	$(CXX) $(CXXFLAGS) -c TBtaMicroCandR.$(SrcSuf)
+
+TBtaFitParamsR.$(ObjSuf): TBtaFitParamsR.$(SrcSuf) TBtaFitParamsR.h
+	$(CXX) $(CXXFLAGS) -c TBtaFitParamsR.$(SrcSuf)
+
+TBtaFitParamsR_001.$(ObjSuf): TBtaFitParamsR_001.$(SrcSuf) TBtaFitParamsR_001.h
+	$(CXX) $(CXXFLAGS) -c TBtaFitParamsR_001.$(SrcSuf)
+
+TBtaTrkQualR.$(ObjSuf): TBtaTrkQualR.$(SrcSuf) TBtaTrkQualR.h
+	$(CXX) $(CXXFLAGS) -c TBtaTrkQualR.$(SrcSuf)
+
+TBtaCalQualR.$(ObjSuf): TBtaCalQualR.$(SrcSuf) TBtaCalQualR.h
+	$(CXX) $(CXXFLAGS) -c TBtaCalQualR.$(SrcSuf)
+
+TBtaPidQualR.$(ObjSuf): TBtaPidQualR.$(SrcSuf) TBtaPidQualR.h
+	$(CXX) $(CXXFLAGS) -c TBtaPidQualR.$(SrcSuf)
+
+TBtaIfrQualR.$(ObjSuf): TBtaIfrQualR.$(SrcSuf) TBtaIfrQualR.h
+	$(CXX) $(CXXFLAGS) -c TBtaIfrQualR.$(SrcSuf)
+
+TBtaPidInfoR.$(ObjSuf): TBtaPidInfoR.$(SrcSuf) TBtaPidInfoR.h
+	$(CXX) $(CXXFLAGS) -c TBtaPidInfoR.$(SrcSuf)
+
+BtaMicroCandidate.$(ObjSuf): BtaMicroCandidate.$(SrcSuf) BtaMicroCandidate.h
+	$(CXX) $(CXXFLAGS) -c BtaMicroCandidate.$(SrcSuf)
+
+KangaReader.$(ObjSuf): KangaReader.$(SrcSuf) KangaReader.h
+	$(CXX) $(CXXFLAGS) -c KangaReader.$(SrcSuf)
+

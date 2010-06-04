@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:24 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TRhoTime - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TRhoTime.html">TRhoTime</a>		    						//</b>
+<b>//                                                                      //</b>
+<b>// Date and time class							//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, RUB, Feb. 99					//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//                                                                      //</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "RhoConditions/TRhoDate.h"
+#include "RhoConditions/TRhoTime.h"
+
+ClassImp(TRhoTime)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+static const unsigned long SECONDS_IN_DAY  = 86400L;
+static const unsigned long SECONDS_IN_HOUR = 3600L;
+static const unsigned      SECONDS_IN_MIN  = 60;
+
+/*
+* TRhoTime constants
+* use julian day numbers (instead of TRhoDates) so as not to depend 
+* on static constructor initialization:
+*/
+const unsigned long refDate_jday = Jul1901;   // jday for TRhoDate(0, 0)
+const unsigned long maxDate_jday = 2465095L;  // jday for TRhoDate(49709, 0); 
+<b>// ((2**32)-1)/SECONDS_IN_DAY -1</b>
+
+/****************************************************************
+*								*
+*			CONSTRUCTORS				*
+*								*
+****************************************************************/
+
+<b>// Specified time and today's date:</b>
+<a name="TRhoTime:TRhoTime"> </a><a href=".././TRhoTime.html#TRhoTime:TRhoTime">TRhoTime::TRhoTime</a>(unsigned <a href="../ListOfTypes.html#long">long</a> h,unsigned <a href="../ListOfTypes.html#long">long</a> m,unsigned <a href="../ListOfTypes.html#long">long</a> s)
+{
+    <a href=".././TRhoDate.html">TRhoDate</a> today;
+    <a href=".././TRhoTime.html#TRhoTime:sec">sec</a> = <a href=".././TRhoTime.html#TRhoTime:buildFrom">TRhoTime::buildFrom</a>(today, h, m, s);
+}
+
+/****************************************************************
+*								*
+*			PUBLIC FUNCTIONS			*
+*								*
+****************************************************************/
+
+<a name="TRhoTime:CompareTo"> </a><a href="../ListOfTypes.html#int">int</a> <a href=".././TRhoTime.html#TRhoTime:CompareTo">TRhoTime::CompareTo</a>(const <a href=".././TRhoTime.html">TRhoTime</a>* t) const
+{
+    return <a href=".././TRhoTime.html#TRhoTime:sec">sec</a> == t-&gt;<a href=".././TRhoTime.html#TRhoTime:sec">sec</a> ? 0 : (<a href=".././TRhoTime.html#TRhoTime:sec">sec</a> &gt; t-&gt;<a href=".././TRhoTime.html#TRhoTime:sec">sec</a> ? 1 : -1);
+}
+
+<a name="TRhoTime:Hour"> </a>unsigned <a href=".././TRhoTime.html#TRhoTime:Hour">TRhoTime::Hour</a>() const 
+{
+    return (unsigned)((<a href=".././TRhoTime.html#TRhoTime:sec">sec</a> % SECONDS_IN_DAY) / SECONDS_IN_HOUR);
+} 
+
+<a name="TRhoTime:Max"> </a><a href=".././TRhoTime.html">TRhoTime</a> <a href=".././TRhoTime.html#TRhoTime:Max">TRhoTime::Max</a>(const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t) const 
+{
+    if ( *this &gt; t ) return *this;
+    return t;
+}
+
+<a name="TRhoTime:Min"> </a><a href=".././TRhoTime.html">TRhoTime</a> <a href=".././TRhoTime.html#TRhoTime:Min">TRhoTime::Min</a>(const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t) const 
+{
+    if ( *this &lt; t ) return *this;
+    return t;
+}
+
+<a name="TRhoTime:Minute"> </a>unsigned <a href=".././TRhoTime.html#TRhoTime:Minute">TRhoTime::Minute</a>() const 
+{
+    return (unsigned)
+        (((<a href=".././TRhoTime.html#TRhoTime:sec">sec</a> % SECONDS_IN_DAY) % SECONDS_IN_HOUR) / SECONDS_IN_MIN);
+} 
+
+<a name="TRhoTime:Second"> </a>unsigned <a href=".././TRhoTime.html#TRhoTime:Second">TRhoTime::Second</a>() const 
+{
+    return (unsigned)
+        (((<a href=".././TRhoTime.html#TRhoTime:sec">sec</a> % SECONDS_IN_DAY) % SECONDS_IN_HOUR) % SECONDS_IN_MIN);
+}
+
+/*************** public static member functions *******************/
+
+
+<a name="TRhoTime:Extract"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TRhoTime.html#TRhoTime:Extract">TRhoTime::Extract</a>(struct tm* tmbuf) const
+{
+    <a href=".././TRhoDate.html">TRhoDate</a> date((unsigned)(<a href="#TRhoTime:Seconds">Seconds</a>() / SECONDS_IN_DAY), 0);
+    date.<a href="#TRhoTime:Extract">Extract</a>(tmbuf);
+    tmbuf-&gt;tm_hour  = <a href="#TRhoTime:Hour">Hour</a>();
+    tmbuf-&gt;tm_min   = <a href="#TRhoTime:Minute">Minute</a>();
+    tmbuf-&gt;tm_sec   = <a href="#TRhoTime:Second">Second</a>();
+    tmbuf-&gt;tm_isdst = 0;
+}
+
+<a name="TRhoTime:Now"> </a><a href=".././TRhoTime.html">TRhoTime</a> <a href=".././TRhoTime.html#TRhoTime:Now">TRhoTime::Now</a>()
+{
+    return <a href=".././TRhoTime.html">TRhoTime</a>(<a href=".././TRhoTime.html#TRhoTime:currentTime">TRhoTime::currentTime</a>());
+}
+
+<a name="TRhoTime:PrintOn"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TRhoTime.html#TRhoTime:PrintOn">TRhoTime::PrintOn</a>(std::ostream&amp; o) const
+{
+    struct tm tmbuf;
+    <a href="#TRhoTime:Extract">Extract</a>(&amp;tmbuf);
+    o &lt;&lt; tmbuf.tm_mon;
+    o &lt;&lt; "/";
+    o &lt;&lt; tmbuf.tm_mday;
+    o &lt;&lt; "/";
+    o &lt;&lt; tmbuf.tm_year;
+    o &lt;&lt; " ";
+    o &lt;&lt; tmbuf.tm_hour;
+    o &lt;&lt; ":";
+    o &lt;&lt; tmbuf.tm_min;
+    o &lt;&lt; ":";
+    o &lt;&lt; tmbuf.tm_sec;
+    o &lt;&lt; " ";
+}
+
+<b>// --------------------</b>
+<b>// non-member functions</b>
+<b>// --------------------</b>
+
+std::ostream&amp;  operator &lt;&lt; (std::ostream&amp; o, const <a href=".././TRhoTime.html">TRhoTime</a>&amp; a) {a.<a href="#TRhoTime:PrintOn">PrintOn</a>(o); return o;}
+
+/****************************************************************
+*								*
+*			PROTECTED FUNCTIONS			*
+*								*
+****************************************************************/
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a> 
+<a name="TRhoTime:assertDate"> </a><a href=".././TRhoTime.html#TRhoTime:assertDate">TRhoTime::assertDate</a>(const <a href=".././TRhoDate.html">TRhoDate</a>&amp; date)
+{
+    return date.<a href="#TRhoTime:Between">Between</a>(<a href=".././TRhoDate.html">TRhoDate</a>(refDate_jday), <a href=".././TRhoDate.html">TRhoDate</a>(maxDate_jday));
+}   
+
+/*
+* Set self from the specified (local) Date, hour, minute, and second.
+* Note: this algorithm will fail if DST correction is something other
+* than an hour.
+* It is complicated by the DST boundary problem: 
+* 1) Times in the phantom zone between 2AM and 3AM when DST is invoked
+*    are invalid.
+* 2) Times in the hour after 1AM when DST ends, are redundant.
+*    In this case, standard time should be chosen.
+*/
+
+
+/****************************************************************
+*								*
+*			PRIVATE FUNCTIONS			*
+*								*
+****************************************************************/
+
+/* static */  unsigned <a href="../ListOfTypes.html#long">long</a>
+<a name="TRhoTime:buildFrom"> </a><a href=".././TRhoTime.html#TRhoTime:buildFrom">TRhoTime::buildFrom</a>(
+                   const <a href=".././TRhoDate.html">TRhoDate</a>&amp; date,
+                   unsigned <a href="../ListOfTypes.html#long">long</a> h, unsigned <a href="../ListOfTypes.html#long">long</a> m, unsigned <a href="../ListOfTypes.html#long">long</a> s)
+{
+    if (!date.<a href="#TRhoTime:IsValid">IsValid</a>()) return 0;
+    if (date &lt; <a href=".././TRhoDate.html">TRhoDate</a>(refDate_jday-1)) return 0;
+    
+    unsigned <a href="../ListOfTypes.html#long">long</a> secs = SECONDS_IN_HOUR * h
+        + SECONDS_IN_MIN  * m
+        +                   s;
+    
+    if(date &lt; <a href=".././TRhoDate.html">TRhoDate</a>(refDate_jday)) {
+        secs -= SECONDS_IN_DAY; // has to be one day exactly
+    }
+    else {
+        secs += SECONDS_IN_DAY  * (date - <a href=".././TRhoDate.html">TRhoDate</a>(refDate_jday));
+    }
+    return secs;
+}
+
+unsigned <a href="../ListOfTypes.html#long">long</a>
+<a name="TRhoTime:currentTime"> </a><a href=".././TRhoTime.html#TRhoTime:currentTime">TRhoTime::currentTime</a>()
+{
+/*
+* Non-standard or non-working ANSI time() function.
+* Use RWZone::system() time zone to convert system clock time to GMT:
+    */
+    <a href="../ListOfTypes.html#time_t">time_t</a> ltime;
+    time(&amp;ltime);
+    struct tm t;
+    t = *localtime(&amp;ltime);
+    
+<b>    // Construct the date.  The time struct returns <a href="../ListOfTypes.html#int">int</a>, so casts are used.</b>
+    <a href=".././TRhoDate.html">TRhoDate</a> today((unsigned)t.tm_mday, (unsigned)(t.tm_mon + 1),
+	       1900u + (unsigned)t.tm_year);
+    
+    return <a href="#TRhoTime:buildFrom">buildFrom</a>(today, (unsigned)t.tm_hour, (unsigned)t.tm_min,
+        (unsigned)t.tm_sec);
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>  operator==(const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t1, const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t2) { return t1.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>== t2.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>; }
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>  operator&lt; (const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t1, const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t2) { return t1.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>&lt;  t2.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>; }    
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>  operator&lt;=(const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t1, const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t2) { return t1.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>&lt;= t2.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>; }    
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>  operator&gt; (const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t1, const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t2) { return t1.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>&gt;  t2.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>; } 
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>  operator&gt;=(const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t1, const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t2) { return t1.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>&gt;= t2.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>; } 
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>  operator!=(const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t1, const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t2) { return t1.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>!= t2.<a href=".././TRhoTime.html#TRhoTime:sec">sec</a>; }  
+<a href=".././TRhoTime.html">TRhoTime</a> operator+(const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t, unsigned <a href="../ListOfTypes.html#long">long</a> s) { return <a href=".././TRhoTime.html">TRhoTime</a>(t.<a href="#TRhoTime:Seconds">Seconds</a>()+s); }
+<a href=".././TRhoTime.html">TRhoTime</a> operator-(const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t, unsigned <a href="../ListOfTypes.html#long">long</a> s) { return <a href=".././TRhoTime.html">TRhoTime</a>(t.<a href="#TRhoTime:Seconds">Seconds</a>()-s); } 
+<a href=".././TRhoTime.html">TRhoTime</a> operator+(unsigned <a href="../ListOfTypes.html#long">long</a> s, const <a href=".././TRhoTime.html">TRhoTime</a>&amp; t) { return <a href=".././TRhoTime.html">TRhoTime</a>(t.<a href="#TRhoTime:Seconds">Seconds</a>()+s); }
+<a name="TRhoTime:TRhoTime"> </a><a href=".././TRhoTime.html#TRhoTime:TRhoTime">TRhoTime::TRhoTime</a>(const <a href=".././TRhoDate.html">TRhoDate</a>&amp; date, unsigned <a href="../ListOfTypes.html#long">long</a> h, unsigned <a href="../ListOfTypes.html#long">long</a> m, unsigned <a href="../ListOfTypes.html#long">long</a> s) { <a href=".././TRhoTime.html#TRhoTime:sec">sec</a> = <a href="#TRhoTime:buildFrom">buildFrom</a>(date, h, m, s); }
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

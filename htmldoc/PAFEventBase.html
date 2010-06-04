@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:15 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFEventBase</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>PAFEventBase</h1>
+<hr width=300>
+<!--SDL--><em><a href="#PAFEventBase:description">class description</a> - <a href="src/PAFEventBase.cxx.html">source file</a> - <a href="PAFEventBase_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="PAFEventBase" href="PAFEventBase.h">PAFEventBase</a> : public TObject</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->         <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetInt">GetInt</a><!--PLAIN-->(TBranch* theBranch, const <a href="ListOfTypes.html#Int_t">Int_t</a>&amp; value) const
+<!--TAB6-->        <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetUInt">GetUInt</a><!--PLAIN-->(TBranch* theBranch, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>&amp; value) const
+<!--TAB6-->      <a href="ListOfTypes.html#UShort_t">UShort_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetUShort">GetUShort</a><!--PLAIN-->(TBranch* theBranch, const <a href="ListOfTypes.html#UShort_t">UShort_t</a>&amp; value) const
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->         <a href="./PAFEventBase.html">PAFEventBase</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:PAFEventBase">PAFEventBase</a><!--PLAIN-->()
+<!--TAB6-->         <a href="./PAFEventBase.html">PAFEventBase</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:PAFEventBase">PAFEventBase</a><!--PLAIN-->(const <a href="./PAFEventBase.html">PAFEventBase</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:~PAFEventBase">~PAFEventBase</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:AddChargedTrack">AddChargedTrack</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:AddNeutralTrack">AddNeutralTrack</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:AddTag">AddTag</a><!--PLAIN-->(<a href="./PAFTagBase.html">PAFTagBase</a>*)
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#PAFEventBase:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:Eof">Eof</a><!--PLAIN-->()
+<!--TAB6-->             TVector3 <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetBoost">GetBoost</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetEventNumber">GetEventNumber</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetMajorID">GetMajorID</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetMinorID">GetMinorID</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetNumberOfChargedTracks">GetNumberOfChargedTracks</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetNumberOfNeutralTracks">GetNumberOfNeutralTracks</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetNumberOfTracks">GetNumberOfTracks</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetRunNumber">GetRunNumber</a><!--PLAIN-->() const
+<!--TAB6-->          <a href="./PAFTagBase.html">PAFTagBase</a>&amp; <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetTag">GetTag</a><!--PLAIN-->()
+<!--TAB6-->             <a href="./TRhoTime.html">TRhoTime</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:GetTime">GetTime</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#PAFEventBase:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:NewChargedTrack">NewChargedTrack</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:NewEvent">NewEvent</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:NewNeutralTrack">NewNeutralTrack</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; = std::cout) const
+<!--TAB6-->          static <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:Reset">Reset</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:SetEventNumber">SetEventNumber</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:SetMajorID">SetMajorID</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a> id)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:SetMinorID">SetMinorID</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a> id)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:SetNumberOfChargedTracks">SetNumberOfChargedTracks</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a> n)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:SetNumberOfNeutralTracks">SetNumberOfNeutralTracks</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a> n)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:SetOtherEventNumber">SetOtherEventNumber</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a>)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:SetRunNumber">SetRunNumber</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a>)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:SetTime">SetTime</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a> id1, <a href="ListOfTypes.html#UInt_t">UInt_t</a> id2 = 0)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:SetTree">SetTree</a><!--PLAIN-->(TTree* theTree)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFEventBase:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="PAFEventBase:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->          <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="PAFEventBase:_runno">_runno</a><!--PLAIN-->           <!--TAB--><i><a name="Title:_runno">1. The run number</a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFEventBase:_eventno">_eventno</a><!--PLAIN-->         <!--TAB--><i><a name="Title:_eventno">2. The event number</a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="PAFEventBase:_majorID">_majorID</a><!--PLAIN-->         <!--TAB--><i><a name="Title:_majorID">3. Number of seconds since 01/01/1901</a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="PAFEventBase:_minorID">_minorID</a><!--PLAIN-->         <!--TAB--><i><a name="Title:_minorID">4. Number of microsecs in the sec</a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="PAFEventBase:fEventNumber">fEventNumber</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fEventNumber">!   Actual event</a></i>
+<!--TAB6-->        <a href="ListOfTypes.html#UShort_t">UShort_t</a> <!--TAB--><!--BOLD--><a name="PAFEventBase:_nChargedTracks">_nChargedTracks</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_nChargedTracks">5. The number of prongs</a></i>
+<!--TAB6-->        <a href="ListOfTypes.html#UShort_t">UShort_t</a> <!--TAB--><!--BOLD--><a name="PAFEventBase:_nNeutralTracks">_nNeutralTracks</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_nNeutralTracks">6. The number of neutrals</a></i>
+<!--TAB6-->      <a href="./PAFTagBase.html">PAFTagBase</a> <!--TAB--><!--BOLD--><a name="PAFEventBase:_tag">_tag</a><!--PLAIN-->             <!--TAB--><i><a name="Title:_tag">The event TAG info</a></i>
+<!--TAB6-->        TBranch* <!--TAB--><!--BOLD--><a name="PAFEventBase:fBranches">fBranches[7]</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fBranches">! not stored in root file</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="PAFEventBase:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./PAFEventBase.html">PAFEventBase</a>								
+                                                                      
+ Event header class in PAF(Pico Analysis Framework)			
+                                                                      
+ Author: Sascha Berger, Bochum University, Feb. 99			
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="PAFEventBase:PAFEventBase" href="src/PAFEventBase.cxx.html#PAFEventBase:PAFEventBase">PAFEventBase</a>() : 
+<a href="./PAFEventBase.html#PAFEventBase:_runno">_runno</a>(0), 
+<a href="./PAFEventBase.html#PAFEventBase:_eventno">_eventno</a>(0), 
+<a href="./PAFEventBase.html#PAFEventBase:_majorID">_majorID</a>(0),
+<a href="./PAFEventBase.html#PAFEventBase:_minorID">_minorID</a>(0), 
+<a href="./PAFEventBase.html#PAFEventBase:_nChargedTracks">_nChargedTracks</a>(0), 
+<a href="./PAFEventBase.html#PAFEventBase:_nNeutralTracks">_nNeutralTracks</a>(0), 
+<a href="./PAFEventBase.html#PAFEventBase:_tag">_tag</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFEventBase:~PAFEventBase" href="src/PAFEventBase.cxx.html#PAFEventBase:~PAFEventBase">~PAFEventBase</a>()
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:AddTag" href="src/PAFEventBase.cxx.html#PAFEventBase:AddTag">AddTag</a>( <a href="./PAFTagBase.html">PAFTagBase</a>* c) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:AddNeutralTrack" href="src/PAFEventBase.cxx.html#PAFEventBase:AddNeutralTrack">AddNeutralTrack</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:AddChargedTrack" href="src/PAFEventBase.cxx.html#PAFEventBase:AddChargedTrack">AddChargedTrack</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:Reset" href="src/PAFEventBase.cxx.html#PAFEventBase:Reset">Reset</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:NewEvent" href="src/PAFEventBase.cxx.html#PAFEventBase:NewEvent">NewEvent</a>()  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:NewChargedTrack" href="src/PAFEventBase.cxx.html#PAFEventBase:NewChargedTrack">NewChargedTrack</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:NewNeutralTrack" href="src/PAFEventBase.cxx.html#PAFEventBase:NewNeutralTrack">NewNeutralTrack</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:SetRunNumber" href="src/PAFEventBase.cxx.html#PAFEventBase:SetRunNumber">SetRunNumber</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> r) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:SetEventNumber" href="src/PAFEventBase.cxx.html#PAFEventBase:SetEventNumber">SetEventNumber</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> e) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:SetNumberOfChargedTracks" href="src/PAFEventBase.cxx.html#PAFEventBase:SetNumberOfChargedTracks">SetNumberOfChargedTracks</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> n) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:SetNumberOfNeutralTracks" href="src/PAFEventBase.cxx.html#PAFEventBase:SetNumberOfNeutralTracks">SetNumberOfNeutralTracks</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> n) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="PAFEventBase:GetRunNumber" href="src/PAFEventBase.cxx.html#PAFEventBase:GetRunNumber">GetRunNumber</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFEventBase:GetEventNumber" href="src/PAFEventBase.cxx.html#PAFEventBase:GetEventNumber">GetEventNumber</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="PAFEventBase:Eof" href="src/PAFEventBase.cxx.html#PAFEventBase:Eof">Eof</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="PAFEventBase:GetMajorID" href="src/PAFEventBase.cxx.html#PAFEventBase:GetMajorID">GetMajorID</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="PAFEventBase:GetMinorID" href="src/PAFEventBase.cxx.html#PAFEventBase:GetMinorID">GetMinorID</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="PAFEventBase:GetNumberOfTracks" href="src/PAFEventBase.cxx.html#PAFEventBase:GetNumberOfTracks">GetNumberOfTracks</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="PAFEventBase:GetNumberOfChargedTracks" href="src/PAFEventBase.cxx.html#PAFEventBase:GetNumberOfChargedTracks">GetNumberOfChargedTracks</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="PAFEventBase:GetNumberOfNeutralTracks" href="src/PAFEventBase.cxx.html#PAFEventBase:GetNumberOfNeutralTracks">GetNumberOfNeutralTracks</a>() const <br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFEventBase:GetBoost" href="src/PAFEventBase.cxx.html#PAFEventBase:GetBoost">GetBoost</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="./PAFTagBase.html">PAFTagBase</a> <a name="PAFEventBase:GetTag" href="src/PAFEventBase.cxx.html#PAFEventBase:GetTag">GetTag</a>() <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:PrintOn" href="src/PAFEventBase.cxx.html#PAFEventBase:PrintOn">PrintOn</a>(std::ostream&amp; o) const <br>
+<hr>
+<!--FUNCTION--><a href="./TRhoTime.html">TRhoTime</a> <a name="PAFEventBase:GetTime" href="src/PAFEventBase.cxx.html#PAFEventBase:GetTime">GetTime</a>() const <br>
+<hr>
+<!--FUNCTION--> <a name="PAFEventBase:SetTree" href="src/PAFEventBase.cxx.html#PAFEventBase:SetTree">SetTree</a>(TTree *theTree)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:SetOtherEventNumber" href="src/PAFEventBase.cxx.html#PAFEventBase:SetOtherEventNumber">SetOtherEventNumber</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> i)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="PAFEventBase:GetUInt" href="src/PAFEventBase.cxx.html#PAFEventBase:GetUInt">GetUInt</a>(TBranch *theBranch, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> &amp;value) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFEventBase:GetInt" href="src/PAFEventBase.cxx.html#PAFEventBase:GetInt">GetInt</a>(TBranch *theBranch, const <a href="ListOfTypes.html#Int_t">Int_t</a> &amp;value) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UShort_t">UShort_t</a> <a name="PAFEventBase:GetUShort" href="src/PAFEventBase.cxx.html#PAFEventBase:GetUShort">GetUShort</a>(TBranch *theBranch, const <a href="ListOfTypes.html#UShort_t">UShort_t</a> &amp;value) const
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:SetTime" href="PAFEventBase.h">SetTime</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> id1, <a href="ListOfTypes.html#UInt_t">UInt_t</a> id2 = 0)
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:SetMajorID" href="PAFEventBase.h">SetMajorID</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> id)
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:SetMinorID" href="PAFEventBase.h">SetMinorID</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> id)
+<!--INLINE FUNCTION--><!--TAB6-->             TClass* <a name="PAFEventBase:Class" href="PAFEventBase.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->             TClass* <a name="PAFEventBase:IsA" href="PAFEventBase.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:ShowMembers" href="PAFEventBase.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:Streamer" href="PAFEventBase.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                <a href="ListOfTypes.html#void">void</a> <a name="PAFEventBase:StreamerNVirtual" href="PAFEventBase.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./PAFEventBase.html">PAFEventBase</a> <a name="PAFEventBase:PAFEventBase" href="PAFEventBase.h">PAFEventBase</a>(const <a href="./PAFEventBase.html">PAFEventBase</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Sascha+Berger">Sascha Berger</a>, <a href="http://consult.cern.ch/xwho/people?Bochum+University">Bochum University</a>, <a href="http://consult.cern.ch/xwho/people?Feb.">Feb.</a> 99			//</em><br>
+<em>Last update: Fri Dec 20 16:02:15 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

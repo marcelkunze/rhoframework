@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:27 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TSphericity - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: <a href=".././TSphericity.html">TSphericity</a>.cc,v 1.2 1997/1/20 10:05:13 </b>
+<b>//</b>
+<b>// Description:</b>
+<b>//	Class <a href=".././TSphericity.html">TSphericity</a> - a simple object to find Sphericity Axis and Sphericity</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Sebong Chun     </b>
+<b>//      Dan Azzopardi - put in check for case of no tracks, avoid fpe          //</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "RhoTools/TSphericity.h"
+#include &lt;assert.h&gt;
+#include &lt;math.h&gt;
+#include "RhoBase/TRho.h"
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandListIterator.h"
+#include "TLorentzVector.h"
+#include "RhoBase/TCandidate.h"
+#include "RhoBase/TEventInfo.h"
+
+ClassImp(TSphericity)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TSphericity *&amp;obj)
+{
+   obj = (TSphericity *) buf.ReadObject(TSphericity::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+static void jacobi(TMatrixD Source, TMatrixD &amp; RotationMatrix, TVector &amp; EigenValues);
+
+
+inline void swap(int&amp; v1, int&amp; v2) 
+{
+    int temp = v1;
+    v1 = v2;
+    v2 = temp;
+}
+
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+
+<a name="TSphericity:TSphericity"> </a><a href=".././TSphericity.html#TSphericity:TSphericity">TSphericity::TSphericity</a>(TCandList&amp; list, 
+			 const TEventInfo&amp; evtinfo,
+			 <a href="../ListOfTypes.html#Bool_t">Bool_t</a> chargedTracksOnly) 
+			 : <a href=".././TSphericity.html#TSphericity:_E">_E</a>(3)
+{
+    TMatrixD sph_mtrx(3,3);
+    TMatrixD Rot(3,3);
+    TVector E(3); 
+    const TCandidate* trkptr;
+    
+    TCandListIterator iter(list);
+    <a href="../ListOfTypes.html#double">double</a> stot=0, sxx=0, syy=0, szz=0, sxy=0, sxz=0, syz=0;
+<b>    //<a href="../ListOfTypes.html#double">double</a> sxtot=0, sytot=0, sztot=0;</b>
+    
+<b>    // start a loop over the all tracks</b>
+    while ( trkptr = iter.Next() ) {
+	
+        TLorentzVector cmList(trkptr-&gt;P4());
+	TVector3 cms = evtinfo.CmFrame().BoostVector();
+	cmList.Boost( -(cms));
+	
+<b>	// Added chargedTracksOnly parameter to make it possible to compute</b>
+<b>	// these variables from neutral tracks, too.  -- Alex Samuel, 9/97</b>
+	if ( !chargedTracksOnly || trkptr-&gt;Charge() != 0 )
+	{
+<b>	    //I left followings in case I need to calculate sphericity axis in Lab frame       </b>
+<b>	    //stot += (trkptr-&gt;p())*(trkptr-&gt;p());</b>
+<b>	    //sxx += (trkptr-&gt;p3()).x()*(trkptr-&gt;p3()).x();</b>
+<b>	    //sxy += (trkptr-&gt;p3()).x()*(trkptr-&gt;p3()).y();</b>
+<b>	    //sxz += (trkptr-&gt;p3()).x()*(trkptr-&gt;p3()).z();</b>
+<b>	    //syy += (trkptr-&gt;p3()).y()*(trkptr-&gt;p3()).y();</b>
+<b>	    //syz += (trkptr-&gt;p3()).y()*(trkptr-&gt;p3()).z();</b>
+<b>	    //szz += (trkptr-&gt;p3()).z()*(trkptr-&gt;p3()).z();</b>
+	    
+	    TVector3 tmp(cmList.X(),cmList.Y(),cmList.Z());
+	    stot += (tmp.Mag())*(tmp.Mag());
+	    sxx += (tmp.X())*(tmp.X());
+	    sxy += (tmp.X())*(tmp.Y());
+	    sxz += (tmp.X())*(tmp.Z());
+	    syy += (tmp.Y())*(tmp.Y());
+	    syz += (tmp.Y())*(tmp.Z());
+	    szz += (tmp.Z())*(tmp.Z());
+        }
+    } 
+    
+<b>    // The following is sufficent for avoiding division by zero.</b>
+    if (stot==0.) stot = 1.;
+    
+<b>    //obtain sphericity tensor explicitly</b>
+    sph_mtrx(0,0) = sxx / stot ;
+    sph_mtrx(1,0) = sxy / stot ;
+    sph_mtrx(2,0) = sxz / stot ;
+    sph_mtrx(0,1) = sxy / stot ;
+    sph_mtrx(1,1) = syy / stot ;
+    sph_mtrx(2,1) = syz / stot ;
+    sph_mtrx(0,2) = sxz / stot ;
+    sph_mtrx(1,2) = syz / stot ;
+    sph_mtrx(2,2) = szz / stot ;
+    
+<b>    //test "jacobi" with an explicit matrix</b>
+<b>    //sph_mtrx[0][0] = 1 ;</b>
+<b>    //sph_mtrx[1][0] = 1 ;</b>
+<b>    //sph_mtrx[2][0] = 1 ;</b>
+<b>    //sph_mtrx[0][1] = 1 ;</b>
+<b>    //sph_mtrx[1][1] = 1 ;</b>
+<b>    //sph_mtrx[2][1] = 1 ;</b>
+<b>    //sph_mtrx[0][2] = 1 ;</b>
+<b>    //sph_mtrx[1][2] = 1 ;</b>
+<b>    //sph_mtrx[2][2] = 1 ;</b>
+    
+    jacobi(sph_mtrx,Rot,E);
+    
+    <a href=".././TSphericity.html#TSphericity:_E">_E</a> = E;
+    
+    <a href="../ListOfTypes.html#double">double</a> Emax = E(0);
+    <a href="../ListOfTypes.html#double">double</a> Emin = E(0);
+    <a href="../ListOfTypes.html#int">int</a> j = 0, k = 0;
+    for ( <a href="../ListOfTypes.html#int">int</a> i = 0; i &lt;= 2 ; ++i ) {
+	if ( E(i) &gt; Emax ) {Emax = E(i); j = i;}
+	if ( E(i) &lt; Emin ) {Emin = E(i); k = i;}
+    }
+    
+    <a href="../ListOfTypes.html#int">int</a> l = 3-j-k;
+    <a href=".././TSphericity.html#TSphericity:_sph">_sph</a> = Emax;
+    
+    <a href=".././TSphericity.html#TSphericity:_sph">_sph</a> = 3 * ( E(k) + E(l) ) / 2;
+    <a href=".././TSphericity.html#TSphericity:_apl">_apl</a> = 3 * E(k) / 2;
+    <a href=".././TSphericity.html#TSphericity:_pla">_pla</a> = E(l) - E(k);
+    
+<b>    // sort the eignevalues into increasing order; rather than rearranging</b>
+<b>    // the values themselves, sort an array of indices so that the</b>
+<b>    // correspondence with eigenvectors may be retained</b>
+    
+    <a href="../ListOfTypes.html#int">int</a> ei[3] = { 0, 1, 2 };
+    if(E(ei[1]) &lt; E(ei[0])) swap(ei[0], ei[1]);
+    if(E(ei[2]) &lt; E(ei[1])) swap(ei[1], ei[2]);
+    if(E(ei[1]) &lt; E(ei[0])) swap(ei[0], ei[1]);
+    
+    <a href=".././TSphericity.html#TSphericity:_sph">_sph</a> = 1.5 * (E(ei[0]) + E(ei[1]));
+    <a href=".././TSphericity.html#TSphericity:_apl">_apl</a> = 1.5 * E(ei[0]);
+    <a href=".././TSphericity.html#TSphericity:_pla">_pla</a> = E(ei[1]) - E(ei[0]);
+    
+    <a href=".././TSphericity.html#TSphericity:_sphAx">_sphAx</a> = TVector3 ( Rot(0,ei[2]), Rot(1,ei[2]), Rot(2,ei[2]) ) ;
+    <a href=".././TSphericity.html#TSphericity:_secAx">_secAx</a> = TVector3 ( Rot(0,ei[1]), Rot(1,ei[1]), Rot(2,ei[1]) ) ;
+    <a href=".././TSphericity.html#TSphericity:_thrAx">_thrAx</a> = TVector3 ( Rot(0,ei[0]), Rot(1,ei[0]), Rot(2,ei[0]) ) ;
+    
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TSphericity:~TSphericity"> </a><a href=".././TSphericity.html">TSphericity</a>::~<a href=".././TSphericity.html">TSphericity</a>() {}
+
+<b>//-------------------</b>
+<b>//Member Function ---</b>
+<b>//-------------------</b>
+
+
+/*-------------------------------------------------*/
+/*         Jacobi                                  */
+/* Template function jacobi computes eigenvalues   */
+/* and eigenvectors of a <a href="../ListOfTypes.html#real">real</a> symmetric matrix     */
+/* The output consists of the linear tranformation */
+/* to the principal axes and a vector containing   */
+/* the matrice's eigenvalues.                      */
+/*-------------------------------------------------*/
+
+#define JACOBI_ROTATION(A,i,j,k,l) g=A(i,j); h=A(k,l); A(i,j) = g-s*(h+g*tau); A(k,l) = h + s*(g-h*tau);
+
+static void jacobi(TMatrixD Source, TMatrixD &amp; RotationMatrix, TVector &amp; EigenValues) {
+    
+<b>    //  AS IN NUMERICAL RECIPES IN C, PAGE 467</b>
+    
+    <a href="../ListOfTypes.html#int">int</a> irow,icol;
+    <a href="../ListOfTypes.html#double">double</a> Threshold;
+    
+    <a href="../ListOfTypes.html#int">int</a> mtrxSize=Source.GetNrows();
+    RotationMatrix =TMatrixD(mtrxSize,mtrxSize);
+    <a href="../ListOfTypes.html#int">int</a> i,j;
+    for (i = RotationMatrix.GetRowLwb(); i &lt;= RotationMatrix.GetRowUpb(); i++)
+	for(j = RotationMatrix.GetColLwb(); j &lt;= RotationMatrix.GetColUpb(); j++)
+	    RotationMatrix(i,j) = 1.0;
+	for (irow=0;irow&lt;mtrxSize;irow++) EigenValues(irow)=Source(irow,irow);
+	TVector Z(mtrxSize),B(mtrxSize);
+	B=EigenValues;
+	<a href="../ListOfTypes.html#int">int</a> NumberRotations = 0;
+	for (<a href="../ListOfTypes.html#int">int</a> Iteration=0;Iteration&lt;50;Iteration++) {
+	    <a href="../ListOfTypes.html#double">double</a> SumOffDiagonal=0.0;     
+	    for (irow=0;irow&lt;mtrxSize;irow++) {
+		for (icol=irow+1;icol&lt;mtrxSize;icol++) {
+		    SumOffDiagonal+= fabs(Source(irow,icol));
+		}
+	    }
+	    if (SumOffDiagonal==0.0) break;
+	    if (Iteration&lt;4) 
+		Threshold = 0.2*SumOffDiagonal/(mtrxSize*mtrxSize);
+	    else
+		Threshold = 0.0;
+	    for (irow=0;irow&lt;mtrxSize;irow++) {
+		for (icol=irow+1;icol&lt;mtrxSize;icol++) {
+		    <a href="../ListOfTypes.html#double">double</a> t,g;
+		    g = 100.0*fabs(Source(irow,icol));
+		    if (Iteration&gt;4 &amp;&amp; (<a href="../ListOfTypes.html#double">double</a>) (fabs(EigenValues(irow))+g) == (<a href="../ListOfTypes.html#double">double</a>) fabs(EigenValues(irow)) &amp;&amp; (<a href="../ListOfTypes.html#double">double</a>) (fabs(EigenValues(icol))+g) == (<a href="../ListOfTypes.html#double">double</a>) fabs(EigenValues(icol))) {
+			Source(irow,icol)=0.0;
+		    }
+		    else if (fabs(Source(irow,icol))&gt;Threshold) {
+			<a href="../ListOfTypes.html#double">double</a> h = EigenValues(icol) - EigenValues(irow);
+			if ((<a href="../ListOfTypes.html#double">double</a>) (fabs(h) + g) == (<a href="../ListOfTypes.html#double">double</a>) fabs(h)) {
+			    t = Source(irow,icol)/h;
+			}
+			else {
+			    <a href="../ListOfTypes.html#double">double</a> Theta = 0.5*h/Source(irow,icol);
+			    t = 1.0/(fabs(Theta) + sqrt(1.0 + Theta*Theta));
+			    if (Theta&lt;0) t = -t; 
+			}
+			<a href="../ListOfTypes.html#double">double</a> c = 1.0/sqrt(1.0+t*t);
+			<a href="../ListOfTypes.html#double">double</a> s = t*c;
+			<a href="../ListOfTypes.html#double">double</a> tau = s/(1.0 + c);
+			h = t*Source(irow,icol);
+			Z(irow) -= h;
+			Z(icol) += h;
+			EigenValues(irow) -= h;
+			EigenValues(icol) += h;
+			Source(irow,icol) = 0.0;
+			
+			<a href="../ListOfTypes.html#int">int</a> j;
+			for (j=0;j&lt;irow;j++) {
+			    JACOBI_ROTATION(Source,j,irow,j,icol)
+			}
+			for (j=irow+1;j&lt;icol;j++) {
+			    JACOBI_ROTATION(Source,irow,j,j,icol)
+			}
+			for (j=icol+1;j&lt;mtrxSize;j++) {
+			    JACOBI_ROTATION(Source,irow,j,icol,j)
+			}
+			for (j=0;j&lt;mtrxSize;j++) {
+			    JACOBI_ROTATION(RotationMatrix,j,irow,j,icol)
+			}
+			NumberRotations++;
+		    }
+		}            
+	    }    
+	    B+=Z;
+	    EigenValues=B;
+	    Z=TVector(mtrxSize);
+	}
+<b>	//Sort not needed in this application and it is buggy</b>
+	/*  HepMatrix ColJ(1,mtrxSize);
+	for (<a href="../ListOfTypes.html#int">int</a> i=1;i&lt;=mtrxSize;i++) {
+	for (<a href="../ListOfTypes.html#int">int</a> j=i+1;j&lt;=mtrxSize;j++) {
+	if (EigenValues[j]&gt;EigenValues[i]) {
+	ColJ=RotationMatrix.sub(1,mtrxSize,i,i);
+	RotationMatrix.sub(1,i,RotationMatrix.sub(1,mtrxSize,j,j));
+	RotationMatrix.sub(1,j,ColJ);
+	<a href="../ListOfTypes.html#double">double</a> fI = EigenValues[i], fJ=EigenValues[j];
+	EigenValues[i] = fJ; EigenValues[j] = fI;
+	}
+	}
+}*/
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

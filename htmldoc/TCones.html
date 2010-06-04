@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:44 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TCones</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TCones</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TCones:description">class description</a> - <a href="src/TCones.cxx.html">source file</a> - <a href="TCones_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TCones" href="TCones.h">TCones</a> : public TObject</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TCones:MakeCones">MakeCones</a><!--PLAIN-->(TCandList*, const TEventInfo*)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->               <a href="./TCones.html">TCones</a> <!--TAB--><!--BOLD--><a href="#TCones:TCones">TCones</a><!--PLAIN-->(TCandList*, const TCandidate*, const TEventInfo*, <a href="ListOfTypes.html#int">int</a> nbrcones = 9)
+<!--TAB6-->               <a href="./TCones.html">TCones</a> <!--TAB--><!--BOLD--><a href="#TCones:TCones">TCones</a><!--PLAIN-->(TCandList*, const TVector3, const TEventInfo*, <a href="ListOfTypes.html#int">int</a> nbrcones = 9)
+<!--TAB6-->               <a href="./TCones.html">TCones</a> <!--TAB--><!--BOLD--><a href="#TCones:TCones">TCones</a><!--PLAIN-->(const <a href="./TCones.html">TCones</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TCones:~TCones">~TCones</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TCones:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TCones:EnergyFlows">EnergyFlows</a><!--PLAIN-->(<a href="ListOfTypes.html#int">int</a>)
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TCones:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#double">double</a> <!--TAB--><!--BOLD--><a href="#TCones:MomentumFlows">MomentumFlows</a><!--PLAIN-->(<a href="ListOfTypes.html#int">int</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#TCones:NumberOfCones">NumberOfCones</a><!--PLAIN-->()
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TCones:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TCones:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TCones:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TCones:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->           <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a name="TCones:_numberOfCones">_numberOfCones</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_numberOfCones">!Do not stream</a></i>
+<!--TAB6-->      TVector3 <!--TAB--><!--BOLD--><a name="TCones:_directionUnit">_directionUnit</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_directionUnit">!Do not stream</a></i>
+<!--TAB6-->       TVector <!--TAB--><!--BOLD--><a name="TCones:_eflowarray">_eflowarray</a><!--PLAIN-->     <!--TAB--><i><a name="Title:_eflowarray">!Do not stream</a></i>
+<!--TAB6-->       TVector <!--TAB--><!--BOLD--><a name="TCones:_mflowarray">_mflowarray</a><!--PLAIN-->     <!--TAB--><i><a name="Title:_mflowarray">!Do not stream</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TCones:description">Class Description</a></h2>
+<hr>
+<!--FUNCTION--> <a name="TCones:TCones" href="src/TCones.cxx.html#TCones:TCones">TCones</a>(TCandList * all_list, 
+		   const TCandidate * thedaugh , 
+		   const TEventInfo * evtinfo, <a href="ListOfTypes.html#int">int</a> nbrcones) 
+  : <a href="./TCones.html#TCones:_numberOfCones">_numberOfCones</a>(nbrcones) <br>
+<hr>
+<!--FUNCTION--> <a name="TCones:TCones" href="src/TCones.cxx.html#TCones:TCones">TCones</a>(TCandList * all_list, 
+		   const TVector3  direction , 
+		   const TEventInfo * evtinfo, <a href="ListOfTypes.html#int">int</a> nbrcones) 
+  : <a href="./TCones.html#TCones:_numberOfCones">_numberOfCones</a>(nbrcones)<br>
+<hr>
+<!--FUNCTION--> <a name="TCones:~TCones" href="src/TCones.cxx.html#TCones:~TCones">~TCones</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TCones:EnergyFlows" href="src/TCones.cxx.html#TCones:EnergyFlows">EnergyFlows</a>(<a href="ListOfTypes.html#int">int</a> order) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TCones:MomentumFlows" href="src/TCones.cxx.html#TCones:MomentumFlows">MomentumFlows</a>(<a href="ListOfTypes.html#int">int</a> order) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="TCones:NumberOfCones" href="src/TCones.cxx.html#TCones:NumberOfCones">NumberOfCones</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TCones:MakeCones" href="src/TCones.cxx.html#TCones:MakeCones">MakeCones</a>(TCandList * all_list, 
+		    const TEventInfo * evtinfo )<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TCones:Class" href="TCones.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TCones:IsA" href="TCones.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TCones:ShowMembers" href="TCones.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TCones:Streamer" href="TCones.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TCones:StreamerNVirtual" href="TCones.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TCones.html">TCones</a> <a name="TCones:TCones" href="TCones.h">TCones</a>(const <a href="./TCones.html">TCones</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:44 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

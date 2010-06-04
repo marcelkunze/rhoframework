@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:59 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>THadronAodSelector</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>THadronAodSelector</h1>
+<hr width=300>
+<!--SDL--><em><a href="#THadronAodSelector:description">class description</a> - <a href="src/THadronAodSelector.cxx.html">source file</a> - <a href="THadronAodSelector_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="THadronAodSelector" href="TEventSelector.h">THadronAodSelector</a> : public <a href="./TAodBaseSelector.html">TAodBaseSelector</a></h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      <a href="./THadronAodSelector.html">THadronAodSelector</a> <!--TAB--><!--BOLD--><a href="#THadronAodSelector:THadronAodSelector">THadronAodSelector</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name = "<a href="./THadronAodSelector.html">THadronAodSelector</a>")
+<!--TAB6-->      <a href="./THadronAodSelector.html">THadronAodSelector</a> <!--TAB--><!--BOLD--><a href="#THadronAodSelector:THadronAodSelector">THadronAodSelector</a><!--PLAIN-->(const <a href="./THadronAodSelector.html">THadronAodSelector</a>&amp;)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#THadronAodSelector:~THadronAodSelector">~THadronAodSelector</a><!--PLAIN-->()
+<!--TAB6-->          virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#THadronAodSelector:Accept">Accept</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>&amp;)
+<!--TAB6-->          static TClass* <!--TAB--><!--BOLD--><a href="#THadronAodSelector:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->         virtual TClass* <!--TAB--><!--BOLD--><a href="#THadronAodSelector:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#THadronAodSelector:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#THadronAodSelector:SetHighPt">SetHighPt</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> p)
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#THadronAodSelector:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->            virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#THadronAodSelector:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                    <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#THadronAodSelector:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="THadronAodSelector:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="THadronAodSelector:fHighPt">fHighPt</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fHighPt"></a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="THadronAodSelector:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TEventSelector.html">TEventSelector</a>							
+                                                                      
+ Selector classes for event selection                                 
+                                                                      
+ Author List:                                                         
+ Marcel Kunze,  RUB, Feb. 99                                          
+ Copyright (C) 1999-2001, Ruhr-University Bochum.                     
+                                                                      
+
+</pre><hr>
+<!--FUNCTION--> <a name="THadronAodSelector:THadronAodSelector" href="src/THadronAodSelector.cxx.html#THadronAodSelector:THadronAodSelector">THadronAodSelector</a>(const <a href="ListOfTypes.html#char">char</a> *name) :
+<a href="./TAodBaseSelector.html">TAodBaseSelector</a>(name)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="THadronAodSelector:Accept" href="src/THadronAodSelector.cxx.html#THadronAodSelector:Accept">Accept</a>(<a href="./TEventManager.html">TEventManager</a>&amp; e) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="THadronAodSelector:PrintOn" href="src/THadronAodSelector.cxx.html#THadronAodSelector:PrintOn">PrintOn</a>(std::ostream&amp; o) const 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="THadronAodSelector:SetHighPt" href="TEventSelector.h">SetHighPt</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> p)
+<!--INLINE FUNCTION--><!--TAB6-->                   TClass* <a name="THadronAodSelector:Class" href="TEventSelector.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                   TClass* <a name="THadronAodSelector:IsA" href="TEventSelector.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="THadronAodSelector:ShowMembers" href="TEventSelector.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="THadronAodSelector:Streamer" href="TEventSelector.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="THadronAodSelector:StreamerNVirtual" href="TEventSelector.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./THadronAodSelector.html">THadronAodSelector</a> <a name="THadronAodSelector:THadronAodSelector" href="TEventSelector.h">THadronAodSelector</a>(const <a href="./THadronAodSelector.html">THadronAodSelector</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                      <a href="ListOfTypes.html#void">void</a> <a name="THadronAodSelector:~THadronAodSelector" href="TEventSelector.h">~THadronAodSelector</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:03:00 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

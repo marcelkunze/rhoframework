@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:50 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TError - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TError.html">TError</a>		    						//</b>
+<b>//                                                                      //</b>
+<b>// Error matrix class							//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, RUB, Nov. 99					//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//                                                                      //</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include &lt;stdio.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;ctype.h&gt;
+
+#include "RhoMath/TError.h"
+
+ClassImp(TError)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+const Double_t TError::chisqUndef = -1.;
+
+<a name="TError:TError"> </a>TError::TError(Int_t n, Double_t init) 
+{
+    TMatrixD::Allocate(n,n);
+    for (int i1=0;i1&lt;n;i1++)
+	for (int i2=0;i2&lt;n;i2++)
+	    TMatrixD::operator()(i1,i2) = init;
+}
+
+<a name="TError:TError"> </a>TError::TError( const TError&amp; v ) 
+{
+    TMatrixD::Allocate(v.GetNrows(),v.GetNcols());
+    TMatrixD::operator=(v);
+}
+
+<a name="TError:TError"> </a>TError::TError( const TMatrixD &amp;p ) 
+{
+    TMatrixD::Allocate(p.GetNrows(),p.GetNcols());
+    TMatrixD::operator=(p);
+}
+
+TError&amp; TError::operator=(const TError&amp; v)
+{
+    TMatrixD::ResizeTo(v);
+    TMatrixD::operator=(v);
+    return *this;
+}
+
+TError&amp; TError::operator=(const TMatrixD&amp; v)
+{
+    TMatrixD::ResizeTo(v);
+    TMatrixD::operator=(v);
+    return *this;
+}
+
+TError&amp; TError::operator *= (Double_t t)
+{ return (TError&amp;) TMatrixD::operator*=(t); }
+/*
+TError&amp; TError::operator /= (Double_t t)
+{return (TError&amp;) TMatrixD::operator/=(t); }
+
+TError&amp; TError::operator += (const TError&amp; m2)
+{
+TMatrixD::operator+=(m2);
+return *this;
+}
+
+TError&amp; TError::operator -= (const TError&amp; m2)
+{
+TMatrixD::operator-=(m2);
+return *this;
+}
+*/
+TError&amp; TError::operator - ()
+{ return *this; }
+<b>// does nothing -- covariance Matrices have never negative entries on the </b>
+<b>// main diagonal</b>
+
+<a name="TError:Similarity"> </a><a href=".././TError.html">TError</a>&amp; <a href=".././TError.html#TError:Similarity">TError::Similarity</a>(const TRotation&amp; rot) const
+{
+    static TMatrixD mat(3,3); 
+    mat(0,0)=rot.XX(); mat(0,1)=rot.XY(); mat(0,2)=rot.XZ();
+    mat(1,0)=rot.YX(); mat(1,1)=rot.YY(); mat(1,2)=rot.YZ();
+    mat(2,0)=rot.ZX(); mat(2,1)=rot.ZY(); mat(2,2)=rot.ZZ();
+    
+    return <a href="#TError:Similarity">Similarity</a>(mat);
+}
+
+<a name="TError:Similarity"> </a><a href=".././TError.html">TError</a>&amp; <a href=".././TError.html#TError:Similarity">TError::Similarity</a>(const TMatrixD&amp; m1) const
+{
+    static <a href=".././TError.html">TError</a> mret(m1.GetNrows());
+    mret.ResizeTo(m1.GetNrows(),m1.GetNrows());
+    mret.<a href="#TError:SimilarityWith">SimilarityWith</a>(*this, m1);
+    return mret;
+}
+
+<a name="TError:Similarity"> </a><a href=".././TError.html">TError</a>&amp; <a href=".././TError.html#TError:Similarity">TError::Similarity</a>(const TLorentzRotation&amp; rot) const
+{
+    static TMatrixD mat(4,4); 
+    mat(0,0)=rot.XX(); mat(0,1)=rot.XY(); mat(0,2)=rot.XZ(); mat(0,3)=rot.XT();
+    mat(1,0)=rot.YX(); mat(1,1)=rot.YY(); mat(1,2)=rot.YZ(); mat(1,3)=rot.YT();
+    mat(2,0)=rot.ZX(); mat(2,1)=rot.ZY(); mat(2,2)=rot.ZZ(); mat(2,3)=rot.ZT();
+    mat(3,0)=rot.TX(); mat(3,1)=rot.TY(); mat(3,2)=rot.TZ(); mat(3,3)=rot.TT();
+    
+    return <a href="#TError:Similarity">Similarity</a>(mat);
+}
+
+<a name="TError:Similarity"> </a><a href=".././TError.html">TError</a>&amp; <a href=".././TError.html#TError:Similarity">TError::Similarity</a>(const <a href=".././TError.html">TError</a>&amp; E)
+{
+    return <a href="#TError:Similarity">Similarity</a>(E);
+}
+
+<a name="TError:SimilarityWith"> </a><a href=".././TError.html">TError</a>&amp; <a href=".././TError.html#TError:SimilarityWith">TError::SimilarityWith</a>(const <a href=".././TError.html">TError</a>&amp; mat,const TMatrixD&amp; m1)
+{
+    assert(GetNrows() == m1.GetNrows());
+    static TMatrixD temp;
+    temp.ResizeTo(m1.GetNrows(),m1.GetNrows()); temp.Mult(m1,mat);
+    register <a href="../ListOfTypes.html#Double_t">Double_t</a> tmp;
+    
+    for (<a href="../ListOfTypes.html#int">int</a> r = 0; r &lt; GetNrows(); r++) {
+	for (<a href="../ListOfTypes.html#int">int</a> c = 0; c &lt;= r; c++) {
+	    tmp = 0.;
+	    for (<a href="../ListOfTypes.html#int">int</a> k = 0; k &lt; m1.GetNcols(); k++) {
+		tmp += temp(r,k)*m1(c,k);
+	    }
+	    (*this)(r,c) = tmp;
+	}
+    }
+    return *this;
+}
+
+<b>//----------------------------------------------------------------------</b>
+<b>// determineChisq</b>
+<b>//	Compute v^T * V^(-1)*v - ie the chisq for this covariance</b>
+<b>//	matrix and the difference vector v.</b>
+<b>//----------------------------------------------------------------------</b>
+
+<a name="TError:DetermineChisq"> </a><a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././TError.html#TError:DetermineChisq">TError::DetermineChisq</a>(TVectorD&amp; diff)
+{
+    TMatrixD dMat(diff.GetNrows(),diff.GetNrows());
+    dMat.UnitMatrix();
+    
+    for (<a href="../ListOfTypes.html#int">int</a> i = 0; i &lt; diff.GetNrows(); i++) dMat(i,0) = diff(i);
+    
+    const TMatrixD &amp;d = (TMatrixD &amp;) *this;
+    TMatrixD::Invert(d);
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> chisq = <a href="#TError:SimilarityT">SimilarityT</a>(dMat)(0,0);
+    
+    return chisq;
+}
+
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const <a href=".././TError.html">TError</a>&amp; mat)
+{
+    out &lt;&lt; "Bbr Covariance Matrix:";
+    out &lt;&lt; (TMatrixD&amp;) mat;
+    return out;
+}
+
+std::istream&amp; operator&gt;&gt;(std::istream&amp; in, <a href=".././TError.html">TError</a>&amp; mat) {
+<b>    // Peek at the next non-space character:</b>
+    <a href="../ListOfTypes.html#char">char</a> nextChar = ' ';
+    while (isspace(nextChar)){
+	nextChar = in.get();
+    }
+    in.putback(nextChar);
+    
+    if (EOF != nextChar){
+	if (!isdigit(nextChar)){
+<b>	    // Remove the "Bbr Covariance Matrix:" line:</b>
+	    const <a href="../ListOfTypes.html#int">int</a> DUMMY_SIZE = 1000;
+	    <a href="../ListOfTypes.html#char">char</a> dummy[DUMMY_SIZE];
+	    in.getline(dummy, DUMMY_SIZE);
+	}
+<b>	// Read in the matrix:</b>
+	for (<a href="../ListOfTypes.html#int">int</a> row = 1; row &lt;= mat.GetNrows(); ++row){
+	    for (<a href="../ListOfTypes.html#int">int</a> col = 1; col &lt;= mat.GetNcols(); ++col){
+		in &gt;&gt; mat(row, col);
+	    }
+	}
+    }
+    return in;
+}
+
+
+<a href=".././TError.html">TError</a>&amp; operator*(<a href="../ListOfTypes.html#Double_t">Double_t</a> t, const <a href=".././TError.html">TError</a>&amp; m1)
+{
+    static <a href=".././TError.html">TError</a> mret(m1);
+    mret.ResizeTo(m1);
+    mret = m1;
+    mret *= t;
+    return mret;
+}
+
+<a href=".././TError.html">TError</a>&amp; operator*(const <a href=".././TError.html">TError</a>&amp; m1, <a href="../ListOfTypes.html#Double_t">Double_t</a> t)
+{
+    static <a href=".././TError.html">TError</a> mret(m1);
+    mret.ResizeTo(m1);
+    mret = m1;
+    mret *= t;
+    return mret;
+}
+/*
+<a href=".././TError.html">TError</a> operator/(<a href="../ListOfTypes.html#Double_t">Double_t</a> t, const <a href=".././TError.html">TError</a>&amp; m1)
+{
+<a href=".././TError.html">TError</a> mret = m1;
+mret /= t;
+return mret;
+}
+
+<a href=".././TError.html">TError</a> operator/(const <a href=".././TError.html">TError</a>&amp; m1, <a href="../ListOfTypes.html#Double_t">Double_t</a> t)
+{
+<a href=".././TError.html">TError</a> mret = m1;
+mret /= t;
+return mret;
+}
+*/
+<a href=".././TError.html">TError</a>&amp; operator+(const <a href=".././TError.html">TError</a>&amp; m1, const <a href=".././TError.html">TError</a>&amp; m2)
+{
+    static <a href=".././TError.html">TError</a> mret(m1);
+    mret.ResizeTo(m1);
+    mret = m1;
+    mret += m2;
+    return mret;
+}
+
+<a href=".././TError.html">TError</a>&amp; operator-(const <a href=".././TError.html">TError</a>&amp; m1, const <a href=".././TError.html">TError</a>&amp; m2)
+{
+    static <a href=".././TError.html">TError</a> mret(m1);
+    mret.ResizeTo(m1);
+    mret -= m2;
+    return mret;
+}
+
+
+<a name="TError:Similarity"> </a><a href="../ListOfTypes.html#Double_t">Double_t</a> <a href=".././TError.html#TError:Similarity">TError::Similarity</a>(TVectorD &amp;m1)
+{
+    register <a href="../ListOfTypes.html#Double_t">Double_t</a> mret = 0.0;
+    TVectorD temp(m1);
+    temp*=(*this);
+<b>    // If m1*(*this) has correct dimensions, then so will the m1.T multiplication.</b>
+<b>    // So there is no need to check dimensions again.</b>
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> *a=&amp;temp(0);
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> *b=&amp;m1(0);
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> *e=a+m1.GetNrows();
+    for(;a&lt;e;) mret += (*(a++)) * (*(b++));
+    return mret;
+}
+
+<a name="TError:SimilarityT"> </a>TMatrixD&amp; <a href=".././TError.html#TError:SimilarityT">TError::SimilarityT</a>(TMatrixD &amp;m1)
+{
+    static TMatrixD mret;
+    mret.ResizeTo(m1);
+    TMatrixD::AMultB(*this,m1);
+    <a href="../ListOfTypes.html#int">int</a> n = m1.GetNcols();
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> *mrc = &amp;mret(0,0);
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> *temp1r = &amp;TMatrixD::operator()(0,0);
+    for(<a href="../ListOfTypes.html#int">int</a> r=1;r&lt;=mret.GetNrows();r++) {
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> *m11c = &amp;m1(0,0);
+	for(<a href="../ListOfTypes.html#int">int</a> c=1;c&lt;=r;c++) {
+	    register <a href="../ListOfTypes.html#Double_t">Double_t</a> tmp = 0.0;
+	    register <a href="../ListOfTypes.html#Double_t">Double_t</a> *tempir = temp1r;
+	    register <a href="../ListOfTypes.html#Double_t">Double_t</a> *m1ic = m11c;
+	    for(<a href="../ListOfTypes.html#int">int</a> i=1;i&lt;=m1.GetNrows();i++) {
+		tmp+=(*(tempir))*(*(m1ic));
+		tempir += n;
+		m1ic += n;
+	    }
+	    *(mrc++) = tmp;
+	    m11c++;
+	}
+	temp1r++;
+    }
+    return mret;
+}
+
+
+
+
+
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

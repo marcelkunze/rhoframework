@@ -1,0 +1,120 @@
+# Makefile for Microsoft Visual Studio
+PACKAGE  = RhoExamples
+COMPILER = cl
+
+ObjSuf        = obj
+SrcSuf        = cxx
+HeadSuf       = h
+ExeSuf        = .exe
+DllSuf        = dll
+OutPutOpt     = /out:
+ 
+# Win32 system with Microsoft Visual C/C++
+!include <win32.mak>
+CC            = $(COMPILER)
+CXX           = $(COMPILER)
+CXXDEBUG      = -Fd$*.pdb
+CXXFLAGS      = -DANSISTREAM $(cvarsdll) $(CXXDEBUG) /O2 /TP /Z7 -DWIN32 -D_WINDOWS -I.. -I$(ROOTSYS)/include
+
+LD            = $(link)
+LDFLAGS       =
+LDDEBUG       = -DEBUG -PDB:$*.pdb
+SOFLAGS       = -DLL $(LDDEBUG)
+
+ROOTLIBS      = $(ROOTSYS)\lib\libCint.lib \
+				$(ROOTSYS)\lib\libCore.lib \
+				$(ROOTSYS)\lib\libEG.lib \
+				$(ROOTSYS)\lib\libHist.lib \
+				$(ROOTSYS)\lib\libGraf.lib \
+				$(ROOTSYS)\lib\libGraf3D.lib \
+				$(ROOTSYS)\lib\libGPad.lib \
+				$(ROOTSYS)\lib\libMatrix.lib \
+				$(ROOTSYS)\lib\libPhysics.lib \
+				$(ROOTSYS)\lib\libTree.lib \
+				$(ROOTSYS)\lib\libTreePlayer.lib \
+                                $(ROOTSYS)\lib\libWin32gdk.lib \
+                                $(ROOTSYS)\lib\libRIO.lib
+
+NNOLIB        = ..\lib\RhoNNO.lib
+BASELIB       = ..\lib\RhoBase.lib
+CONDITIONSLIB = ..\lib\RhoConditions.lib
+TOOLSLIB      = ..\lib\RhoTools.lib
+MATHLIB       = ..\lib\RhoMath.lib
+MANAGERLIB    = ..\lib\RhoManager.lib
+SELECTORLIB   = ..\lib\RhoSelector.lib
+HISTOLIB      = ..\lib\RhoHistogram.lib
+
+LIBS          = $(ROOTLIBS) \
+				$(BASELIB) $(CONDITIONSLIB) $(HISTOLIB) $(SELECTORLIB) \
+				$(TOOLSLIB) $(MATHLIB) $(NNOLIB) $(MANAGERLIB) \
+                                $(guilibsdll)
+ 
+#------------------------------------------------------------------------------
+ 
+### Directory and Executable Names ###########
+OBJDIR     = ..\tmp
+BINDIR     = ..\bin
+LIBDIR     = ..\lib
+
+RHOTOOLSTEST	= RhoToolsTest$(ExeSuf)
+KANIGGELS		= Kaniggels$(ExeSuf)
+NETWORKTRAINER  = NetworkTrainer$(ExeSuf)
+ANALYSIS        = Analysis$(ExeSuf)
+
+################################################################################################
+		
+RHOTOOLSTESTO	= RhoToolsTest.$(ObjSuf)
+KANIGGELSO		= Kaniggels.$(ObjSuf)
+NETWORKTRAINERO = NetworkTrainer.$(ObjSuf)
+ANALYSISO       = Analysis.$(ObjSuf)
+
+all:	 RhoToolsTest NetworkTrainer Kaniggels Analysis
+
+######  Targets ###############################
+          
+RhoToolsTest: $(RHOTOOLSTESTO)
+	$(LD) $(LDFLAGS) $(RHOTOOLSTESTO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(RHOTOOLSTEST)
+	@echo ---------------------------------- 
+	@echo "$(RHOTOOLSTEST) done"
+	@echo ----------------------------------
+Kaniggels: $(KANIGGELSO)
+	$(LD) $(LDFLAGS) $(KANIGGELSO) $(LIBS)  $(LIBDIR)/RhoGA.lib $(OutPutOpt)$(BINDIR)\$(KANIGGELS)
+	@echo ---------------------------------- 
+	@echo "$(KANIGGELS) done"
+	@echo ----------------------------------
+NetworkTrainer: $(NETWORKTRAINERO)
+	$(LD) $(LDFLAGS) $(NETWORKTRAINERO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(NETWORKTRAINER)
+	@echo ---------------------------------- 
+	@echo "$(NETWORKTRAINER) done"
+	@echo ----------------------------------
+Analysis: $(ANALYSISO)
+	$(LD) $(LDFLAGS) $(ANALYSISO) $(LIBS) $(OutPutOpt)$(BINDIR)\$(ANALYSIS)
+	@echo ---------------------------------- 
+	@echo "$(ANALYSIS) done"
+	@echo ----------------------------------
+
+#######################################
+###     Complete Cleanup            ###
+#######################################
+                
+clean :
+	del *.$(ObjSuf)
+
+#######  Rules ################################
+ 
+.$(SrcSuf).$(ObjSuf):
+        $(CXX) $(CXXFLAGS) -c -I. $<
+        @echo ------------------------------------------
+
+$(RHOTOOLSTESTO): RhoToolsTest.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c RhoToolsTest.$(SrcSuf)
+
+$(NETWORKTRAINERO): NetworkTrainer.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) $(CXXDEBUG) -c NetworkTrainer.$(SrcSuf)
+
+$(KANIGGELSO): Kaniggels.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) /DUSE_ANSI_STREAMS  $(CXXDEBUG) -c Kaniggels.$(SrcSuf)
+
+$(ANALYSISO): Analysis.$(SrcSuf)
+	$(CXX) $(CXXFLAGS) /DUSE_ANSI_STREAMS $(CXXDEBUG) -c Analysis.$(SrcSuf)
+

@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:14 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFChargedAodBase</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>PAFChargedAodBase</h1>
+<hr width=300>
+<!--SDL--><em><a href="#PAFChargedAodBase:description">class description</a> - <a href="src/PAFChargedAodBase.cxx.html">source file</a> - <a href="PAFChargedAodBase_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="PAFChargedAodBase" href="PAFChargedAodBase.h">PAFChargedAodBase</a> : public <a href="./PAFAodBase.html">PAFAodBase</a>, public <a href="./PAFAodCluster.html">PAFAodCluster</a>, public <a href="./PAFAodTrack.html">PAFAodTrack</a></h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->      <a href="./PAFChargedAodBase.html">PAFChargedAodBase</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:PAFChargedAodBase">PAFChargedAodBase</a><!--PLAIN-->()
+<!--TAB6-->      <a href="./PAFChargedAodBase.html">PAFChargedAodBase</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:PAFChargedAodBase">PAFChargedAodBase</a><!--PLAIN-->(<a href="./PAFChargedAodBase.html">PAFChargedAodBase</a>&amp; other)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:~PAFChargedAodBase">~PAFChargedAodBase</a><!--PLAIN-->()
+<!--TAB6-->         static TClass* <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->        virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:GetLikelihood">GetLikelihood</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> hypo)
+<!--TAB6-->        virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:GetSignificanceLevel">GetSignificanceLevel</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> hypo)
+<!--TAB6-->        virtual TClass* <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o) const
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:SetLikelihood">SetLikelihood</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> hypo, <a href="ListOfTypes.html#Float_t">Float_t</a> val)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:SetSignificanceLevel">SetSignificanceLevel</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> hypo, <a href="ListOfTypes.html#Float_t">Float_t</a> val)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:SetTree">SetTree</a><!--PLAIN-->(TTree* theTree)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:SetTree">SetTree</a><!--PLAIN-->(<a href="./PAFChargedAodBase.html">PAFChargedAodBase</a>* other)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->           virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                   <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFChargedAodBase:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="PAFChargedAodBase:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFChargedAodBase:_PIDconsistency">_PIDconsistency[5]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_PIDconsistency"></a></i>
+<!--TAB6-->             <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFChargedAodBase:_PIDlikelihood">_PIDlikelihood[5]</a><!--PLAIN-->   <!--TAB--><i><a name="Title:_PIDlikelihood"></a></i>
+<!--TAB6-->      TSmartPointer* <!--TAB--><!--BOLD--><a name="PAFChargedAodBase:theSLbranch">theSLbranch</a><!--PLAIN-->         <!--TAB--><i><a name="Title:theSLbranch">! not stored in ROOT File</a></i>
+<!--TAB6-->      TSmartPointer* <!--TAB--><!--BOLD--><a name="PAFChargedAodBase:theLHOODbranch">theLHOODbranch</a><!--PLAIN-->      <!--TAB--><i><a name="Title:theLHOODbranch">! not stored in ROOT File</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="PAFChargedAodBase:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./PAFChargedAodBase.html">PAFChargedAodBase</a>							
+                                                                      
+ Definition of the Analysis Object Data database (charged part)	
+                                                                      
+ Author: T. Brandt, TUD, June 99					
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="PAFChargedAodBase:PAFChargedAodBase" href="src/PAFChargedAodBase.cxx.html#PAFChargedAodBase:PAFChargedAodBase">PAFChargedAodBase</a>() :
+<a href="./PAFAodBase.html">PAFAodBase</a>(),
+<a href="./PAFAodCluster.html">PAFAodCluster</a>(),
+<a href="./PAFAodTrack.html">PAFAodTrack</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFChargedAodBase:PAFChargedAodBase" href="src/PAFChargedAodBase.cxx.html#PAFChargedAodBase:PAFChargedAodBase">PAFChargedAodBase</a>(<a href="./PAFChargedAodBase.html">PAFChargedAodBase</a> &amp;other)
+:<a href="./PAFAodBase.html">PAFAodBase</a>(other),
+<a href="./PAFAodTrack.html">PAFAodTrack</a>(other),
+<a href="./PAFAodCluster.html">PAFAodCluster</a>(other)
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFChargedAodBase:~PAFChargedAodBase" href="src/PAFChargedAodBase.cxx.html#PAFChargedAodBase:~PAFChargedAodBase">~PAFChargedAodBase</a>() 
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFChargedAodBase:GetSignificanceLevel" href="src/PAFChargedAodBase.cxx.html#PAFChargedAodBase:GetSignificanceLevel">GetSignificanceLevel</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> hypo) <br>
+<hr>
+<!--FUNCTION--> <a name="PAFChargedAodBase:SetSignificanceLevel" href="src/PAFChargedAodBase.cxx.html#PAFChargedAodBase:SetSignificanceLevel">SetSignificanceLevel</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> hypo,<a href="ListOfTypes.html#Float_t">Float_t</a> val) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFChargedAodBase:SetLikelihood" href="src/PAFChargedAodBase.cxx.html#PAFChargedAodBase:SetLikelihood">SetLikelihood</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> hypo,<a href="ListOfTypes.html#Float_t">Float_t</a> val) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFChargedAodBase:GetLikelihood" href="src/PAFChargedAodBase.cxx.html#PAFChargedAodBase:GetLikelihood">GetLikelihood</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> hypo) <br>
+<hr>
+<!--FUNCTION--> <a name="PAFChargedAodBase:PrintOn" href="src/PAFChargedAodBase.cxx.html#PAFChargedAodBase:PrintOn">PrintOn</a>(std::ostream &amp;o) const 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFChargedAodBase:SetTree" href="src/PAFChargedAodBase.cxx.html#PAFChargedAodBase:SetTree">SetTree</a>(TTree *theTree)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFChargedAodBase:SetTree" href="src/PAFChargedAodBase.cxx.html#PAFChargedAodBase:SetTree">SetTree</a>(<a href="./PAFChargedAodBase.html">PAFChargedAodBase</a> *other)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="PAFChargedAodBase:Class" href="PAFChargedAodBase.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="PAFChargedAodBase:IsA" href="PAFChargedAodBase.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="PAFChargedAodBase:ShowMembers" href="PAFChargedAodBase.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="PAFChargedAodBase:Streamer" href="PAFChargedAodBase.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="PAFChargedAodBase:StreamerNVirtual" href="PAFChargedAodBase.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?T.+Brandt">T. Brandt</a>, <a href="http://consult.cern.ch/xwho/people?TUD">TUD</a>, <a href="http://consult.cern.ch/xwho/people?June">June</a> 99					//</em><br>
+<em>Last update: Fri Dec 20 16:02:15 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

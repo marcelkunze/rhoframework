@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:28 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>RooEvtObj&lt;BtaCandidate&gt; - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+#ifndef ROOEVTOBJ_CC
+#define ROOEVTOBJ_CC
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: RooEvtObj_BtaCandidate_.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//	Class RooEvtObj</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//	A.Salnikov		originator</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999    LBNL</b>
+<b>//</b>
+<b>//------------------------------------------------------------------------</b>
+
+<b>//-----------------------</b>
+<b>// This Class's Header --</b>
+<b>//-----------------------</b>
+#include "KangaSchema/RooEvtObj.h"
+#include "KangaSchema/RooClonesVectorR.h"
+
+<b>//-------------</b>
+<b>// C Headers --</b>
+<b>//-------------</b>
+extern "C" {
+}
+
+<b>//---------------</b>
+<b>// C++ Headers --</b>
+<b>//---------------</b>
+
+<b>//-------------------------------</b>
+<b>// Collaborating Class Headers --</b>
+<b>//-------------------------------</b>
+<b>//#include "RooUtils/RooEvtObjLocReg.h"</b>
+#include "TMemberInspector.h"
+
+<b>//-----------------------------------------------------------------------</b>
+<b>// Local Macros, Typedefs, Structures, Unions and Forward Declarations --</b>
+<b>//-----------------------------------------------------------------------</b>
+
+<b>//		----------------------------------------</b>
+<b>// 		-- Public Function Member Definitions --</b>
+<b>//		----------------------------------------</b>
+
+ClassImpT(RooEvtObj,T)
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+
+template &lt;class T&gt;
+RooEvtObj&lt;T&gt;::RooEvtObj() 
+  : <a href=".././RooPersObj.html">RooPersObj</a>()
+{
+}
+
+
+template &lt;class T&gt;
+RooEvtObj&lt;T&gt;::RooEvtObj( const RooEvtObj&lt;T&gt;&amp; o )
+  : <a href=".././RooPersObj.html">RooPersObj</a>(o)
+{
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+template &lt;class T&gt;
+RooEvtObj&lt;T&gt;::~RooEvtObj() 
+{
+}
+
+<b>//-------------</b>
+<b>// Methods   --</b>
+<b>//-------------</b>
+/*
+template &lt;class T&gt;
+<a href="../ListOfTypes.html#bool">bool</a> 
+RooEvtObj&lt;T&gt;::fillRefs ( const T* trans, const RooEvtObjLocReg&amp; aRegistry ) 
+{
+  return true ;
+}
+
+template &lt;class T&gt;
+<a href="../ListOfTypes.html#bool">bool</a> 
+RooEvtObj&lt;T&gt;::fillPointers ( T* trans, const RooEvtObjLocReg&amp; reg ) const 
+{
+  return true ;
+}
+*/
+<b>//-------------</b>
+<b>// Operators --</b>
+<b>//-------------</b>
+
+template &lt;class T&gt;
+RooEvtObj&lt;T&gt;&amp; 
+RooEvtObj&lt;T&gt;::operator= ( const RooEvtObj&lt;T&gt;&amp; o)
+{
+  <a href=".././RooPersObj.html#RooPersObj:operator">RooPersObj::operator</a>= (o) ;
+  return *this ;
+}
+
+
+<b>//-------------</b>
+<b>// Selectors --</b>
+<b>//-------------</b>
+    
+<b>//-------------</b>
+<b>// Modifiers --</b>
+<b>//-------------</b>
+
+<b>//		-----------------------------------------------</b>
+<b>// 		-- Static Data &amp; Function Member Definitions --</b>
+<b>//		-----------------------------------------------</b>
+
+<b>//		-------------------------------------------</b>
+<b>// 		-- Protected Function Member Definitions --</b>
+<b>//		-------------------------------------------</b>
+
+<b>//		-----------------------------------------</b>
+<b>// 		-- Private Function Member Definitions --</b>
+<b>//		-----------------------------------------</b>
+
+<b>//		-----------------------------------</b>
+<b>// 		-- Internal Function Definitions --</b>
+<b>//		-----------------------------------</b>
+
+<b>// Stream an object of class RooEvtObj&lt;T&gt;:</b>
+template &lt;class T&gt; 
+<a href="../ListOfTypes.html#void">void</a> 
+RooEvtObj&lt;T&gt;::<a href="#RooEvtObj<BtaCandidate>:Streamer">Streamer</a>( TBuffer &amp; R__b ) 
+{
+  if( R__b.IsReading() ) {
+    <a href="../ListOfTypes.html#Version_t">Version_t</a> R__v= R__b.ReadVersion();
+<b>    // if (R__v) { }</b>
+    <a href=".././RooPersObj.html#RooPersObj:Streamer">RooPersObj::Streamer</a>( R__b );
+  } 
+  else {
+    R__b.WriteVersion( RooEvtObj&lt;T&gt;::<a href="#RooEvtObj<BtaCandidate>:IsA">IsA</a>() );
+    <a href=".././RooPersObj.html#RooPersObj:Streamer">RooPersObj::Streamer</a>( R__b );
+  }
+}
+
+<b>// Read a pointer to an object of type RooEvtObj&lt;T&gt;:</b>
+template &lt;class T&gt; 
+TBuffer &amp; 
+operator &gt;&gt; ( TBuffer &amp; buf, RooEvtObj&lt;T&gt;* &amp; obj ) 
+{
+  obj= (RooClonesVectorR&lt;T&gt;*) buf.ReadObject( RooClonesVectorR&lt;T&gt;::<a href="#RooEvtObj<BtaCandidate>:Class">Class</a>() );
+  return buf;
+}
+
+#endif
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

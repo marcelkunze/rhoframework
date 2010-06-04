@@ -1,0 +1,791 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:04 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TMicroAssociator - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TAssociator.html">TAssociator</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Monte Carlo truth association class					//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, Bochum University, Dec. 99			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+<b>// The associators create a match index into the Reco/MCTruth list.</b>
+<b>// The base class methods McFromReco and RecoFromMc can be used to translate </b>
+<b>// the indices into TCandidates.</b>
+
+#include "TDatabasePDG.h"
+
+#include "RhoManager/TAssociator.h"
+#include "PAFSchema/PAFMcAssocBase.h"
+#include "RhoManager/TEventManager.h"
+#include "RhoBase/VAbsReader.h"
+#include "RhoBase/VAbsTruth.h"
+#include "RhoBase/TRho.h"
+#include "RhoBase/TCandidate.h"
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandListIterator.h"
+#include "RhoBase/VAbsMicroCandidate.h"
+
+ClassImp(TAssociator)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+TAssociator::TAssociator(TEventManager &amp;evtmgr, const char* name) :
+fEvtMgr(&amp;evtmgr), TNamed(name,name),fMatchConsistency(0.0)
+{
+    fRecoList = new TCandList();
+    fMcList = new TCandList();
+    fOwnLists = kTRUE;
+}
+
+TAssociator::TAssociator(TCandList&amp; mcTruth, TCandList&amp; reco, const char* name) :
+fEvtMgr(0), TNamed(name,name),fMatchConsistency(0.0)
+{
+    fRecoList = &amp;reco;
+    fMcList = &amp;mcTruth;
+    fOwnLists = kFALSE;
+}
+
+
+TAssociator::~TAssociator() 
+{
+    if (fOwnLists) {
+	delete fRecoList;
+	delete fMcList;
+    }
+}
+
+void TAssociator::Associate(TCandList &amp;l) 
+{
+    Int_t nmicro = fRecoList-&gt;GetNumberOfTracks();
+    Float_t *bestMatch = new float[nmicro];
+    for (int n=0;n&lt;nmicro;n++)  bestMatch[n] = 0.0;
+
+    Int_t nl = l.GetLength();
+    for (Int_t i=0;i&lt;nl;++i) {
+	TCandidate *cand = &amp;l[i];
+	Int_t index = RecoIndexFromMc(cand);
+	Float_t consistency = GetMatchConsistency();
+
+	if (index&gt;=0 &amp;&amp; index&lt;nmicro) {
+	    VAbsMicroCandidate &amp;micro = TRho::Instance()-&gt;GetEventManager()-&gt;GetMicroCandidate(index);
+	    if (&amp;micro == 0) {
+		cerr &lt;&lt; "TAssociator::Associate: Non-existent micro #" &lt;&lt; i &lt;&lt; endl;
+		continue;
+	    }
+	    if (consistency&gt;bestMatch[index]) { // Found a better match
+	      bestMatch[index] = consistency;
+	      if (cand-&gt;PdtEntry()!=0)
+	        micro.SetMcPid(cand-&gt;PdtEntry()-&gt;PdgCode());
+	      else
+		cerr &lt;&lt; "TAssociator::Associate: Can not set type for #" &lt;&lt; i &lt;&lt; endl;
+	      micro.SetMcConsistency(consistency);
+	      micro.SetMcIndex(i);
+	      cand-&gt;SetMicroCandidate(micro);
+	    }
+	}
+    }
+
+    delete bestMatch;
+}
+
+TCandidate* TAssociator::McFromReco(TCandidate *c)
+{
+#ifdef DEBUG
+    cout &lt;&lt; "TAssociator::McFromReco: Uses " &lt;&lt; this-&gt;ClassName() &lt;&lt; endl;
+#endif
+    if (c == 0) return 0; // Nothing to do
+    VAbsMicroCandidate &amp;micro = c-&gt;GetMicroCandidate();
+    if (&amp;micro == 0) return 0; // This is not a MicroCandidate
+    
+    Int_t index = McIndexFromReco(c);
+    
+    if (index&gt;=0 &amp;&amp; index&lt;fMcList-&gt;GetNumberOfTracks()) {
+	SetMcAttributes(micro,index,GetMatchConsistency()); // Note the matching results
+	return fMcList-&gt;Get(index);
+    }
+    
+    return 0;
+}
+
+TCandidate* TAssociator::RecoFromMc(TCandidate *c)
+{
+#ifdef DEBUG
+    cout &lt;&lt; "TAssociator::RecoFromMc: Uses " &lt;&lt; this-&gt;ClassName() &lt;&lt; endl;
+#endif
+    TCandidate *result = 0;
+    if (c == 0) return result; // Nothing to do
+    
+    Int_t index = RecoIndexFromMc(c);
+    if (index&gt;=0 &amp;&amp; index&lt;fRecoList-&gt;GetNumberOfTracks()) {
+	result = fRecoList-&gt;Get(index);
+	VAbsMicroCandidate &amp;micro = result-&gt;GetMicroCandidate();
+	if (&amp;micro == 0) return 0;			    // This is not a MicroCandidate
+	SetMcAttributes(micro,c-&gt;Uid(),GetMatchConsistency());  // Note the matching results
+    }
+    
+    return result;
+}
+
+void TAssociator::PrintOn(std::ostream&amp; o) {
+    o &lt;&lt; "TAssociator " &lt;&lt;  GetName() &lt;&lt; endl;
+    CheckList(); // Force reading the lists...
+    TCandListIterator iter(*fRecoList);
+    TCandidate *c=0;
+    Int_t n = 1;
+    while (c = iter.Next()) {	
+	TCandidate *mc = McFromReco(c);
+	if (c-&gt;PdtEntry() == 0) SetRecoPid(c);
+	cout &lt;&lt; "Track #" &lt;&lt; n++ &lt;&lt; '\t' &lt;&lt; c-&gt;PdtEntry()-&gt;GetName() &lt;&lt; '\t';
+	if (mc != 0) {
+	    cout &lt;&lt; "matched to MC-track #" &lt;&lt; c-&gt;GetMicroCandidate().GetMcIndex() 
+		&lt;&lt; '\t' &lt;&lt; mc-&gt;PdtEntry()-&gt;GetName() &lt;&lt; " (" &lt;&lt; GetMatchConsistency() &lt;&lt; ")" &lt;&lt; endl;
+	}
+	else
+	    cout &lt;&lt; "not matched" &lt;&lt; endl;
+    }
+    
+}        
+
+void TAssociator::CheckList() const
+{
+    if (!fOwnLists) return;
+    
+    static Int_t oldEvent = -1;
+    if (fEvtMgr != 0 &amp;&amp; fEvtMgr-&gt;GetEventNumber()!=oldEvent) {
+	fEvtMgr-&gt;Fill(fRecoList);
+	fEvtMgr-&gt;FillMcTruthList(fMcList);
+	oldEvent = fEvtMgr-&gt;GetEventNumber();
+    }
+}
+
+Bool_t TAssociator::IsAParticleToMatch(TCandidate *c) const
+{
+    return IsAParticleToMatch(TMath::Abs(c-&gt;PdtEntry()-&gt;PdgCode()));
+}
+
+Bool_t TAssociator::IsAParticleToMatch(VAbsTruth *c) const
+{
+    return IsAParticleToMatch(TMath::Abs(c-&gt;GetPdtEntry()-&gt;PdgCode()));
+}
+
+Bool_t TAssociator::IsAParticleToMatch(Int_t pid) const
+{
+    if (pid==11||pid==13||pid==211||pid==321||pid==2212|| // e,mu,pi,K,p
+	pid==22||pid==130||pid==2112) return kTRUE; // gamma, KL, n
+    return kFALSE;
+}
+
+Bool_t TAssociator::BelongsToAShower(TCandidate *c) const
+{
+<b>    // Check if a particle belongs to a hadronic shower</b>
+<b>    // Compare the sum of daughter energies to the mother</b>
+    if (c==0) return kFALSE;
+    VAbsTruth *mc = (VAbsTruth *) c-&gt;McTruth();
+    if (mc==0) return kFALSE;
+    if (mc-&gt;GetStartVertex().Mag()&gt;100.0) return kTRUE; // Too far outside
+
+    VAbsTruth *mother = mc-&gt;GetMother();
+    if (mother==0) return kFALSE;
+    if (!IsAParticleToMatch(mother)) return kFALSE; // Only check the stable particles
+
+    if (mother-&gt;GetNumberOfDaughters()&gt;4) {
+#ifdef DEBUG
+	cout &lt;&lt; mc-&gt;GetPdtEntry()-&gt;GetName() 
+	    &lt;&lt; " belongs to a shower from " &lt;&lt; mother-&gt;GetPdtEntry()-&gt;GetName() &lt;&lt; 
+	    " with " &lt;&lt; mother-&gt;GetNumberOfDaughters() &lt;&lt; " particles: " &lt;&lt; endl;
+	for (int i=0;i&lt;mother-&gt;GetNumberOfDaughters();i++) {
+	    VAbsTruth *daughter = (VAbsTruth *) mother-&gt;GetDaughter(i);
+	    cout &lt;&lt; daughter-&gt;GetPdtEntry()-&gt;GetName() &lt;&lt; " ";
+	}
+	cout &lt;&lt; endl;
+#endif	
+	return kTRUE;
+    }
+    
+    return kFALSE;
+}
+
+void TAssociator::SetRecoPid(TCandidate *c)
+{
+    Int_t pdgCode = 0; // Rootino
+    Int_t charge = (Int_t) c-&gt;GetCharge();
+    if (charge != 0) {
+	switch(c-&gt;GetMicroCandidate().GetChargedPidHypo()) { // From Reco
+	case 0: pdgCode = charge*11; break; // Electron
+	case 1: pdgCode = charge*13; break; // Muon
+	case 2: pdgCode = charge*211; break; // Pion
+	case 3: pdgCode = charge*321; break; // Kaon
+	case 4: pdgCode = charge*2212; break; // Proton
+	}
+    }
+    else
+	pdgCode = 22;  // Gamma
+    
+    c-&gt;SetType(TRho::Instance()-&gt;GetPDG()-&gt;GetParticle(pdgCode));
+}
+
+void TAssociator::SetMcPid(TCandidate *c)
+{
+    Int_t pdgCode = 0; // Rootino
+    Int_t charge = (Int_t) c-&gt;GetCharge();
+    
+    TCandidate *mc;
+    if (mc = McFromReco(c))
+	pdgCode = mc-&gt;PdtEntry()-&gt;PdgCode();
+    
+    c-&gt;SetType(TRho::Instance()-&gt;GetPDG()-&gt;GetParticle(pdgCode));
+    
+    VAbsMicroCandidate &amp;micro = c-&gt;GetMicroCandidate();
+    
+    if (charge != 0) {
+	switch(pdgCode) { // From Reco
+	case 11: case -11: micro.SetMcPid(0); break;	    // Electron
+	case 13: case -13: micro.SetMcPid(1); break;	    // Muon
+	case 211: case -211: micro.SetMcPid(2); break;	    // Pion
+	case 321: case -321: micro.SetMcPid(3); break;	    // Kaon
+	case 2212: case -2212: micro.SetMcPid(4); break;    // Proton
+	}
+    }
+}
+
+void TAssociator::SetMcAttributes(VAbsMicroCandidate &amp;micro, Int_t index, Double_t cons)
+{
+    if (index &gt;= 0 &amp;&amp; index&lt;fMcList-&gt;GetNumberOfTracks()) {
+	TCandidate *mc = fMcList-&gt;Get(index);
+	const VAbsMicroCandidate &amp;m = mc-&gt;GetMicroCandidate();
+	if (&amp;m==0) mc-&gt;SetMicroCandidate(micro);    // Associate the measurement
+	micro.SetMcPid(mc-&gt;PdtEntry()-&gt;PdgCode());  // Note the true type
+	micro.SetMcIndex(index);		    // Note the index
+	micro.SetMcConsistency(cons);		    // Note the match quality
+    }
+}
+
+std::ostream&amp;  operator &lt;&lt; (std::ostream&amp; o, TAssociator&amp; a) { a.PrintOn(o); return o; }
+
+
+<b>// Implementation of a micro/file based Associator (Available from T files)</b>
+
+ClassImp(<a href=".././TMicroAssociator.html">TMicroAssociator</a>)
+
+<a name="TMicroAssociator:TMicroAssociator"> </a><a href=".././TMicroAssociator.html#TMicroAssociator:TMicroAssociator">TMicroAssociator::TMicroAssociator</a>(<a href=".././TEventManager.html">TEventManager</a> &amp;evtmgr, const <a href="../ListOfTypes.html#char">char</a>* name) :
+<a href=".././TAssociator.html">TAssociator</a>(evtmgr,name)
+{}
+
+<a name="TMicroAssociator:TMicroAssociator"> </a><a href=".././TMicroAssociator.html#TMicroAssociator:TMicroAssociator">TMicroAssociator::TMicroAssociator</a>(TCandList&amp; mcTruth, TCandList&amp; reco, const <a href="../ListOfTypes.html#char">char</a>* name) :
+<a href=".././TAssociator.html">TAssociator</a>(mcTruth,reco,name)
+{}
+
+
+<a name="TMicroAssociator:~TMicroAssociator"> </a><a href=".././TMicroAssociator.html">TMicroAssociator</a>::~<a href=".././TMicroAssociator.html">TMicroAssociator</a>() 
+{}
+
+<a name="TMicroAssociator:RecoIndexFromMc"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TMicroAssociator.html#TMicroAssociator:RecoIndexFromMc">TMicroAssociator::RecoIndexFromMc</a>(TCandidate *c)
+{   
+    <a href=".././TAssociator.html#TAssociator:fMatchConsistency">fMatchConsistency</a> = 0.0;
+    if (c == 0) return -1; // Nothing to do
+<b>    // Not yet implemented</b>
+    return -1;
+}
+
+<a name="TMicroAssociator:McIndexFromReco"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TMicroAssociator.html#TMicroAssociator:McIndexFromReco">TMicroAssociator::McIndexFromReco</a>(TCandidate *c)
+{
+#ifdef DEBUG
+    cout &lt;&lt; "TMicroAssociator::McIndexFromReco:" &lt;&lt; endl;
+#endif
+    fMatchConsistency = 0.0;
+    if (c == 0) return -1; // Nothing to do
+    VAbsMicroCandidate &amp;micro = c-&gt;GetMicroCandidate();
+    if (&amp;micro==0) return -1;
+    fMatchConsistency = micro.GetMcConsistency();
+    return micro.GetMcIndex();
+}
+
+
+
+<b>// Implementation of a Chi2 based Associator (Compare 4-momenta)</b>
+
+ClassImp(<a href=".././TChi2Associator.html">TChi2Associator</a>)
+
+<a href=".././TChi2Associator.html#TChi2Associator:TChi2Associator">TChi2Associator::TChi2Associator</a>(<a href=".././TEventManager.html">TEventManager</a> &amp;evtmgr, const <a href="../ListOfTypes.html#char">char</a>* name) :
+<a href=".././TAssociator.html">TAssociator</a>(evtmgr,name)
+{
+    fDiffLimit = 100.;
+}
+
+<a href=".././TChi2Associator.html#TChi2Associator:TChi2Associator">TChi2Associator::TChi2Associator</a>(TCandList&amp; mcTruth, TCandList&amp; reco, const <a href="../ListOfTypes.html#char">char</a>* name) :
+<a href=".././TAssociator.html">TAssociator</a>(mcTruth,reco,name)
+{
+    fDiffLimit = 100.;
+}
+
+
+<a href=".././TChi2Associator.html">TChi2Associator</a>::~<a href=".././TChi2Associator.html">TChi2Associator</a>() 
+{}
+
+<a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TChi2Associator.html#TChi2Associator:RecoIndexFromMc">TChi2Associator::RecoIndexFromMc</a>(TCandidate *c)
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> index = -1;
+    <a href=".././TAssociator.html#TAssociator:fMatchConsistency">fMatchConsistency</a> = 0.0;
+    if (c == 0) return index; // Nothing to do
+    if (!IsAParticleToMatch(c)) return index;
+    
+    CheckList();
+    
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> cmc = (<a href="../ListOfTypes.html#Int_t">Int_t</a>) c-&gt;GetCharge();
+    
+    <a href="../ListOfTypes.html#Double_t">Double_t</a> minDiff2 = fDiffLimit;
+    
+    if (index&lt;=0) { // Try to associate by comparison of momenta
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> chi2 = 0.0;
+	TVector3 pm = c-&gt;P3();
+	for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;<a href=".././TAssociator.html#TAssociator:fRecoList">fRecoList</a>-&gt;GetNumberOfTracks();i++) {
+	    TCandidate &amp;reco = (*<a href=".././TAssociator.html#TAssociator:fRecoList">fRecoList</a>)[i];
+	    <a href="../ListOfTypes.html#Int_t">Int_t</a> cmr = (<a href="../ListOfTypes.html#Int_t">Int_t</a>) reco.GetCharge();
+	    if (cmr == 0) { // Match neutral
+		if (cmc != 0) continue;
+		TVector3 mcP3 = reco.P3();
+		const <a href="../ListOfTypes.html#double">double</a> dot = mcP3 * pm;
+		const <a href="../ListOfTypes.html#double">double</a> cang = dot/(pm.Mag()*mcP3.Mag());
+		const <a href="../ListOfTypes.html#double">double</a> ang = TMath::ACos(cang);
+		const <a href="../ListOfTypes.html#double">double</a> deltaang = 0.001*1.414*(-2.17*log(mcP3.Mag())+4.51);  
+		chi2 = ((ang*ang)/(deltaang*deltaang));
+	    }
+	    else { // Match charged
+		if (cmc == 0) continue;
+		TVector3 v = pm - reco.P3();
+		chi2 = 100. * v.Mag();
+	    }
+	    
+	    if (chi2&lt;minDiff2&amp;&amp;!BelongsToAShower(c)) {
+		minDiff2 = chi2;
+		index = i;
+	    }
+	}
+    }
+    
+    if (minDiff2&gt;0.0) {
+	<a href=".././TAssociator.html#TAssociator:fMatchConsistency">fMatchConsistency</a> = 1.0/minDiff2;
+	if (<a href=".././TAssociator.html#TAssociator:fMatchConsistency">fMatchConsistency</a>&gt;1.0) <a href=".././TAssociator.html#TAssociator:fMatchConsistency">fMatchConsistency</a> = 1.0;
+    }
+    
+    return index;
+}
+
+<a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TChi2Associator.html#TChi2Associator:McIndexFromReco">TChi2Associator::McIndexFromReco</a>(TCandidate *c)
+{
+#ifdef DEBUG
+    cout &lt;&lt; "TChi2Associator::McIndexFromReco:" &lt;&lt; endl;
+#endif
+    Int_t index = -1;
+    fMatchConsistency = 0.0;
+    if (c == 0) return index; // Nothing to do
+    
+    CheckList();
+    
+    VAbsMicroCandidate &amp;micro = c-&gt;GetMicroCandidate();
+    if (&amp;micro == 0) return -1;
+    
+    Int_t cm = micro.GetCharge();
+    Double_t minDiff2 = fDiffLimit;
+    
+    if (index&lt;=0||cm==0) { // Try to associate by comparison of momenta
+	Double_t chi2 = 0.0;
+	TVector3 pm = micro.GetMomentum();
+	for (int i=0;i&lt;fMcList-&gt;GetNumberOfTracks();i++) {
+	    TCandidate *mc = fMcList-&gt;Get(i);
+	    if (!IsAParticleToMatch(mc)) continue;
+	    Int_t cmc = (Int_t) mc-&gt;GetCharge();
+	    if (cm == 0) { // Match neutral
+		if (cmc != 0) continue;
+		TVector3 mcP3 = mc-&gt;P3();
+		const double dot = mcP3 * pm;
+		const double cang = dot/(pm.Mag()*mcP3.Mag());
+		const double ang = TMath::ACos(cang);
+		const double deltaang = 0.001*1.414*(-2.17*log(mcP3.Mag())+4.51);  
+		chi2 = ((ang*ang)/(deltaang*deltaang));
+	    }
+	    else { // Match charged
+		if (cmc == 0) continue;
+		TVector3 v = pm - mc-&gt;P3();
+		chi2 = 100. * v.Mag();
+	    }
+	    
+	    if (chi2&lt;minDiff2&amp;&amp;!BelongsToAShower(mc)) {
+		minDiff2 = chi2;
+		index = i;
+	    }
+	}
+    }
+    
+    if (minDiff2&gt;0.0) {
+	fMatchConsistency = 1.0/minDiff2;
+	if (fMatchConsistency&gt;1.0) fMatchConsistency = 1.0;
+    }
+    
+    return index;
+}
+
+
+<b>// Implementation of a MCTruth based associator</b>
+
+ClassImp(<a href=".././TMapAssociator.html">TMapAssociator</a>)
+
+<a href=".././TMapAssociator.html#TMapAssociator:TMapAssociator">TMapAssociator::TMapAssociator</a>(<a href=".././TEventManager.html">TEventManager</a> &amp;evtmgr, const <a href="../ListOfTypes.html#char">char</a>* name) :
+<a href=".././TAssociator.html">TAssociator</a>(evtmgr,name)
+{
+    fMinConsistency = 0.0;
+}
+
+<a href=".././TMapAssociator.html#TMapAssociator:TMapAssociator">TMapAssociator::TMapAssociator</a>(TCandList&amp; mcTruth, TCandList&amp; reco, const <a href="../ListOfTypes.html#char">char</a>* name) :
+<a href=".././TAssociator.html">TAssociator</a>(mcTruth,reco,name)
+{
+    fMinConsistency = 0.0;
+}
+
+
+<a href=".././TMapAssociator.html">TMapAssociator</a>::~<a href=".././TMapAssociator.html">TMapAssociator</a>() 
+{}
+
+<a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TMapAssociator.html#TMapAssociator:RecoIndexFromMc">TMapAssociator::RecoIndexFromMc</a>(TCandidate *c)
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> index = -1;
+    <a href=".././TAssociator.html#TAssociator:fMatchConsistency">fMatchConsistency</a> = 0.0;
+    if (c == 0) return index; // Nothing to do
+<b>    //if (!IsAParticleToMatch(c)) return index;</b>
+    
+    CheckList();
+    
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> cmc = (<a href="../ListOfTypes.html#Int_t">Int_t</a>) c-&gt;GetCharge();
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> trackNumber = c-&gt;GetTrackNumber();
+    
+    if (index&lt;=0) {
+	<a href="../ListOfTypes.html#Double_t">Double_t</a> matchConsistency = 0.0;
+	for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;<a href=".././TAssociator.html#TAssociator:fRecoList">fRecoList</a>-&gt;GetNumberOfTracks();i++) {
+	    TCandidate *reco = <a href=".././TAssociator.html#TAssociator:fRecoList">fRecoList</a>-&gt;Get(i);
+	    <a href="../ListOfTypes.html#Int_t">Int_t</a> cmr = (<a href="../ListOfTypes.html#Int_t">Int_t</a>) reco-&gt;GetCharge();
+	    if (cmr == 0) { // Match neutral
+		if (cmc != 0) continue;
+		matchConsistency = GetAssociation(i,trackNumber);
+	    }
+	    else { // Match charged
+		if (cmc == 0) continue;
+		matchConsistency = GetAssociation(i,trackNumber);
+	    }
+	    
+	    if (matchConsistency&gt;<a href=".././TAssociator.html#TAssociator:fMatchConsistency">fMatchConsistency</a>) {
+		<a href=".././TAssociator.html#TAssociator:fMatchConsistency">fMatchConsistency</a> = matchConsistency;
+		index = i;
+	    }
+	}
+	
+	if (<a href=".././TAssociator.html#TAssociator:fMatchConsistency">fMatchConsistency</a>&lt;fMinConsistency) index = -1; // No good match
+    }
+    
+#ifdef DEBUG
+    cout &lt;&lt; "RecoIndexFromMc: MC track #" &lt;&lt; c-&gt;uid() &lt;&lt; " matches reco track #" &lt;&lt; index &lt;&lt; endl;
+#endif
+    
+    return index;
+}
+
+Int_t TMapAssociator::McIndexFromReco(TCandidate *c)
+{
+#ifdef DEBUG
+    cout &lt;&lt; "TMapAssociator::McIndexFromReco:" &lt;&lt; endl;
+#endif
+    Int_t index = -1;
+    fMatchConsistency = 0.0;
+    if (c == 0) return index; // Nothing to do
+    
+    CheckList();
+    
+    Int_t trackNumber = c-&gt;GetTrackNumber();
+    Int_t cm = (Int_t) c-&gt;GetCharge();
+    
+    if (index&lt;=0||cm==0) {
+	Double_t matchConsistency = 0.0;
+	for (int i=0;i&lt;fMcList-&gt;GetNumberOfTracks();i++) {
+	    TCandidate *mc = fMcList-&gt;Get(i);
+	    if (!IsAParticleToMatch(mc)) continue;
+	    Int_t cmc = (Int_t) mc-&gt;GetCharge();
+	    if (cm == 0) { // Match neutral
+		if (cmc != 0) continue;
+		matchConsistency = GetAssociation(trackNumber,i);
+	    }
+	    else { // Match charged
+		if (cmc == 0) continue;
+		matchConsistency = GetAssociation(trackNumber,i);
+	    }
+	    
+	    if (matchConsistency&gt;fMatchConsistency) {
+		fMatchConsistency = matchConsistency;
+		index = i;
+	    }
+	}
+	
+	if (fMatchConsistency&lt;fMinConsistency) index = -1; // No good match
+    }
+    
+#ifdef DEBUG
+    cout &lt;&lt; "McIndexFromReco: Reco track #" &lt;&lt; c-&gt;uid() &lt;&lt; " matches MC track #" &lt;&lt; index &lt;&lt; endl;
+#endif
+    
+    return index;
+}
+
+
+Double_t TAssociator::GetAssociation(Int_t track, Int_t mc) const
+{
+<b>    // Try to read the AssocMap</b>
+<b>    // Look for the best corresponding entry and assign micro mapping</b>
+    
+#define NEVT 128
+#define NMCT 512
+    
+    TEventManager *evtMgr = TRho::Instance()-&gt;GetEventManager();
+    
+<b>    // Fill the cache</b>
+    static <a href="../ListOfTypes.html#Float_t">Float_t</a> mcAssoc[NEVT][NMCT];
+    static <a href="../ListOfTypes.html#Int_t">Int_t</a> oldEvent = -1;
+    if (evtMgr != 0 &amp;&amp; evtMgr-&gt;GetEventNumber()!=oldEvent) {
+	<a href="../ListOfTypes.html#UInt_t">UInt_t</a> nevt = evtMgr-&gt;GetNumberOfTracks();
+	<a href="../ListOfTypes.html#UInt_t">UInt_t</a> nmct = evtMgr-&gt;GetNumberOfMcTruthTracks();
+#ifdef DEBUG
+	cout &lt;&lt; "Install McAssoc table [" &lt;&lt; nevt &lt;&lt; "][" &lt;&lt; nmct &lt;&lt; "]" &lt;&lt; endl;
+#endif
+	if (nevt&gt;NEVT) { cerr &lt;&lt; "TMapAssociator::GetAssociation: NEVT&lt;" &lt;&lt; nevt &lt;&lt; endl; nevt = NEVT; }
+	if (nmct&gt;NMCT) { cerr &lt;&lt; "TMapAssociator::GetAssociation: NMCT&lt;" &lt;&lt; nmct &lt;&lt; endl; nmct = NMCT; }
+	for (int i=0;i&lt;nevt;i++)
+	    for (int j=0;j&lt;nmct;j++) mcAssoc[i][j] = 0.0;
+	    
+        VAbsReader *reader = evtMgr-&gt;GetReader();
+	if (reader==0) return 0.0;
+
+	for (int j=0;j&lt;reader-&gt;GetNumberOfCandAssocs();j++) {
+	    PAFMcAssocBase &amp;map = reader-&gt;GetMcAssocBase(j);
+	    if (&amp;map!=0) {
+		Int_t mctru = map.GetMcTru();
+		Int_t micro = map.GetMicro();
+		Float_t cons = map.GetConsistency();
+		if (micro&gt;=NEVT) continue;
+		if (mctru&gt;=NMCT) continue;
+		mcAssoc[micro][mctru] = cons;
+#ifdef DEBUG
+		cout &lt;&lt; "Fill#" &lt;&lt; j &lt;&lt; " Micro#" &lt;&lt; micro &lt;&lt; "-&gt;MCBase#" &lt;&lt; mctru &lt;&lt; " " &lt;&lt; cons &lt;&lt; " ";
+		cout &lt;&lt; " " &lt;&lt; (evtMgr-&gt;GetMcTruth(mctru)).GetPdtEntry()-&gt;GetName();
+		cout &lt;&lt; endl;
+#endif
+	    }
+	}
+
+	oldEvent = evtMgr-&gt;GetEventNumber();
+    }
+    
+<b>    // Return the assoc consisntency</b>
+#ifdef DEBUG
+    if (mcAssoc[track][mc]&gt;0.0) {
+	cout &lt;&lt; "Micro#" &lt;&lt; track &lt;&lt; "-&gt;MCBase#" &lt;&lt; mc &lt;&lt; " " &lt;&lt; mcAssoc[track][mc] &lt;&lt; " ";
+	cout &lt;&lt; (evtMgr-&gt;GetMcTruth(mc)).GetPdtEntry()-&gt;GetName() &lt;&lt; endl;
+    }
+#endif
+    
+    return mcAssoc[track][mc];
+}   
+
+
+<b>// Another implementation of a MCTruth based associator</b>
+
+ClassImp(<a href=".././TMcAssocAssociator.html">TMcAssocAssociator</a>)
+
+<a href=".././TMcAssocAssociator.html#TMcAssocAssociator:TMcAssocAssociator">TMcAssocAssociator::TMcAssocAssociator</a>(<a href=".././TEventManager.html">TEventManager</a> &amp;evtmgr, const <a href="../ListOfTypes.html#char">char</a>* name) :
+<a href=".././TAssociator.html">TAssociator</a>(evtmgr,name)
+{
+    fMinConsistency = 0.0;
+}
+
+<a href=".././TMcAssocAssociator.html#TMcAssocAssociator:TMcAssocAssociator">TMcAssocAssociator::TMcAssocAssociator</a>(TCandList&amp; mcTruth, TCandList&amp; reco, const <a href="../ListOfTypes.html#char">char</a>* name) :
+<a href=".././TAssociator.html">TAssociator</a>(mcTruth,reco,name)
+{
+    fMinConsistency = 0.0;
+}
+
+
+<a href=".././TMcAssocAssociator.html">TMcAssocAssociator</a>::~<a href=".././TMcAssocAssociator.html">TMcAssocAssociator</a>() 
+{}
+
+<a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././TMcAssocAssociator.html#TMcAssocAssociator:RecoIndexFromMc">TMcAssocAssociator::RecoIndexFromMc</a>(TCandidate *c)
+{
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> index = -1;
+    <a href=".././TAssociator.html#TAssociator:fMatchConsistency">fMatchConsistency</a> = 0.0;
+    if (c == 0) return index; // Nothing to do
+<b>    //if (!IsAParticleToMatch(c)) return index;</b>
+    
+    CheckList();
+    
+#ifdef TMCASSOC
+    TEventManager *evtMgr = TRho::Instance()-&gt;GetEventManager();
+    static TMcAssoc *assoc = 0;
+    static Int_t oldEvent = -1;
+    if (evtMgr-&gt;GetEventNumber()!=oldEvent) {
+	oldEvent = evtMgr-&gt;GetEventNumber();
+        static TCandList canonicalList;
+        evtMgr-&gt;GetReader()-&gt;FillCanonicalMcTruthList(&amp;canonicalList);
+        delete assoc; // Remove the old one and generate new
+	assoc = evtMgr-&gt;GetProxyDict()-&gt;GetTMcAssoc(*fRecoList,canonicalList);
+    }
+    
+    if (assoc==0) {
+	cerr &lt;&lt; "TMcAssocAssociator::RecoFromMc: Could not create TMcAssoc" &lt;&lt; endl;
+	return -1;
+    }
+    
+    TCandidate *match = assoc-&gt;RecoFromMC(c);
+    if (match==0) return index;
+    index = match-&gt;GetTrackNumber();
+    fMatchConsistency = GetAssociation(index,c-&gt;uid());
+#else
+    
+    Int_t cmc = (Int_t) c-&gt;GetCharge();
+    Int_t trackNumber = c-&gt;GetTrackNumber();
+    
+    if (index&lt;=0) {
+	Double_t matchConsistency = 0.0;
+	for (int i=0;i&lt;fRecoList-&gt;GetNumberOfTracks();i++) {
+	    TCandidate *reco = fRecoList-&gt;Get(i);
+	    Int_t cmr = (Int_t) reco-&gt;GetCharge();
+	    if (cmr == 0) { // Match neutral
+		if (cmc != 0) continue;
+		matchConsistency = GetAssociation(i,trackNumber);
+	    }
+	    else { // Match charged
+		if (cmc == 0) continue;
+		matchConsistency = GetAssociation(i,trackNumber);
+	    }
+	    
+	    if (matchConsistency&gt;fMatchConsistency) {
+		fMatchConsistency = matchConsistency;
+		index = i;
+	    }
+	}
+	
+	if (fMatchConsistency&lt;fMinConsistency) index = -1; // No good match
+    }
+#endif
+    
+#ifdef DEBUG
+    cout &lt;&lt; "RecoIndexFromMc: MC track #" &lt;&lt; c-&gt;uid() &lt;&lt; " matches reco track #" &lt;&lt; index &lt;&lt; endl;
+#endif
+    
+    return index;
+}
+
+Int_t TMcAssocAssociator::McIndexFromReco(TCandidate *c)
+{
+#ifdef DEBUG
+    cout &lt;&lt; "TMcAssocAssociator::McIndexFromReco:" &lt;&lt; endl;
+#endif
+    Int_t index = -1;
+    fMatchConsistency = 0.0;
+    if (c == 0) return index; // Nothing to do
+    
+    CheckList();
+    
+#ifdef TMCASSOC
+    TEventManager *evtMgr = TRho::Instance()-&gt;GetEventManager();
+    
+    static TMcAssoc *assoc = 0;
+    static Int_t oldEvent = -1;
+    
+    if (evtMgr-&gt;GetEventNumber()!=oldEvent) {
+	oldEvent = evtMgr-&gt;GetEventNumber();
+        static TCandList canonicalList;
+        evtMgr-&gt;GetReader()-&gt;FillCanonicalMcTruthList(&amp;canonicalList);
+        delete assoc; // Remove the old one and generate new
+        assoc = evtMgr-&gt;GetProxyDict()-&gt;GetTMcAssoc(*fRecoList,canonicalList);
+    }
+    
+    if (assoc==0) {
+	cerr &lt;&lt; "TMcAssocAssociator::McFromReco: Could not create TMcAssoc" &lt;&lt; endl;
+	return 0;
+    }
+    
+    TCandidate *match = assoc-&gt;McFromReco(c);
+    if (match==0) return index;
+    
+    index = match-&gt;GetTrackNumber();
+    fMatchConsistency = GetAssociation(c-&gt;uid(),index);
+#else
+    
+    Int_t trackNumber = c-&gt;GetTrackNumber();
+    Int_t cm = (Int_t) c-&gt;GetCharge();
+    
+    if (index&lt;=0||cm==0) {
+	Double_t matchConsistency = 0.0;
+	for (int i=0;i&lt;fMcList-&gt;GetNumberOfTracks();i++) {
+	    TCandidate *mc = fMcList-&gt;Get(i);
+	    if (!IsAParticleToMatch(mc)) continue;
+	    Int_t cmc = (Int_t) mc-&gt;GetCharge();
+	    if (cm == 0) { // Match neutral
+		if (cmc != 0) continue;
+		matchConsistency = GetAssociation(trackNumber,i);
+	    }
+	    else { // Match charged
+		if (cmc == 0) continue;
+		matchConsistency = GetAssociation(trackNumber,i);
+	    }
+	    
+	    if (matchConsistency&gt;fMatchConsistency) {
+		fMatchConsistency = matchConsistency;
+		index = i;
+	    }
+	}
+	
+	if (fMatchConsistency&lt;fMinConsistency) index = -1; // No good match
+    }
+#endif
+    
+#ifdef DEBUG
+    cout &lt;&lt; "McIndexFromReco: Reco track #" &lt;&lt; c-&gt;uid() &lt;&lt; " matches MC track #" &lt;&lt; index &lt;&lt; endl;
+#endif
+    
+    return index;
+}
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

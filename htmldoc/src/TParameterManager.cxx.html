@@ -1,0 +1,467 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:10 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TParameterManager - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TParameterManager.html">TParameterManager</a>							//</b>
+<b>//                                                                      //</b>
+<b>// Parameter manager					    		//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, Bochum University, Nov. 99			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include &lt;stdlib.h&gt;
+#include "RhoBase/TRho.h"
+#include "RhoManager/TParameterManager.h"
+#include "RhoManager/TObjectManager.h"
+#include "RhoManager/TDirectoryManager.h"
+#include "RhoManager/TAnalysis.h"
+#include "RhoManager/TModule.h"
+
+ClassImp(TParameterManager)
+
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+<a name="TParameterManager:TParameterManager"> </a><a href=".././TParameterManager.html#TParameterManager:TParameterManager">TParameterManager::TParameterManager</a>(const <a href="../ListOfTypes.html#char">char</a>* filename,const <a href="../ListOfTypes.html#char">char</a>* mode ) :
+<a href=".././TParameterManager.html#TParameterManager:fFile">fFile</a>(0), <a href=".././TParameterManager.html#TParameterManager:fMode">fMode</a>(mode)
+{
+<b>    // Open the parameter file</b>
+    if (TString(filename) != "") <a href="#TParameterManager:SetParmFile">SetParmFile</a>(filename,mode);
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TParameterManager:~TParameterManager"> </a><a href=".././TParameterManager.html">TParameterManager</a>::~<a href=".././TParameterManager.html">TParameterManager</a>() 
+{
+    if (<a href=".././TParameterManager.html#TParameterManager:fFile">fFile</a>) {
+	if (<a href=".././TParameterManager.html#TParameterManager:fMode">fMode</a> != "READ") <a href=".././TParameterManager.html#TParameterManager:fFile">fFile</a>-&gt;Write();
+	<a href=".././TParameterManager.html#TParameterManager:fFile">fFile</a>-&gt;Close(); // Close the current file
+    }
+}
+
+<b>//----------------------</b>
+<b>//-- public Functions --</b>
+<b>//----------------------</b>
+
+<b>// Set current directory in memory, create if it does not exist:</b>
+<a name="TParameterManager:SetDir"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TParameterManager.html#TParameterManager:SetDir">TParameterManager::SetDir</a>( const <a href="../ListOfTypes.html#char">char</a> * path ) {
+    
+    <a href="../ListOfTypes.html#Bool_t">Bool_t</a> result= kTRUE;
+    <a href=".././TParameterManager.html#TParameterManager:fFile">fFile</a>-&gt;cd();
+    gDirectory-&gt;cd( "/" );  
+<b>    // Now try to change or create directory. ROOT will</b>
+<b>    // create only direct subdirectories without "/" in the name. </b>
+<b>    // Go through the path, extract tokens and cd, creating</b>
+<b>    // directories along the way as needed:</b>
+    TString ch( path );
+    <a href="../ListOfTypes.html#int">int</a> i1= 0;
+    <a href="../ListOfTypes.html#int">int</a> i2= 0;
+    if( ch( 0, 1 ) == "/" ) {
+	i1= 1;
+	i2= 1;
+    }
+    while( i2 &lt; ch.Length() ) {
+	while( ch( i2, 1 ) != "/" &amp;&amp; i2 &lt; ch.Length() ) i2++;
+	TString tok( ch( i1, i2-i1 ) );
+	i1= ++i2;
+	TKey* key= gDirectory-&gt;GetKey( &amp;*tok );
+	if( key != 0 ) {
+	    if( !gDirectory-&gt;cd( &amp;*tok ) ) {
+		cout &lt;&lt; "<a href=".././TParameterManager.html#TParameterManager:setDir">TParameterManager::setDir</a>: can't cd to existing " 
+		    &lt;&lt; tok &lt;&lt; " in " &lt;&lt; gDirectory-&gt;GetPath() &lt;&lt; endl;
+		break;
+	    }
+	}
+	else {
+	    TDirectory* newdir= gDirectory-&gt;mkdir( &amp;*tok );
+	    if( newdir != 0 ) {
+		newdir-&gt;cd();
+	    }
+	    else {
+		result=kFALSE;
+		break;
+	    }
+	}
+    }
+    return result;
+    
+}
+
+
+<b>// Return path of current directory (a la pwd):</b>
+<a name="TParameterManager:GetDir"> </a>const <a href="../ListOfTypes.html#char">char</a>* <a href=".././TParameterManager.html#TParameterManager:GetDir">TParameterManager::GetDir</a>() const {
+    
+    return gDirectory-&gt;GetPath();
+    
+}
+
+<a name="TParameterManager:SetParmFile"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TParameterManager.html#TParameterManager:SetParmFile">TParameterManager::SetParmFile</a>(const <a href="../ListOfTypes.html#char">char</a>* filename, const <a href="../ListOfTypes.html#char">char</a>* mode) {
+    
+    if (<a href=".././TParameterManager.html#TParameterManager:fFile">fFile</a>) {
+	if (<a href=".././TParameterManager.html#TParameterManager:fMode">fMode</a> != "READ") <a href=".././TParameterManager.html#TParameterManager:fFile">fFile</a>-&gt;Write();
+	<a href=".././TParameterManager.html#TParameterManager:fFile">fFile</a>-&gt;Close(); // Close the current file
+    }
+    
+    <a href=".././TParameterManager.html#TParameterManager:fFile">fFile</a> = TFile::Open(filename,mode,"<a href=".././TParameterManager.html">TParameterManager</a> file" );
+    <a href=".././TParameterManager.html#TParameterManager:fFile">fFile</a>-&gt;cd();
+    
+    <a href=".././TParameterManager.html#TParameterManager:fName">fName</a> = filename;
+    <a href=".././TParameterManager.html#TParameterManager:fMode">fMode</a> = mode;
+    
+    return kTRUE;  
+}
+
+<a name="TParameterManager:ReadParm"> </a><a href="../ListOfTypes.html#Bool_t">Bool_t</a> <a href=".././TParameterManager.html#TParameterManager:ReadParm">TParameterManager::ReadParm</a>(const <a href="../ListOfTypes.html#char">char</a>* filename)
+{
+    const <a href="../ListOfTypes.html#Int_t">Int_t</a> len(1024);
+    <a href="../ListOfTypes.html#Char_t">Char_t</a>    *argv[2], skip[len];
+    string key, value, module, assign;
+    
+    ifstream  s(filename, ios::in);
+    
+    if (!s) {
+	cout &lt;&lt; endl &lt;&lt; "<a href=".././TParameterManager.html">TParameterManager</a>: Could not open " &lt;&lt; filename &lt;&lt; endl;
+	return kFALSE;
+    }
+    else
+	cout &lt;&lt; endl &lt;&lt; "<a href=".././TParameterManager.html">TParameterManager</a>: Reading parameters from " &lt;&lt; filename &lt;&lt; endl;
+
+    while (!s.eof()) {
+	s &gt;&gt; key;  // Get key
+	if (key == "") { s.getline(skip,len); continue; } // empty line
+	if (key == "sequence") { s.getline(skip,len); continue; } // can not handle yet
+	if (key == "module" || key == "mod") { 
+	    s &gt;&gt; assign &gt;&gt; module; 
+	    s.getline(skip,len);
+	    if (assign == "disable") {
+<b>		//cout &lt;&lt; "Disable from TCL not possible: " &lt;&lt; module &lt;&lt; endl;</b>
+		TObject *object = TRho::Instance()-&gt;GetAnalysis()-&gt;Get(module.c_str());
+		if (object!=0 &amp;&amp; object-&gt;InheritsFrom("<a href=".././TModule.html">TModule</a>")) {
+		    ((<a href=".././TModule.html">TModule</a> *) object)-&gt;Disable();
+		}
+	    }
+	    else if (assign == "enable") {
+<b>		//cout &lt;&lt; "Enable from TCL not possible: " &lt;&lt; module &lt;&lt; endl;</b>
+		TObject *object = TRho::Instance()-&gt;GetAnalysis()-&gt;Get(module.c_str());
+		if (object!=0 &amp;&amp; object-&gt;InheritsFrom("<a href=".././TModule.html">TModule</a>")) {
+		    ((<a href=".././TModule.html">TModule</a> *) object)-&gt;Enable();
+		}
+	    }
+	    continue; 
+	}
+	if (key == "talkto") { s &gt;&gt; module; s.getline(skip,len); continue; }
+	if (key == "exit") { module = ""; s.getline(skip,len); continue; }
+	if (key.find("#")!=string::npos) { s.getline(skip,len); continue; }
+	if (key.find("{")!=string::npos) { s.getline(skip,len); continue; }
+	if (key.find("}")!=string::npos) { s.getline(skip,len); continue; }
+	s &gt;&gt; assign;    // Get delimiter, "set" etc.
+	if (key == "ev") { key = "nev"; s&gt;&gt;assign; }
+	s &gt;&gt; value;	// Get value
+
+<b>	// This has to be done first because the directory manager likes</b>
+<b>	// to produce absolute path names</b>
+	if (key=="store") {
+	    ((TRho*)TRho::Instance())-&gt;SetEventStore(value.c_str());
+	    TRho::Instance()-&gt;GetDirectoryManager()-&gt;SetDataDirectory(value.c_str());
+	}
+
+	key = "-" + key; // Prepend the selector
+	argv[0] = (<a href="../ListOfTypes.html#char">char</a>*) key.c_str();
+	argv[1] = (<a href="../ListOfTypes.html#char">char</a>*) value.c_str();
+
+	if (module == "" || module == "Framework") // Do we talk to a module ?
+	  <a href="#TParameterManager:SetParameters">SetParameters</a>(2,argv); // no
+	else if (module == "PAFBuildEnv" || module == "RooBuildEnv")
+	  <a href="#TParameterManager:SetParameters">SetParameters</a>(2,argv); // These are no modules
+	else if (module == "PAFEventInput" || module == "RooEventInput")
+	  TRho::Instance()-&gt;GetDirectoryManager()-&gt;AddFile(value.c_str()); // Add files
+	else
+	  <a href="#TParameterManager:SetParameters">SetParameters</a>(2,argv,module.c_str()); // Other module
+    }
+
+    s.close();
+    return kTRUE;
+}
+
+
+<a name="TParameterManager:WriteParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TParameterManager.html#TParameterManager:WriteParm">TParameterManager::WriteParm</a>(const <a href="../ListOfTypes.html#char">char</a>* filename)
+{
+    TParm *arg=0;
+
+    filebuf buffer;
+    std::ostream o(&amp;buffer);
+    buffer.open(filename,ios::out);
+
+    if (!buffer.is_open()) {
+	cout &lt;&lt; endl &lt;&lt; "<a href=".././TParameterManager.html">TParameterManager</a>: Could not open " &lt;&lt; filename &lt;&lt; endl;
+    }
+    else
+	cout &lt;&lt; endl &lt;&lt; "<a href=".././TParameterManager.html">TParameterManager</a>: Saving parameters to " &lt;&lt; filename &lt;&lt; endl;
+    
+
+    TDatime theTime;
+    o &lt;&lt; "# Dump of parameters from " &lt;&lt; <a href=".././TParameterManager.html#TParameterManager:fProgName">fProgName</a>.Data() &lt;&lt; " at " &lt;&lt; theTime.AsString() &lt;&lt; endl;
+
+
+    o &lt;&lt; endl;
+    o &lt;&lt; "# Boolean" &lt;&lt; endl;
+    for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;GetBoolList().GetSize();i++) {
+	arg = (TParm *)GetBoolList().At(i);
+	if (arg-&gt;GetBool(arg-&gt;KeywordName()))
+	  o &lt;&lt; arg-&gt;KeywordName() &lt;&lt; "tset\ttruet#" &lt;&lt; arg-&gt;Description() &lt;&lt; endl;
+	else
+	  o &lt;&lt; arg-&gt;KeywordName() &lt;&lt; "tset\tfalset#" &lt;&lt; arg-&gt;Description() &lt;&lt; endl;
+    }
+    
+    o &lt;&lt; endl;
+    o &lt;&lt; "# Integer" &lt;&lt; endl;
+    for (<a href="../ListOfTypes.html#int">int</a> j=0;j&lt;GetIntList().GetSize();j++) {
+	arg = (TParm *)GetIntList().At(j);
+	o &lt;&lt; arg-&gt;KeywordName() &lt;&lt; "tset\t" &lt;&lt; arg-&gt;GetInt(arg-&gt;KeywordName());
+	o &lt;&lt; "t#" &lt;&lt; arg-&gt;Description() &lt;&lt; endl;
+    }
+    
+    o &lt;&lt; endl;
+    o &lt;&lt; "# Double" &lt;&lt; endl;
+    for (<a href="../ListOfTypes.html#int">int</a> k=0;k&lt;GetDoubleList().GetSize();k++) {
+	arg = (TParm *)GetDoubleList().At(k);
+	o &lt;&lt; arg-&gt;KeywordName() &lt;&lt; "tset\t" &lt;&lt; arg-&gt;GetDouble(arg-&gt;KeywordName());
+	o &lt;&lt; "t#" &lt;&lt; arg-&gt;Description() &lt;&lt; endl;
+    }
+    
+    o &lt;&lt; endl;
+    o &lt;&lt; "# String" &lt;&lt; endl;
+    for (<a href="../ListOfTypes.html#int">int</a> l=0;l&lt;GetStringList().GetSize();l++) {
+	arg = (TParm *)GetStringList().At(l);
+	TString value = arg-&gt;GetString(arg-&gt;KeywordName());
+	if (value == "")  // Protect empty strings
+	  o &lt;&lt; arg-&gt;KeywordName() &lt;&lt; "tset\t" &lt;&lt; """";
+	else
+	  o &lt;&lt; arg-&gt;KeywordName() &lt;&lt; "tset\t" &lt;&lt; value;
+	o &lt;&lt; "t#" &lt;&lt; arg-&gt;Description() &lt;&lt; endl;
+    }
+    
+    o &lt;&lt; endl;
+    o &lt;&lt; "# General" &lt;&lt; endl;
+    for(<a href="../ListOfTypes.html#int">int</a> m=0;m&lt;gGeneralList.GetSize();m++) {
+	TParmGeneral&lt;<a href="../ListOfTypes.html#double">double</a>&gt; *arg = (TParmGeneral&lt;<a href="../ListOfTypes.html#double">double</a>&gt; *)gGeneralList.At(m);
+	o &lt;&lt; arg-&gt;KeywordName() &lt;&lt; "tset\t" &lt;&lt; arg-&gt;Value();
+	o &lt;&lt; "t#" &lt;&lt; arg-&gt;Description() &lt;&lt; endl;
+    }
+    
+}
+
+<a name="TParameterManager:ScanCommandLine"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TParameterManager.html#TParameterManager:ScanCommandLine">TParameterManager::ScanCommandLine</a>(<a href="../ListOfTypes.html#int">int</a> argc, <a href="../ListOfTypes.html#char">char</a> **argv)
+{
+    if (argc==0) return;
+    
+<b>    // Get rid of the program name</b>
+    
+    <a href="../ListOfTypes.html#char">char</a> *s = strrchr(argv[0],'/');
+    if (s) {
+	while (*s == '/') s++;
+	<a href=".././TParameterManager.html#TParameterManager:fProgName">fProgName</a> = s;
+    }
+    else {
+	<a href=".././TParameterManager.html#TParameterManager:fProgName">fProgName</a> = argv[0];
+    }
+    
+    <a href="../ListOfTypes.html#int">int</a> _argc = argc - 1;
+    <a href="../ListOfTypes.html#char">char</a> **_argv = argv + 1;
+    
+<b>    // Scan the remaining arguments</b>
+    
+    <a href="#TParameterManager:SetParameters">SetParameters</a>(_argc,_argv);
+}
+
+<a name="TParameterManager:SetParameters"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TParameterManager.html#TParameterManager:SetParameters">TParameterManager::SetParameters</a>(<a href="../ListOfTypes.html#int">int</a> _argc, <a href="../ListOfTypes.html#char">char</a>** _argv,const <a href="../ListOfTypes.html#char">char</a>* module)
+{
+    while (_argc) {
+<b>	// first, determine if this is an option</b>
+	
+	if (_argc &lt;= 1) {
+		TString errMsg = TString("Missing value for option ") + TString(*_argv);
+		<a href="#TParameterManager:SyntaxError">SyntaxError</a>(errMsg);
+	}
+	
+	if (_argv[0][0] != '-') break;
+	while (_argv[0][0] == '-') _argv[0]++; // Skip the dashes
+	
+<b>	// check if it is for usage</b>
+	if (strcmp(_argv[0],"help") == 0 || strcmp(_argv[0],"usage") == 0) {
+	    <a href="#TParameterManager:PrintUsage">PrintUsage</a>(cout); // This stops the program
+	    exit(0);
+	}
+	
+<b>	// find the appropriate TParm</b>
+	TParm *cmd;
+	TString key(_argv[0]);
+	if (module != 0) 
+	    key = TString(module) + "::" + key; // Search with scope
+	else
+	    if (key.Index("::")&lt;0) key = "Framework::" + key;
+
+	cmd = <a href="#TParameterManager:ArgSearch">ArgSearch</a>(key); // Look for the command
+
+	if (!cmd) {
+
+	    TObject *mod = 0;
+	    TString parm(_argv[0]);
+
+<b>	    // Do we have a scope ?</b>
+	    if (parm.Index("::")&gt;=0) {
+		TString modname = parm(0,parm.Index("::"));
+		mod  = TRho::Instance()-&gt;GetObjectManager()-&gt;Get(modname);
+		if (mod!=0)
+		    parm = parm(parm.Index("::")+2,parm.Length());
+		else
+		    cout &lt;&lt; "<a href=".././TParameterManager.html">TParameterManager</a>: Module " &lt;&lt; modname.Data() &lt;&lt; " does not exist. " &lt;&lt; endl;
+	    }
+
+<b>	    // Check parameter type</b>
+	    <a href="../ListOfTypes.html#char">char</a> *s = strrchr(_argv[1],'.'); // Double type
+
+	    if (strcmp(_argv[1],"true")==0 || strcmp(_argv[1],"false")==0) {
+		cout &lt;&lt; "<a href=".././TParameterManager.html">TParameterManager</a>: Add new <a href="../ListOfTypes.html#bool">bool</a> parameter " &lt;&lt; parm.Data() &lt;&lt; endl;
+		<a href="#TParameterManager:SetBoolParm">SetBoolParm</a>(parm,kFALSE,"new <a href="../ListOfTypes.html#bool">bool</a> parameter",mod); // Add new <a href="../ListOfTypes.html#bool">bool</a> parm
+	    }
+	    else if (s) {
+		cout &lt;&lt; "<a href=".././TParameterManager.html">TParameterManager</a>: Add new <a href="../ListOfTypes.html#double">double</a> parameter " &lt;&lt; parm.Data() &lt;&lt; endl;
+		<a href="#TParameterManager:SetDoubleParm">SetDoubleParm</a>(parm,0.0,"new <a href="../ListOfTypes.html#double">double</a> parameter",mod); // Add new <a href="../ListOfTypes.html#double">double</a> parm
+	    }
+	    else if (atoi(_argv[1]) != 0) {
+		cout &lt;&lt; "<a href=".././TParameterManager.html">TParameterManager</a>: Add new <a href="../ListOfTypes.html#int">int</a> parameter " &lt;&lt; parm.Data() &lt;&lt; endl;
+		<a href="#TParameterManager:SetIntParm">SetIntParm</a>(parm,0,"new <a href="../ListOfTypes.html#int">int</a> parameter",mod); // Add new <a href="../ListOfTypes.html#int">int</a> parm
+	    }
+	    else {
+		cout &lt;&lt; "<a href=".././TParameterManager.html">TParameterManager</a>: Add new string parameter " &lt;&lt; parm.Data() &lt;&lt; endl;
+		<a href="#TParameterManager:SetStringParm">SetStringParm</a>(parm,"","new string parameter",mod); // Add new <a href="../ListOfTypes.html#int">int</a> parm
+	    }
+
+	    if (<a href="#TParameterManager:ArgSearch">ArgSearch</a>(key)) 
+		_argv[0]--;  // Give it another try...
+	    else {
+		_argv++; // Skip this...
+		_argc--;
+		_argv++;
+		_argc--;
+	    }
+
+	    continue;
+
+	}
+
+	_argv++;                // move to next arg
+	_argc--;
+	
+<b>	// set the value and bump pointers by the number of arguments used</b>
+	<a href="../ListOfTypes.html#int">int</a> rc = cmd-&gt;SetValue(0,_argv);
+	if (rc &lt; 0) {
+	    TString err = TString("Invalid parameter for option ") + TString(*(_argv-1));
+	    <a href="#TParameterManager:SyntaxError">SyntaxError</a>(err);
+	}
+	_argc -= rc;
+	_argv += rc;
+    }
+}
+
+<a name="TParameterManager:SyntaxError"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TParameterManager.html#TParameterManager:SyntaxError">TParameterManager::SyntaxError</a>(const <a href="../ListOfTypes.html#char">char</a>* message)
+{
+    cerr &lt;&lt; "Syntax error: " &lt;&lt; message &lt;&lt; endl;
+    <a href="#TParameterManager:PrintUsage">PrintUsage</a>(cerr);
+    abort();
+}
+
+<a name="TParameterManager:PrintUsage"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TParameterManager.html#TParameterManager:PrintUsage">TParameterManager::PrintUsage</a>(std::ostream &amp;o) 
+{
+    o &lt;&lt; endl;
+    o &lt;&lt; "Usage : " &lt;&lt; <a href=".././TParameterManager.html#TParameterManager:fProgName">fProgName</a>.Data();
+    <a href="#TParameterManager:PrintParm">PrintParm</a>(o);
+}
+
+
+<a name="TParameterManager:ArgSearch"> </a>TParm *<a href=".././TParameterManager.html#TParameterManager:ArgSearch">TParameterManager::ArgSearch</a>(const <a href="../ListOfTypes.html#char">char</a> *a) 
+{
+    TString s(a);
+    TParm *arg=0;
+    
+    for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;GetBoolList().GetSize();i++) {
+	arg = (TParm *)GetBoolList().At(i);
+	if (arg-&gt;KeywordName() == s ) return arg;
+    }
+    
+    for (<a href="../ListOfTypes.html#int">int</a> j=0;j&lt;GetIntList().GetSize();j++) {
+	arg = (TParm *)GetIntList().At(j);
+	if (arg-&gt;KeywordName() == s ) return arg;
+    }
+    
+    for (<a href="../ListOfTypes.html#int">int</a> k=0;k&lt;GetDoubleList().GetSize();k++) {
+	arg = (TParm *)GetDoubleList().At(k);
+	if (arg-&gt;KeywordName() == s ) return arg;
+    }
+    
+    for (<a href="../ListOfTypes.html#int">int</a> l=0;l&lt;GetStringList().GetSize();l++) {
+	arg = (TParm *)GetStringList().At(l);
+	if (arg-&gt;KeywordName() == s ) return arg;
+    }
+    
+    for (<a href="../ListOfTypes.html#int">int</a> m=0;m&lt;gGeneralList.GetSize();m++) {
+	arg = (TParm *)gGeneralList.At(m);
+	if (arg-&gt;KeywordName() == s ) return arg;
+    }
+    
+    return 0;
+}
+
+<a name="TParameterManager:PrintParm"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TParameterManager.html#TParameterManager:PrintParm">TParameterManager::PrintParm</a>(std::ostream &amp;o,TObject *x) const { <a href="#TParameterManager:PrintOn">PrintOn</a>(o,x); }
+<a name="TParameterManager:PrintOn"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TParameterManager.html#TParameterManager:PrintOn">TParameterManager::PrintOn</a>(std::ostream &amp;o,TObject *x) const { TParm::PrintAllParm(o,x); }
+
+<b>// non-member functions</b>
+<b>// --------------------</b>
+
+std::ostream&amp;  operator &lt;&lt; (std::ostream&amp; o, const <a href=".././TParameterManager.html">TParameterManager</a>&amp; a) {a.<a href="#TParameterManager:PrintOn">PrintOn</a>(o); return o;}
+
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

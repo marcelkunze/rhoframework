@@ -1,0 +1,115 @@
+# this file is analyzed by a very simple parser
+# any line that contains a "#" is interpreted as comment
+# settings must follow directly the keywords (i.e. in the next line)
+#
+
+# location of the ROOT-file  and  name of the tree/tuple
+TUPLE
+$RHO/Data/extract.root   tuppaDS
+
+
+# important for speed
+# for no preselection comment out the PRESELECTCUT keyword
+PRESELECTCUT
+gk01vprob>0.0 && gk02vprob>0.0 && rfdsvprob>0.0 && fdsmomy>2.5 && fdsmomy<5.0 && abs(fdsmass-1.9691)<0.08 && fdsmass-fk01k02mass>0.15 && ak01tau>0.15 && ak02tau>0.15 && spheri>0.075 && !pikacc  && !ovl && (fdsmomy>3.0 || mmdiff<0.02)
+
+
+# the expression which will be plotted
+# if you don't want fancy test histogram
+# comment out the "GRAPHICS" keyword
+GRAPHICS
+fdsmass
+
+
+# definition of your signal region
+SIGNALCUT
+abs(fdsmass-1.9691)<0.014
+
+
+# definition of your sidebin region
+SIDECUT
+abs(fdsmass-1.9691)>0.023 && abs(fdsmass-1.9691)<0.023+3*0.014
+
+
+# necessary for calculating the dilution if 
+# phasespace area of sidebins does not correspond to the area of the signal
+# area of sidebins == sidesignalfactor * area of signal  
+SIDESIGNALFACTOR
+3.0
+
+
+# setup for the genetic algorithm
+# 1. number of generations
+# 2. size of population
+# 3. crossing probability
+# 4. minimum mutation probability    (in order to prevent incest in late generations the mutation probility
+# 5. maximum mutation probability     is adjusted depending on the population's diversity)
+# 6. mutation strength       (sigma of the gaussian smearing, in units of allowed cut value interval size)
+SETTINGS
+2000 50 1.0 0.02 0.2 0.01
+
+DILU
+loose
+
+# the cuts you want to optimize
+# syntax:  cutstring  minvalue  maxvalue
+# the cutstring is interpreted as "printf" format string:
+# i : continuous floating point intervals 
+# f : bool or integer like quantities
+# the string must not contain blanks
+
+CUT
+fdsmomy>[0] && (fdsmomy>[1] || mmdiff<0.02) && mangle<[2] && ak01tau>[3] && ak02tau>[3] && gk01vprob>[4] && gk02vprob>[4] && rfdsvprob>[5] && ak01ang<[6] && ak02ang<[6] && abs(gk01mass-0.4975)<[7] && abs(gk02mass-0.4975)<[7]
+
+PAR	
+0	f	2.5		3.0		
+PAR	
+1	f	3.0		3.5
+PAR
+2	f	0.0		3.15
+PAR
+3	f	0.15		0.5
+PAR
+4	f	0.0		0.05
+PAR	
+5	f	0.0		0.05
+PAR
+6	f	0.0		0.3
+PAR
+7	f	0.0		0.025
+
+# choose an genetic algorithm
+# docu can be found in ga245/doc/
+# "simple","steadystate"
+#
+#GASteadyState converges faster than GASimple but it shows some kind of incest 
+#in late generations. If it finds the global maximum this would be no problem.
+#Choosing huge starting population should prevent the algorithm from getting stuck in a local
+#maximum.
+ALGORITHM
+steadystate
+
+
+# choose a parent selector
+# docu can be found in ga245/doc/
+# "uniform","tournament","roulett"
+# uniform: each genome has the same chance to become a parent
+# roulett: the selection probability is proportional to the fitness
+# tournament: two genomes are selected by roulett, the fitter one becomes parent
+SELECTOR
+roulett
+
+# choose a scaler fittness = scaler( dilution );
+# docu can be found in ga245/doc/
+# "linear","sharing"
+SCALER
+linear
+
+
+# sigma and alpha values for GASharing selector
+# docu can be found in ga245/doc/
+SHARING_SETTINGS
+1.0 1.0
+
+
+

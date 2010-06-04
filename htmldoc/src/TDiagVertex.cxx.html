@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:47 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TDiagVertex - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: TDiagVertex.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//	Class <a href=".././TOperator.html">TOperator</a></b>
+<b>//</b>
+<b>//	Implementation, adds 4vectors at origin</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//	Bob Jacobsen     		Original Author</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1996		Lawrence Berkeley Laboratory</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "RhoTools/TDiagVertex.h"
+#include &lt;assert.h&gt;
+#include "RhoBase/TCandidate.h"
+
+ClassImp(TDiagVertex)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TDiagVertex *&amp;obj)
+{
+   obj = (TDiagVertex *) buf.ReadObject(TDiagVertex::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TDiagVertex:TDiagVertex"> </a>TDiagVertex::TDiagVertex() 
+  :_thePoint(), _theT(0.), _theChi2(0.), _nDof(0){
+}
+
+<a name="TDiagVertex:TDiagVertex"> </a>TDiagVertex::TDiagVertex( const TVector3&amp; p, double t,
+			      double sx, double sy, double sz, 
+			      double chi2, int ndof) 
+  :_thePoint(p), _theT(t), _theChi2(chi2), _nDof(ndof){
+    SetError(sx,sy,sz);
+}
+
+<a name="TDiagVertex:TDiagVertex"> </a>TDiagVertex::TDiagVertex( double x, double y, double z, double t,
+			      double sx, double sy, double sz, 
+			      double chi2, int ndof )
+  :_thePoint( TVector3(x, y, z) ), _theT(t),_theChi2(chi2), _nDof(ndof){
+    SetError(sx,sy,sz);
+}
+
+<a name="TDiagVertex:TDiagVertex"> </a>TDiagVertex::TDiagVertex( const TPointErr&amp; p, double t,
+			      double chi2, int ndof)
+  :_thePoint( p ),_theT(t),_theChi2(chi2), _nDof(ndof){
+}
+
+<a name="TDiagVertex:TDiagVertex"> </a>TDiagVertex::TDiagVertex( const TDiagVertex&amp; o )
+  : VAbsVertex( o ), _thePoint(o._thePoint), _theT(o._theT),
+    _theChi2(o._theChi2), _nDof(o._nDof){
+}
+
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TDiagVertex:~TDiagVertex"> </a><a href=".././TDiagVertex.html">TDiagVertex</a>::~<a href=".././TDiagVertex.html">TDiagVertex</a>()
+{
+}
+
+TLorentzVector 
+<a name="TDiagVertex:V4"> </a><a href=".././TDiagVertex.html#TDiagVertex:V4">TDiagVertex::V4</a>() const 
+{ 
+  return TLorentzVector( <a href=".././TDiagVertex.html#TDiagVertex:_thePoint">_thePoint</a>.X(), <a href=".././TDiagVertex.html#TDiagVertex:_thePoint">_thePoint</a>.Y(), <a href=".././TDiagVertex.html#TDiagVertex:_thePoint">_thePoint</a>.Z(), <a href=".././TDiagVertex.html#TDiagVertex:_theT">_theT</a> ); 
+}
+
+TMatrixD&amp; 
+<a name="TDiagVertex:Covariance"> </a><a href=".././TDiagVertex.html#TDiagVertex:Covariance">TDiagVertex::Covariance</a>() const 
+{ 
+  return (TMatrixD&amp;) <a href=".././TDiagVertex.html#TDiagVertex:_thePoint">_thePoint</a>.<a href=".././TPointErr.html#TPointErr:CovMatrix">CovMatrix</a>(); 
+}
+
+<a href="../ListOfTypes.html#double">double</a> 
+<a name="TDiagVertex:ChiSquared"> </a><a href=".././TDiagVertex.html#TDiagVertex:ChiSquared">TDiagVertex::ChiSquared</a>() const 
+{ 
+  return <a href=".././TDiagVertex.html#TDiagVertex:_theChi2">_theChi2</a>; 
+}
+
+<a href="../ListOfTypes.html#int">int</a> 
+<a name="TDiagVertex:NDof"> </a><a href=".././TDiagVertex.html#TDiagVertex:NDof">TDiagVertex::NDof</a>() const 
+{ 
+  return <a href=".././TDiagVertex.html#TDiagVertex:_nDof">_nDof</a>; 
+}
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TDiagVertex:Persist"> </a><a href=".././TDiagVertex.html#TDiagVertex:Persist">TDiagVertex::Persist</a>( TVertexPersister&amp; aPersister ) const 
+{}
+
+		       
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TDiagVertex:SetError"> </a><a href=".././TDiagVertex.html#TDiagVertex:SetError">TDiagVertex::SetError</a>(<a href="../ListOfTypes.html#double">double</a> sx, <a href="../ListOfTypes.html#double">double</a> sy, <a href="../ListOfTypes.html#double">double</a> sz){
+  <a href=".././TError.html">TError</a> errMat(3);
+  errMat(0,0) = sx;
+  errMat(1,1) = sy;
+  errMat(2,2) = sy;
+  <a href=".././TDiagVertex.html#TDiagVertex:_thePoint">_thePoint</a>.<a href=".././TPointErr.html#TPointErr:SetCovMatrix">SetCovMatrix</a>(errMat);
+}
+
+
+
+
+
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

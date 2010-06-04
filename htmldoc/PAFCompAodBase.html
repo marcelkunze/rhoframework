@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:15 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFCompAodBase</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>PAFCompAodBase</h1>
+<hr width=300>
+<!--SDL--><em><a href="#PAFCompAodBase:description">class description</a> - <a href="src/PAFCompAodBase.cxx.html">source file</a> - <a href="PAFCompAodBase_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="PAFCompAodBase" href="PAFCompAodBase.h">PAFCompAodBase</a> : public TObject</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->       <a href="./PAFCompAodBase.html">PAFCompAodBase</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:PAFCompAodBase">PAFCompAodBase</a><!--PLAIN-->()
+<!--TAB6-->       <a href="./PAFCompAodBase.html">PAFCompAodBase</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:PAFCompAodBase">PAFCompAodBase</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> aodref, <a href="ListOfTypes.html#Int_t">Int_t</a> pdtref = 0)
+<!--TAB6-->       <a href="./PAFCompAodBase.html">PAFCompAodBase</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:PAFCompAodBase">PAFCompAodBase</a><!--PLAIN-->(const <a href="./PAFCompAodBase.html">PAFCompAodBase</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:~PAFCompAodBase">~PAFCompAodBase</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:AddDaughter">AddDaughter</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> index)
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:GetAodRef">GetAodRef</a><!--PLAIN-->()
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:GetDaughter">GetDaughter</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> which)
+<!--TAB6-->                <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:GetPdtRef">GetPdtRef</a><!--PLAIN-->()
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:Reset">Reset</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:SetAodRef">SetAodRef</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> ref)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:SetDaughters">SetDaughters</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n, <a href="ListOfTypes.html#Int_t">Int_t</a>* indexList)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:SetPdtRef">SetPdtRef</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> ref)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFCompAodBase:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="PAFCompAodBase:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Short_t">Short_t</a> <!--TAB--><!--BOLD--><a name="PAFCompAodBase:fAodRef">fAodRef</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fAodRef"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Short_t">Short_t</a> <!--TAB--><!--BOLD--><a name="PAFCompAodBase:fDaughters">fDaughters[5]</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fDaughters"></a></i>
+<!--TAB6-->      <a href="ListOfTypes.html#Short_t">Short_t</a> <!--TAB--><!--BOLD--><a name="PAFCompAodBase:fPdtRef">fPdtRef</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fPdtRef">Pdt IDs</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="PAFCompAodBase:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./PAFCompAodBase.html">PAFCompAodBase</a>							
+                                                                      
+ Definition of an aod-object which represents a composite particle	
+                                                                      
+    * V0 s								
+    * Clusters with more than on Bump					
+    * Particles from PID - lists					
+ Author : Thorsten Brandt , TU Dresden				
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="PAFCompAodBase:PAFCompAodBase" href="src/PAFCompAodBase.cxx.html#PAFCompAodBase:PAFCompAodBase">PAFCompAodBase</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFCompAodBase:PAFCompAodBase" href="src/PAFCompAodBase.cxx.html#PAFCompAodBase:PAFCompAodBase">PAFCompAodBase</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> aodref, <a href="ListOfTypes.html#Int_t">Int_t</a> pdtref):
+  <a href="./PAFCompAodBase.html#PAFCompAodBase:fAodRef">fAodRef</a>(aodref), <a href="./PAFCompAodBase.html#PAFCompAodBase:fPdtRef">fPdtRef</a>(pdtref) 
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFCompAodBase:SetAodRef" href="src/PAFCompAodBase.cxx.html#PAFCompAodBase:SetAodRef">SetAodRef</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> ref)
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFCompAodBase:SetPdtRef" href="src/PAFCompAodBase.cxx.html#PAFCompAodBase:SetPdtRef">SetPdtRef</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> ref)
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFCompAodBase:AddDaughter" href="src/PAFCompAodBase.cxx.html#PAFCompAodBase:AddDaughter">AddDaughter</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> index)
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFCompAodBase:SetDaughters" href="src/PAFCompAodBase.cxx.html#PAFCompAodBase:SetDaughters">SetDaughters</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n, <a href="ListOfTypes.html#Int_t">Int_t</a> *indexList)
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFCompAodBase:GetDaughter" href="src/PAFCompAodBase.cxx.html#PAFCompAodBase:GetDaughter">GetDaughter</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> which)
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFCompAodBase:Reset" href="src/PAFCompAodBase.cxx.html#PAFCompAodBase:Reset">Reset</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFCompAodBase:PrintOn" href="src/PAFCompAodBase.cxx.html#PAFCompAodBase:PrintOn">PrintOn</a>(std::ostream &amp;o)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFCompAodBase:GetAodRef" href="PAFCompAodBase.h">GetAodRef</a>()
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFCompAodBase:GetPdtRef" href="PAFCompAodBase.h">GetPdtRef</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="PAFCompAodBase:Class" href="PAFCompAodBase.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="PAFCompAodBase:IsA" href="PAFCompAodBase.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFCompAodBase:ShowMembers" href="PAFCompAodBase.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFCompAodBase:Streamer" href="PAFCompAodBase.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFCompAodBase:StreamerNVirtual" href="PAFCompAodBase.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./PAFCompAodBase.html">PAFCompAodBase</a> <a name="PAFCompAodBase:PAFCompAodBase" href="PAFCompAodBase.h">PAFCompAodBase</a>(const <a href="./PAFCompAodBase.html">PAFCompAodBase</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFCompAodBase:~PAFCompAodBase" href="PAFCompAodBase.h">~PAFCompAodBase</a>()
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:15 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

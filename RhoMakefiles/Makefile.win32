@@ -1,0 +1,130 @@
+### Directory and Executable Names ###########
+EXADIR     = RhoExamples
+OBJDIR     = tmp
+BINDIR     = bin
+
+################################################################################################
+		
+all: SUBS
+
+exam:
+	cd RhoExamples
+	nmake
+
+######  Targets ###############################
+
+SUBS:
+	cd ./RhoNNO
+	nmake
+	cd ..
+	cd ./RhoGA
+	nmake
+	cd ..
+	cd ./RhoMath
+	nmake
+	cd ..
+	cd ./RhoBase
+	nmake
+	cd ..
+	cd ./RhoConditions
+	nmake
+	cd ..
+	cd ./RhoTools
+	nmake
+	cd ..
+	cd ./RhoHistogram
+	nmake
+	cd ..
+	cd ./PAFSchema
+	nmake
+	cd ..
+	cd ./KangaSchema
+	nmake
+	cd ..
+	cd ./RhoManager
+	nmake
+	cd ..
+	cd ./RhoSelector
+	nmake
+	cd ..
+	cd ./RhoExamples
+	nmake
+	cd ..
+	  
+
+cleanall:
+	cd ./RhoNNO
+	nmake clean
+	cd ..
+	cd ./RhoGA
+	nmake clean
+	cd ..
+	cd ./RhoMath
+	nmake clean
+	cd ..
+	cd ./RhoBase
+	nmake clean
+	cd ..
+	cd ./RhoConditions
+	nmake clean
+	cd ..
+	cd ./RhoTools
+	nmake clean
+	cd ..
+	cd ./RhoHistogram
+	nmake clean
+	cd ..
+	cd ./RhoManager
+	nmake clean
+	cd ..
+	cd ./RhoSelector
+	nmake clean
+	cd ..
+	cd ./PAFSchema
+	nmake clean
+	cd ..
+	cd ./KangaSchema
+	nmake clean
+	cd ..
+	cd ./RhoExamples
+	nmake clean
+	cd ..
+
+documentation:
+	copy RhoNNO\*.cxx tmp
+	copy RhoNNO\*.h tmp
+	copy RhoMath\*.cxx tmp
+	copy RhoMath\*.h tmp
+	copy RhoBase\*.cxx tmp
+	copy RhoBase\*.h tmp
+	copy RhoConditions\*.cxx tmp
+	copy RhoConditions\*.h tmp
+	copy RhoTools\*.cxx tmp
+	copy RhoTools\*.h tmp
+	copy RhoHistogram\*.cxx tmp
+	copy RhoHistogram\*.h tmp
+	copy RhoManager\*.cxx tmp
+	copy RhoManager\*.h tmp
+	copy RhoSelector\*.cxx tmp
+	copy RhoSelector\*.h tmp
+	copy PAFSchema\*.cxx tmp
+	copy PAFSchema\*.h tmp
+	copy KangaSchema\*.cxx tmp
+	copy KangaSchema\*.h tmp
+
+	root -b RhoMacros\documentation.C
+
+#######################################
+###     Complete Cleanup            ###
+#######################################
+		
+clean :
+#        del $(BINDIR)\*.exe
+	del $(EXADIR)\*.obj
+
+
+#######  Rules ################################
+ 
+.$(SrcSuf).$(ObjSuf):
+	$(CXX) $(CXXFLAGS) -c -I. $<
+	@echo ------------------------------------------

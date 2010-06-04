@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:16 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFMcTruth</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>PAFMcTruth</h1>
+<hr width=300>
+<!--SDL--><em><a href="#PAFMcTruth:description">class description</a> - <a href="src/PAFMcTruth.cxx.html">source file</a> - <a href="PAFMcTruth_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="PAFMcTruth" href="PAFMcTruth.h">PAFMcTruth</a> : public VAbsTruth</h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->                  <a href="./PAFMcTruth.html">PAFMcTruth</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:PAFMcTruth">PAFMcTruth</a><!--PLAIN-->()
+<!--TAB6-->                  <a href="./PAFMcTruth.html">PAFMcTruth</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:PAFMcTruth">PAFMcTruth</a><!--PLAIN-->(<a href="./PAFMcBase.html">PAFMcBase</a>&amp;)
+<!--TAB6-->                  <a href="./PAFMcTruth.html">PAFMcTruth</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:PAFMcTruth">PAFMcTruth</a><!--PLAIN-->(const <a href="./PAFMcTruth.html">PAFMcTruth</a>&amp;)
+<!--TAB6-->                virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:~PAFMcTruth">~PAFMcTruth</a><!--PLAIN-->()
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:AddDaughter">AddDaughter</a><!--PLAIN-->(<a href="./PAFMcTruth.html">PAFMcTruth</a>* d)
+<!--TAB6-->              static TClass* <!--TAB--><!--BOLD--><a href="#PAFMcTruth:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetAodMatchConsistency">GetAodMatchConsistency</a><!--PLAIN-->() const
+<!--TAB6-->               virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetAodMatchIndex">GetAodMatchIndex</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetCharge">GetCharge</a><!--PLAIN-->() const
+<!--TAB6-->          virtual VAbsTruth* <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetDaughter">GetDaughter</a><!--PLAIN-->(const <a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--TAB6-->          virtual TObjArray* <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetDaughterArray">GetDaughterArray</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetEnergy">GetEnergy</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetLifeTime">GetLifeTime</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetMass">GetMass</a><!--PLAIN-->() const
+<!--TAB6-->                  <a href="./PAFMcBase.html">PAFMcBase</a>* <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetMcBase">GetMcBase</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TLorentzVector <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetMomentum">GetMomentum</a><!--PLAIN-->() const
+<!--TAB6-->          virtual VAbsTruth* <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetMother">GetMother</a><!--PLAIN-->() const
+<!--TAB6-->                 virtual <a href="ListOfTypes.html#int">int</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetNumberOfDaughters">GetNumberOfDaughters</a><!--PLAIN-->() const
+<!--TAB6-->       virtual TParticlePDG* <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetPdtEntry">GetPdtEntry</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetPx">GetPx</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetPy">GetPy</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetPz">GetPz</a><!--PLAIN-->() const
+<!--TAB6-->            virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetStartVertex">GetStartVertex</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetStartVx">GetStartVx</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetStartVy">GetStartVy</a><!--PLAIN-->() const
+<!--TAB6-->            virtual <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetStartVz">GetStartVz</a><!--PLAIN-->() const
+<!--TAB6-->               virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:GetStatus">GetStatus</a><!--PLAIN-->() const
+<!--TAB6-->             virtual TClass* <!--TAB--><!--BOLD--><a href="#PAFMcTruth:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:PrintOn">PrintOn</a><!--PLAIN-->(ostream&amp; o = std::cout) const
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:SetMother">SetMother</a><!--PLAIN-->(<a href="./PAFMcTruth.html">PAFMcTruth</a>* mom)
+<!--TAB6-->                virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->                virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                        <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFMcTruth:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="PAFMcTruth:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      TDatabasePDG* <!--TAB--><!--BOLD--><a name="PAFMcTruth:fPDG">fPDG</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fPDG">!Particle database</a></i>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="./PAFMcBase.html">PAFMcBase</a>* <!--TAB--><!--BOLD--><a name="PAFMcTruth:fMyBase">fMyBase</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fMyBase">This is the PAFMcBase for which I am te Interface.</a></i>
+<!--TAB6-->      VAbsTruth* <!--TAB--><!--BOLD--><a name="PAFMcTruth:fMother">fMother</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fMother">My mom.</a></i>
+<!--TAB6-->      TObjArray* <!--TAB--><!--BOLD--><a name="PAFMcTruth:fDaughters">fDaughters</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fDaughters">My kiddies. Of course I am a modern mom and do NOT own my descendants.</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="PAFMcTruth:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./PAFMcTruth.html">PAFMcTruth</a>								
+                                                                      
+ Monte Carlo truth class in PAF(Pico Analysis Framework)		
+									
+ Author List:								
+ Marcel Kunze, Bochum University, Aug. 99				
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="PAFMcTruth:PAFMcTruth" href="src/PAFMcTruth.cxx.html#PAFMcTruth:PAFMcTruth">PAFMcTruth</a>() :
+  <a href="./PAFMcTruth.html#PAFMcTruth:fMyBase">fMyBase</a>(0),
+  <a href="./PAFMcTruth.html#PAFMcTruth:fMother">fMother</a>(0),
+  <a href="./PAFMcTruth.html#PAFMcTruth:fDaughters">fDaughters</a>(0)
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFMcTruth:PAFMcTruth" href="src/PAFMcTruth.cxx.html#PAFMcTruth:PAFMcTruth">PAFMcTruth</a>(<a href="./PAFMcBase.html">PAFMcBase</a>&amp; b) :
+  <a href="./PAFMcTruth.html#PAFMcTruth:fMyBase">fMyBase</a>(&amp;b),
+  <a href="./PAFMcTruth.html#PAFMcTruth:fMother">fMother</a>(0),
+  <a href="./PAFMcTruth.html#PAFMcTruth:fDaughters">fDaughters</a>( new TObjArray() )    
+<br>
+<hr>
+<!--FUNCTION--> <a name="PAFMcTruth:~PAFMcTruth" href="src/PAFMcTruth.cxx.html#PAFMcTruth:~PAFMcTruth">~PAFMcTruth</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFMcTruth:PrintOn" href="src/PAFMcTruth.cxx.html#PAFMcTruth:PrintOn">PrintOn</a>(std::ostream&amp; o) const <br>
+<hr>
+<!--FUNCTION-->TParticlePDG* <a name="PAFMcTruth:GetPdtEntry" href="src/PAFMcTruth.cxx.html#PAFMcTruth:GetPdtEntry">GetPdtEntry</a>()   const 
+<br>
+<pre> Particle Id
+</pre><hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetCharge" href="src/PAFMcTruth.cxx.html#PAFMcTruth:GetCharge">GetCharge</a>()      const
+<br>
+<pre> Charge
+</pre><br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcTruth:SetMother" href="PAFMcTruth.h">SetMother</a>(<a href="./PAFMcTruth.html">PAFMcTruth</a>* mom)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcTruth:AddDaughter" href="PAFMcTruth.h">AddDaughter</a>(<a href="./PAFMcTruth.html">PAFMcTruth</a>* d)
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./PAFMcBase.html">PAFMcBase</a>* <a name="PAFMcTruth:GetMcBase" href="PAFMcTruth.h">GetMcBase</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->            VAbsTruth* <a name="PAFMcTruth:GetMother" href="PAFMcTruth.h">GetMother</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->            TObjArray* <a name="PAFMcTruth:GetDaughterArray" href="PAFMcTruth.h">GetDaughterArray</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->            VAbsTruth* <a name="PAFMcTruth:GetDaughter" href="PAFMcTruth.h">GetDaughter</a>(const <a href="ListOfTypes.html#Int_t">Int_t</a> i) const
+<!--INLINE FUNCTION--><!--TAB6-->                   <a href="ListOfTypes.html#int">int</a> <a name="PAFMcTruth:GetNumberOfDaughters" href="PAFMcTruth.h">GetNumberOfDaughters</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMcTruth:GetStatus" href="PAFMcTruth.h">GetStatus</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetPx" href="PAFMcTruth.h">GetPx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetPy" href="PAFMcTruth.h">GetPy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetPz" href="PAFMcTruth.h">GetPz</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetEnergy" href="PAFMcTruth.h">GetEnergy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetMass" href="PAFMcTruth.h">GetMass</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->        TLorentzVector <a name="PAFMcTruth:GetMomentum" href="PAFMcTruth.h">GetMomentum</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetStartVx" href="PAFMcTruth.h">GetStartVx</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetStartVy" href="PAFMcTruth.h">GetStartVy</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetStartVz" href="PAFMcTruth.h">GetStartVz</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              TVector3 <a name="PAFMcTruth:GetStartVertex" href="PAFMcTruth.h">GetStartVertex</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetLifeTime" href="PAFMcTruth.h">GetLifeTime</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                 <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFMcTruth:GetAodMatchIndex" href="PAFMcTruth.h">GetAodMatchIndex</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="PAFMcTruth:GetAodMatchConsistency" href="PAFMcTruth.h">GetAodMatchConsistency</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="PAFMcTruth:Class" href="PAFMcTruth.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="PAFMcTruth:IsA" href="PAFMcTruth.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcTruth:ShowMembers" href="PAFMcTruth.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcTruth:Streamer" href="PAFMcTruth.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="PAFMcTruth:StreamerNVirtual" href="PAFMcTruth.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="./PAFMcTruth.html">PAFMcTruth</a> <a name="PAFMcTruth:PAFMcTruth" href="PAFMcTruth.h">PAFMcTruth</a>(const <a href="./PAFMcTruth.html">PAFMcTruth</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Last update: Fri Dec 20 16:02:16 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:08 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFAodBase - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././PAFAodBase.html">PAFAodBase</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Definition of the Analysis Object Data database			//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, Bochum University, March 1999			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "PAFSchema/PAFAodBase.h"
+#include "RhoBase/TSmartPointer.h"
+
+#include "TBranchClones.h"
+#include "TBranch.h"
+#include "TTree.h"
+#include "TString.h"
+
+ClassImp(PAFAodBase)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+PAFAodBase::PAFAodBase() :
+_xposition(0),
+_yposition(0),
+_zposition(0),
+_xmomentum(0),
+_ymomentum(0),
+_zmomentum(0),
+_energy(0),
+_mcCons(0),
+_mcHypo(0),
+_mcIndex(-1),
+_DetBitpattern(0),
+_charge(-1)
+{
+    for (int j=0; j&lt;MATRIXSIZE;j++) {
+	_errP7[j] = 0;
+    }
+    for (Int_t i=0; i&lt;NELEM_AODBASE; i++) {
+	fBranches[i]=0;
+    }
+    
+}
+
+PAFAodBase::PAFAodBase(PAFAodBase&amp; other)
+{
+<b>    // set branch pointers of copy </b>
+    <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[0]=NULL;
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> i;
+    for (i=1; i&lt;NELEM_AODBASE; i++) {
+	if (other.<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[i]!=other.<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[0]) {
+	    <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[i]=other.<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[i];
+	} else {
+	    <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[i] = <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[0];
+	}
+    }
+<b>    // copy data</b>
+    <a href=".././PAFAodBase.html#PAFAodBase:_xposition">_xposition</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_xposition">_xposition</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_yposition">_yposition</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_yposition">_yposition</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_zposition">_zposition</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_zposition">_zposition</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_xmomentum">_xmomentum</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_xmomentum">_xmomentum</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_ymomentum">_ymomentum</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_ymomentum">_ymomentum</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_zmomentum">_zmomentum</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_zmomentum">_zmomentum</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_energy">_energy</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_energy">_energy</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_mcCons">_mcCons</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_mcCons">_mcCons</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_mcHypo">_mcHypo</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_mcHypo">_mcHypo</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_mcIndex">_mcIndex</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_mcIndex">_mcIndex</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_DetBitpattern">_DetBitpattern</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_DetBitpattern">_DetBitpattern</a>;
+    <a href=".././PAFAodBase.html#PAFAodBase:_charge">_charge</a> = other.<a href=".././PAFAodBase.html#PAFAodBase:_charge">_charge</a>;
+    for (i=0; i&lt;MATRIXSIZE; i++) {
+	<a href=".././PAFAodBase.html#PAFAodBase:_errP7">_errP7</a>[i] = other.<a href=".././PAFAodBase.html#PAFAodBase:_errP7">_errP7</a>[i];
+    }
+}
+
+<a name="PAFAodBase:~PAFAodBase"> </a><a href=".././PAFAodBase.html">PAFAodBase</a>::~<a href=".././PAFAodBase.html">PAFAodBase</a>()  
+{ 
+    for (<a href="../ListOfTypes.html#int">int</a> i=0; i&lt;NELEM_AODBASE; i++) delete <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[i];
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFAodBase:Reset"> </a><a href=".././PAFAodBase.html#PAFAodBase:Reset">PAFAodBase::Reset</a>() 
+{
+    <a href=".././PAFAodBase.html#PAFAodBase:_xposition">_xposition</a>=0; <a href=".././PAFAodBase.html#PAFAodBase:_yposition">_yposition</a>=0; <a href=".././PAFAodBase.html#PAFAodBase:_zposition">_zposition</a>=0;
+    <a href=".././PAFAodBase.html#PAFAodBase:_xmomentum">_xmomentum</a>=0; <a href=".././PAFAodBase.html#PAFAodBase:_ymomentum">_ymomentum</a>=0; <a href=".././PAFAodBase.html#PAFAodBase:_zmomentum">_zmomentum</a>=0;
+    <a href=".././PAFAodBase.html#PAFAodBase:_energy">_energy</a>=0; <a href=".././PAFAodBase.html#PAFAodBase:_mcCons">_mcCons</a>=0; <a href=".././PAFAodBase.html#PAFAodBase:_mcHypo">_mcHypo</a>=0; <a href=".././PAFAodBase.html#PAFAodBase:_mcIndex">_mcIndex</a>=0;
+    <a href=".././PAFAodBase.html#PAFAodBase:_DetBitpattern">_DetBitpattern</a>=0, <a href=".././PAFAodBase.html#PAFAodBase:_charge">_charge</a>=-1;
+    for (<a href="../ListOfTypes.html#int">int</a> j=0; j&lt;MATRIXSIZE;j++) {
+	<a href=".././PAFAodBase.html#PAFAodBase:_errP7">_errP7</a>[j] = 0;
+    }
+    
+}
+
+<a name="PAFAodBase:SetCharge"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodBase.html#PAFAodBase:SetCharge">PAFAodBase::SetCharge</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> q) { <a href=".././PAFAodBase.html#PAFAodBase:_charge">_charge</a> = (<a href="../ListOfTypes.html#Char_t">Char_t</a>) q; }
+<a name="PAFAodBase:GetCharge"> </a><a href="../ListOfTypes.html#Int_t">Int_t</a> <a href=".././PAFAodBase.html#PAFAodBase:GetCharge">PAFAodBase::GetCharge</a>() const 
+{ 
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[13]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[13]-&gt;CheckBranch(); 
+    return <a href=".././PAFAodBase.html#PAFAodBase:_charge">_charge</a>; 
+};
+
+<b>// ____ set &amp; get position __________</b>
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="PAFAodBase:SetPosition"> </a><a href=".././PAFAodBase.html#PAFAodBase:SetPosition">PAFAodBase::SetPosition</a>(TVector3 t) {
+    <a href=".././PAFAodBase.html#PAFAodBase:_xposition">_xposition</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) t.X();
+    <a href=".././PAFAodBase.html#PAFAodBase:_yposition">_yposition</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) t.Y();
+    <a href=".././PAFAodBase.html#PAFAodBase:_zposition">_zposition</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) t.Z();
+}
+
+TVector3 
+<a name="PAFAodBase:GetPosition"> </a><a href=".././PAFAodBase.html#PAFAodBase:GetPosition">PAFAodBase::GetPosition</a>()  const 
+{
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[1]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[1]-&gt;CheckBranch(); 
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[2]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[2]-&gt;CheckBranch(); 
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[3]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[3]-&gt;CheckBranch(); 
+    return TVector3(<a href=".././PAFAodBase.html#PAFAodBase:_xposition">_xposition</a>,<a href=".././PAFAodBase.html#PAFAodBase:_yposition">_yposition</a>,<a href=".././PAFAodBase.html#PAFAodBase:_zposition">_zposition</a>);
+}
+
+
+<b>// ____ set &amp; get momentum __________</b>
+
+
+<a name="PAFAodBase:SetMomentum"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodBase.html#PAFAodBase:SetMomentum">PAFAodBase::SetMomentum</a>(TVector3 t) 
+{
+    <a href=".././PAFAodBase.html#PAFAodBase:_xmomentum">_xmomentum</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) t.X();
+    <a href=".././PAFAodBase.html#PAFAodBase:_ymomentum">_ymomentum</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) t.Y();
+    <a href=".././PAFAodBase.html#PAFAodBase:_zmomentum">_zmomentum</a> = (<a href="../ListOfTypes.html#Float_t">Float_t</a>) t.Z();
+}
+
+<a name="PAFAodBase:GetMomentum"> </a>TVector3 <a href=".././PAFAodBase.html#PAFAodBase:GetMomentum">PAFAodBase::GetMomentum</a>() const 
+{
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[4]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[4]-&gt;CheckBranch(); 
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[5]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[5]-&gt;CheckBranch(); 
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[6]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[6]-&gt;CheckBranch(); 
+    return TVector3(<a href=".././PAFAodBase.html#PAFAodBase:_xmomentum">_xmomentum</a>,<a href=".././PAFAodBase.html#PAFAodBase:_ymomentum">_ymomentum</a>,<a href=".././PAFAodBase.html#PAFAodBase:_zmomentum">_zmomentum</a>);
+}
+
+
+TLorentzVector 
+<a name="PAFAodBase:GetLorentzVector"> </a><a href=".././PAFAodBase.html#PAFAodBase:GetLorentzVector">PAFAodBase::GetLorentzVector</a>() const 
+{ 
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[4]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[4]-&gt;CheckBranch(); 
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[5]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[5]-&gt;CheckBranch(); 
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[6]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[6]-&gt;CheckBranch(); 
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[7]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[7]-&gt;CheckBranch(); 
+    return TLorentzVector(<a href=".././PAFAodBase.html#PAFAodBase:_xmomentum">_xmomentum</a>,<a href=".././PAFAodBase.html#PAFAodBase:_ymomentum">_ymomentum</a>,<a href=".././PAFAodBase.html#PAFAodBase:_zmomentum">_zmomentum</a>,<a href=".././PAFAodBase.html#PAFAodBase:_energy">_energy</a>); 
+}
+
+<b>// ____ set &amp; get energy __________</b>
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="PAFAodBase:SetEnergy"> </a><a href=".././PAFAodBase.html#PAFAodBase:SetEnergy">PAFAodBase::SetEnergy</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> t) 
+{
+    <a href=".././PAFAodBase.html#PAFAodBase:_energy">_energy</a>=t;
+}
+
+<a name="PAFAodBase:GetEnergy"> </a><a href="../ListOfTypes.html#Float_t">Float_t</a> <a href=".././PAFAodBase.html#PAFAodBase:GetEnergy">PAFAodBase::GetEnergy</a>() const 
+{
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[7]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[7]-&gt;CheckBranch(); 
+    return <a href=".././PAFAodBase.html#PAFAodBase:_energy">_energy</a>;
+}
+
+
+<b>// ____ set &amp; get ErrorMatrix _______</b>
+
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="PAFAodBase:SetPositionError"> </a><a href=".././PAFAodBase.html#PAFAodBase:SetPositionError">PAFAodBase::SetPositionError</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> *d) 
+{
+    for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;6;i++) <a href=".././PAFAodBase.html#PAFAodBase:_errP7">_errP7</a>[i]=d[i];
+}
+
+const <a href="../ListOfTypes.html#Float_t">Float_t</a>*
+<a name="PAFAodBase:GetPositionError"> </a><a href=".././PAFAodBase.html#PAFAodBase:GetPositionError">PAFAodBase::GetPositionError</a>() const
+{ 
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[8]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[8]-&gt;CheckBranch(); 
+    return &amp;(<a href=".././PAFAodBase.html#PAFAodBase:_errP7">_errP7</a>[0]);
+}
+
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="PAFAodBase:SetMomentumError"> </a><a href=".././PAFAodBase.html#PAFAodBase:SetMomentumError">PAFAodBase::SetMomentumError</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> *d) 
+{
+    for (<a href="../ListOfTypes.html#int">int</a> i=18;i&lt;28;i++) <a href=".././PAFAodBase.html#PAFAodBase:_errP7">_errP7</a>[i]=d[i];
+}
+
+const <a href="../ListOfTypes.html#Float_t">Float_t</a>*
+<a name="PAFAodBase:GetMomentumError"> </a><a href=".././PAFAodBase.html#PAFAodBase:GetMomentumError">PAFAodBase::GetMomentumError</a>() const
+{
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[8]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[8]-&gt;CheckBranch(); 
+    return &amp;(<a href=".././PAFAodBase.html#PAFAodBase:_errP7">_errP7</a>[18]);
+}
+
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="PAFAodBase:SetErrorP7"> </a><a href=".././PAFAodBase.html#PAFAodBase:SetErrorP7">PAFAodBase::SetErrorP7</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> *d)
+{
+    for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;28;i++) <a href=".././PAFAodBase.html#PAFAodBase:_errP7">_errP7</a>[i]=d[i];
+}
+
+const <a href="../ListOfTypes.html#Float_t">Float_t</a>*
+<a name="PAFAodBase:GetErrorP7"> </a><a href=".././PAFAodBase.html#PAFAodBase:GetErrorP7">PAFAodBase::GetErrorP7</a>() const
+{
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[8]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[8]-&gt;CheckBranch(); 
+    return <a href=".././PAFAodBase.html#PAFAodBase:_errP7">_errP7</a>;
+}
+
+<b>// ____ set &amp; get MC consistency __________</b>
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFAodBase:SetMcConsistency"> </a><a href=".././PAFAodBase.html#PAFAodBase:SetMcConsistency">PAFAodBase::SetMcConsistency</a>(<a href="../ListOfTypes.html#Float_t">Float_t</a> cons) 
+{
+    <a href=".././PAFAodBase.html#PAFAodBase:_mcCons">_mcCons</a> = cons;
+}
+
+<a href="../ListOfTypes.html#Float_t">Float_t</a>
+<a name="PAFAodBase:GetMcConsistency"> </a><a href=".././PAFAodBase.html#PAFAodBase:GetMcConsistency">PAFAodBase::GetMcConsistency</a>() const
+{
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[9]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[9]-&gt;CheckBranch(); 
+    return <a href=".././PAFAodBase.html#PAFAodBase:_mcCons">_mcCons</a>;
+}
+
+
+<b>// ____ set &amp; get MCPid __________</b>
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="PAFAodBase:SetMcPid"> </a><a href=".././PAFAodBase.html#PAFAodBase:SetMcPid">PAFAodBase::SetMcPid</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> pid)
+{
+    <a href=".././PAFAodBase.html#PAFAodBase:_mcHypo">_mcHypo</a> = pid;
+}
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="PAFAodBase:SetMcIndex"> </a><a href=".././PAFAodBase.html#PAFAodBase:SetMcIndex">PAFAodBase::SetMcIndex</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> no)
+{
+    <a href=".././PAFAodBase.html#PAFAodBase:_mcIndex">_mcIndex</a> = no;
+}
+
+<a href="../ListOfTypes.html#Int_t">Int_t</a>
+<a name="PAFAodBase:GetMcPid"> </a><a href=".././PAFAodBase.html#PAFAodBase:GetMcPid">PAFAodBase::GetMcPid</a>() const
+{
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[10]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[10]-&gt;CheckBranch();
+    return <a href=".././PAFAodBase.html#PAFAodBase:_mcHypo">_mcHypo</a>;
+}
+
+<a href="../ListOfTypes.html#Int_t">Int_t</a>
+<a name="PAFAodBase:GetMcIndex"> </a><a href=".././PAFAodBase.html#PAFAodBase:GetMcIndex">PAFAodBase::GetMcIndex</a>() const
+{
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[11]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[11]-&gt;CheckBranch();
+    return <a href=".././PAFAodBase.html#PAFAodBase:_mcIndex">_mcIndex</a>;
+}
+
+
+<b>// set &amp; get DETbitpattern</b>
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="PAFAodBase:SetBitPatternOfDetectors"> </a><a href=".././PAFAodBase.html#PAFAodBase:SetBitPatternOfDetectors">PAFAodBase::SetBitPatternOfDetectors</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> p)
+{
+    <a href=".././PAFAodBase.html#PAFAodBase:_DetBitpattern">_DetBitpattern</a>=(<a href="../ListOfTypes.html#Short_t">Short_t</a>) p;
+}
+
+
+<a href="../ListOfTypes.html#Int_t">Int_t</a> 
+<a name="PAFAodBase:GetBitPatternOfDetectors"> </a><a href=".././PAFAodBase.html#PAFAodBase:GetBitPatternOfDetectors">PAFAodBase::GetBitPatternOfDetectors</a>()
+{
+    if (<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[12]) <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[12]-&gt;CheckBranch();
+    return <a href=".././PAFAodBase.html#PAFAodBase:_DetBitpattern">_DetBitpattern</a>;
+}
+
+
+<a name="PAFAodBase:PrintOn"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodBase.html#PAFAodBase:PrintOn">PAFAodBase::PrintOn</a>(std::ostream &amp;o) const
+{
+    TVector3 r = <a href="#PAFAodBase:GetPosition">GetPosition</a>();
+    TVector3 p = <a href="#PAFAodBase:GetMomentum">GetMomentum</a>();
+    o &lt;&lt; " FIT position                     : (" &lt;&lt; r.X() &lt;&lt; ";" &lt;&lt; r.Y() &lt;&lt; ";" &lt;&lt; r.Z() &lt;&lt; ")" &lt;&lt; endl;
+    o &lt;&lt; " FIT momentum                     : (" &lt;&lt; p.X() &lt;&lt; ";" &lt;&lt; p.Y() &lt;&lt; ";" &lt;&lt; p.Z() &lt;&lt; ")" &lt;&lt; endl;
+    o &lt;&lt; " FIT momentum.mag                 : " &lt;&lt; p.Mag() &lt;&lt; endl;
+    o &lt;&lt; " FIT charge                       : " &lt;&lt; <a href="#PAFAodBase:GetCharge">GetCharge</a>() &lt;&lt; endl;
+    o &lt;&lt; " FIT energy                       : " &lt;&lt; <a href="#PAFAodBase:GetEnergy">GetEnergy</a>() &lt;&lt; endl;
+    const <a href="../ListOfTypes.html#Float_t">Float_t</a> *err = <a href="#PAFAodBase:GetPositionError">GetPositionError</a>();
+    o &lt;&lt; " FIT postion error                :   posErr(1,1) = " &lt;&lt; err[0] &lt;&lt; " ; posErr(2,2) = " 
+	&lt;&lt; err[2] &lt;&lt; " ; posErr(3,3) = " &lt;&lt; err[5] &lt;&lt; endl;
+    o &lt;&lt; " FIT mtm error                    :   mtmErr(1,1) = " &lt;&lt; err[18] &lt;&lt; " ; mtmErr(2,2) = " 
+	&lt;&lt; err[20] &lt;&lt; " ; mtmErr(3,3) = " &lt;&lt; err[23] &lt;&lt; " ; mtmErr(4,4) = " &lt;&lt; err[27] &lt;&lt; endl;
+}
+
+
+<a name="PAFAodBase:Init"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././PAFAodBase.html#PAFAodBase:Init">PAFAodBase::Init</a>(<a href=".././PAFAodBase.html">PAFAodBase</a>* other)
+{
+    
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=1; i&lt;NELEM_AODBASE; i++) {
+	<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[i] = other-&gt;<a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[i];
+    }
+}
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="PAFAodBase:Init"> </a><a href=".././PAFAodBase.html#PAFAodBase:Init">PAFAodBase::Init</a>(TBranchClones *clonesBranch)
+{
+    TString branchName(clonesBranch-&gt;GetName());
+    TBranch *subBranch;
+    TObjArray *list = clonesBranch-&gt;GetListOfBranches();
+    <a href="../ListOfTypes.html#Int_t">Int_t</a> listLen = list-&gt;GetEntries();
+    for (<a href="../ListOfTypes.html#Int_t">Int_t</a> i=0; i&lt;listLen; i++) {
+	subBranch = (TBranch*) (*list)[i];
+	TString t(subBranch-&gt;GetName());
+	
+	if      (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_xposition">_xposition</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[1] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_yposition">_yposition</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[2] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_zposition">_zposition</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[3] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_xmomentum">_xmomentum</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[4] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_ymomentum">_ymomentum</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[5] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_zmomentum">_zmomentum</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[6] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_energy">_energy</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[7] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_errP7">_errP7</a>[28]") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[8] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_mcCons">_mcCons</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[9] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_mcHypo">_mcHypo</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[10] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_mcIndex">_mcIndex</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[11] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_DetBitpattern">_DetBitpattern</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[12] = new TSmartPointer(subBranch); }
+	else if (t == branchName+".<a href=".././PAFAodBase.html#PAFAodBase:_charge">_charge</a>") { <a href=".././PAFAodBase.html#PAFAodBase:fBranches">fBranches</a>[13] = new TSmartPointer(subBranch); }
+    }
+}
+
+std::ostream&amp;  operator &lt;&lt; (std::ostream&amp; o, const <a href=".././PAFAodBase.html">PAFAodBase</a>&amp; a) { a.<a href="#PAFAodBase:PrintOn">PrintOn</a>(o); return o; }
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:04 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TModule - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TModule.html">TModule</a>								//</b>
+<b>//                                                                      //</b>
+<b>// Base class for modules in Rho					//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, Bochum University, Jan. 2k			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "THashList.h"
+#include "RhoManager/TModule.h"
+#include "RhoManager/TEventManager.h"
+#include "RhoManager/TEventCollection.h"
+#include "RhoManager/TEventWriter.h"
+#include "RhoManager/TCandListManager.h"
+#include "RhoManager/TObjectManager.h"
+#include "RhoBase/TRho.h"
+#include "RhoBase/TCandList.h"
+#include "RhoBase/TCandidate.h"
+
+ClassImp(TModule)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<a name="TModule:TModule"> </a>TModule::TModule(const char* const theName, const char* const theDescription) : 
+TNamed(theName,theDescription),_passed(kTRUE),fWriter(0),
+_verbose("verbose",this),_active("active",this)
+{
+    _verbose.AddDescription("Verbose mode");
+    _active.AddDescription("Module status");
+    SetVerbose(kFALSE);
+    SetActive(kTRUE);
+}
+
+<a name="TModule:~TModule"> </a>TModule::~TModule()
+{
+    if (fWriter != 0) {
+
+	for (int i=0;i&lt;fWriter-&gt;GetSize();i++) {
+	  VAbsWriter *w = (VAbsWriter *) fWriter-&gt;At(i);
+	  w-&gt;Store();
+	}
+
+	fWriter-&gt;Delete(); delete fWriter;
+	fLists-&gt;Delete(); delete fLists;
+    }
+}
+
+<a name="TModule:PrintInfo"> </a>void TModule::PrintInfo()
+{
+    cout &lt;&lt; "  - " &lt;&lt; GetName() &lt;&lt; ':' &lt;&lt; GetTitle();
+    if (!GetBoolParm("active")) cout &lt;&lt; " =&gt; not active";
+    cout &lt;&lt; endl; 
+}
+
+
+<a name="TModule:SetParm"> </a>void TModule::SetParm(const char* k, Bool_t val, const char* desc) 
+{
+    TString key(k);
+    if (key==GetName()+TString("::verbose")) { SetVerbose(val); return; }
+    if (key==GetName()+TString("::active")) { SetActive(val); return; }
+    TRho::Instance()-&gt;GetParameterManager()-&gt;SetParm(key,val,desc,this); 
+}
+
+<a name="TModule:SetParm"> </a>void TModule::SetParm(const char* key, Int_t val, const char* desc) 
+{ 
+    TRho::Instance()-&gt;GetParameterManager()-&gt;SetParm(key,val,desc,this); 
+}
+
+<a name="TModule:SetParm"> </a>void TModule::SetParm(const char* key, Double_t val, const char* desc) 
+{ 
+    TRho::Instance()-&gt;GetParameterManager()-&gt;SetParm(key,val,desc,this); 
+}
+
+<a name="TModule:SetParm"> </a>void TModule::SetParm(const char* key, const char* val, const char* desc) 
+{ 
+    TRho::Instance()-&gt;GetParameterManager()-&gt;SetParm(key,val,desc,this); 
+}
+
+<a name="TModule:GetParm"> </a>Double_t TModule::GetParm(const char* key) 
+{ 
+    return TRho::Instance()-&gt;GetParameterManager()-&gt;GetParm(key,this); 
+}
+
+<a name="TModule:GetBoolParm"> </a>Bool_t TModule::GetBoolParm(const char* key) 
+{ 
+    return TRho::Instance()-&gt;GetParameterManager()-&gt;GetBoolParm(key,this); 
+}
+
+<a name="TModule:GetIntParm"> </a>Int_t TModule::GetIntParm(const char* key) 
+{ 
+    return TRho::Instance()-&gt;GetParameterManager()-&gt;GetIntParm(key,this); 
+}
+
+<a name="TModule:GetDoubleParm"> </a>Double_t TModule::GetDoubleParm(const char* key) 
+{ 
+    return TRho::Instance()-&gt;GetParameterManager()-&gt;GetDoubleParm(key,this); 
+}
+
+<a name="TModule:GetStringParm"> </a>TString TModule::GetStringParm(const char* key) 
+{ 
+    return TRho::Instance()-&gt;GetParameterManager()-&gt;GetStringParm(key,this); 
+}
+
+<a name="TModule:PrintParm"> </a>void TModule::PrintParm() 
+{ 
+    TRho::Instance()-&gt;GetParameterManager()-&gt;PrintOn(cout,this); 
+}
+
+<a name="TModule:AddNewParm"> </a>void TModule::AddNewParm(const char* p,Bool_t b,TModule *x) 
+{
+    if (x == 0) x = this;
+    TRho::Instance()-&gt;GetParameterManager()-&gt;SetParm(p,b,"Bool parm",x);
+}
+
+<a name="TModule:AddNewParm"> </a>void TModule::AddNewParm(const char* p,Int_t i,TModule *x) 
+{
+    if (x == 0) x = this;
+    TRho::Instance()-&gt;GetParameterManager()-&gt;SetParm(p,i,"Int parm",x);
+}
+
+<a name="TModule:AddNewParm"> </a>void TModule::AddNewParm(const char* p,Double_t d,TModule *x) 
+{
+    if (x == 0) x = this;
+    TRho::Instance()-&gt;GetParameterManager()-&gt;SetParm(p,d,"Double parm",x);
+}
+
+<a name="TModule:AddNewParm"> </a>void TModule::AddNewParm(const char* p,const char* s,TModule *x) 
+{
+    if (x == 0) x = this;
+    TRho::Instance()-&gt;GetParameterManager()-&gt;SetParm(p,s,"String parm",x);
+}
+
+<a name="TModule:GetParmValue"> </a>Double_t TModule::GetParmValue(const char* p,TModule *x) 
+{
+    if (x == 0) x = this;
+    return TRho::Instance()-&gt;GetParameterManager()-&gt;GetParm(p,x);
+}
+
+<b>// Communication</b>
+
+TCandList*
+<a name="TModule:PutCandList"> </a><a href=".././TModule.html#TModule:PutCandList">TModule::PutCandList</a>(TCandList* list)
+{
+<b>    // Make sure, list manager exists</b>
+    <a href=".././TCandListManager.html">TCandListManager</a> *listmgr = TRho::Instance()-&gt;GetCandListManager();
+    if (listmgr == 0) {
+	listmgr = new <a href=".././TCandListManager.html">TCandListManager</a>();
+	TRho *rho = (TRho *) TRho::Instance();
+	rho-&gt;SetCandListManager(listmgr);
+    }
+
+<b>    // Does this list already exist ?</b>
+    TString name = list-&gt;GetName();
+    if (<a href="#TModule:GetCandList">GetCandList</a>(name)!=0) { 
+	cerr &lt;&lt; "<a href=".././TModule.html">TModule</a>: Trying to override existing TCandList " &lt;&lt; name &lt;&lt; endl;
+	return <a href="#TModule:GetCandList">GetCandList</a>(name);
+    }
+    else
+	return listmgr-&gt;Add(list);
+}
+
+TCandList*
+<a name="TModule:GetCandList"> </a><a href=".././TModule.html#TModule:GetCandList">TModule::GetCandList</a>(const <a href="../ListOfTypes.html#char">char</a> *name)
+{
+<b>    // Make sure, list manager exists</b>
+    <a href=".././TCandListManager.html">TCandListManager</a> *listmgr = TRho::Instance()-&gt;GetCandListManager();
+    if (listmgr == 0) {
+	listmgr = new <a href=".././TCandListManager.html">TCandListManager</a>();
+	TRho *rho = (TRho *) TRho::Instance();
+	rho-&gt;SetCandListManager(listmgr);
+    }
+
+    return listmgr-&gt;<a href="#TModule:Get">Get</a>(name);
+}
+
+
+TObject*
+<a name="TModule:Put"> </a><a href=".././TModule.html#TModule:Put">TModule::Put</a>(TObject* obj)
+{
+<b>    // Make sure, list manager exists</b>
+    <a href=".././TObjectManager.html">TObjectManager</a> *objmgr = TRho::Instance()-&gt;GetObjectManager();
+    if (objmgr == 0) {
+	objmgr = new <a href=".././TObjectManager.html">TObjectManager</a>();
+	TRho *rho = (TRho *) TRho::Instance();
+	rho-&gt;SetObjectManager(objmgr);
+    }
+
+<b>    // Does this list already exist ?</b>
+    TString name = obj-&gt;GetName();
+    if (<a href="#TModule:Get">Get</a>(name)!=0) { 
+	cerr &lt;&lt; "<a href=".././TModule.html">TModule</a>: Trying to override existing TObject " &lt;&lt; name &lt;&lt; endl;
+	return <a href="#TModule:Get">Get</a>(name);
+    }
+    else
+	return objmgr-&gt;Add(obj);
+}
+
+TObject*
+<a name="TModule:Get"> </a><a href=".././TModule.html#TModule:Get">TModule::Get</a>(const <a href="../ListOfTypes.html#char">char</a> *name)
+{
+<b>    // Make sure, list manager exists</b>
+    <a href=".././TObjectManager.html">TObjectManager</a> *objmgr = TRho::Instance()-&gt;GetObjectManager();
+    if (objmgr == 0) {
+	objmgr = new <a href=".././TObjectManager.html">TObjectManager</a>();
+	TRho *rho = (TRho *) TRho::Instance();
+	rho-&gt;SetObjectManager(objmgr);
+    }
+
+    return objmgr-&gt;<a href="#TModule:Get">Get</a>(name);
+}
+
+<b>// ------------------- Generate particle selection -------------------------</b>
+
+<a href="../ListOfTypes.html#void">void</a>
+<a name="TModule:WriteCandidate"> </a><a href=".././TModule.html#TModule:WriteCandidate">TModule::WriteCandidate</a>(TCandidate *theCand, const <a href="../ListOfTypes.html#char">char</a> *theMapName,
+			       <a href="../ListOfTypes.html#Bool_t">Bool_t</a> useForFilter)
+{
+    static <a href="../ListOfTypes.html#UInt_t">UInt_t</a> oldEvent   = 0;
+    static <a href="../ListOfTypes.html#Bool_t">Bool_t</a> initialize = kTRUE;
+
+    if (initialize) {				// Open the output stream
+	if (<a href=".././TModule.html#TModule:fWriter">fWriter</a>==0) <a href=".././TModule.html#TModule:fWriter">fWriter</a> = new THashList();
+	if (<a href=".././TModule.html#TModule:fLists">fLists</a>==0)  <a href=".././TModule.html#TModule:fLists">fLists</a>  = new THashList();
+	initialize = kFALSE;
+    }
+
+<b>    // Check if we already have a suiting VAbsWriter for the map</b>
+<b>    // Instanciate it if needed and add it to the corresponding list</b>
+
+    VAbsWriter *w = (VAbsWriter *) <a href=".././TModule.html#TModule:fWriter">fWriter</a>-&gt;FindObject(theMapName);
+    
+    if ( w == 0) {
+      cout &lt;&lt; "<a href=".././TModule.html#TModule:WriteCandidate">TModule::WriteCandidate</a>: Allocate writer for " &lt;&lt; theMapName &lt;&lt; endl;
+      if (useForFilter) {
+	<a href=".././TEventCollection.html">TEventCollection</a> *coll = new <a href=".././TEventCollection.html">TEventCollection</a>(theMapName);
+	w = new <a href=".././TEventWriter.html">TEventWriter</a>(coll);
+      }
+      else {
+	w = new <a href=".././TEventWriter.html">TEventWriter</a>(theMapName);
+      }
+      <a href=".././TModule.html#TModule:fWriter">fWriter</a>-&gt;Add(w);
+    }
+
+
+    TCandList *l = (TCandList *) <a href=".././TModule.html#TModule:fLists">fLists</a>-&gt;FindObject(theMapName);
+
+    if ( l == 0) {
+      cout &lt;&lt; "<a href=".././TModule.html#TModule:WriteCandidate">TModule::WriteCandidate</a>: Allocate list for " &lt;&lt; theMapName &lt;&lt; endl;
+      l = new TCandList(theMapName);
+      <a href=".././TModule.html#TModule:fLists">fLists</a>-&gt;Add(l);
+    }
+
+<b>    // Note the candidate</b>
+
+    l-&gt;Add(*theCand);
+
+<b>    // Write the event</b>
+    
+    <a href=".././TEventManager.html">TEventManager</a> *evtmgr = TRho::Instance()-&gt;GetEventManager();
+    if (evtmgr-&gt;GetEventNumber() != oldEvent) {
+	for (<a href="../ListOfTypes.html#int">int</a> i=0;i&lt;<a href=".././TModule.html#TModule:fWriter">fWriter</a>-&gt;GetSize();i++) {
+	  VAbsWriter *w = (VAbsWriter *) <a href=".././TModule.html#TModule:fWriter">fWriter</a>-&gt;At(i);
+	  TCandList   *l = (TCandList *) <a href=".././TModule.html#TModule:fLists">fLists</a>-&gt;At(i);
+	  if (l!=0 &amp;&amp; w!=0) {
+            cout &lt;&lt; "<a href=".././TModule.html#TModule:WriteCandidate">TModule::WriteCandidate</a>: Writer " &lt;&lt; w-&gt;GetName() &lt;&lt; " writes list " &lt;&lt; l-&gt;GetName() &lt;&lt; endl;
+	    w-&gt;WriteEvent(evtmgr,l);
+	    l-&gt;Cleanup();
+	  }
+	  else
+	    cerr &lt;&lt; "<a href=".././TModule.html#TModule:WriteCandidate">TModule::WriteCandidate</a>: Writer " &lt;&lt; w-&gt;GetName() &lt;&lt; " could not write list " &lt;&lt; l-&gt;GetName() &lt;&lt; endl;
+	}
+	oldEvent = evtmgr-&gt;GetEventNumber();
+    }
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

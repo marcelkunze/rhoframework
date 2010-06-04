@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:01:56 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>BtaCandAssocMapR - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: BtaCandAssocMapR.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//      see <a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a>.h</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Rolf Dubitzky</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//</b>
+<b>//------------------------------------------------------------------------</b>
+
+<b>//-----------------------</b>
+<b>// This Class's Header --</b>
+<b>//-----------------------</b>
+#include "KangaSchema/BtaCandAssocMapR.h"
+
+<b>//-----------------------------------------------------------------------</b>
+<b>// Local Macros, Typedefs, Structures, Unions and Forward Declarations --</b>
+<b>//-----------------------------------------------------------------------</b>
+ClassImp(<a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a>)
+
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+<a name="BtaCandAssocMapR:BtaCandAssocMapR"> </a><a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:BtaCandAssocMapR">BtaCandAssocMapR::BtaCandAssocMapR</a>() :
+  RooEvtObj&lt;BtaCandAssocMap&gt;(),
+  <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_microIndex">_microIndex</a>(0),
+  <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_mcTruIndex">_mcTruIndex</a>(0),
+  <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_consistency">_consistency</a>(0)
+{}
+
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+<a name="BtaCandAssocMapR:~BtaCandAssocMapR"> </a><a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a>::~<a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a>() 
+{}
+
+
+<b>//--------------</b>
+<b>// Operations --</b>
+<b>//--------------</b>
+<a name="BtaCandAssocMapR:transient"> </a>BtaCandAssocMap* <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:transient">BtaCandAssocMapR::transient</a>() const {
+
+    BtaCandAssocMap* transient= new BtaCandAssocMap( <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_microIndex">_microIndex</a>, <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_mcTruIndex">_mcTruIndex</a>, <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_consistency">_consistency</a> );
+    return transient;
+
+}
+
+
+<a name="BtaCandAssocMapR:BtaCandAssocMapR"> </a><a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:BtaCandAssocMapR">BtaCandAssocMapR::BtaCandAssocMapR</a>( const <a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a> &amp;other ) {
+  <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_microIndex">_microIndex</a>=other.<a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_microIndex">_microIndex</a>;
+  <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_mcTruIndex">_mcTruIndex</a>=other.<a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_mcTruIndex">_mcTruIndex</a>;
+  <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_consistency">_consistency</a>=other.<a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_consistency">_consistency</a>;
+}
+
+<a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a> &amp; <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:operator">BtaCandAssocMapR::operator</a> = ( const <a href=".././BtaCandAssocMapR.html">BtaCandAssocMapR</a> &amp;other ) {
+  <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_microIndex">_microIndex</a>=other.<a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_microIndex">_microIndex</a>;
+  <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_mcTruIndex">_mcTruIndex</a>=other.<a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_mcTruIndex">_mcTruIndex</a>;
+  <a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_consistency">_consistency</a>=other.<a href=".././BtaCandAssocMapR.html#BtaCandAssocMapR:_consistency">_consistency</a>;
+  return *this;
+}
+
+<b>//              -------------------------------------------</b>
+<b>//              -- Protected Function Member Definitions --</b>
+<b>//              -------------------------------------------</b>
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

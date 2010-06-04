@@ -1,0 +1,980 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:18 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PAFTagBase</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>PAFTagBase</h1>
+<hr width=300>
+<!--SDL--><em><a href="#PAFTagBase:description">class description</a> - <a href="src/PAFTagBase.cxx.html">source file</a> - <a href="PAFTagBase_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="PAFTagBase" href="PAFTagBase.h">PAFTagBase</a> : public VAbsBit</h2>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->       <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetByte">GetByte</a><!--PLAIN-->(TBranch* theBranch, const <a href="ListOfTypes.html#Byte_t">Byte_t</a>&amp; value) const
+<!--TAB6-->       <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetChar">GetChar</a><!--PLAIN-->(TBranch* theBranch, const <a href="ListOfTypes.html#Char_t">Char_t</a>&amp; value) const
+<!--TAB6-->      <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetFloat">GetFloat</a><!--PLAIN-->(TBranch* theBranch, const <a href="ListOfTypes.html#Float_t">Float_t</a>&amp; value) const
+<!--TAB6-->        <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetInt">GetInt</a><!--PLAIN-->(TBranch* theBranch, const <a href="ListOfTypes.html#Int_t">Int_t</a>&amp; value) const
+<!--TAB6-->      <a href="ListOfTypes.html#Short_t">Short_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetShort">GetShort</a><!--PLAIN-->(TBranch* theBranch, const <a href="ListOfTypes.html#Short_t">Short_t</a>&amp; value) const
+<!--TAB6-->       <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetUInt">GetUInt</a><!--PLAIN-->(TBranch* theBranch, const <a href="ListOfTypes.html#UInt_t">UInt_t</a>&amp; value) const
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->            <a href="./PAFTagBase.html">PAFTagBase</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:PAFTagBase">PAFTagBase</a><!--PLAIN-->()
+<!--TAB6-->            <a href="./PAFTagBase.html">PAFTagBase</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:PAFTagBase">PAFTagBase</a><!--PLAIN-->(const <a href="./PAFTagBase.html">PAFTagBase</a>&amp;)
+<!--TAB6-->          virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:~PAFTagBase">~PAFTagBase</a><!--PLAIN-->()
+<!--TAB6-->        static TClass* <!--TAB--><!--BOLD--><a href="#PAFTagBase:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->                <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetAnalysisBits">GetAnalysisBits</a><!--PLAIN-->() const
+<!--TAB6-->                <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetAnalysisBits1">GetAnalysisBits1</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetBbqqDiscr">GetBbqqDiscr</a><!--PLAIN-->() const
+<!--TAB6-->              TVector3 <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetBeamError">GetBeamError</a><!--PLAIN-->() const
+<!--TAB6-->              TVector3 <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetBeamSpot">GetBeamSpot</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetBGFR2">GetBGFR2</a><!--PLAIN-->() const
+<!--TAB6-->        virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetBool">GetBool</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--TAB6-->          virtual <a href="ListOfTypes.html#char">char</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:getBool">getBool</a><!--PLAIN-->(<a href="ListOfTypes.html#char">char</a>&amp; aBool, const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetBunchT0DeltaDircTrk">GetBunchT0DeltaDircTrk</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetBunchT0DeltaFF">GetBunchT0DeltaFF</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetBunchT0FinderErr">GetBunchT0FinderErr</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetBunchT0FitterErr">GetBunchT0FitterErr</a><!--PLAIN-->() const
+<!--TAB6-->        TLorentzVector <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetCMFrame">GetCMFrame</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetCMSEnergy">GetCMSEnergy</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetD3PS">GetD3PS</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetDmeson0">GetDmeson0</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetDsmeson0">GetDsmeson0</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetDstar0">GetDstar0</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetDstar1">GetDstar1</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetECharShow">GetECharShow</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetElecLoose1cm">GetElecLoose1cm</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetElecLoose1l">GetElecLoose1l</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetElecLoose2cm">GetElecLoose2cm</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetElecLoose2l">GetElecLoose2l</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetElecTight1cm">GetElecTight1cm</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetElecTight1l">GetElecTight1l</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetElecTight2cm">GetElecTight2cm</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetElecTight2l">GetElecTight2l</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetElectronsLoose">GetElectronsLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetElectronsTight">GetElectronsTight</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetENeutShow">GetENeutShow</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetFloat">GetFloat</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--TAB6-->          virtual <a href="ListOfTypes.html#char">char</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:getFloat">getFloat</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>&amp; aFloat, const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetGammasLoose">GetGammasLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetGammasTight">GetGammasTight</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetHighestEnergyShower">GetHighestEnergyShower</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetInt">GetInt</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--TAB6-->          virtual <a href="ListOfTypes.html#char">char</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:getInt">getInt</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>&amp; anInt, const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetKaonsLoose">GetKaonsLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetKaonsTight">GetKaonsTight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetKsLoose">GetKsLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetKsTight">GetKsTight</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetL3OutBhabhaFlatOprValue">GetL3OutBhabhaFlatOprValue</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetL3OutBhabhaFlatValue">GetL3OutBhabhaFlatValue</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetLeptonsLoose">GetLeptonsLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetLeptonsTight">GetLeptonsTight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetLumiBhabhaWeight">GetLumiBhabhaWeight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMergedPi0Loose">GetMergedPi0Loose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMergedPi0Tight">GetMergedPi0Tight</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMuonLoose1cm">GetMuonLoose1cm</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMuonLoose1l">GetMuonLoose1l</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMuonLoose2cm">GetMuonLoose2cm</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMuonLoose2l">GetMuonLoose2l</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMuonsLoose">GetMuonsLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMuonsTight">GetMuonsTight</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMuonTight1cm">GetMuonTight1cm</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMuonTight1l">GetMuonTight1l</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMuonTight2cm">GetMuonTight2cm</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetMuonTight2l">GetMuonTight2l</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetNumberOfGoodTracksLoose">GetNumberOfGoodTracksLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetNumberOfGoodTracksTight">GetNumberOfGoodTracksTight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetNumberOfNeutralCands">GetNumberOfNeutralCands</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetNumberOfNeutralCndLoose">GetNumberOfNeutralCndLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetNumberOfNeutralCndTight">GetNumberOfNeutralCndTight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetNumberOfTracks">GetNumberOfTracks</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPi0Loose">GetPi0Loose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPi0Tight">GetPi0Tight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPionsLoose">GetPionsLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPionsTight">GetPionsTight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryLeptonChargeLoose">GetPrimaryLeptonChargeLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryLeptonChargeTight">GetPrimaryLeptonChargeTight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryLeptonHypothesisLoose">GetPrimaryLeptonHypothesisLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryLeptonHypothesisTight">GetPrimaryLeptonHypothesisTight</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryLeptonMomentumLoose">GetPrimaryLeptonMomentumLoose</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryLeptonMomentumTight">GetPrimaryLeptonMomentumTight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryTrackHypothesis">GetPrimaryTrackHypothesis</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryTrackMomentum">GetPrimaryTrackMomentum</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryTrackShowerEnergy">GetPrimaryTrackShowerEnergy</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryVertex">GetPrimaryVertex</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPrimaryVertexProbability">GetPrimaryVertexProbability</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetProtonsLoose">GetProtonsLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetProtonsTight">GetProtonsTight</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetPTotalScalar">GetPTotalScalar</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetR2">GetR2</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetR2All">GetR2All</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSecondaryLeptonChargeLoose">GetSecondaryLeptonChargeLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSecondaryLeptonChargeTight">GetSecondaryLeptonChargeTight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSecondaryLeptonHypothesisLoose">GetSecondaryLeptonHypothesisLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSecondaryLeptonHypothesisTight">GetSecondaryLeptonHypothesisTight</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSecondaryLeptonMomentumLoose">GetSecondaryLeptonMomentumLoose</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSecondaryLeptonMomentumTight">GetSecondaryLeptonMomentumTight</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSecondaryTrackHypothesis">GetSecondaryTrackHypothesis</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSecondaryTrackMomentum">GetSecondaryTrackMomentum</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSecondaryTrackShowerEnergy">GetSecondaryTrackShowerEnergy</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSecondHighestEnergyShower">GetSecondHighestEnergyShower</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetSphericityAll">GetSphericityAll</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagEtaPeppTwoBody_maxCmsPmaxCosT">GetTagEtaPeppTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagEtaPrhogTwoBody_maxCmsPmaxCosT">GetTagEtaPrhogTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagEtaTwoBody_maxCmsPmaxCosT">GetTagEtaTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagK_S0TwoBody_maxCmsPmaxCosT">GetTagK_S0TwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagKstpTwoBody_maxCmsPmaxCosT">GetTagKstpTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagKstTwoBody_maxCmsPmaxCosT">GetTagKstTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagKTwoBody_maxCmsPmaxCosT">GetTagKTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagLooseProton_maxCmsP">GetTagLooseProton_maxCmsP</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagOmegaTwoBody_maxCmsPmaxCosT">GetTagOmegaTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagPhiTwoBody_maxCmsPmaxCosT">GetTagPhiTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagPi0TwoBody_maxCmsPmaxCosT">GetTagPi0TwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagRhopTwoBody_maxCmsPmaxCosT">GetTagRhopTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagRhoTwoBody_maxCmsPmaxCosT">GetTagRhoTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTagTightProton_maxCmsP">GetTagTightProton_maxCmsP</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetThrust">GetThrust</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetThrustCosThAll">GetThrustCosThAll</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetThrustMagAll">GetThrustMagAll</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetThrustPhiAll">GetThrustPhiAll</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTotalChargeLoose">GetTotalChargeLoose</a><!--PLAIN-->() const
+<!--TAB6-->         virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTotalChargeTight">GetTotalChargeTight</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTotalEnergy">GetTotalEnergy</a><!--PLAIN-->() const
+<!--TAB6-->       virtual <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTotalMass">GetTotalMass</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTotalMomentum">GetTotalMomentum</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TVector3 <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTotalNeutralEnergy">GetTotalNeutralEnergy</a><!--PLAIN-->() const
+<!--TAB6-->        virtual <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:GetTrigger">GetTrigger</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:Init">Init</a><!--PLAIN-->(TBranchObject*)
+<!--TAB6-->       virtual TClass* <!--TAB--><!--BOLD--><a href="#PAFTagBase:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:operator=">operator=</a><!--PLAIN-->(<a href="./PAFTagBase.html">PAFTagBase</a>&amp;)
+<!--TAB6-->          virtual <a href="ListOfTypes.html#char">char</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:putBool">putBool</a><!--PLAIN-->(<a href="ListOfTypes.html#char">char</a>, const <a href="ListOfTypes.html#char">char</a>*)
+<!--TAB6-->          virtual <a href="ListOfTypes.html#char">char</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:putFloat">putFloat</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>, const <a href="ListOfTypes.html#char">char</a>*)
+<!--TAB6-->          virtual <a href="ListOfTypes.html#char">char</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:putInt">putInt</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>, const <a href="ListOfTypes.html#char">char</a>*)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetAnalysisBits">SetAnalysisBits</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a> b = 0, <a href="ListOfTypes.html#UInt_t">UInt_t</a> b1 = 0)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetBbqqDiscr">SetBbqqDiscr</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetBeamError">SetBeamError</a><!--PLAIN-->(TVector3)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetBeamSpot">SetBeamSpot</a><!--PLAIN-->(TVector3)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetBGFR2">SetBGFR2</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetBunchT0DeltaDircTrk">SetBunchT0DeltaDircTrk</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetBunchT0DeltaFF">SetBunchT0DeltaFF</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetBunchT0FinderErr">SetBunchT0FinderErr</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetBunchT0FitterErr">SetBunchT0FitterErr</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetCMFrame">SetCMFrame</a><!--PLAIN-->(TLorentzVector)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetCMSEnergy">SetCMSEnergy</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetD3PS">SetD3PS</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetDmeson0">SetDmeson0</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetDsmeson0">SetDsmeson0</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetDstar0">SetDstar0</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetDstar1">SetDstar1</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetECharShow">SetECharShow</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetElecLoose1cm">SetElecLoose1cm</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetElecLoose1l">SetElecLoose1l</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetElecLoose2cm">SetElecLoose2cm</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetElecLoose2l">SetElecLoose2l</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetElecTight1cm">SetElecTight1cm</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetElecTight1l">SetElecTight1l</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetElecTight2cm">SetElecTight2cm</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetElecTight2l">SetElecTight2l</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetElectronsLoose">SetElectronsLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetElectronsTight">SetElectronsTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetENeutShow">SetENeutShow</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetEventNumber">SetEventNumber</a><!--PLAIN-->(<a href="ListOfTypes.html#UInt_t">UInt_t</a> i)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetGammasLoose">SetGammasLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetGammasTight">SetGammasTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetHighestEnergyShower">SetHighestEnergyShower</a><!--PLAIN-->(TVector3)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetK0sLoose">SetK0sLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetK0sTight">SetK0sTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetKaonsLoose">SetKaonsLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetKaonsTight">SetKaonsTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetKsLoose">SetKsLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetKsTight">SetKsTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetL3OutBhabhaFlatOprValue">SetL3OutBhabhaFlatOprValue</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetL3OutBhabhaFlatValue">SetL3OutBhabhaFlatValue</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetLeptonsLoose">SetLeptonsLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetLeptonsTight">SetLeptonsTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetLumiBhabhaWeight">SetLumiBhabhaWeight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMergedPi0Loose">SetMergedPi0Loose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMergedPi0Tight">SetMergedPi0Tight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMuonLoose1cm">SetMuonLoose1cm</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMuonLoose1l">SetMuonLoose1l</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMuonLoose2cm">SetMuonLoose2cm</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMuonLoose2l">SetMuonLoose2l</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMuonsLoose">SetMuonsLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMuonsTight">SetMuonsTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMuonTight1cm">SetMuonTight1cm</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMuonTight1l">SetMuonTight1l</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMuonTight2cm">SetMuonTight2cm</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetMuonTight2l">SetMuonTight2l</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetNumberOfGoodTracksLoose">SetNumberOfGoodTracksLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetNumberOfGoodTracksTight">SetNumberOfGoodTracksTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetNumberOfNeutralCands">SetNumberOfNeutralCands</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetNumberOfNeutralCndLoose">SetNumberOfNeutralCndLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetNumberOfNeutralCndTight">SetNumberOfNeutralCndTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetNumberOfTracks">SetNumberOfTracks</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPi0Loose">SetPi0Loose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPi0Tight">SetPi0Tight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPionsLoose">SetPionsLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPionsTight">SetPionsTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryLeptonChargeLoose">SetPrimaryLeptonChargeLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryLeptonChargeTight">SetPrimaryLeptonChargeTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryLeptonHypothesisLoose">SetPrimaryLeptonHypothesisLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryLeptonHypothesisTight">SetPrimaryLeptonHypothesisTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryLeptonMomentumLoose">SetPrimaryLeptonMomentumLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryLeptonMomentumTight">SetPrimaryLeptonMomentumTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryTrackHypothesis">SetPrimaryTrackHypothesis</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryTrackMomentum">SetPrimaryTrackMomentum</a><!--PLAIN-->(TVector3)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryTrackShowerEnergy">SetPrimaryTrackShowerEnergy</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryVertex">SetPrimaryVertex</a><!--PLAIN-->(TVector3, <a href="ListOfTypes.html#Float_t">Float_t</a> p = 0.0)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPrimaryVertexProbability">SetPrimaryVertexProbability</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetProtonsLoose">SetProtonsLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetProtonsTight">SetProtonsTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetPTotalScalar">SetPTotalScalar</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetR2">SetR2</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetR2All">SetR2All</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSecondaryLeptonChargeLoose">SetSecondaryLeptonChargeLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSecondaryLeptonChargeTight">SetSecondaryLeptonChargeTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSecondaryLeptonHypothesisLoose">SetSecondaryLeptonHypothesisLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSecondaryLeptonHypothesisTight">SetSecondaryLeptonHypothesisTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSecondaryLeptonMomentumLoose">SetSecondaryLeptonMomentumLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSecondaryLeptonMomentumTight">SetSecondaryLeptonMomentumTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSecondaryTrackHypothesis">SetSecondaryTrackHypothesis</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSecondaryTrackMomentum">SetSecondaryTrackMomentum</a><!--PLAIN-->(TVector3)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSecondaryTrackShowerEnergy">SetSecondaryTrackShowerEnergy</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSecondHighestEnergyShower">SetSecondHighestEnergyShower</a><!--PLAIN-->(TVector3)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetSphericityAll">SetSphericityAll</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagEtaPeppTwoBody_maxCmsPmaxCosT">SetTagEtaPeppTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagEtaPrhogTwoBody_maxCmsPmaxCosT">SetTagEtaPrhogTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagEtaTwoBody_maxCmsPmaxCosT">SetTagEtaTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagK_S0TwoBody_maxCmsPmaxCosT">SetTagK_S0TwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagKstpTwoBody_maxCmsPmaxCosT">SetTagKstpTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagKstTwoBody_maxCmsPmaxCosT">SetTagKstTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagKTwoBody_maxCmsPmaxCosT">SetTagKTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagLooseProton_maxCmsP">SetTagLooseProton_maxCmsP</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagOmegaTwoBody_maxCmsPmaxCosT">SetTagOmegaTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagPhiTwoBody_maxCmsPmaxCosT">SetTagPhiTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagPi0TwoBody_maxCmsPmaxCosT">SetTagPi0TwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagRhopTwoBody_maxCmsPmaxCosT">SetTagRhopTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagRhoTwoBody_maxCmsPmaxCosT">SetTagRhoTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTagTightProton_maxCmsP">SetTagTightProton_maxCmsP</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetThrust">SetThrust</a><!--PLAIN-->(TVector3)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetThrustCosThAll">SetThrustCosThAll</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetThrustMagAll">SetThrustMagAll</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetThrustPhiAll">SetThrustPhiAll</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTotalChargeLoose">SetTotalChargeLoose</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTotalChargeTight">SetTotalChargeTight</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTotalEnergy">SetTotalEnergy</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTotalMass">SetTotalMass</a><!--PLAIN-->(<a href="ListOfTypes.html#Float_t">Float_t</a>)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTotalMomentum">SetTotalMomentum</a><!--PLAIN-->(TVector3)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:SetTotalNeutralEnergy">SetTotalNeutralEnergy</a><!--PLAIN-->(TVector3)
+<!--TAB6-->          virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->          virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#PAFTagBase:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="PAFTagBase:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->          <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:fEventNumber">fEventNumber</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:fEventNumber">!Actual event</a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_cmf1">_cmf1</a><!--PLAIN-->                               <!--TAB--><i><a name="Title:_cmf1"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_cmf2">_cmf2</a><!--PLAIN-->                               <!--TAB--><i><a name="Title:_cmf2"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_cmf3">_cmf3</a><!--PLAIN-->                               <!--TAB--><i><a name="Title:_cmf3"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_cmf4">_cmf4</a><!--PLAIN-->                               <!--TAB--><i><a name="Title:_cmf4"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_pTotalCosTh">_pTotalCosTh</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_pTotalCosTh"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_pTotalPhi">_pTotalPhi</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_pTotalPhi"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_pTotalMag">_pTotalMag</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_pTotalMag"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_eTotal">_eTotal</a><!--PLAIN-->                             <!--TAB--><i><a name="Title:_eTotal"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_pTotalMass">_pTotalMass</a><!--PLAIN-->                         <!--TAB--><i><a name="Title:_pTotalMass"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_p1CosTheta">_p1CosTheta</a><!--PLAIN-->                         <!--TAB--><i><a name="Title:_p1CosTheta"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_p1Phi">_p1Phi</a><!--PLAIN-->                              <!--TAB--><i><a name="Title:_p1Phi"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_p1Mag">_p1Mag</a><!--PLAIN-->                              <!--TAB--><i><a name="Title:_p1Mag"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_p2CosTheta">_p2CosTheta</a><!--PLAIN-->                         <!--TAB--><i><a name="Title:_p2CosTheta"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_p2Phi">_p2Phi</a><!--PLAIN-->                              <!--TAB--><i><a name="Title:_p2Phi"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_p2Mag">_p2Mag</a><!--PLAIN-->                              <!--TAB--><i><a name="Title:_p2Mag"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_p1EmcCandEnergy">_p1EmcCandEnergy</a><!--PLAIN-->                    <!--TAB--><i><a name="Title:_p1EmcCandEnergy"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_p2EmcCandEnergy">_p2EmcCandEnergy</a><!--PLAIN-->                    <!--TAB--><i><a name="Title:_p2EmcCandEnergy"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nTracks">_nTracks</a><!--PLAIN-->                            <!--TAB--><i><a name="Title:_nTracks"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nGoodTrkLoose">_nGoodTrkLoose</a><!--PLAIN-->                      <!--TAB--><i><a name="Title:_nGoodTrkLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nGoodTrkTight">_nGoodTrkTight</a><!--PLAIN-->                      <!--TAB--><i><a name="Title:_nGoodTrkTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_p1PidHypo">_p1PidHypo</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_p1PidHypo"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_p2PidHypo">_p2PidHypo</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_p2PidHypo"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_totChargeLoose">_totChargeLoose</a><!--PLAIN-->                     <!--TAB--><i><a name="Title:_totChargeLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_totChargeTight">_totChargeTight</a><!--PLAIN-->                     <!--TAB--><i><a name="Title:_totChargeTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptLoose1hypo">_leptLoose1hypo</a><!--PLAIN-->                     <!--TAB--><i><a name="Title:_leptLoose1hypo"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptLoose2hypo">_leptLoose2hypo</a><!--PLAIN-->                     <!--TAB--><i><a name="Title:_leptLoose2hypo"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptLoose1Charge">_leptLoose1Charge</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:_leptLoose1Charge"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptLoose2Charge">_leptLoose2Charge</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:_leptLoose2Charge"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptTight1hypo">_leptTight1hypo</a><!--PLAIN-->                     <!--TAB--><i><a name="Title:_leptTight1hypo"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptTight2hypo">_leptTight2hypo</a><!--PLAIN-->                     <!--TAB--><i><a name="Title:_leptTight2hypo"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptTight1Charge">_leptTight1Charge</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:_leptTight1Charge"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Char_t">Char_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptTight2Charge">_leptTight2Charge</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:_leptTight2Charge"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptLoose1p">_leptLoose1p</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_leptLoose1p"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptLoose2p">_leptLoose2p</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_leptLoose2p"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptTight1p">_leptTight1p</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_leptTight1p"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_leptTight2p">_leptTight2p</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_leptTight2p"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_eNeutralCosTh">_eNeutralCosTh</a><!--PLAIN-->                      <!--TAB--><i><a name="Title:_eNeutralCosTh"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_eNeutralPhi">_eNeutralPhi</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_eNeutralPhi"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_eNeutralMag">_eNeutralMag</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_eNeutralMag"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_e1CosTheta">_e1CosTheta</a><!--PLAIN-->                         <!--TAB--><i><a name="Title:_e1CosTheta"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_e1Phi">_e1Phi</a><!--PLAIN-->                              <!--TAB--><i><a name="Title:_e1Phi"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_e1Mag">_e1Mag</a><!--PLAIN-->                              <!--TAB--><i><a name="Title:_e1Mag"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_e2CosTheta">_e2CosTheta</a><!--PLAIN-->                         <!--TAB--><i><a name="Title:_e2CosTheta"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_e2Phi">_e2Phi</a><!--PLAIN-->                              <!--TAB--><i><a name="Title:_e2Phi"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_e2Mag">_e2Mag</a><!--PLAIN-->                              <!--TAB--><i><a name="Title:_e2Mag"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_xPrimaryVtx">_xPrimaryVtx</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_xPrimaryVtx"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_yPrimaryVtx">_yPrimaryVtx</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_yPrimaryVtx"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_zPrimaryVtx">_zPrimaryVtx</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_zPrimaryVtx"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_probPrimaryVtx">_probPrimaryVtx</a><!--PLAIN-->                     <!--TAB--><i><a name="Title:_probPrimaryVtx"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_R2">_R2</a><!--PLAIN-->                                 <!--TAB--><i><a name="Title:_R2"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_thrustCosTh">_thrustCosTh</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_thrustCosTh"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_thrustPhi">_thrustPhi</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_thrustPhi"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_thrustMag">_thrustMag</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_thrustMag"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nLeptonsLoose">_nLeptonsLoose</a><!--PLAIN-->                      <!--TAB--><i><a name="Title:_nLeptonsLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nLeptonsTight">_nLeptonsTight</a><!--PLAIN-->                      <!--TAB--><i><a name="Title:_nLeptonsTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_neLoose">_neLoose</a><!--PLAIN-->                            <!--TAB--><i><a name="Title:_neLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_neTight">_neTight</a><!--PLAIN-->                            <!--TAB--><i><a name="Title:_neTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nmuLoose">_nmuLoose</a><!--PLAIN-->                           <!--TAB--><i><a name="Title:_nmuLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nmuTight">_nmuTight</a><!--PLAIN-->                           <!--TAB--><i><a name="Title:_nmuTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_npiLoose">_npiLoose</a><!--PLAIN-->                           <!--TAB--><i><a name="Title:_npiLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_npiTight">_npiTight</a><!--PLAIN-->                           <!--TAB--><i><a name="Title:_npiTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nKLoose">_nKLoose</a><!--PLAIN-->                            <!--TAB--><i><a name="Title:_nKLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nKTight">_nKTight</a><!--PLAIN-->                            <!--TAB--><i><a name="Title:_nKTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_npLoose">_npLoose</a><!--PLAIN-->                            <!--TAB--><i><a name="Title:_npLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_npTight">_npTight</a><!--PLAIN-->                            <!--TAB--><i><a name="Title:_npTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_ngammaLoose">_ngammaLoose</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_ngammaLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_ngammaTight">_ngammaTight</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_ngammaTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_npi0MergedLoose">_npi0MergedLoose</a><!--PLAIN-->                    <!--TAB--><i><a name="Title:_npi0MergedLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_npi0MergedTight">_npi0MergedTight</a><!--PLAIN-->                    <!--TAB--><i><a name="Title:_npi0MergedTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_npi0Loose">_npi0Loose</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_npi0Loose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_npi0Tight">_npi0Tight</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_npi0Tight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nKsLoose">_nKsLoose</a><!--PLAIN-->                           <!--TAB--><i><a name="Title:_nKsLoose"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Byte_t">Byte_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nKsTight">_nKsTight</a><!--PLAIN-->                           <!--TAB--><i><a name="Title:_nKsTight"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_analysisbits">_analysisbits</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_analysisbits"></a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#UInt_t">UInt_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_analysisbits1">_analysisbits1</a><!--PLAIN-->                      <!--TAB--><i><a name="Title:_analysisbits1"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_cmsEnergy">_cmsEnergy</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_cmsEnergy"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_xBeamSpot">_xBeamSpot</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_xBeamSpot"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_yBeamSpot">_yBeamSpot</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_yBeamSpot"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_zBeamSpot">_zBeamSpot</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_zBeamSpot"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_xBeamErr">_xBeamErr</a><!--PLAIN-->                           <!--TAB--><i><a name="Title:_xBeamErr"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_yBeamErr">_yBeamErr</a><!--PLAIN-->                           <!--TAB--><i><a name="Title:_yBeamErr"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_zBeamErr">_zBeamErr</a><!--PLAIN-->                           <!--TAB--><i><a name="Title:_zBeamErr"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_bbqqDiscr">_bbqqDiscr</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_bbqqDiscr"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_BGFR2">_BGFR2</a><!--PLAIN-->                              <!--TAB--><i><a name="Title:_BGFR2"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_BunchT0DeltaDircTrk">_BunchT0DeltaDircTrk</a><!--PLAIN-->                <!--TAB--><i><a name="Title:_BunchT0DeltaDircTrk"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_BunchT0DeltaFF">_BunchT0DeltaFF</a><!--PLAIN-->                     <!--TAB--><i><a name="Title:_BunchT0DeltaFF"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_BunchT0FinderErr">_BunchT0FinderErr</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:_BunchT0FinderErr"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_BunchT0FitterErr">_BunchT0FitterErr</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:_BunchT0FitterErr"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_eCharShow">_eCharShow</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_eCharShow"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_elecLoose1cm">_elecLoose1cm</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_elecLoose1cm"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_elecLoose1l">_elecLoose1l</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_elecLoose1l"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_elecLoose2cm">_elecLoose2cm</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_elecLoose2cm"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_elecLoose2l">_elecLoose2l</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_elecLoose2l"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_elecTight1cm">_elecTight1cm</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_elecTight1cm"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_elecTight1l">_elecTight1l</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_elecTight1l"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_elecTight2cm">_elecTight2cm</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_elecTight2cm"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_elecTight2l">_elecTight2l</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_elecTight2l"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_eNeutShow">_eNeutShow</a><!--PLAIN-->                          <!--TAB--><i><a name="Title:_eNeutShow"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_L3OutBhabhaFlatOprValue">_L3OutBhabhaFlatOprValue</a><!--PLAIN-->            <!--TAB--><i><a name="Title:_L3OutBhabhaFlatOprValue"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_L3OutBhabhaFlatValue">_L3OutBhabhaFlatValue</a><!--PLAIN-->               <!--TAB--><i><a name="Title:_L3OutBhabhaFlatValue"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_muonLoose1cm">_muonLoose1cm</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_muonLoose1cm"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_muonLoose1l">_muonLoose1l</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_muonLoose1l"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_muonLoose2cm">_muonLoose2cm</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_muonLoose2cm"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_muonLoose2l">_muonLoose2l</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_muonLoose2l"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_muonTight1cm">_muonTight1cm</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_muonTight1cm"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_muonTight1l">_muonTight1l</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_muonTight1l"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_muonTight2cm">_muonTight2cm</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_muonTight2cm"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_muonTight2l">_muonTight2l</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:_muonTight2l"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_pTotalScalar">_pTotalScalar</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_pTotalScalar"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_R2All">_R2All</a><!--PLAIN-->                              <!--TAB--><i><a name="Title:_R2All"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_sphericityAll">_sphericityAll</a><!--PLAIN-->                      <!--TAB--><i><a name="Title:_sphericityAll"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagLooseProton_maxCmsP">_TagLooseProton_maxCmsP</a><!--PLAIN-->             <!--TAB--><i><a name="Title:_TagLooseProton_maxCmsP"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagTightProton_maxCmsP">_TagTightProton_maxCmsP</a><!--PLAIN-->             <!--TAB--><i><a name="Title:_TagTightProton_maxCmsP"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_thrustCosThAll">_thrustCosThAll</a><!--PLAIN-->                     <!--TAB--><i><a name="Title:_thrustCosThAll"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_thrustMagAll">_thrustMagAll</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_thrustMagAll"></a></i>
+<!--TAB6-->         <a href="ListOfTypes.html#Float_t">Float_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_thrustPhiAll">_thrustPhiAll</a><!--PLAIN-->                       <!--TAB--><i><a name="Title:_thrustPhiAll"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_D3PS">_D3PS</a><!--PLAIN-->                               <!--TAB--><i><a name="Title:_D3PS"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_Dmeson0">_Dmeson0</a><!--PLAIN-->                            <!--TAB--><i><a name="Title:_Dmeson0"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_Dsmeson0">_Dsmeson0</a><!--PLAIN-->                           <!--TAB--><i><a name="Title:_Dsmeson0"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_Dstar0">_Dstar0</a><!--PLAIN-->                             <!--TAB--><i><a name="Title:_Dstar0"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_Dstar1">_Dstar1</a><!--PLAIN-->                             <!--TAB--><i><a name="Title:_Dstar1"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_LumiBhabhaWeight">_LumiBhabhaWeight</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:_LumiBhabhaWeight"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nNeutralCands">_nNeutralCands</a><!--PLAIN-->                      <!--TAB--><i><a name="Title:_nNeutralCands"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nNeutralCndLoose">_nNeutralCndLoose</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:_nNeutralCndLoose"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_nNeutralCndTight">_nNeutralCndTight</a><!--PLAIN-->                   <!--TAB--><i><a name="Title:_nNeutralCndTight"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagEtaPeppTwoBody_maxCmsPmaxCosT">_TagEtaPeppTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->   <!--TAB--><i><a name="Title:_TagEtaPeppTwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagEtaPrhogTwoBody_maxCmsPmaxCosT">_TagEtaPrhogTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->  <!--TAB--><i><a name="Title:_TagEtaPrhogTwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagEtaTwoBody_maxCmsPmaxCosT">_TagEtaTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->       <!--TAB--><i><a name="Title:_TagEtaTwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagKstpTwoBody_maxCmsPmaxCosT">_TagKstpTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->      <!--TAB--><i><a name="Title:_TagKstpTwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagKstTwoBody_maxCmsPmaxCosT">_TagKstTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->       <!--TAB--><i><a name="Title:_TagKstTwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagKTwoBody_maxCmsPmaxCosT">_TagKTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->         <!--TAB--><i><a name="Title:_TagKTwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagK_S0TwoBody_maxCmsPmaxCosT">_TagK_S0TwoBody_maxCmsPmaxCosT</a><!--PLAIN-->      <!--TAB--><i><a name="Title:_TagK_S0TwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagOmegaTwoBody_maxCmsPmaxCosT">_TagOmegaTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->     <!--TAB--><i><a name="Title:_TagOmegaTwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagPhiTwoBody_maxCmsPmaxCosT">_TagPhiTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->       <!--TAB--><i><a name="Title:_TagPhiTwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagPi0TwoBody_maxCmsPmaxCosT">_TagPi0TwoBody_maxCmsPmaxCosT</a><!--PLAIN-->       <!--TAB--><i><a name="Title:_TagPi0TwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagRhopTwoBody_maxCmsPmaxCosT">_TagRhopTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->      <!--TAB--><i><a name="Title:_TagRhopTwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->           <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a name="PAFTagBase:_TagRhoTwoBody_maxCmsPmaxCosT">_TagRhoTwoBody_maxCmsPmaxCosT</a><!--PLAIN-->       <!--TAB--><i><a name="Title:_TagRhoTwoBody_maxCmsPmaxCosT"></a></i>
+<!--TAB6-->        TBranch* <!--TAB--><!--BOLD--><a name="PAFTagBase:fBranches">fBranches[138]</a><!--PLAIN-->                      <!--TAB--><i><a name="Title:fBranches">! not stored in root file</a></i>
+<!--TAB6-->      THashList* <!--TAB--><!--BOLD--><a name="PAFTagBase:fBranchTable">fBranchTable</a><!--PLAIN-->                        <!--TAB--><i><a name="Title:fBranchTable">! Branch cache</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="PAFTagBase:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./PAFTagBase.html">PAFTagBase</a>								
+                                                                      
+ Definition of the TAG database					
+                                                                      
+ Author: Sascha Berger and Marcel Kunze, RUB, March 1999		
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="PAFTagBase:~PAFTagBase" href="src/PAFTagBase.cxx.html#PAFTagBase:~PAFTagBase">~PAFTagBase</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetCMFrame" href="src/PAFTagBase.cxx.html#PAFTagBase:SetCMFrame">SetCMFrame</a>( TLorentzVector e ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetCMSEnergy" href="src/PAFTagBase.cxx.html#PAFTagBase:SetCMSEnergy">SetCMSEnergy</a>( <a href="ListOfTypes.html#Float_t">Float_t</a> e ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetBeamSpot" href="src/PAFTagBase.cxx.html#PAFTagBase:SetBeamSpot">SetBeamSpot</a>( TVector3 v ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetBeamError" href="src/PAFTagBase.cxx.html#PAFTagBase:SetBeamError">SetBeamError</a>( TVector3 v ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTotalMomentum" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTotalMomentum">SetTotalMomentum</a>( TVector3 v ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTotalEnergy" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTotalEnergy">SetTotalEnergy</a>( <a href="ListOfTypes.html#Float_t">Float_t</a> e ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTotalMass" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTotalMass">SetTotalMass</a>( <a href="ListOfTypes.html#Float_t">Float_t</a> m ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryTrackMomentum" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryTrackMomentum">SetPrimaryTrackMomentum</a>( TVector3 v ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSecondaryTrackMomentum" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSecondaryTrackMomentum">SetSecondaryTrackMomentum</a>( TVector3 v ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryTrackShowerEnergy" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryTrackShowerEnergy">SetPrimaryTrackShowerEnergy</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSecondaryTrackShowerEnergy" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSecondaryTrackShowerEnergy">SetSecondaryTrackShowerEnergy</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetNumberOfTracks" href="src/PAFTagBase.cxx.html#PAFTagBase:SetNumberOfTracks">SetNumberOfTracks</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetNumberOfGoodTracksLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetNumberOfGoodTracksLoose">SetNumberOfGoodTracksLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetNumberOfGoodTracksTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetNumberOfGoodTracksTight">SetNumberOfGoodTracksTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryTrackHypothesis" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryTrackHypothesis">SetPrimaryTrackHypothesis</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSecondaryTrackHypothesis" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSecondaryTrackHypothesis">SetSecondaryTrackHypothesis</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTotalChargeLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTotalChargeLoose">SetTotalChargeLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTotalChargeTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTotalChargeTight">SetTotalChargeTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION-->TLorentzVector <a name="PAFTagBase:GetCMFrame" href="src/PAFTagBase.cxx.html#PAFTagBase:GetCMFrame">GetCMFrame</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetCMSEnergy" href="src/PAFTagBase.cxx.html#PAFTagBase:GetCMSEnergy">GetCMSEnergy</a>()  const <br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFTagBase:GetBeamSpot" href="src/PAFTagBase.cxx.html#PAFTagBase:GetBeamSpot">GetBeamSpot</a>() const <br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFTagBase:GetBeamError" href="src/PAFTagBase.cxx.html#PAFTagBase:GetBeamError">GetBeamError</a>() const <br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFTagBase:GetTotalMomentum" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTotalMomentum">GetTotalMomentum</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetTotalEnergy" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTotalEnergy">GetTotalEnergy</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetTotalMass" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTotalMass">GetTotalMass</a>()  const <br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFTagBase:GetPrimaryTrackMomentum" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryTrackMomentum">GetPrimaryTrackMomentum</a>() const <br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFTagBase:GetSecondaryTrackMomentum" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSecondaryTrackMomentum">GetSecondaryTrackMomentum</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetPrimaryTrackShowerEnergy" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryTrackShowerEnergy">GetPrimaryTrackShowerEnergy</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetSecondaryTrackShowerEnergy" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSecondaryTrackShowerEnergy">GetSecondaryTrackShowerEnergy</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetNumberOfTracks" href="src/PAFTagBase.cxx.html#PAFTagBase:GetNumberOfTracks">GetNumberOfTracks</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetNumberOfGoodTracksLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetNumberOfGoodTracksLoose">GetNumberOfGoodTracksLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetNumberOfGoodTracksTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetNumberOfGoodTracksTight">GetNumberOfGoodTracksTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetPrimaryTrackHypothesis" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryTrackHypothesis">GetPrimaryTrackHypothesis</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetSecondaryTrackHypothesis" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSecondaryTrackHypothesis">GetSecondaryTrackHypothesis</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTotalChargeLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTotalChargeLoose">GetTotalChargeLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTotalChargeTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTotalChargeTight">GetTotalChargeTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryLeptonHypothesisLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryLeptonHypothesisLoose">SetPrimaryLeptonHypothesisLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryLeptonChargeLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryLeptonChargeLoose">SetPrimaryLeptonChargeLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryLeptonMomentumLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryLeptonMomentumLoose">SetPrimaryLeptonMomentumLoose</a>( <a href="ListOfTypes.html#Float_t">Float_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSecondaryLeptonHypothesisLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSecondaryLeptonHypothesisLoose">SetSecondaryLeptonHypothesisLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSecondaryLeptonChargeLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSecondaryLeptonChargeLoose">SetSecondaryLeptonChargeLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSecondaryLeptonMomentumLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSecondaryLeptonMomentumLoose">SetSecondaryLeptonMomentumLoose</a>( <a href="ListOfTypes.html#Float_t">Float_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryLeptonHypothesisTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryLeptonHypothesisTight">SetPrimaryLeptonHypothesisTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryLeptonChargeTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryLeptonChargeTight">SetPrimaryLeptonChargeTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryLeptonMomentumTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryLeptonMomentumTight">SetPrimaryLeptonMomentumTight</a>( <a href="ListOfTypes.html#Float_t">Float_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSecondaryLeptonHypothesisTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSecondaryLeptonHypothesisTight">SetSecondaryLeptonHypothesisTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSecondaryLeptonChargeTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSecondaryLeptonChargeTight">SetSecondaryLeptonChargeTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSecondaryLeptonMomentumTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSecondaryLeptonMomentumTight">SetSecondaryLeptonMomentumTight</a>( <a href="ListOfTypes.html#Float_t">Float_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetPrimaryLeptonHypothesisLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryLeptonHypothesisLoose">GetPrimaryLeptonHypothesisLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetPrimaryLeptonChargeLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryLeptonChargeLoose">GetPrimaryLeptonChargeLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetPrimaryLeptonMomentumLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryLeptonMomentumLoose">GetPrimaryLeptonMomentumLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetSecondaryLeptonHypothesisLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSecondaryLeptonHypothesisLoose">GetSecondaryLeptonHypothesisLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetSecondaryLeptonChargeLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSecondaryLeptonChargeLoose">GetSecondaryLeptonChargeLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetSecondaryLeptonMomentumLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSecondaryLeptonMomentumLoose">GetSecondaryLeptonMomentumLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetPrimaryLeptonHypothesisTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryLeptonHypothesisTight">GetPrimaryLeptonHypothesisTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetPrimaryLeptonChargeTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryLeptonChargeTight">GetPrimaryLeptonChargeTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetPrimaryLeptonMomentumTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryLeptonMomentumTight">GetPrimaryLeptonMomentumTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetSecondaryLeptonHypothesisTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSecondaryLeptonHypothesisTight">GetSecondaryLeptonHypothesisTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetSecondaryLeptonChargeTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSecondaryLeptonChargeTight">GetSecondaryLeptonChargeTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetSecondaryLeptonMomentumTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSecondaryLeptonMomentumTight">GetSecondaryLeptonMomentumTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTotalNeutralEnergy" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTotalNeutralEnergy">SetTotalNeutralEnergy</a>( TVector3 v ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetHighestEnergyShower" href="src/PAFTagBase.cxx.html#PAFTagBase:SetHighestEnergyShower">SetHighestEnergyShower</a>( TVector3 v ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSecondHighestEnergyShower" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSecondHighestEnergyShower">SetSecondHighestEnergyShower</a>( TVector3 v )<br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFTagBase:GetTotalNeutralEnergy" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTotalNeutralEnergy">GetTotalNeutralEnergy</a>() const<br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFTagBase:GetHighestEnergyShower" href="src/PAFTagBase.cxx.html#PAFTagBase:GetHighestEnergyShower">GetHighestEnergyShower</a>() const<br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFTagBase:GetSecondHighestEnergyShower" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSecondHighestEnergyShower">GetSecondHighestEnergyShower</a>() const<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryVertex" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryVertex">SetPrimaryVertex</a>( TVector3 v, <a href="ListOfTypes.html#Float_t">Float_t</a> p ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPrimaryVertexProbability" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPrimaryVertexProbability">SetPrimaryVertexProbability</a>( <a href="ListOfTypes.html#Float_t">Float_t</a> p) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetThrust" href="src/PAFTagBase.cxx.html#PAFTagBase:SetThrust">SetThrust</a>( TVector3 v ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetR2" href="src/PAFTagBase.cxx.html#PAFTagBase:SetR2">SetR2</a> ( <a href="ListOfTypes.html#Float_t">Float_t</a> r) <br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFTagBase:GetPrimaryVertex" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryVertex">GetPrimaryVertex</a>() const<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetPrimaryVertexProbability" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPrimaryVertexProbability">GetPrimaryVertexProbability</a>() const <br>
+<hr>
+<!--FUNCTION-->TVector3 <a name="PAFTagBase:GetThrust" href="src/PAFTagBase.cxx.html#PAFTagBase:GetThrust">GetThrust</a>() const<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetR2" href="src/PAFTagBase.cxx.html#PAFTagBase:GetR2">GetR2</a> () const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetLeptonsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetLeptonsLoose">SetLeptonsLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetElectronsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetElectronsLoose">SetElectronsLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMuonsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMuonsLoose">SetMuonsLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPionsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPionsLoose">SetPionsLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetKaonsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetKaonsLoose">SetKaonsLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetProtonsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetProtonsLoose">SetProtonsLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetGammasLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetGammasLoose">SetGammasLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMergedPi0Loose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMergedPi0Loose">SetMergedPi0Loose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPi0Loose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPi0Loose">SetPi0Loose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetKsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetKsLoose">SetKsLoose</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetLeptonsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetLeptonsTight">SetLeptonsTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetElectronsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetElectronsTight">SetElectronsTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMuonsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMuonsTight">SetMuonsTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPionsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPionsTight">SetPionsTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetKaonsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetKaonsTight">SetKaonsTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetProtonsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetProtonsTight">SetProtonsTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetGammasTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetGammasTight">SetGammasTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMergedPi0Tight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMergedPi0Tight">SetMergedPi0Tight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPi0Tight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPi0Tight">SetPi0Tight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetKsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetKsTight">SetKsTight</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> b ) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetLeptonsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetLeptonsLoose">GetLeptonsLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetElectronsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetElectronsLoose">GetElectronsLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetMuonsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMuonsLoose">GetMuonsLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetPionsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPionsLoose">GetPionsLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetKaonsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetKaonsLoose">GetKaonsLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetProtonsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetProtonsLoose">GetProtonsLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetGammasLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetGammasLoose">GetGammasLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetMergedPi0Loose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMergedPi0Loose">GetMergedPi0Loose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetPi0Loose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPi0Loose">GetPi0Loose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetKsLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetKsLoose">GetKsLoose</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetLeptonsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetLeptonsTight">GetLeptonsTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetElectronsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetElectronsTight">GetElectronsTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetMuonsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMuonsTight">GetMuonsTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetPionsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPionsTight">GetPionsTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetKaonsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetKaonsTight">GetKaonsTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetProtonsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetProtonsTight">GetProtonsTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetGammasTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetGammasTight">GetGammasTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetMergedPi0Tight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMergedPi0Tight">GetMergedPi0Tight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetPi0Tight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPi0Tight">GetPi0Tight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetKsTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetKsTight">GetKsTight</a>()  const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetBbqqDiscr" href="src/PAFTagBase.cxx.html#PAFTagBase:SetBbqqDiscr">SetBbqqDiscr</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetBGFR2" href="src/PAFTagBase.cxx.html#PAFTagBase:SetBGFR2">SetBGFR2</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetBunchT0DeltaDircTrk" href="src/PAFTagBase.cxx.html#PAFTagBase:SetBunchT0DeltaDircTrk">SetBunchT0DeltaDircTrk</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetBunchT0DeltaFF" href="src/PAFTagBase.cxx.html#PAFTagBase:SetBunchT0DeltaFF">SetBunchT0DeltaFF</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetBunchT0FinderErr" href="src/PAFTagBase.cxx.html#PAFTagBase:SetBunchT0FinderErr">SetBunchT0FinderErr</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetBunchT0FitterErr" href="src/PAFTagBase.cxx.html#PAFTagBase:SetBunchT0FitterErr">SetBunchT0FitterErr</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetECharShow" href="src/PAFTagBase.cxx.html#PAFTagBase:SetECharShow">SetECharShow</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetElecLoose1cm" href="src/PAFTagBase.cxx.html#PAFTagBase:SetElecLoose1cm">SetElecLoose1cm</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetElecLoose1l" href="src/PAFTagBase.cxx.html#PAFTagBase:SetElecLoose1l">SetElecLoose1l</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetElecLoose2cm" href="src/PAFTagBase.cxx.html#PAFTagBase:SetElecLoose2cm">SetElecLoose2cm</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetElecLoose2l" href="src/PAFTagBase.cxx.html#PAFTagBase:SetElecLoose2l">SetElecLoose2l</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetElecTight1cm" href="src/PAFTagBase.cxx.html#PAFTagBase:SetElecTight1cm">SetElecTight1cm</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetElecTight1l" href="src/PAFTagBase.cxx.html#PAFTagBase:SetElecTight1l">SetElecTight1l</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetElecTight2cm" href="src/PAFTagBase.cxx.html#PAFTagBase:SetElecTight2cm">SetElecTight2cm</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetElecTight2l" href="src/PAFTagBase.cxx.html#PAFTagBase:SetElecTight2l">SetElecTight2l</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetENeutShow" href="src/PAFTagBase.cxx.html#PAFTagBase:SetENeutShow">SetENeutShow</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetL3OutBhabhaFlatOprValue" href="src/PAFTagBase.cxx.html#PAFTagBase:SetL3OutBhabhaFlatOprValue">SetL3OutBhabhaFlatOprValue</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetL3OutBhabhaFlatValue" href="src/PAFTagBase.cxx.html#PAFTagBase:SetL3OutBhabhaFlatValue">SetL3OutBhabhaFlatValue</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMuonLoose1cm" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMuonLoose1cm">SetMuonLoose1cm</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMuonLoose1l" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMuonLoose1l">SetMuonLoose1l</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMuonLoose2cm" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMuonLoose2cm">SetMuonLoose2cm</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMuonLoose2l" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMuonLoose2l">SetMuonLoose2l</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMuonTight1cm" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMuonTight1cm">SetMuonTight1cm</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMuonTight1l" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMuonTight1l">SetMuonTight1l</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMuonTight2cm" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMuonTight2cm">SetMuonTight2cm</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetMuonTight2l" href="src/PAFTagBase.cxx.html#PAFTagBase:SetMuonTight2l">SetMuonTight2l</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetPTotalScalar" href="src/PAFTagBase.cxx.html#PAFTagBase:SetPTotalScalar">SetPTotalScalar</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetR2All" href="src/PAFTagBase.cxx.html#PAFTagBase:SetR2All">SetR2All</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetSphericityAll" href="src/PAFTagBase.cxx.html#PAFTagBase:SetSphericityAll">SetSphericityAll</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagLooseProton_maxCmsP" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagLooseProton_maxCmsP">SetTagLooseProton_maxCmsP</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagTightProton_maxCmsP" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagTightProton_maxCmsP">SetTagTightProton_maxCmsP</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetThrustCosThAll" href="src/PAFTagBase.cxx.html#PAFTagBase:SetThrustCosThAll">SetThrustCosThAll</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetThrustMagAll" href="src/PAFTagBase.cxx.html#PAFTagBase:SetThrustMagAll">SetThrustMagAll</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetThrustPhiAll" href="src/PAFTagBase.cxx.html#PAFTagBase:SetThrustPhiAll">SetThrustPhiAll</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> f) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetBbqqDiscr" href="src/PAFTagBase.cxx.html#PAFTagBase:GetBbqqDiscr">GetBbqqDiscr</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetBGFR2" href="src/PAFTagBase.cxx.html#PAFTagBase:GetBGFR2">GetBGFR2</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetBunchT0DeltaDircTrk" href="src/PAFTagBase.cxx.html#PAFTagBase:GetBunchT0DeltaDircTrk">GetBunchT0DeltaDircTrk</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetBunchT0DeltaFF" href="src/PAFTagBase.cxx.html#PAFTagBase:GetBunchT0DeltaFF">GetBunchT0DeltaFF</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetBunchT0FinderErr" href="src/PAFTagBase.cxx.html#PAFTagBase:GetBunchT0FinderErr">GetBunchT0FinderErr</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetBunchT0FitterErr" href="src/PAFTagBase.cxx.html#PAFTagBase:GetBunchT0FitterErr">GetBunchT0FitterErr</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetECharShow" href="src/PAFTagBase.cxx.html#PAFTagBase:GetECharShow">GetECharShow</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetElecLoose1cm" href="src/PAFTagBase.cxx.html#PAFTagBase:GetElecLoose1cm">GetElecLoose1cm</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetElecLoose1l" href="src/PAFTagBase.cxx.html#PAFTagBase:GetElecLoose1l">GetElecLoose1l</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetElecLoose2cm" href="src/PAFTagBase.cxx.html#PAFTagBase:GetElecLoose2cm">GetElecLoose2cm</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetElecLoose2l" href="src/PAFTagBase.cxx.html#PAFTagBase:GetElecLoose2l">GetElecLoose2l</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetElecTight1cm" href="src/PAFTagBase.cxx.html#PAFTagBase:GetElecTight1cm">GetElecTight1cm</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetElecTight1l" href="src/PAFTagBase.cxx.html#PAFTagBase:GetElecTight1l">GetElecTight1l</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetElecTight2cm" href="src/PAFTagBase.cxx.html#PAFTagBase:GetElecTight2cm">GetElecTight2cm</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetElecTight2l" href="src/PAFTagBase.cxx.html#PAFTagBase:GetElecTight2l">GetElecTight2l</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetENeutShow" href="src/PAFTagBase.cxx.html#PAFTagBase:GetENeutShow">GetENeutShow</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetL3OutBhabhaFlatOprValue" href="src/PAFTagBase.cxx.html#PAFTagBase:GetL3OutBhabhaFlatOprValue">GetL3OutBhabhaFlatOprValue</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetL3OutBhabhaFlatValue" href="src/PAFTagBase.cxx.html#PAFTagBase:GetL3OutBhabhaFlatValue">GetL3OutBhabhaFlatValue</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetMuonLoose1cm" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMuonLoose1cm">GetMuonLoose1cm</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetMuonLoose1l" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMuonLoose1l">GetMuonLoose1l</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetMuonLoose2cm" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMuonLoose2cm">GetMuonLoose2cm</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetMuonLoose2l" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMuonLoose2l">GetMuonLoose2l</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetMuonTight1cm" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMuonTight1cm">GetMuonTight1cm</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetMuonTight1l" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMuonTight1l">GetMuonTight1l</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetMuonTight2cm" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMuonTight2cm">GetMuonTight2cm</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetMuonTight2l" href="src/PAFTagBase.cxx.html#PAFTagBase:GetMuonTight2l">GetMuonTight2l</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetPTotalScalar" href="src/PAFTagBase.cxx.html#PAFTagBase:GetPTotalScalar">GetPTotalScalar</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetR2All" href="src/PAFTagBase.cxx.html#PAFTagBase:GetR2All">GetR2All</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetSphericityAll" href="src/PAFTagBase.cxx.html#PAFTagBase:GetSphericityAll">GetSphericityAll</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetTagLooseProton_maxCmsP" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagLooseProton_maxCmsP">GetTagLooseProton_maxCmsP</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetTagTightProton_maxCmsP" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagTightProton_maxCmsP">GetTagTightProton_maxCmsP</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetThrustCosThAll" href="src/PAFTagBase.cxx.html#PAFTagBase:GetThrustCosThAll">GetThrustCosThAll</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetThrustMagAll" href="src/PAFTagBase.cxx.html#PAFTagBase:GetThrustMagAll">GetThrustMagAll</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetThrustPhiAll" href="src/PAFTagBase.cxx.html#PAFTagBase:GetThrustPhiAll">GetThrustPhiAll</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetD3PS" href="src/PAFTagBase.cxx.html#PAFTagBase:SetD3PS">SetD3PS</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetDmeson0" href="src/PAFTagBase.cxx.html#PAFTagBase:SetDmeson0">SetDmeson0</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetDsmeson0" href="src/PAFTagBase.cxx.html#PAFTagBase:SetDsmeson0">SetDsmeson0</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetDstar0" href="src/PAFTagBase.cxx.html#PAFTagBase:SetDstar0">SetDstar0</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetDstar1" href="src/PAFTagBase.cxx.html#PAFTagBase:SetDstar1">SetDstar1</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetLumiBhabhaWeight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetLumiBhabhaWeight">SetLumiBhabhaWeight</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetNumberOfNeutralCands" href="src/PAFTagBase.cxx.html#PAFTagBase:SetNumberOfNeutralCands">SetNumberOfNeutralCands</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetNumberOfNeutralCndLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:SetNumberOfNeutralCndLoose">SetNumberOfNeutralCndLoose</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetNumberOfNeutralCndTight" href="src/PAFTagBase.cxx.html#PAFTagBase:SetNumberOfNeutralCndTight">SetNumberOfNeutralCndTight</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagEtaPeppTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagEtaPeppTwoBody_maxCmsPmaxCosT">SetTagEtaPeppTwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagEtaPrhogTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagEtaPrhogTwoBody_maxCmsPmaxCosT">SetTagEtaPrhogTwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagEtaTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagEtaTwoBody_maxCmsPmaxCosT">SetTagEtaTwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagKstpTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagKstpTwoBody_maxCmsPmaxCosT">SetTagKstpTwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagKstTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagKstTwoBody_maxCmsPmaxCosT">SetTagKstTwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagKTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagKTwoBody_maxCmsPmaxCosT">SetTagKTwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagK_S0TwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagK_S0TwoBody_maxCmsPmaxCosT">SetTagK_S0TwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagOmegaTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagOmegaTwoBody_maxCmsPmaxCosT">SetTagOmegaTwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagPhiTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagPhiTwoBody_maxCmsPmaxCosT">SetTagPhiTwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagPi0TwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagPi0TwoBody_maxCmsPmaxCosT">SetTagPi0TwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagRhopTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagRhopTwoBody_maxCmsPmaxCosT">SetTagRhopTwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetTagRhoTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:SetTagRhoTwoBody_maxCmsPmaxCosT">SetTagRhoTwoBody_maxCmsPmaxCosT</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> i)  <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetD3PS" href="src/PAFTagBase.cxx.html#PAFTagBase:GetD3PS">GetD3PS</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetDmeson0" href="src/PAFTagBase.cxx.html#PAFTagBase:GetDmeson0">GetDmeson0</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetDsmeson0" href="src/PAFTagBase.cxx.html#PAFTagBase:GetDsmeson0">GetDsmeson0</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetDstar0" href="src/PAFTagBase.cxx.html#PAFTagBase:GetDstar0">GetDstar0</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetDstar1" href="src/PAFTagBase.cxx.html#PAFTagBase:GetDstar1">GetDstar1</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetLumiBhabhaWeight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetLumiBhabhaWeight">GetLumiBhabhaWeight</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetNumberOfNeutralCands" href="src/PAFTagBase.cxx.html#PAFTagBase:GetNumberOfNeutralCands">GetNumberOfNeutralCands</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetNumberOfNeutralCndLoose" href="src/PAFTagBase.cxx.html#PAFTagBase:GetNumberOfNeutralCndLoose">GetNumberOfNeutralCndLoose</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetNumberOfNeutralCndTight" href="src/PAFTagBase.cxx.html#PAFTagBase:GetNumberOfNeutralCndTight">GetNumberOfNeutralCndTight</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagEtaPeppTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagEtaPeppTwoBody_maxCmsPmaxCosT">GetTagEtaPeppTwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagEtaPrhogTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagEtaPrhogTwoBody_maxCmsPmaxCosT">GetTagEtaPrhogTwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagEtaTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagEtaTwoBody_maxCmsPmaxCosT">GetTagEtaTwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagKstpTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagKstpTwoBody_maxCmsPmaxCosT">GetTagKstpTwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagKstTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagKstTwoBody_maxCmsPmaxCosT">GetTagKstTwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagKTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagKTwoBody_maxCmsPmaxCosT">GetTagKTwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagK_S0TwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagK_S0TwoBody_maxCmsPmaxCosT">GetTagK_S0TwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagOmegaTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagOmegaTwoBody_maxCmsPmaxCosT">GetTagOmegaTwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagPhiTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagPhiTwoBody_maxCmsPmaxCosT">GetTagPhiTwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagPi0TwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagPi0TwoBody_maxCmsPmaxCosT">GetTagPi0TwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagRhopTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagRhopTwoBody_maxCmsPmaxCosT">GetTagRhopTwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetTagRhoTwoBody_maxCmsPmaxCosT" href="src/PAFTagBase.cxx.html#PAFTagBase:GetTagRhoTwoBody_maxCmsPmaxCosT">GetTagRhoTwoBody_maxCmsPmaxCosT</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetAnalysisBits" href="src/PAFTagBase.cxx.html#PAFTagBase:SetAnalysisBits">SetAnalysisBits</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> b, <a href="ListOfTypes.html#UInt_t">UInt_t</a> b1) <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="PAFTagBase:GetAnalysisBits" href="src/PAFTagBase.cxx.html#PAFTagBase:GetAnalysisBits">GetAnalysisBits</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="PAFTagBase:GetAnalysisBits1" href="src/PAFTagBase.cxx.html#PAFTagBase:GetAnalysisBits1">GetAnalysisBits1</a>() const <br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:Init" href="src/PAFTagBase.cxx.html#PAFTagBase:Init">Init</a>(TBranchObject *objBranch)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetFloat" href="src/PAFTagBase.cxx.html#PAFTagBase:GetFloat">GetFloat</a>(TBranch *theBranch, const <a href="ListOfTypes.html#Float_t">Float_t</a> &amp;value) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Short_t">Short_t</a> <a name="PAFTagBase:GetShort" href="src/PAFTagBase.cxx.html#PAFTagBase:GetShort">GetShort</a>(TBranch *theBranch, const <a href="ListOfTypes.html#Short_t">Short_t</a> &amp;value) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#UInt_t">UInt_t</a> <a name="PAFTagBase:GetUInt" href="src/PAFTagBase.cxx.html#PAFTagBase:GetUInt">GetUInt</a>(TBranch *theBranch, const <a href="ListOfTypes.html#UInt_t">UInt_t</a> &amp;value) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Char_t">Char_t</a> <a name="PAFTagBase:GetChar" href="src/PAFTagBase.cxx.html#PAFTagBase:GetChar">GetChar</a>(TBranch *theBranch, const <a href="ListOfTypes.html#Char_t">Char_t</a> &amp;value) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Byte_t">Byte_t</a> <a name="PAFTagBase:GetByte" href="src/PAFTagBase.cxx.html#PAFTagBase:GetByte">GetByte</a>(TBranch *theBranch, const <a href="ListOfTypes.html#Byte_t">Byte_t</a> &amp;value) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetInt" href="src/PAFTagBase.cxx.html#PAFTagBase:GetInt">GetInt</a>(TBranch *theBranch, const <a href="ListOfTypes.html#Int_t">Int_t</a> &amp;value) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetEventNumber" href="src/PAFTagBase.cxx.html#PAFTagBase:SetEventNumber">SetEventNumber</a>(<a href="ListOfTypes.html#UInt_t">UInt_t</a> i)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#char">char</a> <a name="PAFTagBase:getInt" href="src/PAFTagBase.cxx.html#PAFTagBase:getInt">getInt</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> &amp;anInt,const <a href="ListOfTypes.html#char">char</a>* key) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#char">char</a> <a name="PAFTagBase:getFloat" href="src/PAFTagBase.cxx.html#PAFTagBase:getFloat">getFloat</a>(<a href="ListOfTypes.html#Float_t">Float_t</a> &amp;aFloat,const <a href="ListOfTypes.html#char">char</a>* key) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#char">char</a> <a name="PAFTagBase:getBool" href="src/PAFTagBase.cxx.html#PAFTagBase:getBool">getBool</a>(<a href="ListOfTypes.html#char">char</a> &amp;aBool,const <a href="ListOfTypes.html#char">char</a>* key) const
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#char">char</a> <a name="PAFTagBase:putBool" href="src/PAFTagBase.cxx.html#PAFTagBase:putBool">putBool</a>( <a href="ListOfTypes.html#char">char</a> aBool, const <a href="ListOfTypes.html#char">char</a>* key)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#char">char</a> <a name="PAFTagBase:putInt" href="src/PAFTagBase.cxx.html#PAFTagBase:putInt">putInt</a>( <a href="ListOfTypes.html#Int_t">Int_t</a> aInt, const <a href="ListOfTypes.html#char">char</a>* key) 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#char">char</a> <a name="PAFTagBase:putFloat" href="src/PAFTagBase.cxx.html#PAFTagBase:putFloat">putFloat</a>( <a href="ListOfTypes.html#Float_t">Float_t</a> aFloat, const <a href="ListOfTypes.html#char">char</a>* key) 
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./PAFTagBase.html">PAFTagBase</a> <a name="PAFTagBase:PAFTagBase" href="PAFTagBase.h">PAFTagBase</a>()
+<!--INLINE FUNCTION--><!--TAB6-->         <a href="./PAFTagBase.html">PAFTagBase</a> <a name="PAFTagBase:PAFTagBase" href="PAFTagBase.h">PAFTagBase</a>(const <a href="./PAFTagBase.html">PAFTagBase</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetK0sLoose" href="PAFTagBase.h">SetK0sLoose</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:SetK0sTight" href="PAFTagBase.h">SetK0sTight</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="PAFTagBase:GetTrigger" href="PAFTagBase.h">GetTrigger</a>(const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Int_t">Int_t</a> <a name="PAFTagBase:GetInt" href="PAFTagBase.h">GetInt</a>(const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--INLINE FUNCTION--><!--TAB6-->            <a href="ListOfTypes.html#Float_t">Float_t</a> <a name="PAFTagBase:GetFloat" href="PAFTagBase.h">GetFloat</a>(const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="ListOfTypes.html#Bool_t">Bool_t</a> <a name="PAFTagBase:GetBool" href="PAFTagBase.h">GetBool</a>(const <a href="ListOfTypes.html#char">char</a>* key) const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:operator=" href="PAFTagBase.h">operator=</a>(<a href="./PAFTagBase.html">PAFTagBase</a>&amp;)
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="PAFTagBase:Class" href="PAFTagBase.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="PAFTagBase:IsA" href="PAFTagBase.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:ShowMembers" href="PAFTagBase.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:Streamer" href="PAFTagBase.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="PAFTagBase:StreamerNVirtual" href="PAFTagBase.h">StreamerNVirtual</a>(TBuffer&amp; b)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Sascha+Berger+and+Marcel+Kunze">Sascha Berger and Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?RUB">RUB</a>, <a href="http://consult.cern.ch/xwho/people?March">March</a> 1999		//</em><br>
+<em>Last update: Fri Dec 20 16:02:21 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

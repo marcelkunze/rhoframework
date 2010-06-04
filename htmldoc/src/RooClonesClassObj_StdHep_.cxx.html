@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:25 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>RooClonesClassObj&lt;StdHep&gt; - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+#ifndef ROOCLONESCLASSOBJ_IMPL 
+#define ROOCLONESCLASSOBJ_IMPL 
+<b>// </b>
+<b>// Implementation of RooClonesClass: </b>
+<b>// </b>
+ 
+<b>// C++ headers: </b>
+ 
+ 
+<b>// This class header: </b>
+#include "KangaSchema/RooClonesClassObj.h" 
+ 
+ 
+<b>// Collaborating class headers: </b>
+#include "TBuffer.h" 
+ 
+ 
+<b>//----------------------------------------------------------------------- </b>
+<b>// Local Macros, Typedefs, Structures, Unions and Forward Declarations -- </b>
+<b>//----------------------------------------------------------------------- </b>
+ClassImpT(RooClonesClassObj,T) 
+ 
+ 
+<b>// Static data members: </b>
+template &lt; class T &gt; 
+TClonesArray* RooClonesClassObj&lt; T &gt;::<a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_theArray">_theArray</a>= 0; 
+ 
+ 
+<b>// Static member functions: </b>
+template &lt; class T &gt; 
+<a href="../ListOfTypes.html#void">void</a> RooClonesClassObj&lt; T &gt;::<a href="#RooClonesClassObj<StdHep>:setTheArray">setTheArray</a>( TClonesArray* theArray ) {  
+ 
+  <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_theArray">_theArray</a>= theArray; 
+  <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_theArray">_theArray</a>-&gt;BypassStreamer(kFALSE);
+ 
+} 
+ 
+ 
+<b>// Constructor: </b>
+template &lt; class T &gt; 
+RooClonesClassObj&lt; T &gt;::RooClonesClassObj() :  
+  RooEvtObj&lt; T &gt;(), 
+  <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_nent">_nent</a>( 0 ), 
+  <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a>( 0 ), 
+  <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_ownArray">_ownArray</a>( kTRUE ) 
+{} 
+ 
+ 
+<b>// Destructor: </b>
+template &lt; class T &gt; 
+RooClonesClassObj&lt; T &gt;::~RooClonesClassObj() {} 
+ 
+ 
+<b>// Stream an object of class RooEvtObj&lt;T&gt;: </b>
+template &lt; class T &gt;  
+<a href="../ListOfTypes.html#void">void</a> RooClonesClassObj&lt; T &gt;::<a href="#RooClonesClassObj<StdHep>:Streamer">Streamer</a>( TBuffer &amp; R__b ) { 
+ 
+  if( R__b.IsReading() ) { 
+    <a href="../ListOfTypes.html#Version_t">Version_t</a> R__v= R__b.ReadVersion(); 
+<b>    // if (R__v) { } </b>
+    RooEvtObj&lt; T &gt;::<a href="#RooClonesClassObj<StdHep>:Streamer">Streamer</a>( R__b ); 
+    R__b &gt;&gt; <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_nent">_nent</a>; 
+    <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a>-&gt;Streamer( R__b ); 
+  }  
+  else { 
+    R__b.WriteVersion( RooClonesClassObj&lt; T &gt;::<a href="#RooClonesClassObj<StdHep>:IsA">IsA</a>() ); 
+    RooEvtObj&lt; T &gt;::<a href="#RooClonesClassObj<StdHep>:Streamer">Streamer</a>( R__b ); 
+    R__b &lt;&lt; <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_nent">_nent</a>; 
+    <a href=".././RooClonesClassObj_StdHep_.html#RooClonesClassObj<StdHep>:_array">_array</a>-&gt;Streamer( R__b ); 
+  } 
+ 
+} 
+ 
+<b>// Read a pointer to an object of type RooClonesClassObj&lt;T&gt;: </b>
+template &lt; class T &gt;  
+TBuffer &amp; operator &gt;&gt; ( TBuffer &amp; buf, RooClonesClassObj&lt;T&gt;* &amp; obj ) { 
+ 
+  obj= (RooClonesClassObj&lt;T&gt;*) buf.ReadObject( RooClonesClassObj&lt;T&gt;::<a href="#RooClonesClassObj<StdHep>:Class">Class</a>() ); 
+  return buf; 
+ 
+} 
+ 
+#endif 
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:41 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TCandPtr - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: TCandPtr.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//	<a href=".././TCandPtr.html">TCandPtr</a></b>
+<b>//      a class to summarize in a simple and compact format mapping between:</b>
+<b>//      1) many TCandidates and a composite (which is not saved)</b>
+<b>//      2) one TCandidates and several of them in the same list</b>
+<b>//    </b>
+<b>//      the default is option 1 and one can switch to option one with</b>
+<b>//      setOneToMany()</b>
+
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//	Riccardo Faccini                </b>
+<b>//</b>
+<b>// History (add to end):</b>
+<b>//      R.Faccini   May, 1999  - creation</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999	       U.C.S.D</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+#include "RhoTools/TCandPtr.h"
+#include "RhoBase/TCandidate.h"
+#include "TParticlePDG.h"
+
+ClassImp(TCandPtr)
+
+<b>//</b>
+<b>// Constructor</b>
+<b>//</b>
+
+<a name="TCandPtr:TCandPtr"> </a><a href=".././TCandPtr.html#TCandPtr:TCandPtr">TCandPtr::TCandPtr</a>( const TParticlePDG* pdt )
+  : <a href=".././TCandPtr.html#TCandPtr:_oneToMany">_oneToMany</a>(kFALSE) 
+  , <a href=".././TCandPtr.html#TCandPtr:_lundId">_lundId</a>(0)
+{
+  if ( pdt != 0 ) <a href=".././TCandPtr.html#TCandPtr:_lundId">_lundId</a> = pdt-&gt;PdgCode();
+}
+ 
+
+<a href="../ListOfTypes.html#UInt_t">UInt_t</a>
+<a name="TCandPtr:NDaughters"> </a><a href=".././TCandPtr.html#TCandPtr:NDaughters">TCandPtr::NDaughters</a>(  ) const
+{
+  return <a href=".././TCandPtr.html#TCandPtr:_oneToMany">_oneToMany</a>? <a href=".././TCandPtr.html#TCandPtr:_indices">_indices</a>.GetSize()-1:<a href=".././TCandPtr.html#TCandPtr:_indices">_indices</a>.GetSize();
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="TCandPtr:SetMother"> </a><a href=".././TCandPtr.html#TCandPtr:SetMother">TCandPtr::SetMother</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> im)
+{
+  if(!<a href=".././TCandPtr.html#TCandPtr:_oneToMany">_oneToMany</a> || ( <a href=".././TCandPtr.html#TCandPtr:_indices">_indices</a>.GetSize() != 0)) return kFALSE;
+  <a href="#TCandPtr:AddDaughter">AddDaughter</a>(im);
+  return kTRUE;
+}
+
+<a href="../ListOfTypes.html#Bool_t">Bool_t</a>
+<a name="TCandPtr:GetMother"> </a><a href=".././TCandPtr.html#TCandPtr:GetMother">TCandPtr::GetMother</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;im)
+{
+  if(!<a href=".././TCandPtr.html#TCandPtr:_oneToMany">_oneToMany</a> || ( <a href=".././TCandPtr.html#TCandPtr:_indices">_indices</a>.GetSize() == 0)) return kFALSE;
+  im = <a href=".././TCandPtr.html#TCandPtr:_indices">_indices</a>.At(0);
+  return kTRUE;
+}
+
+<a href="../ListOfTypes.html#Int_t">Int_t</a>
+<a href=".././TCandPtr.html#TCandPtr:operator">TCandPtr::operator</a>()( <a href="../ListOfTypes.html#Int_t">Int_t</a> i )
+{
+  if (i&lt;<a href="#TCandPtr:NDaughters">NDaughters</a>())
+    return <a href=".././TCandPtr.html#TCandPtr:_oneToMany">_oneToMany</a>?  <a href=".././TCandPtr.html#TCandPtr:_indices">_indices</a>.At(i+1):<a href=".././TCandPtr.html#TCandPtr:_indices">_indices</a>.At(i);
+  else
+    return 0;
+}
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TCandPtr:AddDaughter"> </a><a href=".././TCandPtr.html#TCandPtr:AddDaughter">TCandPtr::AddDaughter</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> ind){<a href=".././TCandPtr.html#TCandPtr:_indices">_indices</a>.AddAt(ind,<a href=".././TCandPtr.html#TCandPtr:_indices">_indices</a>.GetSize());}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

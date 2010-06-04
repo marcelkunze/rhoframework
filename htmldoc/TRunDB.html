@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:24 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TRunDB</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TRunDB</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TRunDB:description">class description</a> - <a href="src/TRunDB.cxx.html">source file</a> - <a href="TRunDB_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TRunDB" href="TRunDB.h">TRunDB</a> : public TObject</h2>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:getDirContent">getDirContent</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* subdir, TObjArray* filenameList)
+<!--TAB6-->      <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:ScanFile">ScanFile</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* filename, TObjArray* list, <a href="ListOfTypes.html#Int_t">Int_t</a>&amp; nevts, <a href="ListOfTypes.html#Int_t">Int_t</a>&amp; firstRun)
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->               <a href="./TRunDB.html">TRunDB</a> <!--TAB--><!--BOLD--><a href="#TRunDB:TRunDB">TRunDB</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* directory = "0", const <a href="ListOfTypes.html#char">char</a>* cluster = "system", <a href="ListOfTypes.html#UInt_t">UInt_t</a> maxFiles = 1000)
+<!--TAB6-->               <a href="./TRunDB.html">TRunDB</a> <!--TAB--><!--BOLD--><a href="#TRunDB:TRunDB">TRunDB</a><!--PLAIN-->(const <a href="./TRunDB.html">TRunDB</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:~TRunDB">~TRunDB</a><!--PLAIN-->()
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:AddCluster">AddCluster</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* indexFilePath)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:AddRunsToCollection">AddRunsToCollection</a><!--PLAIN-->(<a href="./TRunCollection.html">TRunCollection</a>* theCol, <a href="ListOfTypes.html#Int_t">Int_t</a> runFrom, <a href="ListOfTypes.html#Int_t">Int_t</a> runTo = 0)
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TRunDB:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->            <a href="./TLogInfo.html">TLogInfo</a>* <!--TAB--><!--BOLD--><a href="#TRunDB:GetLogInfo">GetLogInfo</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> runnumber)
+<!--TAB6-->            <a href="./TRunInfo.html">TRunInfo</a>* <!--TAB--><!--BOLD--><a href="#TRunDB:GetRunInfo">GetRunInfo</a><!--PLAIN-->(<a href="ListOfTypes.html#Int_t">Int_t</a> runnumber)
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TRunDB:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->               <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a href="#TRunDB:LoadLogbook">LoadLogbook</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* filename = "rundb.root")
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:PrintAllRuns">PrintAllRuns</a><!--PLAIN-->(ostream&amp; o)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:PrintMissingRuns">PrintMissingRuns</a><!--PLAIN-->(ostream&amp; o, <a href="ListOfTypes.html#Int_t">Int_t</a> rmin, <a href="ListOfTypes.html#Int_t">Int_t</a> rmax)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:SetCluster">SetCluster</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* name)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TRunDB:Update">Update</a><!--PLAIN-->(const <a href="ListOfTypes.html#char">char</a>* clustername)
+</pre>
+
+<h3><!--TAB2-->  <a name="TRunDB:Data Members">Data Members</a></h3>
+<pre>
+
+<!--TAB4-->    <b>protected:</b><br>
+<!--TAB6-->      TObjArray* <!--TAB--><!--BOLD--><a name="TRunDB:fFileList">fFileList</a><!--PLAIN-->        <!--TAB--><i><a name="Title:fFileList">!</a></i>
+<!--TAB6-->      TObjArray* <!--TAB--><!--BOLD--><a name="TRunDB:fRunList">fRunList</a><!--PLAIN-->         <!--TAB--><i><a name="Title:fRunList">!</a></i>
+<!--TAB6-->         TString <!--TAB--><!--BOLD--><a name="TRunDB:fCurrentCluster">fCurrentCluster</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fCurrentCluster">!</a></i>
+<!--TAB6-->          TFile* <!--TAB--><!--BOLD--><a name="TRunDB:fLogbookFile">fLogbookFile</a><!--PLAIN-->     <!--TAB--><i><a name="Title:fLogbookFile">!</a></i>
+<!--TAB6-->          <a href="ListOfTypes.html#Bool_t">Bool_t</a> <!--TAB--><!--BOLD--><a name="TRunDB:fKanga">fKanga</a><!--PLAIN-->           <!--TAB--><i><a name="Title:fKanga">!</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TRunDB:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TRunDB.html">TRunDB</a>								
+                                                                      
+ Run Database class							
+                                                                      
+ Author: Thorsten Brandt, Dresden University, Aug. 99			
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TRunDB:TRunDB" href="src/TRunDB.cxx.html#TRunDB:TRunDB">TRunDB</a>(const <a href="ListOfTypes.html#char">char</a>* directory, const <a href="ListOfTypes.html#char">char</a>* cluster, <a href="ListOfTypes.html#UInt_t">UInt_t</a> maxFiles)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:~TRunDB" href="src/TRunDB.cxx.html#TRunDB:~TRunDB">~TRunDB</a>()
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:PrintAllRuns" href="src/TRunDB.cxx.html#TRunDB:PrintAllRuns">PrintAllRuns</a>(std::ostream &amp;o)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:PrintMissingRuns" href="src/TRunDB.cxx.html#TRunDB:PrintMissingRuns">PrintMissingRuns</a>(std::ostream &amp;o,<a href="ListOfTypes.html#Int_t">Int_t</a> rmin, <a href="ListOfTypes.html#Int_t">Int_t</a> rmax)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:LoadLogbook" href="src/TRunDB.cxx.html#TRunDB:LoadLogbook">LoadLogbook</a>(const <a href="ListOfTypes.html#char">char</a>* filename)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:GetLogInfo" href="src/TRunDB.cxx.html#TRunDB:GetLogInfo">GetLogInfo</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> runnumber)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:GetRunInfo" href="src/TRunDB.cxx.html#TRunDB:GetRunInfo">GetRunInfo</a>(<a href="ListOfTypes.html#Int_t">Int_t</a> n)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:SetCluster" href="src/TRunDB.cxx.html#TRunDB:SetCluster">SetCluster</a>(const <a href="ListOfTypes.html#char">char</a>* name)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:AddCluster" href="src/TRunDB.cxx.html#TRunDB:AddCluster">AddCluster</a>(const <a href="ListOfTypes.html#char">char</a>* indexFilePath)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:Update" href="src/TRunDB.cxx.html#TRunDB:Update">Update</a>(const <a href="ListOfTypes.html#char">char</a>* clustername)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:ScanFile" href="src/TRunDB.cxx.html#TRunDB:ScanFile">ScanFile</a>(const <a href="ListOfTypes.html#char">char</a> *fname, TObjArray *list, <a href="ListOfTypes.html#Int_t">Int_t</a> &amp;nevts, <a href="ListOfTypes.html#Int_t">Int_t</a> &amp;firstRun)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TRunDB:getDirContent" href="src/TRunDB.cxx.html#TRunDB:getDirContent">getDirContent</a>(const <a href="ListOfTypes.html#char">char</a>* pathName,TObjArray *filenameList)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#void">void</a> <a name="TRunDB:AddRunsToCollection" href="src/TRunDB.cxx.html#TRunDB:AddRunsToCollection">AddRunsToCollection</a>(<a href="./TRunCollection.html">TRunCollection</a> *theCol,<a href="ListOfTypes.html#Int_t">Int_t</a> runFrom, <a href="ListOfTypes.html#Int_t">Int_t</a> runTo)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TRunDB:Class" href="TRunDB.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->            TClass* <a name="TRunDB:IsA" href="TRunDB.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TRunDB:ShowMembers" href="TRunDB.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TRunDB:Streamer" href="TRunDB.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->               <a href="ListOfTypes.html#void">void</a> <a name="TRunDB:StreamerNVirtual" href="TRunDB.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->             <a href="./TRunDB.html">TRunDB</a> <a name="TRunDB:TRunDB" href="TRunDB.h">TRunDB</a>(const <a href="./TRunDB.html">TRunDB</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Thorsten+Brandt">Thorsten Brandt</a>, <a href="http://consult.cern.ch/xwho/people?Dresden+University">Dresden University</a>, <a href="http://consult.cern.ch/xwho/people?Aug.">Aug.</a> 99			//</em><br>
+<em>Last update: Fri Dec 20 16:03:25 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

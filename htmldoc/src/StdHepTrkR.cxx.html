@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:29 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>StdHepTrkR - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: StdHepTrkR.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Gautier Hamel de Monchenault</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1999       Saclay</b>
+<b>//</b>
+<b>//------------------------------------------------------------------------</b>
+
+<b>//-----------------------</b>
+<b>// This Class's Header --</b>
+<b>//-----------------------</b>
+#include "KangaSchema/StdHepTrkR.h"
+
+
+<b>//-------------</b>
+<b>// C Headers --</b>
+<b>//-------------</b>
+#include &lt;math.h&gt;
+
+<b>//---------------</b>
+<b>// C++ Headers --</b>
+<b>//---------------</b>
+
+
+<b>//-------------------------------</b>
+<b>// Collaborating Class Headers --</b>
+<b>//-------------------------------</b>
+<b>//#include "StdHepData/StdHepTrk.h"</b>
+
+
+<b>//-----------------------------------------------------------------------</b>
+<b>// Local Macros, Typedefs, Structures, Unions and Forward Declarations --</b>
+<b>//-----------------------------------------------------------------------</b>
+ClassImp(<a href=".././StdHepTrkR.html">StdHepTrkR</a>)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+<a name="StdHepTrkR:StdHepTrkR"> </a><a href=".././StdHepTrkR.html#StdHepTrkR:StdHepTrkR">StdHepTrkR::StdHepTrkR</a>() : 
+  RooEvtObj&lt;StdHepTrk&gt;(),
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_isthep">_isthep</a>( 0 ),
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_idhep">_idhep</a>( 0 ),
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_trkno">_trkno</a>( 0 )
+{
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_jmohep">_jmohep</a>[0]=<a href=".././StdHepTrkR.html#StdHepTrkR:_jmohep">_jmohep</a>[1]=0;
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_jdahep">_jdahep</a>[0]=<a href=".././StdHepTrkR.html#StdHepTrkR:_jdahep">_jdahep</a>[1]=0;
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[0]=<a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[1]=<a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[2]=<a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[3]=<a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[4]=0;
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[0]=<a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[1]=<a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[2]=<a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[3]=0;
+}
+/*
+<a name="StdHepTrkR:StdHepTrkR"> </a><a href=".././StdHepTrkR.html#StdHepTrkR:StdHepTrkR">StdHepTrkR::StdHepTrkR</a>( const StdHepTrk* g,  RooEvtObjLocReg &amp; reg  ) :  
+  RooEvtObj&lt;StdHepTrk&gt;(),
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_isthep">_isthep</a>( g-&gt;<a href="#StdHepTrkR:getStatus">getStatus</a>() ),
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_idhep">_idhep</a>( g-&gt;<a href="#StdHepTrkR:getId">getId</a>() ),
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_trkno">_trkno</a>( g-&gt;<a href="#StdHepTrkR:getTrackNumber">getTrackNumber</a>() )
+{
+<b>  // Register this object and its corresponding transient:</b>
+  registerThis( g, reg );
+  
+<b>  // Fill arrays:</b>
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_jmohep">_jmohep</a>[0] = g-&gt;<a href="#StdHepTrkR:getFirstMother">getFirstMother</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_jmohep">_jmohep</a>[1] = g-&gt;<a href="#StdHepTrkR:getSecondMother">getSecondMother</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_jdahep">_jdahep</a>[0] = g-&gt;<a href="#StdHepTrkR:getFirstDaughter">getFirstDaughter</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_jdahep">_jdahep</a>[1] = g-&gt;<a href="#StdHepTrkR:getLastDaughter">getLastDaughter</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[0]   = g-&gt;<a href="#StdHepTrkR:getPx">getPx</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[1]   = g-&gt;<a href="#StdHepTrkR:getPy">getPy</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[2]   = g-&gt;<a href="#StdHepTrkR:getPz">getPz</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[3]   = g-&gt;<a href="#StdHepTrkR:getEnergy">getEnergy</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[4]   = g-&gt;<a href="#StdHepTrkR:getMass">getMass</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[0]   = g-&gt;<a href="#StdHepTrkR:getVx">getVx</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[1]   = g-&gt;<a href="#StdHepTrkR:getVy">getVy</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[2]   = g-&gt;<a href="#StdHepTrkR:getVz">getVz</a>();
+  <a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[3]   = g-&gt;<a href="#StdHepTrkR:getTime">getTime</a>();
+}
+*/
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+<a name="StdHepTrkR:~StdHepTrkR"> </a><a href=".././StdHepTrkR.html">StdHepTrkR</a>::~<a href=".././StdHepTrkR.html">StdHepTrkR</a>() {}
+
+<b>//--------------</b>
+<b>// Operations --</b>
+<b>//--------------</b>
+/*
+StdHepTrk* <a href=".././StdHepTrkR.html#StdHepTrkR:transient">StdHepTrkR::transient</a>( RooEvtObjLocReg &amp; reg ) const {
+
+<b>  // Create the transient object:</b>
+  StdHepTrk* theStdTrk= new StdHepTrk();
+
+<b>  // Fill it with data:</b>
+  theStdTrk-&gt;setStatus( <a href=".././StdHepTrkR.html#StdHepTrkR:_isthep">_isthep</a> );
+  theStdTrk-&gt;setId( <a href=".././StdHepTrkR.html#StdHepTrkR:_idhep">_idhep</a> );
+  theStdTrk-&gt;setFirstMother( <a href=".././StdHepTrkR.html#StdHepTrkR:_jmohep">_jmohep</a>[0] );
+  theStdTrk-&gt;setSecondMother( <a href=".././StdHepTrkR.html#StdHepTrkR:_jmohep">_jmohep</a>[1] );
+  theStdTrk-&gt;setFirstDaughter( <a href=".././StdHepTrkR.html#StdHepTrkR:_jdahep">_jdahep</a>[0] );
+  theStdTrk-&gt;setLastDaughter( <a href=".././StdHepTrkR.html#StdHepTrkR:_jdahep">_jdahep</a>[1] );
+  theStdTrk-&gt;setPx( <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[0] );
+  theStdTrk-&gt;setPy( <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[1] );
+  theStdTrk-&gt;setPz( <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[2] );
+  theStdTrk-&gt;setEnergy( <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[3] );
+  theStdTrk-&gt;setMass( <a href=".././StdHepTrkR.html#StdHepTrkR:_phep">_phep</a>[4] );
+  theStdTrk-&gt;setVx( <a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[0] );
+  theStdTrk-&gt;setVy( <a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[1] );
+  theStdTrk-&gt;setVz( <a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[2] );
+  theStdTrk-&gt;setTime( <a href=".././StdHepTrkR.html#StdHepTrkR:_vhep">_vhep</a>[3] );
+  theStdTrk-&gt;setTrackNumber( <a href=".././StdHepTrkR.html#StdHepTrkR:_trkno">_trkno</a> );
+
+<b>  // Register this object and its corresponding transient:</b>
+  registerThis( theStdTrk, reg );
+
+<b>  // The End:</b>
+  return theStdTrk;
+
+}
+*/
+
+<b>// Printing:</b>
+<a name="StdHepTrkR:print"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././StdHepTrkR.html#StdHepTrkR:print">StdHepTrkR::print</a>( std::ostream &amp; ost ) const {
+
+  return;
+
+}
+
+<a name="StdHepTrkR:Print"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././StdHepTrkR.html#StdHepTrkR:Print">StdHepTrkR::Print</a>( <a href="../ListOfTypes.html#Option_t">Option_t</a>* option ) const {
+
+  cout &lt;&lt; ClassName() &lt;&lt; endl;
+  <a href="#StdHepTrkR:print">print</a>( cout );
+  return;
+
+}
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

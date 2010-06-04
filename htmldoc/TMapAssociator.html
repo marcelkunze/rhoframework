@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:03 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TMapAssociator</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<!--BEGIN-->
+<center>
+<h1>TMapAssociator</h1>
+<hr width=300>
+<!--SDL--><em><a href="#TMapAssociator:description">class description</a> - <a href="src/TMapAssociator.cxx.html">source file</a> - <a href="TMapAssociator_Tree.ps">inheritance tree</a></em>
+<hr width=300>
+</center>
+<h2>class <a name="TMapAssociator" href="TAssociator.h">TMapAssociator</a> : public <a href="./TAssociator.html">TAssociator</a></h2>
+<pre>
+
+<!--TAB4-->    <b>public:</b><br>
+<!--TAB6-->       <a href="./TMapAssociator.html">TMapAssociator</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:TMapAssociator">TMapAssociator</a><!--PLAIN-->(<a href="./TEventManager.html">TEventManager</a>&amp; evtmgr, const <a href="ListOfTypes.html#char">char</a>* name = "VAbsTruth/VAbsMicroCandidate")
+<!--TAB6-->       <a href="./TMapAssociator.html">TMapAssociator</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:TMapAssociator">TMapAssociator</a><!--PLAIN-->(TCandList&amp; mcTruth, TCandList&amp; reco, const <a href="ListOfTypes.html#char">char</a>* name = "VAbsTruth/VAbsMicroCandidate")
+<!--TAB6-->       <a href="./TMapAssociator.html">TMapAssociator</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:TMapAssociator">TMapAssociator</a><!--PLAIN-->(const <a href="./TMapAssociator.html">TMapAssociator</a>&amp;)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:~TMapAssociator">~TMapAssociator</a><!--PLAIN-->()
+<!--TAB6-->       static TClass* <!--TAB--><!--BOLD--><a href="#TMapAssociator:Class">Class</a><!--PLAIN-->()
+<!--TAB6-->             <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:GetMinimumConsistency">GetMinimumConsistency</a><!--PLAIN-->() const
+<!--TAB6-->      virtual TClass* <!--TAB--><!--BOLD--><a href="#TMapAssociator:IsA">IsA</a><!--PLAIN-->() const
+<!--TAB6-->        virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:McIndexFromReco">McIndexFromReco</a><!--PLAIN-->(TCandidate* c)
+<!--TAB6-->        virtual <a href="ListOfTypes.html#Int_t">Int_t</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:RecoIndexFromMc">RecoIndexFromMc</a><!--PLAIN-->(TCandidate* c)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:SetMinimumConsistency">SetMinimumConsistency</a><!--PLAIN-->(<a href="ListOfTypes.html#Double_t">Double_t</a> c)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:ShowMembers">ShowMembers</a><!--PLAIN-->(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--TAB6-->         virtual <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:Streamer">Streamer</a><!--PLAIN-->(TBuffer&amp; b)
+<!--TAB6-->                 <a href="ListOfTypes.html#void">void</a> <!--TAB--><!--BOLD--><a href="#TMapAssociator:StreamerNVirtual">StreamerNVirtual</a><!--PLAIN-->(TBuffer&amp; b)
+</pre>
+
+<h3><!--TAB2-->  <a name="TMapAssociator:Data Members">Data Members</a></h3>
+<pre>
+<!--TAB4-->    <b>private:</b><br>
+<!--TAB6-->      <a href="ListOfTypes.html#Double_t">Double_t</a> <!--TAB--><!--BOLD--><a name="TMapAssociator:fMinConsistency">fMinConsistency</a><!--PLAIN-->  <!--TAB--><i><a name="Title:fMinConsistency">!Threshold</a></i>
+</pre>
+<!--END-->
+<hr>
+<!--DESCRIPTION--><h2><a name="TMapAssociator:description">Class Description</a></h2>
+<pre>                                                                      
+ <a href="./TAssociator.html">TAssociator</a>								
+                                                                      
+ Monte Carlo truth association class					
+                                                                      
+ Author: Marcel Kunze, Bochum University, Dec. 99			
+ Copyright (C) 1999-2001, Ruhr-University Bochum.			
+									
+
+</pre><hr>
+<!--FUNCTION--> <a name="TMapAssociator:TMapAssociator" href="src/TMapAssociator.cxx.html#TMapAssociator:TMapAssociator">TMapAssociator</a>(<a href="./TEventManager.html">TEventManager</a> &amp;evtmgr, const <a href="ListOfTypes.html#char">char</a>* name) :
+<a href="./TAssociator.html">TAssociator</a>(evtmgr,name)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TMapAssociator:TMapAssociator" href="src/TMapAssociator.cxx.html#TMapAssociator:TMapAssociator">TMapAssociator</a>(TCandList&amp; mcTruth, TCandList&amp; reco, const <a href="ListOfTypes.html#char">char</a>* name) :
+<a href="./TAssociator.html">TAssociator</a>(mcTruth,reco,name)
+<br>
+<hr>
+<!--FUNCTION--> <a name="TMapAssociator:~TMapAssociator" href="src/TMapAssociator.cxx.html#TMapAssociator:~TMapAssociator">~TMapAssociator</a>() 
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TMapAssociator:RecoIndexFromMc" href="src/TMapAssociator.cxx.html#TMapAssociator:RecoIndexFromMc">RecoIndexFromMc</a>(TCandidate *c)
+<br>
+<hr>
+<!--FUNCTION--><a href="ListOfTypes.html#Int_t">Int_t</a> <a name="TMapAssociator:McIndexFromReco" href="src/TMapAssociator.cxx.html#TMapAssociator:McIndexFromReco">McIndexFromReco</a>(TCandidate *c)
+<br>
+<br><br><br>
+<h3>Inline Functions</h3>
+<hr>
+<pre>
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="TMapAssociator:SetMinimumConsistency" href="TAssociator.h">SetMinimumConsistency</a>(<a href="ListOfTypes.html#Double_t">Double_t</a> c)
+<!--INLINE FUNCTION--><!--TAB6-->              <a href="ListOfTypes.html#Double_t">Double_t</a> <a name="TMapAssociator:GetMinimumConsistency" href="TAssociator.h">GetMinimumConsistency</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="TMapAssociator:Class" href="TAssociator.h">Class</a>()
+<!--INLINE FUNCTION--><!--TAB6-->               TClass* <a name="TMapAssociator:IsA" href="TAssociator.h">IsA</a>() const
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="TMapAssociator:ShowMembers" href="TAssociator.h">ShowMembers</a>(TMemberInspector&amp; insp, <a href="ListOfTypes.html#char">char</a>* parent)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="TMapAssociator:Streamer" href="TAssociator.h">Streamer</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->                  <a href="ListOfTypes.html#void">void</a> <a name="TMapAssociator:StreamerNVirtual" href="TAssociator.h">StreamerNVirtual</a>(TBuffer&amp; b)
+<!--INLINE FUNCTION--><!--TAB6-->        <a href="./TMapAssociator.html">TMapAssociator</a> <a name="TMapAssociator:TMapAssociator" href="TAssociator.h">TMapAssociator</a>(const <a href="./TMapAssociator.html">TMapAssociator</a>&amp;)
+</pre>
+
+<hr><br>
+<!--SIGNATURE-->
+<em>Author: <a href="http://consult.cern.ch/xwho/people?Marcel+Kunze">Marcel Kunze</a>, <a href="http://consult.cern.ch/xwho/people?Bochum+University">Bochum University</a>, <a href="http://consult.cern.ch/xwho/people?Dec.">Dec.</a> 99			//</em><br>
+<em>Last update: Fri Dec 20 16:03:03 2002</em><br>
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

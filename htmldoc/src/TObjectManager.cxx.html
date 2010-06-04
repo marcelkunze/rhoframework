@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:03:09 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TObjectManager - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+<b>//                                                                      //</b>
+<b>// <a href=".././TObjectManager.html">TObjectManager</a>							//</b>
+<b>//                                                                      //</b>
+<b>// Object manager					    		//</b>
+<b>//                                                                      //</b>
+<b>// Author: Marcel Kunze, Bochum University, Jan. 2k			//</b>
+<b>// Copyright (C) 1999-2001, Ruhr-University Bochum.			//</b>
+<b>//									//</b>
+<b>//////////////////////////////////////////////////////////////////////////</b>
+
+#include "RhoManager/TObjectManager.h"
+
+ClassImp(TObjectManager)
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+<a name="TObjectManager:TObjectManager"> </a><a href=".././TObjectManager.html#TObjectManager:TObjectManager">TObjectManager::TObjectManager</a>() :
+<a href=".././TObjectManager.html#TObjectManager:fList">fList</a>(0)
+{
+    <a href=".././TObjectManager.html#TObjectManager:fList">fList</a> = new THashList();
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<a name="TObjectManager:~TObjectManager"> </a><a href=".././TObjectManager.html">TObjectManager</a>::~<a href=".././TObjectManager.html">TObjectManager</a>() 
+{
+    <a href=".././TObjectManager.html#TObjectManager:fList">fList</a>-&gt;Delete();
+    delete <a href=".././TObjectManager.html#TObjectManager:fList">fList</a>;
+}
+
+<b>//----------------------</b>
+<b>//-- public Functions --</b>
+<b>//----------------------</b>
+
+<b>// Add an object</b>
+<a name="TObjectManager:Add"> </a>TObject* <a href=".././TObjectManager.html#TObjectManager:Add">TObjectManager::Add</a>(TObject *obj) 
+{
+    <a href=".././TObjectManager.html#TObjectManager:fList">fList</a>-&gt;<a href="#TObjectManager:Add">Add</a>(obj);
+    return obj;
+}
+
+
+<b>// Retrieve an object</b>
+<a name="TObjectManager:Get"> </a>TObject* <a href=".././TObjectManager.html#TObjectManager:Get">TObjectManager::Get</a>(const <a href="../ListOfTypes.html#char">char</a> *name) 
+{
+    return <a href=".././TObjectManager.html#TObjectManager:fList">fList</a>-&gt;FindObject(name);
+}
+
+
+<b>// Remove an object</b>
+<a name="TObjectManager:Remove"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TObjectManager.html#TObjectManager:Remove">TObjectManager::Remove</a>(const <a href="../ListOfTypes.html#char">char</a> *name) 
+{
+    <a href="#TObjectManager:Remove">Remove</a>(<a href="#TObjectManager:Get">Get</a>(name));
+}
+
+
+<b>// Remove an object</b>
+<a name="TObjectManager:Remove"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TObjectManager.html#TObjectManager:Remove">TObjectManager::Remove</a>(TObject *obj) 
+{
+    if (obj!=0) {
+	<a href=".././TObjectManager.html#TObjectManager:fList">fList</a>-&gt;Remove(obj);
+	delete obj;
+    }
+}
+
+
+<a name="TObjectManager:PrintOn"> </a><a href="../ListOfTypes.html#void">void</a> <a href=".././TObjectManager.html#TObjectManager:PrintOn">TObjectManager::PrintOn</a>(std::ostream &amp; o) const {
+    
+    <a href="../ListOfTypes.html#int">int</a> i;
+
+    o &lt;&lt; endl;
+    o &lt;&lt; "<a href=".././TObjectManager.html">TObjectManager</a> Directory: " &lt;&lt; <a href=".././TObjectManager.html#TObjectManager:fList">fList</a>-&gt;GetSize() &lt;&lt; endl;
+    o &lt;&lt; "---------------------------------" &lt;&lt; endl;
+    for (i=0;i&lt;<a href=".././TObjectManager.html#TObjectManager:fList">fList</a>-&gt;GetSize();i++) {
+	TObject *l = <a href=".././TObjectManager.html#TObjectManager:fList">fList</a>-&gt;At(i);
+	if (l==0)
+	    o &lt;&lt; "Reference to non existent object" &lt;&lt; endl;
+	else
+	    o &lt;&lt; l-&gt;GetName() &lt;&lt; "t(instanceOf " &lt;&lt; l-&gt;ClassName() &lt;&lt; ")" &lt;&lt; endl;
+    }
+
+    o &lt;&lt; endl;
+
+    return;
+
+}
+
+<b>// non-member functions</b>
+<b>// --------------------</b>
+
+std::ostream&amp;  operator &lt;&lt; (std::ostream&amp; o, const <a href=".././TObjectManager.html">TObjectManager</a>&amp; a) {a.<a href="#TObjectManager:PrintOn">PrintOn</a>(o); return o;}
+
+
+
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>

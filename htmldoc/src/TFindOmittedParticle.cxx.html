@@ -1,0 +1,377 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@hpsalo.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Fri Dec 20 16:02:55 2002            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TFindOmittedParticle - source file</title>
+<link rev=made href="mailto:rootdev@root.cern.ch">
+<meta name="rating" content="General">
+<meta name="objecttype" content="Manual">
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers">
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis.">
+</head>
+<body BGCOLOR="#ffffff" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" TEXT="#000000">
+<a name="TopOfPage"></a>
+<pre>
+<b>//--------------------------------------------------------------------------</b>
+<b>// File and Version Information:</b>
+<b>// 	$Id: TFindOmittedParticle.cxx.html,v 1.1.1.1 2002-12-20 15:05:30 marcel Exp $</b>
+<b>//</b>
+<b>// Description:</b>
+<b>//	Class <a href=".././TFindOmittedParticle.html">TFindOmittedParticle</a>.</b>
+<b>//	Given resonance (Y(4S)) momentum, B0 momentum, and</b>
+<b>//	K0L mass at creation, this object then finds the best</b>
+<b>//	candidate for the K0L 4-momentum given the 4-momentum</b>
+<b>//	of the J/psi and the direction of the neutral cluster.</b>
+<b>//</b>
+<b>//	Because this is a general utility class, B0 is labeled Child,</b>
+<b>//	Y(4S) is labeled Reson (for Resonance), J/psi is labeled Obs </b>
+<b>//	(for Observed), and K0L is labeled Sought (for the calculated</b>
+<b>//	values) or Seen (for the actual IFR/EMC cluster).</b>
+<b>//</b>
+<b>//	Constructor takes CM 4-momentum, Child mass, and Sought mass.</b>
+<b>//</b>
+<b>//	fitToSeen() calls makeCone(), then closestFit().</b>
+<b>//</b>
+<b>//	makeCone() finds the possible Sought 4-momenta given the Observed</b>
+<b>//	momentum.</b>
+<b>//</b>
+<b>//	closestFit() finds the best fit between the cone of possibilities</b>
+<b>//	and the Seen neutral cluster.</b>
+<b>//</b>
+<b>//	secondVector() returns the second momentum found by closestFit()</b>
+<b>//	but rejected as an inferior fit, for diagnostic purposes.</b>
+<b>//</b>
+<b>//	If there is demand, a function may be added to extract the</b>
+<b>//	parameters of the cone describing possible Sought momenta;</b>
+<b>//	makeCone() and closestFit() would then be made public;</b>
+<b>//	or perhaps a subclass could implement this functionality.</b>
+<b>//</b>
+<b>//	Note: this class by default currently only works in </b>
+<b>//	coordinate systems with the boost along the z-axis.</b>
+<b>//	Setting <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:zBoostApprox">zBoostApprox</a> to false overrides this.</b>
+<b>//</b>
+<b>//	Note: this class currently assumes (as is the case for B0-&gt;J/psi KL)</b>
+<b>//	that in the resonance CM (Y(4S)) frame, the 3-momentum of the </b>
+<b>//	observed (J/psi) particle is much larger than the child (B0) </b>
+<b>//	3-momentum, insuring that the CM angle between the observed and</b>
+<b>//	sought (KL) is greater than pi/2.  (In the language of this class,</b>
+<b>//	<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:openCos">openCos</a>&gt;0, since we use the opposite of the observed momentum).</b>
+<b>//</b>
+<b>// Environment:</b>
+<b>//	Software developed for the BaBar Detector at the SLAC B-Factory.</b>
+<b>//</b>
+<b>// Author List:</b>
+<b>//      Adam Breon                      Original Author</b>
+<b>//</b>
+<b>// Copyright Information:</b>
+<b>//	Copyright (C) 1997-1999		Lawrence Berkeley Laboratory</b>
+<b>//</b>
+<b>// ROOT Version by Marcel Kunze, RUB</b>
+<b>//------------------------------------------------------------------------</b>
+
+#include "RhoTools/TFindOmittedParticle.h"
+#include &lt;assert.h&gt;
+#include &lt;math.h&gt;
+#include "TLorentzVector.h"
+#include "TVector3.h"
+
+ClassImp(TFindOmittedParticle)
+
+TBuffer &amp;operator&gt;&gt;(TBuffer &amp;buf, TFindOmittedParticle *&amp;obj)
+{
+   obj = (TFindOmittedParticle *) buf.ReadObject(TFindOmittedParticle::Class());
+   return buf;
+}
+
+#include &lt;iostream&gt;
+using namespace std;
+
+<b>//----------------</b>
+<b>// Constructors --</b>
+<b>//----------------</b>
+
+/*
+ * Constructor; sets mass of the child of the resonance and the 
+ *   particle to be found.
+ * For now, uses ErrMsg calls to ensure arguments
+ *   make sense.
+ */
+<a name="TFindOmittedParticle:TFindOmittedParticle"> </a><a href=".././TFindOmittedParticle.html#TFindOmittedParticle:TFindOmittedParticle">TFindOmittedParticle::TFindOmittedParticle</a>(
+		   const TLorentzVector &amp; ip4Reson,	// set Y(4S) p4.
+		   const <a href="../ListOfTypes.html#double">double</a> imChild,		// B0 mass.
+		   const <a href="../ListOfTypes.html#double">double</a> imSought,		// K mass
+		   const <a href="../ListOfTypes.html#Bool_t">Bool_t</a> izBoostApprox)		// boost in z approx?
+  //: p4Reson(ip4Reson)
+  //: mChild(fabs(imChild))
+  : <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:mSought2">mSought2</a>(imSought*imSought)
+  , <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:p4ObsCache">p4ObsCache</a>(0.0,0.0,0.0,-1.0)		// Non-physical initial value
+  , <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:zBoostApprox">zBoostApprox</a>(izBoostApprox)
+{
+  if (imChild == 0.0)
+    cerr &lt;&lt; "<a href=".././TFindOmittedParticle.html">TFindOmittedParticle</a> constructed with mChild=0" &lt;&lt; endl;
+  
+  if(<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:mSought2">mSought2</a> == 0.0)
+    cerr &lt;&lt; "<a href=".././TFindOmittedParticle.html">TFindOmittedParticle</a> constructed with mSought=0" &lt;&lt; endl;  
+
+<b>  // Figure out the boost vectors to and from the center of mass</b>
+
+<b>  //p4Reson = ip4Reson;</b>
+  <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:beta">beta</a> = -ip4Reson.BoostVector();
+      
+<b>  // Figure out the decay energies, gamma factors, <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:beta">beta</a> factors.</b>
+<b>  // Assume that resonance decays to two "child" particles (e.g. B + Bbar)</b>
+
+  <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmEChild">cmEChild</a> = ip4Reson.Mag() / 2;
+
+  if (<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmEChild">cmEChild</a> &lt; fabs(imChild))
+    cerr &lt;&lt; "<a href=".././TFindOmittedParticle.html">TFindOmittedParticle</a>: mChild too large for decay" &lt;&lt; endl;
+
+<b>  // The square of the three-momentum of the child (B0).</b>
+  <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmpChild2">cmpChild2</a> = <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmEChild">cmEChild</a>*<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmEChild">cmEChild</a> - imChild*imChild;
+
+}
+
+<b>//--------------</b>
+<b>// Destructor --</b>
+<b>//--------------</b>
+
+<b>// The destructor should be limited to undoing the work of the constructor</b>
+<a name="TFindOmittedParticle:~TFindOmittedParticle"> </a><a href=".././TFindOmittedParticle.html">TFindOmittedParticle</a>::~<a href=".././TFindOmittedParticle.html">TFindOmittedParticle</a>( )
+{
+}
+
+
+<b>//--------------------</b>
+<b>// Member Functions --</b>
+<b>//--------------------</b>
+
+/*
+ * Given the 4-momentum of the observed decay products, and assuming
+ *  that p3Seen indicates a neutral cluster from the omitted particle,
+ *  returns the most likely lab-frame 4-momentum with the sought mass
+ *  specified in the constructor.  Returns the zero vector if no such
+ *  consistent vector can be found.
+ */
+
+TLorentzVector
+<a name="TFindOmittedParticle:FitToSeen"> </a><a href=".././TFindOmittedParticle.html#TFindOmittedParticle:FitToSeen">TFindOmittedParticle::FitToSeen</a>( const TLorentzVector &amp; p4Obs, 
+				const TVector3 &amp; p3Seen )
+{
+  if (p4Obs != <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:p4ObsCache">p4ObsCache</a>)
+    {
+      this-&gt;<a href="#TFindOmittedParticle:MakeCone">MakeCone</a>(p4Obs);
+      <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:p4ObsCache">p4ObsCache</a> = p4Obs;
+    }
+  return this-&gt;<a href="#TFindOmittedParticle:ClosestFit">ClosestFit</a>(p3Seen);
+}
+
+
+/*
+ * Given the already known resonance p4, figures out the cone
+ * of possible values for the sought particle in the center of
+ * mass.
+ */
+
+<a href="../ListOfTypes.html#void">void</a> 
+<a name="TFindOmittedParticle:MakeCone"> </a><a href=".././TFindOmittedParticle.html#TFindOmittedParticle:MakeCone">TFindOmittedParticle::MakeCone</a>( const TLorentzVector  &amp; p4Obs )
+{
+<b>  // Get the observed mass, figure out the decay momentum of the</b>
+<b>  // child -&gt; sought + observed.</b>
+
+<b>  // Square of mass of observed particle.</b>
+  const <a href="../ListOfTypes.html#double">double</a> mObs2 = p4Obs.Mag2();
+
+  /* This was an old, labor-intensive way of calculating the 
+     decay momentum.  Using conservation of energy is much simpler to
+     understand and faster to compute.
+<b>  // The following is a solution of sqrt(pDecay*pDecay + mSought*mSought)</b>
+<b>  // + sqrt(pDecay*pDecay + mObs*mObs) == mChild</b>
+  <a href="../ListOfTypes.html#double">double</a> pDecay;
+  {
+  <a href="../ListOfTypes.html#double">double</a> temp;
+  
+  temp = (mObs2 - mSought*mSought) / mChild;
+  temp *= temp;
+  temp += mChild*mChild - 2 * (mObs2 + mSought*mSought);
+  
+  pDecay = 0.5 * sqrt(temp);
+  }
+  
+<b>  //const <a href="../ListOfTypes.html#double">double</a> EObsDecay = sqrt(mObs2 + pDecay*pDecay);</b>
+<b>  //const <a href="../ListOfTypes.html#double">double</a> ESoughtDecay = sqrt(mSought*mSought + pDecay*pDecay);</b>
+  */
+
+
+<b>  // Boost vectors into the CM frame; extract vital statistics.</b>
+
+  TLorentzVector cmp4Obs(p4Obs); cmp4Obs.Boost(<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:beta">beta</a>);
+
+<b>  //const <a href="../ListOfTypes.html#double">double</a> cmEObs = cmp4Obs.t();</b>
+  const <a href="../ListOfTypes.html#double">double</a> cmpObs2 = TVector3(cmp4Obs.X(),cmp4Obs.Y(),cmp4Obs.Z()).Mag2();
+
+  <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmESought">cmESought</a> = <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmEChild">cmEChild</a> - cmp4Obs.T();
+  <a href="../ListOfTypes.html#double">double</a> cmESought2 = <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmESought">cmESought</a>*<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmESought">cmESought</a>;
+  if ( cmESought2 &gt; <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:mSought2">mSought2</a>)
+      <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmpSought2">cmpSought2</a> = cmESought2 - <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:mSought2">mSought2</a>;
+  else
+      <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmpSought2">cmpSought2</a> = 0.0;
+
+
+
+  /* 
+   * Because we know the lengths of the 3 momentum 3-vectors, we can
+   * get the angles using the law of cosines.
+   * abs(<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:openCos">openCos</a>) &gt; 1 signifies an error, causing closestFit to return
+   * a zero vector, signifying an error.
+   */
+
+  const <a href="../ListOfTypes.html#double">double</a> cmpSought = sqrt(<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmpSought2">cmpSought2</a>);
+
+  if (cmpSought != 0)
+    <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:openCos">openCos</a> =
+      ( cmpObs2 + <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmpSought2">cmpSought2</a> - <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmpChild2">cmpChild2</a> ) /
+      ( 2 * sqrt(cmpObs2) * cmpSought );
+  else
+    <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:openCos">openCos</a> = 2;	// Error condition.
+
+  <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmAxis">cmAxis</a> = -TVector3(cmp4Obs.X(),cmp4Obs.Y(),cmp4Obs.Z()).Unit() * <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:openCos">openCos</a> * cmpSought;
+
+}
+
+
+/*
+ *  Given the cone of possible values for the sought momentum in the
+ *  center of mass, takes that p3Seen points to a neutral cluster
+ *  due to the sought particle in the lab frame.  Assuming that the
+ *  boost is solely along the z-axis, finds the intersection of the 
+ *  cone in the center of mass with the plane defined by the azimuthal
+ *  angle of p3Seen.  If there is no intersection, returns 0.  Otherwise,
+ *  boosts both intersections back to the lab frame.  It returns the one
+ *  at the smallest angular separation from p3Seen.
+ */
+
+TLorentzVector 
+<a name="TFindOmittedParticle:ClosestFit"> </a><a href=".././TFindOmittedParticle.html#TFindOmittedParticle:ClosestFit">TFindOmittedParticle::ClosestFit</a>( const TVector3 &amp; p3Seen )
+{
+<b>  // Take care of these now to save clock cycles.</b>
+  if (fabs(<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:openCos">openCos</a>) &gt; 1.0) {
+    return TLorentzVector(0.0,0.0,0.0,0.0);  // Error condition.
+  }
+
+  TLorentzVector cmp4Sought[2];  // Two intersection points...
+
+<b>  // Set up local coordinate system:</b>
+<b>  //  z = normal z.</b>
+<b>  //  x-z plane contains p3Seen.  Since we only keep phi information,</b>
+<b>  //  we needn't bother boosting.</b>
+<b>  // I'm doing more stuff by hand than in previous versions in order</b>
+<b>  // to speed things up.</b>
+  <a href="../ListOfTypes.html#double">double</a> cmCosPlaneAxis2;		// Squared cosine between the plane and axis.
+  {
+<b>    // Original, most abstract method:</b>
+<b>    //const TVector3 cmZ(0.0, 0.0, 1.0);</b>
+<b>    //const TVector3 cmX = (p3Seen - p3Seen.dot(cmZ) * cmZ).unit();</b>
+<b>    //const TVector3 cmY = cmZ.cross(cmX);</b>
+
+<b>    // Slightly faster method:</b>
+<b>    //const TVector3 cmX = TVector3(p3Seen.x(), p3Seen.y(), 0.0).unit();</b>
+<b>    //const TVector3 cmY = TVector3(-cmX.y(), cmX.x(), 0.0);</b>
+
+    TVector3 cmY;
+<b>    // Fastest method:</b>
+    if (<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:zBoostApprox">zBoostApprox</a>)
+	cmY = TVector3(-p3Seen.Y(), p3Seen.X(), 0.0).Unit();
+    else
+	cmY = <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:beta">beta</a>.Cross(p3Seen).Unit();
+
+    const TVector3 unitAxis = <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmAxis">cmAxis</a>.Unit();
+
+<b>    // Projection of unit vector of axis into x-z plane.</b>
+
+<b>    // Project unitAxis into the xz plane.</b>
+    const TVector3 unitProj = unitAxis - unitAxis.Dot(cmY) * cmY;
+<b>    // While we know cmY.z() == 0, doing it by hand would make the</b>
+<b>    // code too baroque for not a great speed advantage.</b>
+
+<b>    // Square of cosine of angle between plane and axis:</b>
+    cmCosPlaneAxis2 = unitProj.Mag2();
+
+
+    if (cmCosPlaneAxis2 &lt; <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:openCos">openCos</a>*<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:openCos">openCos</a>) {
+      return TLorentzVector(0.0,0.0,0.0,0.0);  // Error condition.
+    }
+
+<b>    // Projection of full axis into x-z plane.</b>
+<b>    // Actually, it's longer; touches the base of the cone.</b>
+<b>    // <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmAxis">cmAxis</a> is projection of unitProj, hence 1/cosine.</b>
+
+    const TVector3 axisProj = 
+      (<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmAxis">cmAxis</a>.Mag() / (cmCosPlaneAxis2) ) * unitProj;
+
+<b>    // vector difference between axisProj and the true</b>
+<b>    // vector, which could lie to either side.</b>
+    
+<b>    //const TVector3  difference = <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmAxis">cmAxis</a>.mag() * </b>
+<b>    //sqrt(1/(<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:openCos">openCos</a>*<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:openCos">openCos</a>) - 1/(cmCosPlaneAxis2)) *</b>
+<b>    //unitProj.cross(cmY).unit();</b>
+
+    const TVector3 difference =
+      sqrt(<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmpSought2">cmpSought2</a> - axisProj.Mag2()) *
+      unitProj.Cross(cmY).Unit();
+
+    cmp4Sought[0] = TLorentzVector(axisProj + difference, <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmESought">cmESought</a>);
+    cmp4Sought[1] = TLorentzVector(axisProj - difference, <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:cmESought">cmESought</a>);
+  }
+
+
+<b>  // Boost the results back into the lab frame.</b>
+<b>  // Return whichever one is closer in angle to the seen vector.</b>
+
+  cmp4Sought[0].Boost(-<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:beta">beta</a>);
+  cmp4Sought[1].Boost(-<a href=".././TFindOmittedParticle.html#TFindOmittedParticle:beta">beta</a>);
+
+  if ( TVector3(cmp4Sought[0].X(),cmp4Sought[0].Y(),cmp4Sought[0].Z()).Unit().Dot(p3Seen) &gt; 
+       TVector3(cmp4Sought[1].X(),cmp4Sought[1].Y(),cmp4Sought[1].Z()).Unit().Dot(p3Seen) )
+    {
+      <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:secondChoice">secondChoice</a> = cmp4Sought[1];
+      return cmp4Sought[0];
+    }
+  else
+    {
+      <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:secondChoice">secondChoice</a> = cmp4Sought[0];
+      return cmp4Sought[1];
+    }
+}
+
+
+/*
+ *  Returns the worse-fit vector found in closestFit() and saved
+ *  in <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:secondChoice">secondChoice</a>.
+ */
+
+TLorentzVector 
+<a name="TFindOmittedParticle:SecondVector"> </a><a href=".././TFindOmittedParticle.html#TFindOmittedParticle:SecondVector">TFindOmittedParticle::SecondVector</a>() const
+{
+  return <a href=".././TFindOmittedParticle.html#TFindOmittedParticle:secondChoice">secondChoice</a>;
+}
+</pre>
+
+<!--SIGNATURE-->
+<br>
+<hr>
+<center>
+<address>
+<a href="http://root.cern.ch/root/Welcome.html">ROOT page</a> - <a href="../ClassIndex.html">Class index</a> - <a href="#TopOfPage">Top of the page</a><br>
+</address>
+</center>
+<hr>
+<address>
+This page has been automatically generated. If you have any comments or suggestions about the page layout send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>, or contact <a href="mailto:rootdev@root.cern.ch">the developers</a> with any questions or problems regarding ROOT.
+</address>
+</body>
+</html>
