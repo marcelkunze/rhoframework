@@ -34,7 +34,7 @@ R__EXTERN TRho *gRho;
 void display(const char *run,const char *collection, int eventNumber, int runNumber)
 {
 #ifdef __CINT__
-gROOT->Macro("./RhoMacros/LoadLibs.C");
+gROOT->Macro("$RHO/RhoMacros/LoadLibs.C");
 #endif
 
     gRho = new TRho("PAF Event Display");

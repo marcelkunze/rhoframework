@@ -23,37 +23,33 @@
 
 // This is the UNIX section
 #else
-    TString vers = TString(getenv("BFCURRENT"));
-    if (vers != "") vers = "_" + vers;
-    vers += ".so";
-    TString versroot = TString(getenv("BFCURRENT"));
-    if ( versroot != "") versroot += "_ROOT.so"; 
     gSystem->Load("libEG.so");              // To use PDG database
     gSystem->Load("libPhysics.so");         // To use TVector
     gSystem->Load("libProof.so");
     gSystem->Load("libTreePlayer.so");      // To use TTreeFormula
+    gSystem->Load("libRootAuth.so");
 
-    gSystem->Load(TString("libRhoNNO")+vers);
-    gSystem->Load(TString("libRhoMath")+vers);
-    gSystem->Load(TString("libRhoConditions")+vers);
-    gSystem->Load(TString("libRhoBase")+vers);
-    gSystem->Load(TString("libRhoTools")+vers);
-    gSystem->Load(TString("libRhoHistogram")+vers);
-    gSystem->Load(TString("libPAFSchema")+vers);
-    gSystem->Load(TString("libKangaSchema")+vers);
-   // gSystem->Load(TString("libPAFSchema")+vers);
-    gSystem->Load(TString("libRhoManager")+vers);
-    gSystem->Load(TString("libRhoSelector")+vers);
-    //gSystem->Load(TString("libPAFFitter")+vers);
-    //gSystem->Load(TString("libPAFAdapters")+vers);
-    //gSystem->Load(TString("libPAFFramework")+vers);
+    gSystem->Load("$RHO/lib/libRhoNNO.so");
+    gSystem->Load("$RHO/lib/libRhoMath.so");
+    gSystem->Load("$RHO/lib/libRhoConditions.so");
+    gSystem->Load("$RHO/lib/libRhoBase.so");
+    gSystem->Load("$RHO/lib/libRhoTools.so");
+    gSystem->Load("$RHO/lib/libRhoHistogram.so");
+    gSystem->Load("$RHO/lib/libPAFSchema.so");
+    gSystem->Load("$RHO/lib/libKangaSchema.so");
+   // gSystem->Load("$RHO/lib/libPAFSchema.so");
+    gSystem->Load("$RHO/lib/libRhoManager.so");
+    gSystem->Load("$RHO/lib/libRhoSelector.so");
+    //gSystem->Load("$RHO/lib/libPAFFitter.so");
+    //gSystem->Load("$RHO/lib/libPAFAdapters.so");
+    //gSystem->Load("$RHO/lib/libPAFFramework.so");
 
 #ifdef DISPLAY
-    gSystem->Load(TString("libPAFDisplay")+vers);
+    gSystem->Load("$RHO/lib/libPAFDisplay.so");
 #endif
 
 #ifdef BETAPID
-    gSystem->Load(TString("libPAFBetaPid")+vers);
+    gSystem->Load("$RHO/lib/libPAFBetaPid.so");
 #endif
 
 #endif
