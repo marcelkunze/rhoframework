@@ -20,8 +20,8 @@ LDFLAGS       = -m32 -Wl,-rpath,/lib:$(LIBDIR):$(ROOTSYS)/lib
 SOFLAGS       = -shared
 
 CXXFLAGS     += $(ROOTCFLAGS)
-LIBS          = $(ROOTLIBS) -lEG -lProof -lTreePlayer
-GLIBS         = $(ROOTGLIBS) -lEG -lProof -lTreePlayer
+LIBS          = $(ROOTLIBS) -lEG -lProof -lTreePlayer -lRootAuth
+GLIBS         = $(ROOTGLIBS) -lEG -lProof -lTreePlayer -lRootAuth
 
 NNOLIB        = -lRhoNNO
 GALIB         = -lRhoGA

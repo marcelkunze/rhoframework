@@ -71,7 +71,7 @@ Int_t twoprong(int argc=0,char* argv[]=0)
 
     // Define the input
 
-    parMgr->SetParm("file","system/1999/6/r6096_6170","Name of input file");
+    parMgr->SetParm("file","test/runjpsiks310","Name of input file");
 
     // Define parameters (Use typed version for CINT)
 

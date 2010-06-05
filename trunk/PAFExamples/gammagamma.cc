@@ -52,7 +52,7 @@ Int_t main(int argc, char**argv) { return gammagamma(argc, argv); }
 Int_t gammagamma(int argc=0,char* argv[]=0)
 {
 #ifdef __CINT__
-    gROOT->Macro("$PAF/PAFMacros/LoadLibs.C"); // Load PAF
+    gROOT->Macro("$RHO/RhoMacros/LoadLibs.C"); // Load PAF
 #endif
         
     TRho PAF("Gamma Gamma filter");	// Instantiate a named framework
@@ -66,8 +66,8 @@ Int_t gammagamma(int argc=0,char* argv[]=0)
 
     // Define the input
 
-    parMgr.SetParm("file","system/1999/6/r6096_6170","Name of input file");
-    //parMgr.SetParm("file","test/run12304-micro","Name of input file");
+    //parMgr.SetParm("file","system/1999/6/r6096_6170","Name of input file");
+    parMgr.SetParm("file","test/runjpsiks310","Name of input file");
 
     // Define parameters (Use typed version for CINT)
 
