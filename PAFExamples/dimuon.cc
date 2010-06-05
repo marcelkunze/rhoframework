@@ -81,7 +81,7 @@ Int_t dimuon(int argc=0,char* argv[]=0)
 
     // Define parameters (Use typed version for CINT)
 
-    parMgr->SetStringParm("file","test/run7024","Name of input file");
+    parMgr->SetStringParm("file","test/runjpsiks310","Name of input file");
     parMgr->SetIntParm("nev",1000000,"Number of events");
     parMgr->SetBoolParm("tag",kTRUE,"Process TAG data");
     parMgr->SetBoolParm("babar",kTRUE,"Read TAG data a la BaBar");
