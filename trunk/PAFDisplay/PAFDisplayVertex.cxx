@@ -33,7 +33,7 @@ PAFDisplayVertex::PAFDisplayVertex(VAbsVertexSelector *v) : fVertexSelector(v)
 //_____________________________________________________________________________
 PAFDisplayVertex::~PAFDisplayVertex()
 {
-    if (fObjs != 0) fObjs->Delete();
+    //if (fObjs != 0) fObjs->Delete(); // Crash 5.26
     delete fObjs;
 }
 
