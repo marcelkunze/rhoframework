@@ -1260,7 +1260,7 @@ void PAFDisplay::DrawLogo()
     Double_t x[]={-350.0,-350.0,-350.5,-351.0,-351.0,-351.0,-352.0,-351.0,-352.0};
     Double_t z[]={350.0,352.0,351.0,352.0,350.0,351.0,352.0,351.0,350.0};
     Double_t y[]={-345.0,-345.0,-345.0,-345.0,-345.0,-345.0,-345.0,-345.0,-345.0};
-    delete fLogo;
+    // delete fLogo; // Crash 5.26
     fLogo = new TPolyLine3D(9,x,y,z);
     fLogo->SetLineColor(kWhite);
     fLogo->SetLineWidth(2);
