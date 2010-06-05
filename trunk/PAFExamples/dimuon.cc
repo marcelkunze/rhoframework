@@ -67,7 +67,7 @@ Int_t dimuon(int argc=0,char* argv[]=0)
 {
 #ifdef __CINT__
     Double_t const  kPI        = 3.14159265358979323846;
-    gROOT->Macro("$PAF/PAFMacros/LoadLibs.C"); // Load PAF
+    gROOT->Macro("$RHO/RhoMacros/LoadLibs.C"); // Load PAF
 #endif
 
     TRho PAF("Dimuon filter");		// Instantiate a named framework

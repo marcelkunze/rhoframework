@@ -57,7 +57,7 @@ Int_t twoprong(int argc=0,char* argv[]=0)
 {
 #ifdef __CINT__
     Double_t const kPI    = 3.14159265358979323846;
-    gROOT->Macro("$PAF/PAFMacros/LoadLibs.C"); // Load PAF
+    gROOT->Macro("$RHO/RhoMacros/LoadLibs.C"); // Load PAF
 #endif
     Double_t const raddeg = 180. / TMath::Pi();
         
