@@ -27,6 +27,7 @@ char* NNO_VERSION="1.3ROOT";
 ClassImp(TNeuralNetParameters)
 
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 TNeuralNetParameters::TNeuralNetParameters() 

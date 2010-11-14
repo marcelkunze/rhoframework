@@ -24,6 +24,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <cmath>
+#include <cstdlib>
 #include "TFile.h"
 #include "TNtuple.h"
 #include "TTreeFormula.h"

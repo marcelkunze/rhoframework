@@ -28,8 +28,7 @@ $(LIBA) : $(OBJS)  $(PACKAGE)Cint.o
 
 # Shared library:
 $(LIBSO) : $(OBJS)  $(PACKAGE)Cint.o
-	$(LD) -L$(RHO)/lib $(SOFLAGS) $(GLIBS) -o $(LIBDIR)/lib$(PACKAGE) $^
-	$(LD) -dynamiclib -single_module -undefined dynamic_lookup -install_name $(LIBDIR)/$@ -L$(RHO)/lib $(LDFLAGS) $(GLIBS) -o $(LIBDIR)/$@ $^
+	$(LD) $(SOFLAGS) $(LDFLAGS) $^ $(GLIBS) -o $(LIBDIR)/$(LIBSO) $(EXPLLINKLIBS)
 
 # Rules for Dictionary:
 $(PACKAGE)Cint.o : $(PACKAGE)Cint.cxx 
