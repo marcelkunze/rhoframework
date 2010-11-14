@@ -21,6 +21,8 @@
 #include "RhoBase/TRhoVersion.h"
 #include "RhoBase/TPdt.h"
 
+#include <cstdlib>
+
 TRho *gRho;
 R__EXTERN TSystem *gSystem;
 R__EXTERN TROOT *gRoot;
