@@ -14,14 +14,14 @@ ROOTGLIBS     = $(shell root-config --glibs)
  
 # Linux with egcs
 CXX           = g++
-CXXFLAGS      = -m32 -DBABAR_COMP_INST -fno-exceptions -fPIC -I..
+CXXFLAGS      = -m64 -DBABAR_COMP_INST -fno-exceptions -fPIC -I..
 LD            = g++
-LDFLAGS       = -m32 -Wl,-rpath,/lib:$(LIBDIR):$(ROOTSYS)/lib
+LDFLAGS       = -m64 -Wl,-rpath,/lib:/usr/lib:$(LIBDIR):$(ROOTSYS)/lib
 SOFLAGS       = -shared
 
 CXXFLAGS     += $(ROOTCFLAGS)
-LIBS          = $(ROOTLIBS) -lEG -lProof -lTreePlayer
-GLIBS         = $(ROOTGLIBS) -lEG -lProof -lTreePlayer
+LIBS          = $(ROOTLIBS) -lEG -lProof -lTreePlayer -lRootAuth
+GLIBS         = $(ROOTGLIBS) -lEG -lProof -lTreePlayer -lRootAuth
 
 NNOLIB        = -lRhoNNO
 GALIB         = -lRhoGA
