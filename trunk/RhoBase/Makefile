@@ -17,7 +17,7 @@ CXX           = g++
 CXXFLAGS      = $(RHOARCH) -DBABAR_COMP_INST -fno-exceptions -fPIC -I..
 LD            = g++
 LDFLAGS       = -Wl,-rpath,/lib:$(LIBDIR):$(ROOTSYS)/lib
-SOFLAGS       = $(RHOARCH) -shared -undefined dynamic_lookup
+SOFLAGS       = $(RHOARCH) -shared
 
 CXXFLAGS     += $(ROOTCFLAGS)
 LIBS          = $(ROOTLIBS) -lEG -lProof -lTreePlayer
