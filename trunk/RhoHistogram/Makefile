@@ -14,9 +14,9 @@ ROOTGLIBS     = $(shell root-config --glibs)
  
 # Linux with egcs
 CXX           = g++
-CXXFLAGS      = -m64 -DBABAR_COMP_INST -fno-exceptions -fPIC -I..
+CXXFLAGS      = $(RHOARCH) -DBABAR_COMP_INST -fno-exceptions -fPIC -I..
 LD            = g++
-LDFLAGS       = -m64 -Wl,-rpath,/lib:$(LIBDIR):$(ROOTSYS)/lib
+LDFLAGS       = $(RHOARCH) -Wl,-rpath,/lib:$(LIBDIR):$(ROOTSYS)/lib
 SOFLAGS       = -shared
 
 CXXFLAGS     += $(ROOTCFLAGS)
