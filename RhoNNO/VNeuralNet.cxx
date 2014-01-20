@@ -12,7 +12,7 @@
 //									//
 //////////////////////////////////////////////////////////////////////////
 
-char* NNO_VERSION="1.3ROOT";
+static const char* NNO_VERSION="1.3ROOT";
 
 #include "TRandom.h"
 
@@ -128,13 +128,13 @@ void VNeuralNet::WriteNetBinary()
 void VNeuralNet::ReadNet(const char* netID) 
 {
     fFile = fopen(fFilename,"rb");
-    if (fFile==0) Errorf("file %s not found",fFilename);
+    if (fFile==0) Errorf("file %s not found",fFilename.Data());
     char ftype[16];
     char Version[16];
     fscanf(fFile,"C++  NEURAL NETWORK OBJECTS   VERSION %s\n(C) Copyright Johannes Steffens\nFiletype %s\n",Version,ftype);
     if      (!strcmp(ftype,"binary")) fFiletype = FILE_BINARY;
     else if (!strcmp(ftype,"text"))   fFiletype = FILE_TEXT;
-    else Errorf("illegal fileformat: %s",fFilename);
+    else Errorf("illegal fileformat: %s",fFilename.Data());
 
     if (fFiletype==FILE_BINARY) 
 	ReadNetBinary(); 
@@ -144,12 +144,12 @@ void VNeuralNet::ReadNet(const char* netID)
     fParm.fNetId[4]=0;
     if (strcmp(netID,fParm.fNetId)) {
 	fclose(fFile);
-	Errorf("file %s  (incompatible network)\nnetwork ID is %s and should be %s",fFilename,fParm.fNetId,netID);
+	Errorf("file %s  (incompatible network)\nnetwork ID is %s and should be %s",fFilename.Data(),fParm.fNetId,netID);
     }
 
     if (strcmp(Version,NNO_VERSION)) {
 	fclose(fFile);
-	Errorf("illegal NNO version number of file %s\nversion number is %s and should be %s",fFilename,Version,NNO_VERSION);
+	Errorf("illegal NNO version number of file %s\nversion number is %s and should be %s",fFilename.Data(),Version,NNO_VERSION);
     }
 
     if (fFiletype==FILE_BINARY)
