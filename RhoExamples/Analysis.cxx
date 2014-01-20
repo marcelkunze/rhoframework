@@ -44,7 +44,7 @@
 #include <iostream>
 using namespace std;
 
-enum selectors{micro,nno,truth,beta}; // Selectors to choose
+enum selectors{smicro,snno,struth,sbeta}; // Selectors to choose
 
 TROOT root("Analysis","Rho Analysis Example");
 TApplication *theApp = new TApplication("Rho Analysis",0,0);
@@ -62,7 +62,7 @@ int main (int argc, char *argv[])
     JpsiKs *theModule = new JpsiKs("JpsiKs","Sample Analysis Module");
     analysis->Add(theModule);
     analysis->SetParm("file","$RHO/Data/test/runjpsiks310"); // Name of the input file
-    analysis->SetParm("model",nno);	// Selector model to use
+    analysis->SetParm("model",snno);	// Selector model to use
     analysis->SetParm("tagcut","");	// Apply a cut on the tag attributes
     analysis->SetParm("graphics",kTRUE);// Produce live updating histograms
     
@@ -102,7 +102,7 @@ Bool_t JpsiKs::BeginJob(TEventManager *eventmgr)
     
     Int_t sel = GetParm("Framework::model");
     
-    if (sel == micro) {
+    if (sel == smicro) {
 #ifdef PAFPID
 	cout << "Using PAF Microselectors" << endl;
 	// Use standard selectors (Micro)
@@ -116,7 +116,7 @@ Bool_t JpsiKs::BeginJob(TEventManager *eventmgr)
 	cout << "Compiled w/o support for PAFPidSelectors." << endl;
 #endif
     }
-    else if (sel == beta) {
+    else if (sel == sbeta) {
 #ifdef BETAPID
 	cout << "Using BetaPid Microselectors" << endl;
 	// Use standard selectors (Micro)
@@ -130,7 +130,7 @@ Bool_t JpsiKs::BeginJob(TEventManager *eventmgr)
 	cout << "Compiled w/o support for BetaPidSelectors." << endl;
 #endif
     }
-    else if (sel == nno) {
+    else if (sel == snno) {
 	cout << "Using NNOselectors" << endl;
 	// Use neural net selectors and set criteria for particle selection
 	electronSelector    = new TPidNNOElectronSelector("electronSelector",kTRUE,kTRUE,kTRUE,kTRUE,kFALSE); //(electron,muon,pion,kaon,proton)
