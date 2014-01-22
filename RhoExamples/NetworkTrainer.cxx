@@ -129,7 +129,7 @@ void NetworkTrainer::SetupDataServer(const char* file)
 	cout << endl << "Reading data files: " << endl;
 
 	if (fPidDataServer==0)
-	  fPidDataServer = new TDataServe("NetworkData","Network training data",fInNodes,1);
+	  fPidDataServer = new TDataServe((char *)"NetworkData",(char *)"Network training data",fInNodes,1);
 
 	int i;
 	for (i=0;i<fAll.GetSize();i++) {
@@ -196,7 +196,7 @@ void NetworkTrainer::SetupDataServer(const char* file)
     
     cout << endl << endl << "Setting up the normalised Server " << endl;
 
-    fTrainingServer = new TDataServe("NetworkData","Network training data",fInNodes,fOutNodes);
+    fTrainingServer = new TDataServe((char *)"NetworkData",(char *)"Network training data",fInNodes,fOutNodes);
 
     // Read the original vectors
     for (i=0;i<fVectorsEpoch+fTstMax;i++) {
