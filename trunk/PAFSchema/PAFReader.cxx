@@ -103,7 +103,7 @@ PAFReader::~PAFReader( )
     // Close all connected files
     TIter iter(fStreams);
     PAFStream *s = 0;
-    while (s = (PAFStream *) iter.Next()) {
+    while ( (s = (PAFStream *) iter.Next()) ) {
 	if (s->GetFile()) s->GetFile()->Close();
     }
     
@@ -196,7 +196,7 @@ Int_t PAFReader::GetEvent(UInt_t number)
 	
 	TIter iter(fStreams);
 	PAFStream *s = 0;
-	while (s = (PAFStream *) iter.Next()) {
+	while ( (s = (PAFStream *) iter.Next()) ) {
 	    if (s==fTagStream) continue; // Do not read this
 	    if (!s->IsActive()) continue; // Do not read this
 	    Int_t n = s->GetEvent(number);	
@@ -359,7 +359,7 @@ PAFReader::LoadMcNodes( TList* mcList)
     // now iterate on the temporary list
     TListIter iterList( &list );
     TNode* cand=0;
-    while( cand=(TNode*)iterList.Next() )
+    while( (cand=(TNode*)iterList.Next()) )
     {
 	FillMcList( *mcList, *cand );
     }
@@ -379,7 +379,7 @@ PAFReader::PrintMcList(TNode& node)
       cout << "{ " << dauList->GetSize() << " daughters" << endl;
       TListIter iter(dauList);
       TNode* dau=0;
-      while( dau=(TNode*)iter.Next() )
+      while( (dau=(TNode*)iter.Next()) )
       {
 	PrintMcList(*dau );
       }
@@ -407,7 +407,7 @@ PAFReader::FillMcList( TList& list, TNode& cand )
 	}
 	TListIter iter(dauList);
 	TNode* dau=0;
-	while( dau=(TNode*)iter.Next() )
+	while( (dau=(TNode*)iter.Next()) )
 	{
 	    FillMcList( list, *dau );
 	}
