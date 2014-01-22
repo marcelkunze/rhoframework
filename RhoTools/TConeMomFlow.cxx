@@ -83,7 +83,7 @@ TConeMomFlow::Compute( TCandList& list,
   int l;
 
   // start a loop over the all candidates
-  while ( c = iter.Next() ) 
+  while ( (c = iter.Next()) ) 
     {
       // this candidate's 3-momentum
       TVector3 p(c->P3());

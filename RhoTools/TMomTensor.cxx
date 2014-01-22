@@ -74,7 +74,7 @@ TMomTensor::Compute( TCandList& list )
   TCandListIterator iter(list);
   TCandidate* trkptr;
   // start a loop over the all tracks
-  while ( trkptr = iter.Next() ) {
+  while ( (trkptr = iter.Next()) ) {
     TLorentzVector cmList(trkptr->P4());
 
     TVector3 tmp(cmList.X(),cmList.Y(),cmList.Z());

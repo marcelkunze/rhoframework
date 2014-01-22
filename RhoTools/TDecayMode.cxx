@@ -185,7 +185,7 @@ TDecayMode::DecayString( Bool_t conjugate ) const
     s += " ->";
     TIter iter( DaughterIterator( conjugate ) );
     TParticlePDG* pdt;
-    while( pdt=(TParticlePDG*) iter.Next() )
+    while( (pdt=(TParticlePDG*) iter.Next()) )
     {
 	s += " ";
 	s += pdt->GetName();

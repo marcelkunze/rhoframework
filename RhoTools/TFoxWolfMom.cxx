@@ -147,14 +147,14 @@ TFoxWolfMom::Compute(int maxorder){
     assert(_privateData->maxorder+1 == _privateData->xArray->GetNoElements());
 
     TCandListIterator iter1(*_privateData->boostedList);
-    while ( track1 = iter1.Next() ) {
+    while ( (track1 = iter1.Next()) ) {
 
       sumEnergy += track1->Energy();
       p1Mag = track1->P();
 	
       // loop over track2
       TCandListIterator iter2(iter1);
-      while ( track2 = iter2.Next() ) {
+      while ( (track2 = iter2.Next()) ) {
 	p2Mag = track2->P();
 	pmag =  p1Mag*p2Mag;
 	double x =  track1->P3().Dot(track2->P3())/pmag;
