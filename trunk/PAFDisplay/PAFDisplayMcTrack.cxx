@@ -211,7 +211,7 @@ void PAFDisplayMcTrack::DrawTrack(Option_t *option, Bool_t useCache)
     if (useCache) {
 	TIter next(fObjs);
 	TObject *item;
-	while(item=next()) {
+	while( (item=next()) ) {
 	    item->Draw(option);
 	}
 	return;

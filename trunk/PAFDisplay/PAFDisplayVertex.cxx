@@ -80,7 +80,7 @@ void PAFDisplayVertex::ExecuteEvent(Int_t event, Int_t , Int_t )
 //______________________________________________________________________________
 char *PAFDisplayVertex::GetObjectInfo(Int_t , Int_t ) const
 {
-    if (fVertexSelector == 0) return "No VertexSelector activated.";
+    if (fVertexSelector == 0) return (char *)"No VertexSelector activated.";
 
     static char info[100];
     sprintf(info,"x=%f, y=%f, z=%f, px=%f, py=%f, pz=%f",
@@ -115,7 +115,7 @@ void PAFDisplayVertex::DrawVertex(Option_t *option, Bool_t useCache)
     if (useCache) {
 	TIter next(fObjs);
 	TObject *item;
-	while(item=next()) {
+	while( (item=next()) ) {
 	    item->Draw(option);
 	}
 	return;
