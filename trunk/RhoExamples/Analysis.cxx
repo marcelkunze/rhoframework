@@ -282,7 +282,7 @@ Bool_t JpsiKs::Event(TEventManager *eventmgr)
     if (GetParm("Framework::graphics")) c1->cd(3);
     TCandListIterator iter(*bList);
     TCandidate *c = 0;
-    while (c = iter.Next()) { 
+    while ( (c = iter.Next()) ) { 
 	TLorentzVectorErr myBCandLabP4 = c->P4();
 	TBVariables bVars(myBCandLabP4);
 	deltavse->Accumulate(bVars.M_ES(),bVars.DeltaE());
