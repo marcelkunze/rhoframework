@@ -63,7 +63,7 @@ void VAbsBit::InvalidateBranches()
     TObjArray* branches= fBitTree->GetListOfBranches();
     TIter iter( branches );
     TBranch* branch= 0;
-    while( branch= (TBranch*) iter.Next() ) {
+    while( (branch= (TBranch*) iter.Next()) ) {
 	if( strstr( branch->GetName(), "TAG_b_" ) != 0 ) {
 	    void* address= branch->GetAddress();
 	    assert(address);
@@ -429,14 +429,17 @@ void VAbsBit::FillCache(void) const
 	if (branches!=0) {
 	    TIter iter( branches );
 	    TBranch* branch= 0;
-	    while( branch= (TBranch*) iter.Next() ) {
+	    while( (branch= (TBranch*) iter.Next()) ) {
 		TString theKey = branch->GetName();
-		if(theKey.Index("TAG_b_")>=0)
+		if(theKey.Index("TAG_b_")>=0) {
 		    if (fBoolBranchTable->FindObject(theKey)==0) fBoolBranchTable->Add(branch);
-		    else if (theKey.Index("TAG_i_")>=0)
+		    else if (theKey.Index("TAG_i_")>=0) {
 			if (fIntBranchTable->FindObject(theKey)==0) fIntBranchTable->Add(branch);
-			else if (theKey.Index("TAG_f_")>=0)
+			else if (theKey.Index("TAG_f_")>=0) {
 			    if (fFloatBranchTable->FindObject(theKey)==0) fFloatBranchTable->Add(branch);
+			}
+		    }
+		}
 	    }
 	}
     }

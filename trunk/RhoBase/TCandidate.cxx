@@ -766,7 +766,7 @@ TCandidate::SetType(const char* name)
 { 
     TDatabasePDG *pdg = TRho::Instance()->GetPDG();	// Access particle DB
     TParticlePDG* pdt;
-    if( pdt=pdg->GetParticle( name ) ) SetType( pdt );
+    if( (pdt=pdg->GetParticle( name )) ) SetType( pdt );
 }
 
 void TCandidate::PrintOn(std::ostream& o) const 
@@ -838,7 +838,7 @@ nCons(0)
     TCandidate* dau=0;
     iterDau.Rewind();
     Int_t nDau=0;
-    while( dau=iterDau.Next() ) 
+    while( (dau=iterDau.Next()) ) 
     {
 	nDau++;
 	AddDaughterLink( dau );

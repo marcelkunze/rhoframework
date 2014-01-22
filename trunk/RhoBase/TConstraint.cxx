@@ -350,7 +350,7 @@ SetMissingMassConstraint( TCandidate& cand, TCandidate* cMissing, Double_t missi
     int iDau(0);
     TCandidate* b=0;
     const TParticlePDG* pdt=0;
-    while ( b=iterDau.Next() ) {
+    while ( (b=iterDau.Next()) ) {
 	iDau++;
 	if (b->Uid()==cMissing->Uid()) {
 	    pdt = b->PdtEntry();
