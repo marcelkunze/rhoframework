@@ -24,7 +24,7 @@ TXMLP:: TXMLP(Int_t layers,Double_t inputRange,const char* netFile,Int_t innodes
 : VSupervisedNet("XMLP",innodes,0,netFile) 
 {    
     Int_t I;
-    if (layers<1) Errorf("(TXMLP) at least one layer neccessary");
+    if (layers<1) Errorf((char *)"(TXMLP) at least one layer neccessary");
     fParm.fLayers  = layers;
     fParm.fInScale = 1.0/inputRange;
     
@@ -65,7 +65,7 @@ TXMLP:: TXMLP(Int_t layers,Double_t inputRange,const char* netFile,Int_t innodes
 : VSupervisedNet("XMLP",innodes,0,netFile) 
 {    
     Int_t I;
-    if (layers!=3) Errorf("(TXMLP) Constructor needs 3 Layers");
+    if (layers!=3) Errorf((char *)"(TXMLP) Constructor needs 3 Layers");
     fParm.fLayers  = layers;
     fParm.fInScale = 1.0/inputRange;
     

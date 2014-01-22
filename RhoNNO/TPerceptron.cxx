@@ -212,7 +212,7 @@ void TPerceptron::ReadText()
     fscanf(fFile,"innodes     %i\n",&fParm.fInNodes);
     fscanf(fFile,"outnodes    %i\n",&fParm.fOutNodes);
     fscanf(fFile,"learn_step  %le\n",&fParm.fLearnStep);
-    fscanf(fFile,"transfer_id %i\n",&fParm.fTransferId);
+    fscanf(fFile,"transfer_id %i\n",(int *)&fParm.fTransferId);
     AllocNet();
     PerceptronUnit* up;
     int I;
@@ -232,7 +232,7 @@ Double_t* TPerceptron::Recall(NNO_INTYPE* in,NNO_OUTTYPE* out)
     PerceptronUnit* up;
     Double_t* o = fOut;
     Double_t* ds = fDiffSrc;
-    if (Transfer==0) Errorf("(TPerceptron) undefined transferfunction");
+    if (Transfer==0) Errorf((char *)"(TPerceptron) undefined transferfunction");
     for(up=fU;up<fUbound;++up) {
 	Double_t* v = up->fVector;
 	Double_t* i = fIn;

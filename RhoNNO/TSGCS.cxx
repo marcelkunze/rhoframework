@@ -218,10 +218,10 @@ void TSGCS::CopyData(const TSGCS& sgcs)
     Int_t I,J;
     
     //check integrity
-    if (fParm.fInNodes    !=sgcs.fParm.fInNodes)     Errorf("cannot copy data; innodes not identical");
-    if (fParm.fOutNodes   !=sgcs.fParm.fOutNodes)    Errorf("cannot copy data; outnodes not identical");
-    if (fXB.fConnectors< sgcs.fXB.fConnectors) Errorf("cannot copy data; max connectors too low");
-    if (fXB.fMaxCells  < sgcs.fXB.fCells )     Errorf("cannot copy data; not enough cells availiable");
+    if (fParm.fInNodes    !=sgcs.fParm.fInNodes)     Errorf((char *)"cannot copy data; innodes not identical");
+    if (fParm.fOutNodes   !=sgcs.fParm.fOutNodes)    Errorf((char *)"cannot copy data; outnodes not identical");
+    if (fXB.fConnectors< sgcs.fXB.fConnectors) Errorf((char *)"cannot copy data; max connectors too low");
+    if (fXB.fMaxCells  < sgcs.fXB.fCells )     Errorf((char *)"cannot copy data; not enough cells availiable");
     
     fXB = sgcs.fXB;
     fUbound = &fU[fXB.fCells];

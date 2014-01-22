@@ -174,9 +174,9 @@ void TGCS::CopyData(const TGCS& gcs)
     Int_t I,J;
     
     //check integrity
-    if (fParm.fInNodes    !=gcs.fParm.fInNodes)     Errorf("cannot copy data: fInNodes not identical");
-    if (fParm.fOutNodes   !=gcs.fParm.fOutNodes)    Errorf("cannot copy data: fOutNodes not identical");
-    if (fXB.fConnectors<gcs.fXB.fConnectors)  Errorf("cannot copy data: max fConnectors too low");
+    if (fParm.fInNodes    !=gcs.fParm.fInNodes)     Errorf((char *)"cannot copy data: fInNodes not identical");
+    if (fParm.fOutNodes   !=gcs.fParm.fOutNodes)    Errorf((char *)"cannot copy data: fOutNodes not identical");
+    if (fXB.fConnectors<gcs.fXB.fConnectors)  Errorf((char *)"cannot copy data: max fConnectors too low");
     
     fXB = gcs.fXB;
     fUbound=&fU[fXB.fCells];

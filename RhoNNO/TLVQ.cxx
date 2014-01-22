@@ -149,8 +149,8 @@ void TLVQ::CopyData(const TLVQ& lvq)
     Int_t I;
     
     //check integrity
-    if (fParm.fInNodes    !=lvq.fParm.fInNodes)  Errorf("cannot copy data; innodes not identical");
-    if (fParm.fOutNodes   !=lvq.fParm.fOutNodes) Errorf("cannot copy data; outnodes not identical");
+    if (fParm.fInNodes    !=lvq.fParm.fInNodes)  Errorf((char *)"cannot copy data; innodes not identical");
+    if (fParm.fOutNodes   !=lvq.fParm.fOutNodes) Errorf((char *)"cannot copy data; outnodes not identical");
     
     fXB = lvq.fXB;
     fUbound = &fU[fXB.fCells];
