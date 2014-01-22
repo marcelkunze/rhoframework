@@ -112,7 +112,7 @@ TCones::MakeCones(TCandList * all_list,
   TCandListIterator itercand( *all_list ); 
   TCandidate * onecand;
 
-  while(onecand = itercand.Next()){
+  while( (onecand = itercand.Next()) ){
 
     TLorentzVector cms4Vec(onecand->P4());
     cms4Vec.Boost(-(evtinfo->CmFrame().BoostVector()) );

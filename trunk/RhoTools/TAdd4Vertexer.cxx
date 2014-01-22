@@ -78,7 +78,7 @@ TAdd4Vertexer::Compute( TCandListIterator& iter )
     fP4  = TLorentzVector();
     fErr.Zero();
     TCandidate* cand=0;
-    while( cand=iter.Next() )
+    while( (cand=iter.Next()) )
     {
 	fP4 +=cand->P4();
 	fErr+=cand->P4Err();

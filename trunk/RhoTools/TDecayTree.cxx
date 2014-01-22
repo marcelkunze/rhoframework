@@ -185,7 +185,7 @@ _antiString(0){
     
     TCandidate* dau=0;
     int i=0;
-    while ( dau = itr.Next() ) {
+    while ( (dau = itr.Next()) ) {
 	if ( dau == 0 ) continue;
 	TDecayTree* dauMode = new TDecayTree(dau);
 	AddDaughter(dauMode);

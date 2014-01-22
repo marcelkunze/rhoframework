@@ -117,7 +117,7 @@ TBooster::BoostTo( TCandList& initialList,
     }
     TCandListIterator iter( initialList );
     TCandidate* cand=0;
-    while( cand=iter.Next() )
+    while( (cand=iter.Next()) )
     {
 	boostedList.Add(Boost( *cand, To ));
     }
@@ -133,7 +133,7 @@ TBooster::BoostFrom( TCandList& initialList,
     }
     TCandListIterator iter( initialList );
     TCandidate* cand=0;
-    while( cand=iter.Next() )
+    while( (cand=iter.Next()) )
     {
 	boostedList.Add(Boost( *cand, From ));
     }
@@ -200,7 +200,7 @@ TBooster::Boost( const TCandidate& cand,
 	// now loop on daughters
 	TCandListIterator iterDau = cand.DaughterIterator();
 	TCandidate* daug=0;
-	while ( daug=iterDau.Next() )
+	while ( (daug=iterDau.Next()) )
 	{
 	    
 	    const TLorentzVector &boostedDaug4Mtm = BoostedP4(*daug, sign);
@@ -234,7 +234,7 @@ TBooster::Boost( const TCandidate& cand,
     // now loop on daughters
     TCandListIterator iterDau = cand.DaughterIterator();
     TCandidate* dau=0;
-    while ( dau=iterDau.Next() )
+    while ( (dau=iterDau.Next()) )
     {
 	TCandidate boostedDau = Boost( *dau, sign );
 	AddDaughterLink( *boostedCand, &boostedDau );
@@ -422,7 +422,7 @@ TBooster::BoostAndSort( TCandList& list,
     if(c) {
 	storedList.Add(*c); // include the first one in the list
 	// loop on subsequent candidates in the list
-	while( c=iterBoosted.Next() ) 
+	while( (c=iterBoosted.Next()) ) 
 	{
 	    Double_t p=c->P();
 	    Bool_t stored(kFALSE);

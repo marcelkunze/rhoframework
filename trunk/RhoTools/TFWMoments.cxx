@@ -83,7 +83,7 @@ TFWMoments::Compute(TCandList& list )
   // start a loop over the all candidates
   TCandListIterator iter1(list);
 
-  while ( c1 = iter1.Next() ) 
+  while ( (c1 = iter1.Next()) ) 
     {
       // this candidate's 3-momentum
       TVector3 p1(c1->P3());  // use the cast operator of LorentzVector
@@ -92,7 +92,7 @@ TFWMoments::Compute(TCandList& list )
       // loop over other candidates, starting at the next one in the list
       TCandListIterator iter2(iter1);
 
-      while ( c2 = iter2.Next() ) 
+      while ( (c2 = iter2.Next()) ) 
 	{
 	  // this candidate's 3-momentum
 	  TVector3 p2(c2->P3());

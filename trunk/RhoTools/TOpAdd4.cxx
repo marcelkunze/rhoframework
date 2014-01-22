@@ -77,7 +77,7 @@ TOpAdd4::CreateFromList( TCandListIterator &li )
  
   // now do the addition
   const TCandidate* bp;
-  while ( bp = li.Next()) {
+  while ( (bp = li.Next()) ) {
     v += bp->P4();
     c += bp->Charge();
     err+=bp->P4Err();
@@ -97,7 +97,7 @@ TOpAdd4::CreateFromList( TCandListIterator &li )
   
   // add the daughter info
   li.Rewind();
-  while ( bp = li.Next()) AddDaughterLink( *out, bp); 
+  while ( (bp = li.Next()) ) AddDaughterLink( *out, bp); 
 
   return out;
 }

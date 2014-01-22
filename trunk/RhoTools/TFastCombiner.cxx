@@ -132,29 +132,29 @@ TFastCombiner::Combine( TList& ll )
     }
     
     TCandListIterator iter0(*candList0);
-    while ( cand0 = iter0.Next() ) {
+    while ( (cand0 = iter0.Next()) ) {
 	if (candList1 != 0) {
 	    TCandListIterator iter1(iter0);  
 	    if (candList1 != candList0) iter1 = TCandListIterator(*candList1);
-	    while ( cand1 = iter1.Next() ) {
+	    while ( (cand1 = iter1.Next()) ) {
 		if ( cand1->Overlaps(*cand0) ) continue;
 		if (candList2 != 0) {
 		    TCandListIterator iter2(iter1);  
 		    if (candList2 != candList1) iter2 = TCandListIterator(*candList2);
-		    while ( cand2 = iter2.Next() ) {
+		    while ( (cand2 = iter2.Next()) ) {
 			if ( cand2->Overlaps(*cand0) ) continue;
 			if ( cand2->Overlaps(*cand1) ) continue;
 			if (candList3 != 0) {
 			    TCandListIterator iter3(iter2);  
 			    if (candList3 != candList2) iter3 = TCandListIterator(*candList3);
-			    while ( cand3 = iter3.Next() ) {
+			    while ( (cand3 = iter3.Next()) ) {
 				if ( cand3->Overlaps(*cand0) ) continue;
 				if ( cand3->Overlaps(*cand1) ) continue;
 				if ( cand3->Overlaps(*cand2) ) continue;
 				if (candList4 != 0) {
 				    TCandListIterator iter4(iter3);  
 				    if (candList4 != candList3) iter4 = TCandListIterator(*candList4);
-				    while ( cand4 = iter4.Next() ) {
+				    while ( (cand4 = iter4.Next()) ) {
 					if ( cand4->Overlaps(*cand0) ) continue;
 					if ( cand4->Overlaps(*cand1) ) continue;
 					if ( cand4->Overlaps(*cand2) ) continue;
@@ -162,7 +162,7 @@ TFastCombiner::Combine( TList& ll )
 					if (candList5 != 0) {
 					    TCandListIterator iter5(iter4);  
 					    if (candList5 != candList4) iter5 = TCandListIterator(*candList5);
-					    while ( cand5 = iter5.Next() ) {
+					    while ( (cand5 = iter5.Next()) ) {
 						if ( cand5->Overlaps(*cand0) ) continue;
 						if ( cand5->Overlaps(*cand1) ) continue;
 						if ( cand5->Overlaps(*cand2) ) continue;
@@ -227,10 +227,10 @@ TFastCombiner::Combination_( TCandidate* cand0,
 	Int_t nOK = 0;
 	TCandListIterator iter(theList);
 	TCandidate *c;
-	while (c=iter.Next()) {
+	while ( (c=iter.Next()) ) {
 	    TIter daug = _theDecayMode->DaughterIterator();		
 	    TParticlePDG* d;
-	    while (d=(TParticlePDG*)daug.Next()) {
+	    while ( (d=(TParticlePDG*)daug.Next()) ) {
 		const TParticlePDG* cand = c->PdtEntry();
 		if (d==cand) nOK++;
 	    }
