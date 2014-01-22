@@ -204,7 +204,7 @@ TConsistencySet::WorstSignificanceIndex_( size_t& index )
     Double_t worst( 999. );
     const TConsistency* cons;
     size_t i=0;
-    while( cons=GetConsistency(i) )
+    while( (cons=GetConsistency(i)) )
     {
 	Double_t value=cons->SignificanceLevel();
 	if( value<worst )
