@@ -146,7 +146,7 @@ fMct(kTRUE)
     fContent     = new PAFEventBase();
     
     fWriteCollection = kTRUE;
-    if (collection->ClassName()!="TEventCollection") {
+    if ( strncmp(collection->ClassName(),"TEventCollection",16) ) {
 	cerr << "PAFWriter: Request to write to " << collection->ClassName() << endl;
 	cerr << "PAFWriter: Only supports TEventCollection" << endl;
 	exit(0);
@@ -170,7 +170,7 @@ PAFWriter::~PAFWriter()
     // Close all connected files
     TIter iter(fStreams);
     PAFStream *s = 0;
-    while (s = (PAFStream *) iter.Next()) {
+    while ( (s = (PAFStream *) iter.Next()) ) {
 	if (s->GetFile()) s->GetFile()->Close();
     }
     
@@ -452,7 +452,7 @@ void PAFWriter::InitWrite(const char *fname) {
     
     TIter iter(fStreams);
     PAFStream *s = 0;
-    while (s = (PAFStream *) iter.Next()) {
+    while ( (s = (PAFStream *) iter.Next()) ) {
 	
 	s->SetFile(TFile::Open(fFile+s->GetFileNameBase()+".root","recreate"));
 	cout << "PAFWriter::InitWrite open " << fFile+s->GetFileNameBase()+".root" << endl;
@@ -496,7 +496,7 @@ void PAFWriter::InitUpdate(const char *fname) {
     
     TIter iter(fStreams);
     PAFStream *s = 0;
-    while (s = (PAFStream *) iter.Next()) {
+    while ( (s = (PAFStream *) iter.Next()) ) {
 	
 	if (s->IsActive()) {
 	    
@@ -724,7 +724,7 @@ void PAFWriter::Fill() {
     fTimeStampMinor = fContent->GetMinorID();
     TIter iter(fStreams);
     PAFStream *s = 0;
-    while (s = (PAFStream *) iter.Next()) {
+    while ( (s = (PAFStream *) iter.Next()) ) {
 	if (s->IsActive()) s->GetTree()->Fill();
     }
     if (fMap) fAodListsComp->Fill();
@@ -806,7 +806,7 @@ void PAFWriter::Store() {
 	//write files
 	TIter iter(fStreams);
 	PAFStream *s = 0;
-	while (s = (PAFStream *) iter.Next()) {
+	while ( (s = (PAFStream *) iter.Next()) ) {
 	    if (s->IsActive() && s->GetFile() ) {
 		cout << s->GetFileNameBase();
 		s->GetFile()->Write();

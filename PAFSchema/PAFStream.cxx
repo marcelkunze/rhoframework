@@ -120,7 +120,7 @@ PAFStream::OpenFile(const char *filename, Bool_t activate)
 	    if (newTree==NULL) {
 		cout << "ERROR ! Could not find " << GetTitle() 
 		    << " in File " << fCurrentFilename.Data() << endl;
-		return kFALSE;
+		return 0;
 	    }
 	    //newTree->SetBranchStatus("*",0); // Disable all branches
 	    SetTree(newTree);
@@ -317,7 +317,7 @@ TBranch* PAFStream::FindBranch(PAFStreamMember *m)
       b->ResetBit(kDoNotProcess);
       TIterator* iter = b->GetListOfBranches()->MakeIterator();
       TObject* p = 0;
-      while (p=iter->Next()) {
+      while ( (p=iter->Next()) ) {
 	  TBranch *branch = static_cast<TBranch*>(p);
 	  const char *name = branch->GetName();
           if (!strcmp(name,m->fBranchName.Data())) {
