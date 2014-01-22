@@ -134,7 +134,7 @@ void TAssociator::PrintOn(std::ostream& o) {
     TCandListIterator iter(*fRecoList);
     TCandidate *c=0;
     Int_t n = 1;
-    while (c = iter.Next()) {	
+    while ( (c = iter.Next()) ) {	
 	TCandidate *mc = McFromReco(c);
 	if (c->PdtEntry() == 0) SetRecoPid(c);
 	cout << "Track #" << n++ << '\t' << c->PdtEntry()->GetName() << '\t';
@@ -232,7 +232,7 @@ void TAssociator::SetMcPid(TCandidate *c)
     Int_t charge = (Int_t) c->GetCharge();
     
     TCandidate *mc;
-    if (mc = McFromReco(c))
+    if ( (mc = McFromReco(c)) )
 	pdgCode = mc->PdtEntry()->PdgCode();
     
     c->SetType(TRho::Instance()->GetPDG()->GetParticle(pdgCode));

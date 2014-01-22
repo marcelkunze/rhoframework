@@ -93,12 +93,12 @@ TRunDB::PrintMissingRuns(std::ostream &o,Int_t rmin, Int_t rmax)
   TListIter dirIter(dirkeyList);
   TKey *dirKey;
   o << "     RUN CONS VER DATE    SHIFT  STARTT  NEVENTS STATUS     PROCSPEC " << endl;
-  while ( dirKey=(TKey*) dirIter.Next()  ) {
+  while ( (dirKey=(TKey*) dirIter.Next())  ) {
     TDirectory  *theDir  = (TDirectory*)  dirKey->ReadObj();
     TKey *k;
     TList *keyList = theDir->GetListOfKeys();
     TListIter iter(keyList);
-    while ( k=(TKey*) iter.Next()  ) {
+    while ( (k=(TKey*) iter.Next())  ) {
       Int_t n;
       sscanf((char*) k->GetName(),"r%i",&n);
       if ((n>=rmin) && (n<=rmax)) {
@@ -216,7 +216,7 @@ TRunDB::AddCluster(const char* indexFilePath)
     fRunList->AddAll(rList);
     fFileList->AddAll(fList);
     cout << rList->GetEntries() << " runs in " << fFileList->GetEntries() << " files" << endl; 
-    delete rList, fList;
+    delete rList; delete fList;
     
     indexFile->Close();
     

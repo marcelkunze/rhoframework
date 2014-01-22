@@ -23,7 +23,7 @@ public:
       NewEvent();
     }
 
-    virtual ~TNamedPtr() { if (fOwner) delete (void*)fPtr; }
+    virtual ~TNamedPtr() { if (fOwner) delete (void *)fPtr; }
 
     void* GetValue() { return fPtr; }
     void SetValue(void* ptr) { fPtr=ptr; }
