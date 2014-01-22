@@ -58,7 +58,7 @@ $(LIBA) : $(OBJS)  $(PACKAGE)Cint.o
 
 # Shared library:
 $(LIBSO) : $(OBJS)  $(PACKAGE)Cint.o
-	$(LD) $(SOFLAGS) $(LDFLAGS) $^ $(GLIBS) -o $(LIBDIR)/$(LIBSO) $(EXPLLINKLIBS)
+	$(LD) $(SOFLAGS) $(LDFLAGS) $^ $(GLIBS) $(RHOLIBS) -o $(LIBDIR)/$(LIBSO) $(EXPLLINKLIBS)
 
 # Rules for Dictionary:
 $(PACKAGE)Cint.o : $(PACKAGE)Cint.cxx 
