@@ -47,7 +47,7 @@ TNNK::TNNK(Double_t learn,Double_t fse,Double_t mu,Int_t innodes,Text_t *hidnode
 : VSupervisedNet("TNNK",innodes,outnodes,netFile) 
 {
     fShouldSave = kTRUE;
-    Text_t *name = "TNNK";
+    Text_t *name = (char *)"TNNK";
     fKernel = new TNNKernel(name,innodes,hidnodes,outnodes);
     fKernel->SetLearnParam(learn,fse,mu);
     fKernel->SetArraySize(1);
