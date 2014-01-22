@@ -113,7 +113,7 @@ TEventCollection::~TEventCollection() {
 	delete fRootfile;
     else {
 	Finish();
-	delete fBlock, fTree;
+	delete fBlock; delete fTree;
     }
 }
 

@@ -128,7 +128,7 @@ void TPersistenceManager::movedir( TDirectory* olddir, TDirectory* newdir )
     TList* list1= olddir->GetList();
     TIter iter( list1 );
     TObject* obj= 0;
-    while( obj= iter.Next() ) {
+    while( (obj= iter.Next()) ) {
 	if( obj->InheritsFrom( "TH1" ) ) {
 	    // TH1::SetDirectory does all the work for us:
 	    ((TH1*)obj)->SetDirectory( newdir );
@@ -150,7 +150,7 @@ size_t TPersistenceManager::GetNumDir() const
     TIter iter( gDirectory->GetList() );
     TObject* obj;
     int dircount= 0;
-    while( obj= iter.Next() ) {
+    while( (obj= iter.Next()) ) {
 	if( !strcmp( obj->ClassName(), "TDirectory" ) ) dircount++;
     }
     return dircount;
@@ -164,7 +164,7 @@ const char* TPersistenceManager::GetDirName( size_t index ) const
     TObject* obj;
     size_t dircount= 0;
     TString dirName( "Not found" );
-    while( obj= iter.Next() ) {
+    while( (obj= iter.Next()) ) {
 	if( !strcmp( obj->ClassName(), "TDirectory" ) ) {
 	    dircount++;
 	    if( index+1 == dircount ) {
@@ -185,7 +185,7 @@ Bool_t TPersistenceManager::GetDirIndex( const char* dirname,
     TIter iter( gDirectory->GetList() );
     TObject* obj;
     size_t dircount= 0;
-    while( obj= iter.Next() ) {
+    while( (obj= iter.Next()) ) {
 	if( !strcmp( obj->ClassName(), "TDirectory" ) ) {
 	    dircount++;
 	    if( !strcmp( obj->GetName(), &*dirname ) ) break;
@@ -259,7 +259,7 @@ const char* TPersistenceManager::makeName( const char* prefix, THistID hhid )
 	    TObject* obj= 0;
 	    int number= 0;
 	    if( name( 0, 1 ) == "h" ) {
-		while( obj= iter.Next() ) if( obj->InheritsFrom( "TH1" ) ) break;
+		while( (obj= iter.Next()) ) if( obj->InheritsFrom( "TH1" ) ) break;
 		if( obj != 0 ) {
 		    TString hkey( obj->GetName() );
 		    TString x(hkey( 3, hkey.Length()-3));
@@ -270,7 +270,7 @@ const char* TPersistenceManager::makeName( const char* prefix, THistID hhid )
 		name+= TString(tmp);
 	    }
 	    else if( name( 0, 3 ) == "ntp" ) {
-		while( obj= iter.Next() ) {
+		while( (obj= iter.Next()) ) {
 		    if( !strcmp( obj->ClassName(), "TTree" ) && 
 			!strncmp( obj->GetName(), "ntp", 3 ) ) break;
 		}
@@ -317,7 +317,7 @@ size_t TPersistenceManager::GetNumHist() const
     TIter iter( gDirectory->GetList() );
     TObject* obj;
     int histcount= 0;
-    while( obj= iter.Next() ) {
+    while( (obj= iter.Next()) ) {
 	if( obj->InheritsFrom( "TH1" ) ) histcount++;
     }
     return histcount;
@@ -596,7 +596,7 @@ THistogram* TPersistenceManager::getHistByName( const char* title )
     THistogram* histp= 0;
     TIter iter( gDirectory->GetList() );
     TObject* obj;
-    while( obj= iter.Next() ) {
+    while( (obj= iter.Next()) ) {
 	if( obj->InheritsFrom( "TH1" ) && 
 	    !strcmp( obj->GetName(), title ) ) break;
     }
@@ -614,7 +614,7 @@ THistogram* TPersistenceManager::getHistByTitle( const char* title )
     THistogram* histp= 0;
     TIter iter( gDirectory->GetList() );
     TObject* obj;
-    while( obj= iter.Next() ) {
+    while( (obj= iter.Next()) ) {
 	if( obj->InheritsFrom( "TH1" ) && 
 	    !strcmp( obj->GetTitle(), title ) ) break;
     }

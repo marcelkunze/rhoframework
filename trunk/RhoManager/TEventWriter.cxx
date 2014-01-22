@@ -171,7 +171,7 @@ TEventWriter::~TEventWriter()
 	// Close all connected files
 	TIter iter(fStreams);
 	PAFStream *s = 0;
-	while (s = (PAFStream *) iter.Next()) {
+	while ( (s = (PAFStream *) iter.Next()) ) {
 	    if (s->GetFile()) s->GetFile()->Close();
 	}
     
@@ -455,7 +455,7 @@ void TEventWriter::InitWrite(const char *fname) {
     
     TIter iter(fStreams);
     PAFStream *s = 0;
-    while (s = (PAFStream *) iter.Next()) {
+    while ( (s = (PAFStream *) iter.Next()) ) {
 	
 	s->SetFile(TFile::Open(fFile+s->GetFileNameBase()+".root","recreate"));
 	cout << "TEventWriter::InitWrite open " << (const char *) (fFile+s->GetFileNameBase()+".root") << endl;
@@ -502,7 +502,7 @@ void TEventWriter::InitUpdate(const char *fname) {
     
     TIter iter(fStreams);
     PAFStream *s = 0;
-    while (s = (PAFStream *) iter.Next()) {
+    while ( (s = (PAFStream *) iter.Next()) ) {
 	
 	if (s->IsActive()) {
 	    
@@ -730,7 +730,7 @@ void TEventWriter::Fill() {
     fTimeStampMinor = fContent->GetMinorID();
     TIter iter(fStreams);
     PAFStream *s = 0;
-    while (s = (PAFStream *) iter.Next()) {
+    while ( (s = (PAFStream *) iter.Next()) ) {
 	if (s->IsActive()) s->GetTree()->Fill();
     }
     if (fMap) fAodListsComp->Fill();
@@ -812,7 +812,7 @@ void TEventWriter::Store() {
 	//write files
 	TIter iter(fStreams);
 	PAFStream *s = 0;
-	while (s = (PAFStream *) iter.Next()) {
+	while ( (s = (PAFStream *) iter.Next()) ) {
 	    if (s->IsActive() && s->GetFile() ) {
 		cout << s->GetFileNameBase();
 		s->GetFile()->Write();
@@ -922,30 +922,30 @@ void TEventWriter::WriteEvent(TEventManager *evtmgr, TCandList *list)
 	    initialized = kTRUE;
 	    TTree *originalListTree = evtmgr->GetListBase().GetTree();
 	    if (originalListTree!=0) {
-		GetListBase().AddList("TaggingList");
-		GetListBase().AddList("NeutralHadEMCNeutral");
-		GetListBase().AddList("CalorClusterNeutral");
-		GetListBase().AddList("SingleBumpNeutralClusters");
-		GetListBase().AddList("pi0MergedDefault");
-		GetListBase().AddList("eLoose");
-		GetListBase().AddList("eTight");
-		GetListBase().AddList("eDefault");
-		GetListBase().AddList("muLoose");
-		GetListBase().AddList("muTight");
-		GetListBase().AddList("muDefault");
-		GetListBase().AddList("piLoose");
-		GetListBase().AddList("piTight");
-		GetListBase().AddList("piDefault");
-		GetListBase().AddList("KLoose");
-		GetListBase().AddList("KTight");
-		GetListBase().AddList("KDefault");
-		GetListBase().AddList("pLoose");
-		GetListBase().AddList("pTight");
-		GetListBase().AddList("pDefault");
-		GetListBase().AddList("MergedPi0s");
-		GetListBase().AddList("KsDefault");
-		GetListBase().AddList("KsLoose");
-		GetListBase().AddList("KsTight");
+		GetListBase().AddList((char *)"TaggingList");
+		GetListBase().AddList((char *)"NeutralHadEMCNeutral");
+		GetListBase().AddList((char *)"CalorClusterNeutral");
+		GetListBase().AddList((char *)"SingleBumpNeutralClusters");
+		GetListBase().AddList((char *)"pi0MergedDefault");
+		GetListBase().AddList((char *)"eLoose");
+		GetListBase().AddList((char *)"eTight");
+		GetListBase().AddList((char *)"eDefault");
+		GetListBase().AddList((char *)"muLoose");
+		GetListBase().AddList((char *)"muTight");
+		GetListBase().AddList((char *)"muDefault");
+		GetListBase().AddList((char *)"piLoose");
+		GetListBase().AddList((char *)"piTight");
+		GetListBase().AddList((char *)"piDefault");
+		GetListBase().AddList((char *)"KLoose");
+		GetListBase().AddList((char *)"KTight");
+		GetListBase().AddList((char *)"KDefault");
+		GetListBase().AddList((char *)"pLoose");
+		GetListBase().AddList((char *)"pTight");
+		GetListBase().AddList((char *)"pDefault");
+		GetListBase().AddList((char *)"MergedPi0s");
+		GetListBase().AddList((char *)"KsDefault");
+		GetListBase().AddList((char *)"KsLoose");
+		GetListBase().AddList((char *)"KsTight");
 	    }
 	}
     }

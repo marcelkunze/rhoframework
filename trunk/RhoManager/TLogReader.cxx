@@ -326,7 +326,7 @@ TIr2Entry::SetContent(char *str)
   else if (strcmp(s1,"Other")==0) { fRunType=8; }
   else if (strcmp(s1,"Calibratio")==0) { fRunType=16; }
   else { 
-    fRunType==32; 
+    fRunType=32; 
     //cout << "Warning in TIr2Entry::SetContent : Cannot read run type from " << str << endl;   
   }
   s1[0]=0; input >> s1;
