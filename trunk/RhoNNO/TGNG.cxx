@@ -204,9 +204,9 @@ void TGNG::CopyData(const TGNG& gng)
     Int_t I,J;
     
     //check integrity
-    if (fParm.fInNodes    !=gng.fParm.fInNodes)     Errorf("cannot copy data; innodes not identical");
-    if (fParm.fOutNodes   !=gng.fParm.fOutNodes)    Errorf("cannot copy data; outnodes not identical");
-    if (fXB.fConnectors!=gng.fXB.fConnectors) Errorf("cannot copy data; max connectors not identical");
+    if (fParm.fInNodes    !=gng.fParm.fInNodes)     Errorf((char *)"cannot copy data; innodes not identical");
+    if (fParm.fOutNodes   !=gng.fParm.fOutNodes)    Errorf((char *)"cannot copy data; outnodes not identical");
+    if (fXB.fConnectors!=gng.fXB.fConnectors) Errorf((char *)"cannot copy data; max connectors not identical");
     
     fXB = gng.fXB;
     fUbound = &fU[fXB.fCells];
@@ -359,7 +359,7 @@ Int_t TGNG::Insert(void)
 	unew->fNc = 0;
 	
 	if (umax1->fNc==0) { 
-	    Warningf(stdout,"CORRUPT NETWORK INTEGRITY! isolated cell found, please call developer"); 
+	    Warningf(stdout,(char *)"CORRUPT NETWORK INTEGRITY! isolated cell found, please call developer"); 
 	    return 0; 
 	}
 	

@@ -128,13 +128,13 @@ void VNeuralNet::WriteNetBinary()
 void VNeuralNet::ReadNet(const char* netID) 
 {
     fFile = fopen(fFilename,"rb");
-    if (fFile==0) Errorf("file %s not found",fFilename.Data());
+    if (fFile==0) Errorf((char *)"file %s not found",(char *)fFilename.Data());
     char ftype[16];
     char Version[16];
     fscanf(fFile,"C++  NEURAL NETWORK OBJECTS   VERSION %s\n(C) Copyright Johannes Steffens\nFiletype %s\n",Version,ftype);
     if      (!strcmp(ftype,"binary")) fFiletype = FILE_BINARY;
     else if (!strcmp(ftype,"text"))   fFiletype = FILE_TEXT;
-    else Errorf("illegal fileformat: %s",fFilename.Data());
+    else Errorf((char *)"illegal fileformat: %s",(char *)fFilename.Data());
 
     if (fFiletype==FILE_BINARY) 
 	ReadNetBinary(); 
@@ -144,12 +144,12 @@ void VNeuralNet::ReadNet(const char* netID)
     fParm.fNetId[4]=0;
     if (strcmp(netID,fParm.fNetId)) {
 	fclose(fFile);
-	Errorf("file %s  (incompatible network)\nnetwork ID is %s and should be %s",fFilename.Data(),fParm.fNetId,netID);
+	Errorf((char *)"file %s  (incompatible network)\nnetwork ID is %s and should be %s",fFilename.Data(),fParm.fNetId,netID);
     }
 
     if (strcmp(Version,NNO_VERSION)) {
 	fclose(fFile);
-	Errorf("illegal NNO version number of file %s\nversion number is %s and should be %s",fFilename.Data(),Version,NNO_VERSION);
+	Errorf((char *)"illegal NNO version number of file %s\nversion number is %s and should be %s",fFilename.Data(),Version,(char *)NNO_VERSION);
     }
 
     if (fFiletype==FILE_BINARY)
@@ -231,7 +231,7 @@ double VNeuralNet::Random(void)
 
 void VNeuralNet::TestPointer(void* Ptr) 
 {
-     if (Ptr==0) Errorf("not enough memory");
+     if (Ptr==0) Errorf((char *)"not enough memory");
 }
 
 void VNeuralNet::SetupPlots(VNeuralNetPlotter *plotter)
@@ -410,7 +410,7 @@ Double_t VNeuralNet::TrainEpoch(const char *file, Int_t nEpoch)
     
     fclose(ftrn);
 
-    delete in, out;
+    delete in; delete out;
 
     if (fShouldSave) Save(); // Store the net
     
@@ -444,7 +444,7 @@ Double_t VNeuralNet::TestEpoch(const char *file)
     
     fclose(ftst);
 
-    delete in, out;
+    delete in; delete out;
     
     return classError;
 }
