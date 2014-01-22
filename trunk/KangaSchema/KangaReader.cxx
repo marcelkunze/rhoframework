@@ -157,7 +157,7 @@ KangaReader::~KangaReader( )
     // Close all connected files
     TIter iter(fStreams);
     PAFStream *s = 0;
-    while (s = (PAFStream *) iter.Next()) {
+    while ( (s = (PAFStream *) iter.Next()) ) {
 	if (s->GetFile()) s->GetFile()->Close();
     }
     
@@ -250,7 +250,7 @@ Int_t KangaReader::GetEvent(UInt_t number)
 	
 	TIter iter(fStreams);
 	PAFStream *s = 0;
-	while (s = (PAFStream *) iter.Next()) {
+	while ( (s = (PAFStream *) iter.Next()) ) {
 	    if (s==fTagStream) continue; // Do not read this
 	    if (!s->IsActive()) continue; // Do not read this
 	    Int_t n = s->GetEvent(number);	
@@ -413,7 +413,7 @@ KangaReader::LoadMcNodes( TList* mcList)
     // now iterate on the temporary list
     TListIter iterList( &list );
     TNode* cand=0;
-    while( cand=(TNode*)iterList.Next() )
+    while( (cand=(TNode*)iterList.Next()) )
     {
 	FillMcList( *mcList, *cand );
     }
@@ -433,7 +433,7 @@ KangaReader::PrintMcList(TNode& node)
       cout << "{ " << dauList->GetSize() << " daughters" << endl;
       TListIter iter(dauList);
       TNode* dau=0;
-      while( dau=(TNode*)iter.Next() )
+      while( (dau=(TNode*)iter.Next()) )
       {
 	PrintMcList(*dau );
       }
@@ -461,7 +461,7 @@ KangaReader::FillMcList( TList& list, TNode& cand )
 	}
 	TListIter iter(dauList);
 	TNode* dau=0;
-	while( dau=(TNode*)iter.Next() )
+	while( (dau=(TNode*)iter.Next()) )
 	{
 	    FillMcList( list, *dau );
 	}

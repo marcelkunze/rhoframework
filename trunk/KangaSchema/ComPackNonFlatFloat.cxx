@@ -79,12 +79,13 @@ ComPackNonFlatFloat::unpack( double xmin,double xmax,d_UShort val, double & unpa
   double  x;
   unsigned long y(val);
   ComPackBase<double>::StatusCode status=_engine->unpack(y,x);
-  if(status == ComPackBase<double>::TAG_OK)
+  if(status == ComPackBase<double>::TAG_OK) {
     if(xmin<0){
       unpackedval = (x>0) ? x*xmax : x*fabs(xmin);  
     }else{
       unpackedval = xmin + x*(xmax-xmin);
     }
+  }
   return status;
 }
 
