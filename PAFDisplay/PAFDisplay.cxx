@@ -487,17 +487,17 @@ fLogo(0), fHitsCuts(0), fDraw(kFALSE), fConsole(0)
 //_____________________________________________________________________________
 PAFDisplay::~PAFDisplay()
 {
-    delete fCanvas, fConsole, fPad, fTrigPad, fCutPad, fEtaPad;
-    delete fRangeSlider, fCutSlider, fEtaaxis, fCutaxis;
-    delete fDetButton, fBpqButton, fMagButton, fIfrButton, fEmcButton, fDrcButton, fDchButton, fSvtButton;
-    delete fPickButton, fZoomButton, fUnzoomButton;
-    delete fRecoButton, fTruthButton, fListButton;
-    delete fDetGeometry, fBpqGeometry, fSvtGeometry, fDchGeometry, fDrcGeometry, fEmcGeometry, fMagGeometry, fIfrGeometry;
+    delete fCanvas; delete fConsole; delete fPad; delete fTrigPad; delete fCutPad; delete fEtaPad;
+    delete fRangeSlider; delete fCutSlider; delete fEtaaxis; delete fCutaxis;
+    delete fDetButton; delete fBpqButton; delete fMagButton; delete fIfrButton; delete fEmcButton; delete fDrcButton; delete fDchButton; delete fSvtButton;
+    delete fPickButton; delete fZoomButton; delete fUnzoomButton;
+    delete fRecoButton; delete fTruthButton; delete fListButton;
+    delete fDetGeometry; delete fBpqGeometry; delete fSvtGeometry; delete fDchGeometry; delete fDrcGeometry; delete fEmcGeometry; delete fMagGeometry; delete fIfrGeometry;
     if (fTracks) fTracks->Delete(); delete fTracks;
     if (fVertices) fVertices->Delete(); delete fVertices;
     delete fSpot;
     if (fRunDB) delete fRunDB;
-    delete fParticles, fList, fMcParticles;
+    delete fParticles; delete fList; delete fMcParticles;
     delete fAssociator;
     
     fMgr->WriteParm("PAFDisplay.save.tcl"); // Save the actual settings
@@ -1321,7 +1321,7 @@ void PAFDisplay::DrawTracks(TCandList *list)
 
     cout << endl << "PAFDisplay: Draw event #" << fEvtMgr->GetEventNumber() << endl;
 
-    while (c = iter.Next()) {
+    while ( (c = iter.Next()) ) {
 	
 	n++; // Increment number
 
@@ -1398,7 +1398,7 @@ void PAFDisplay::DrawTracks(TCandList *list)
     if (fTruthMode) {
       cout << endl << "PAFDisplay: Draw MC event #" << fEvtMgr->GetEventNumber() << endl;
       TCandListIterator itermc(*fAssociator->GetMcTruthList());
-      while (c = itermc.Next()) {
+      while ( (c = itermc.Next()) ) {
 	TString name = c->PdtEntry()->GetName();
 	if (fMcTracks.Index(name) < 0) continue;
 	if (!labelMode || fPhi>-80) name = ""; // Only front view works right now
@@ -1555,7 +1555,7 @@ void PAFDisplay::DrawVertices(TCandList *list)
 	else {
 	    TIter nextVertex(fVertices);
 	    PAFDisplayVertex *vobj;
-	    while((vobj=(PAFDisplayVertex*)nextVertex())) vobj->DrawVertex("same",kTRUE);
+	    while(( (vobj=(PAFDisplayVertex*)nextVertex())) ) vobj->DrawVertex("same",kTRUE);
 	}
 	
     }
@@ -1609,13 +1609,13 @@ Int_t PAFDisplay::Filter(Int_t number)
 
     // Examine MCTruth tracks
     if (number==0) number = fEvtMgr->GetEventNumber() + 1;
-    while (fEvtMgr->GetEvent(number++)) {
+    while ( (fEvtMgr->GetEvent(number++)) ) {
       cout << endl << "PAFDisplay: Filter MC event #" << fEvtMgr->GetEventNumber() << endl;
       static TCandList mcList;
       fEvtMgr->FillMcTruthList(&mcList);
       TCandListIterator itermc(mcList);
       TCandidate *c;
-      while (c = itermc.Next()) {
+      while ( (c = itermc.Next()) ) {
 	TString name = c->PdtEntry()->GetName();
 	if (fFilter.Index(name) >= 0) { return fEvtMgr->GetEventNumber(); }
       }
