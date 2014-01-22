@@ -37,7 +37,7 @@ public:
     Sputnik() { Launch(); }
     virtual ~Sputnik() {}
     int NRef(TCandidate const & c);
-    void PC(char* n, TCandidate& c);
+    void PC(const char* n, TCandidate& c);
     TVector3 PStar( double M, double m1, double m2, double th, double ph );
     void PrintAncestors( const TCandidate& cand, std::ostream& o=std::cout );
     void Launch();
@@ -47,7 +47,7 @@ int Sputnik::NRef(TCandidate const & c) {
     return c.NDaughters();
 }
 
-void Sputnik::PC(char* n, TCandidate& c) {
+void Sputnik::PC(const char* n, TCandidate& c) {
     cout <<"   "<<n<<" uid:"<<c.Uid()<<" contains "<<c<<" r: "<<NRef(c)<<endl;
 }
 
@@ -64,15 +64,15 @@ void Sputnik::PrintAncestors( const TCandidate& cand, std::ostream& o)
     const TCandidate* c = &cand;
     const TParticlePDG* pdtC(0);
     const TParticlePDG* pdtM(0);
-    if( pdtC=c->PdtEntry() )
+    if( (pdtC=c->PdtEntry()) )
 	o << "The Candidate " << pdtC->GetName();
     else
 	o << "The Candidate of mass " << c->Mass();
     const TCandidate* m(0);
-    if( m=c->TheMother() )
+    if( (m=c->TheMother()) )
     {
 	o << "'s mother ";
-	if( pdtM=m->PdtEntry() )
+	if( (pdtM=m->PdtEntry()) )
 	    o << " is a " << pdtM->GetName();
 	else
 	    o << " has mass " << m->Mass();
@@ -380,7 +380,7 @@ void Sputnik::Launch()
 	
 	TCandListIterator iterDau =  psi.DaughterIterator();
 	TCandidate* dau=0;
-	while( dau=iterDau.Next() )
+	while( (dau=iterDau.Next()) )
 	{
 	    TCandidate fittedDau = fitter->GetFitted( *dau );
 	    TTreeNavigator::PrintTree( fittedDau );
@@ -396,7 +396,7 @@ void Sputnik::Launch()
 	
 	iterDau.Rewind();
 	dau=0;
-	while( dau=iterDau.Next() )
+	while( (dau=iterDau.Next()) )
 	{
 	    TCandidate fittedDau = fitter->GetFitted( *dau );
 	    TTreeNavigator::PrintTree( fittedDau );
@@ -443,7 +443,7 @@ void Sputnik::Launch()
 	cmsBooster.BoostTo( theList, theBoostedList );
 	TCandListIterator iter(theBoostedList);
 	TCandidate* c(0);
-	while( c=iter.Next() )
+	while( (c=iter.Next()) )
 	{
 	    cout << "boosted cand " << c->PdtEntry()->GetName() << endl;
 	    TTreeNavigator::PrintTree( *c );
